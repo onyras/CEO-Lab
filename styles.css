@@ -120,7 +120,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    font-size: clamp(3rem, 8vw, 6rem);
+    font-size: clamp(4rem, 10vw, 8rem);
 }
 
 h2 {
@@ -293,24 +293,36 @@ a:hover {
    ======================================== */
 
 .hero {
-    padding: var(--nk-space-2xl) 0 var(--nk-space-xl);
+    padding: calc(var(--nk-space-2xl) * 1.5) 0 var(--nk-space-2xl);
     text-align: center;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
 }
 
 .hero__title {
-    margin-bottom: var(--nk-space-sm);
-    max-width: 900px;
+    margin-bottom: var(--nk-space-md);
+    max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
+    font-weight: var(--nk-font-light);
+    letter-spacing: 0.2em;
+    line-height: 0.95;
+    text-transform: uppercase;
 }
 
 .hero__subtitle {
-    font-size: var(--nk-text-2xl);
+    font-family: var(--nk-font-serif);
+    font-size: var(--nk-text-3xl);
+    font-weight: var(--nk-font-light);
     margin-bottom: var(--nk-space-md);
-    max-width: 800px;
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
     color: var(--nk-text-muted);
+    letter-spacing: 0.03em;
+    line-height: 1.3;
+    font-style: italic;
 }
 
 .hero__social-proof {
