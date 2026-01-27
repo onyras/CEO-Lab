@@ -5,6 +5,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     initMobileNav();
     initSmoothScroll();
+    initBenefitsPopup();
+    initDelayedBenefitsSlide();
+    initProcessStepsAnimation();
 });
 
 /**
@@ -63,5 +66,71 @@ function initSmoothScroll() {
                 });
             }
         });
+    });
+}
+
+/**
+ * Benefits Slide
+ */
+function initBenefitsPopup() {
+    const slide = document.getElementById('benefitsSlide');
+    const trigger = document.getElementById('benefitsTrigger');
+
+    if (!slide || !trigger) return;
+
+    // Toggle slide on click
+    trigger.addEventListener('click', () => {
+        slide.classList.toggle('expanded');
+    });
+}
+
+/**
+ * Delayed Benefits Slide - Show after 3 seconds
+ */
+function initDelayedBenefitsSlide() {
+    const slide = document.getElementById('benefitsSlide');
+
+    if (!slide) return;
+
+    // Show benefits slide after 3 seconds
+    setTimeout(() => {
+        slide.classList.add('visible');
+    }, 3000);
+}
+
+/**
+ * Process Steps Staggered Animation
+ * Framer Motion-style animation that triggers when section comes into view
+ */
+function initProcessStepsAnimation() {
+    const processSteps = document.querySelectorAll('.process-step');
+
+    if (!processSteps.length) return;
+
+    // Intersection Observer options - trigger when 30% of section is visible
+    const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.3
+    };
+
+    // Callback function
+    const callback = (entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Add animate-in class to trigger animation
+                entry.target.classList.add('animate-in');
+                // Optional: unobserve after animation to prevent re-triggering
+                observer.unobserve(entry.target);
+            }
+        });
+    };
+
+    // Create observer
+    const observer = new IntersectionObserver(callback, options);
+
+    // Observe each step
+    processSteps.forEach(step => {
+        observer.observe(step);
     });
 }

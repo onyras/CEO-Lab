@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEO Lab | The Only Subscription You Need to Stay at the Edge of Exceptional Leadership</title>
-    <meta name="description" content="50+ battle-tested frameworks, toolkits, and systems used by successful CEOs. Not theory. Just proven tools you can use today.">
+    <title>CEO Lab | Know Where You Stand. Know Where You're Going.</title>
+    <meta name="description" content="Most CEOs guess at their growth. CEO Lab members measure it. 50+ battle-tested assessments and frameworks that show your leadership evolution in real numbers.">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,292 +20,352 @@
 <body>
     <!-- Navigation -->
     <nav class="nav">
-        <div class="nav__logo">
-            <img src="assets/images/nk_logo.png" alt="Nikolas Konstantin">
+        <div class="nav__left">
+            <a href="https://www.nikolaskonstantin.com" target="_blank" rel="noopener noreferrer">
+                <img src="assets/images/nk_logo.png" alt="NK" class="nav__logo-img">
+            </a>
+            <span class="nav__brand">CEO Lab</span>
         </div>
+
         <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M3 12h18M3 6h18M3 18h18"/>
             </svg>
         </button>
-        <div class="nav__links" id="navLinks">
-            <a href="#library">Library</a>
-            <a href="#pricing">Pricing</a>
-            <a href="login.html" class="btn btn-secondary">Login</a>
+
+        <div class="nav__center" id="navLinks">
+            <a href="#assessments">Assessments</a>
+            <a href="#tools">Tools</a>
+            <a href="#newsletter">Newsletter</a>
+            <a href="product.html">Learn More</a>
+        </div>
+
+        <div class="nav__right">
+            <a href="subscribe.html" class="nav__cta">Start Free Trial</a>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section id="hero" class="hero">
-        <div class="container">
-            <h1 class="hero__title">CEO LAB</h1>
-            <p class="hero__subtitle">The only subscription you need<br>to stay at the edge of leadership.</p>
-            <a href="signup.html" class="btn btn-primary">Start for €15/month</a>
+        <div class="hero-scroll-container">
+            <div class="hero-perspective-wrapper">
+                <div class="hero-header">
+                    <div class="container">
+                        <h1 class="hero__title">Your Leadership Growth, <em>Measured</em></h1>
+                        <p class="hero__subtitle">Monthly assessments. Automated reports. Weekly check-ins. 50+ frameworks and tools.</p>
+                    </div>
+                </div>
 
-            <!-- Product Grid (Every.to style) -->
-            <div class="hero__grid">
-                <div class="hero__grid-item hero__grid-item--self">
-                    <span class="hero__grid-label">Self-Assessments</span>
-                </div>
-                <div class="hero__grid-item hero__grid-item--teams">
-                    <span class="hero__grid-label">Progress Tracking</span>
-                </div>
-                <div class="hero__grid-item hero__grid-item--orgs">
-                    <span class="hero__grid-label">AI Analysis</span>
-                </div>
-                <div class="hero__grid-item hero__grid-item--toolkits">
-                    <span class="hero__grid-label">50+ Frameworks</span>
-                </div>
-                <div class="hero__grid-item hero__grid-item--meditation">
-                    <span class="hero__grid-label">Beautiful Mind</span>
-                </div>
-                <div class="hero__grid-item hero__grid-item--infographics">
-                    <span class="hero__grid-label">Monthly Reports</span>
+                <div class="hero-3d-card">
+                    <div class="hero-3d-card-inner">
+                        <img src="assets/images/dashboard-preview.svg" alt="CEO Lab Dashboard">
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- How It Works Section -->
-    <section id="library" class="section">
+    <section id="how-it-works" class="section">
         <div class="container">
-            <h2 class="section__title">HOW IT WORKS</h2>
-            <p class="section__subtitle">Leadership development you can see, measure, and act on.</p>
+            <p class="section__title">> ceo-lab --process</p>
+            <h2 class="section__subtitle">Your Leadership Growth, <em>Systematized</em></h2>
+            <p class="section__description">Five simple steps to measure and accelerate your leadership growth.</p>
 
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="product-card__visual product-card__visual--self"></div>
-                    <h3 class="product-card__title">Take Assessments</h3>
-                    <p class="product-card__desc">5 core assessments when you join. Retake monthly, quarterly, yearly to track your evolution.</p>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-card__visual product-card__visual--teams"></div>
-                    <h3 class="product-card__title">Watch Patterns Emerge</h3>
-                    <p class="product-card__desc">Your weak spots become visible. Your strengths get confirmed. Your growth becomes undeniable.</p>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-card__visual product-card__visual--orgs"></div>
-                    <h3 class="product-card__title">Get AI-Powered Plans</h3>
-                    <p class="product-card__desc">Monthly reports with focused recommendations based on your unique patterns and progress.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Assessment Categories Section -->
-    <section class="section">
-        <div class="container">
-            <h2 class="section__title">ASSESSMENT CATEGORIES</h2>
-            <p class="section__subtitle">Curated, proven leadership assessments across three pillars.</p>
-
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="product-card__visual product-card__visual--self"></div>
-                    <h3 class="product-card__title">Leading Self</h3>
-                    <p class="product-card__desc">Zone of Genius • 5 Drivers • CEO Test • Deep Work • Mental Biases</p>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-card__visual product-card__visual--teams"></div>
-                    <h3 class="product-card__title">Leading Teams</h3>
-                    <p class="product-card__desc">Trust Formula • Psychological Safety • 5 Dysfunctions</p>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-card__visual product-card__visual--orgs"></div>
-                    <h3 class="product-card__title">Leading Organizations</h3>
-                    <p class="product-card__desc">Culture Diagnostics • 6 Strategy Traps • Scaling Systems</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- What's Included Section -->
-    <section class="section section--dark">
-        <div class="container">
-            <h2 class="section__title">WHAT'S INCLUDED</h2>
-            <p class="section__subtitle">Everything you need to measure and improve your leadership.</p>
-
-            <div class="library-grid">
-                <div class="library-card">
-                    <h3>Self-Assessments</h3>
-                    <p>Complete proven leadership tests. Retake regularly. Track progress forever.</p>
-                </div>
-
-                <div class="library-card">
-                    <h3>AI Analysis</h3>
-                    <p>Monthly reports with patterns, insights, and focused action plans.</p>
-                </div>
-
-                <div class="library-card">
-                    <h3>50+ Frameworks</h3>
-                    <p>Downloadable guides. Same material from 1:1 coaching.</p>
-                </div>
-
-                <div class="library-card">
-                    <h3>Beautiful Mind App</h3>
-                    <p>Daily meditation for regulation and mental clarity.</p>
-                </div>
-
-                <div class="library-card">
-                    <h3>Progress Dashboard</h3>
-                    <p>See your leadership evolution over months and years.</p>
-                </div>
-
-                <div class="library-card">
-                    <h3>Email Reminders</h3>
-                    <p>Stay consistent. Complete assessments on schedule.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Why It Works Section -->
-    <section id="different" class="section">
-        <div class="container">
-            <h2 style="text-align: center; margin-bottom: 1rem; font-size: var(--nk-text-4xl);">The Power of Regular Assessment</h2>
-            <p style="text-align: center; color: var(--nk-text-muted); margin-bottom: 2rem; font-size: 1.125rem;">
-                Your assessment history builds a complete map of your leadership
-            </p>
-
-            <div class="library-grid">
-                <div class="library-card">
-                    <h3>Monthly</h3>
-                    <p>Spot immediate shifts. Catch problems early. Stay accountable to your growth.</p>
-                </div>
-
-                <div class="library-card">
-                    <h3>Quarterly</h3>
-                    <p>See real patterns emerge. Understand what's working. Adjust your course.</p>
-                </div>
-
-                <div class="library-card">
-                    <h3>Yearly</h3>
-                    <p>Full picture of your leadership evolution. Compare who you were to who you've become.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="pricing" class="section">
-        <div class="container">
-            <h2 style="text-align: center; margin-bottom: 1.5rem; font-size: var(--nk-text-4xl);">Simple Pricing</h2>
-
-            <div class="pricing-cards">
-                <div class="pricing-card pricing-card--featured">
-                    <h3>CEO Lab</h3>
-                    <div class="pricing-card__price">
-                        €15<span>/month</span>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="process-step__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
                     </div>
-                    <p style="text-align: center; margin: 0.25rem 0 1rem; color: var(--nk-text-muted); font-size: 1rem;">
-                        or €150/year (save 2 months)
-                    </p>
-                    <ul>
-                        <li>All leadership assessments</li>
-                        <li>Progress tracking & history</li>
-                        <li>Monthly AI analysis reports</li>
-                        <li>50+ framework library</li>
-                        <li>Beautiful Mind meditation app</li>
-                        <li>Email reminders</li>
-                    </ul>
-                    <a href="signup.html" class="btn btn-primary">Start Now</a>
-                </div>
-            </div>
-
-            <p style="text-align: center; margin-top: 1rem; color: var(--nk-text-muted); font-size: 1rem;">
-                Cancel anytime. No tricks, no long-term commitments.
-            </p>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="section section--dark">
-        <div class="container">
-            <h2 style="text-align: center; margin-bottom: 2rem; font-size: var(--nk-text-4xl);">What Members Say</h2>
-
-            <div class="testimonials-grid">
-                <div class="testimonial">
-                    <p class="testimonial__quote">
-                        "Seeing my leadership scores improve each quarter keeps me motivated. This isn't theory—it's measurable growth."
-                    </p>
-                    <p class="testimonial__author">Sarah Chen</p>
-                    <p class="testimonial__role">CEO, Tech Startup</p>
+                    <div class="process-step__connector"></div>
+                    <h3 class="process-step__title">Access Resources</h3>
+                    <p class="process-step__description">Explore proven frameworks and leadership insights</p>
                 </div>
 
-                <div class="testimonial">
-                    <p class="testimonial__quote">
-                        "The AI analysis spotted patterns I completely missed. Now I know exactly where to focus my development."
-                    </p>
-                    <p class="testimonial__author">Marcus Thompson</p>
-                    <p class="testimonial__role">Founder, SaaS Company</p>
+                <div class="process-step">
+                    <div class="process-step__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="9" y1="9" x2="15" y2="15"/>
+                            <line x1="15" y1="9" x2="9" y2="15"/>
+                        </svg>
+                    </div>
+                    <div class="process-step__connector"></div>
+                    <h3 class="process-step__title">Use Tools & Apps</h3>
+                    <p class="process-step__description">Apply decision frameworks in real time</p>
                 </div>
 
-                <div class="testimonial">
-                    <p class="testimonial__quote">
-                        "Finally, leadership development that shows real progress. My year-in-review was eye-opening."
-                    </p>
-                    <p class="testimonial__author">Elena Rodriguez</p>
-                    <p class="testimonial__role">CEO, E-commerce</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section id="faq" class="section">
-        <div class="container">
-            <h2 style="text-align: center; margin-bottom: 2rem; font-size: var(--nk-text-4xl);">Frequently Asked Questions</h2>
-
-            <div class="faq">
-                <div class="faq__item">
-                    <h3 class="faq__question">How often do I take assessments?</h3>
-                    <p class="faq__answer">
-                        You complete 5 core assessments when you join. Then retake them monthly, quarterly, or yearly—whatever rhythm works for you. Your results are saved forever.
-                    </p>
+                <div class="process-step">
+                    <div class="process-step__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10 9 9 9 8 9"/>
+                        </svg>
+                    </div>
+                    <div class="process-step__connector"></div>
+                    <h3 class="process-step__title">Assess Your Skills</h3>
+                    <p class="process-step__description">Complete monthly assessments to track progress</p>
                 </div>
 
-                <div class="faq__item">
-                    <h3 class="faq__question">What are the AI reports?</h3>
-                    <p class="faq__answer">
-                        Every month, AI analyzes your assessment history and spots patterns. You get a report with insights and one focused recommendation for what to work on next.
-                    </p>
+                <div class="process-step">
+                    <div class="process-step__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                        </svg>
+                    </div>
+                    <div class="process-step__connector"></div>
+                    <h3 class="process-step__title">Weekly Check-Ins</h3>
+                    <p class="process-step__description">Get WhatsApp prompts to reflect and respond</p>
                 </div>
 
-                <div class="faq__item">
-                    <h3 class="faq__question">Can I cancel anytime?</h3>
-                    <p class="faq__answer">
-                        Yes. Cancel from your dashboard anytime. No questions asked, no penalties. You keep access until the end of your billing period.
-                    </p>
-                </div>
-
-                <div class="faq__item">
-                    <h3 class="faq__question">What's included beyond assessments?</h3>
-                    <p class="faq__answer">
-                        50+ leadership frameworks as downloadable guides, the Beautiful Mind meditation app for daily regulation, progress tracking dashboard, and email reminders to stay consistent.
-                    </p>
-                </div>
-
-                <div class="faq__item">
-                    <h3 class="faq__question">Who is this for?</h3>
-                    <p class="faq__answer">
-                        Founders, aspiring leaders, and anyone serious about measurable leadership growth. If you want to track your progress over time instead of just reading content, this is for you.
-                    </p>
+                <div class="process-step">
+                    <div class="process-step__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"/>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                    </div>
+                    <h3 class="process-step__title">Growth Reports</h3>
+                    <p class="process-step__description">Review your monthly progress and insights</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Final CTA Section -->
-    <section id="cta" class="section section--cta">
+    <!-- Try an Assessment NOW Section -->
+    <section id="assessments" class="section">
         <div class="container">
-            <h2 style="margin-bottom: 1rem;">Start Measuring Your Leadership</h2>
-            <p style="font-size: 1.5rem; margin-bottom: 2rem;">
-                Join founders and leaders who track their growth with CEO Lab.
-            </p>
-            <a href="signup.html" class="btn btn-primary">Start for €15/month</a>
+            <p class="section__title">> ceo-lab --assess</p>
+            <h2 class="section__subtitle">Try an <em>Assessment</em></h2>
+            <p class="section__description">Jump in. See where you stand right now. <strong>Measure what matters.</strong> Track your evolution over time.</p>
+
+            <div class="assessment-grid">
+                <a href="subscribe.html" class="assessment-card assessment-card--blue">
+                    <div class="assessment-card__image">
+                        <img src="assets/images/assessments/zone-of-genius.svg" alt="Zone of Genius Assessment">
+                    </div>
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">Zone of Genius</h3>
+                        <p class="assessment-card__desc">Discover what you do better than anyone else. Stop wasting time on tasks that drain you.</p>
+                        <span class="assessment-card__time">8 min</span>
+                    </div>
+                </a>
+
+                <a href="subscribe.html" class="assessment-card assessment-card--green">
+                    <div class="assessment-card__image">
+                        <img src="assets/images/assessments/five-drivers.svg" alt="5 Drivers Assessment">
+                    </div>
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">5 Drivers Assessment</h3>
+                        <p class="assessment-card__desc">Uncover the hidden motivations behind every decision you make as a leader.</p>
+                        <span class="assessment-card__time">12 min</span>
+                    </div>
+                </a>
+
+                <a href="subscribe.html" class="assessment-card assessment-card--orange">
+                    <div class="assessment-card__image">
+                        <img src="assets/images/assessments/ceo-test.svg" alt="CEO Test Assessment">
+                    </div>
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">CEO Test</h3>
+                        <p class="assessment-card__desc">Where do you really stand as a CEO? Get honest data on your leadership fundamentals.</p>
+                        <span class="assessment-card__time">15 min</span>
+                    </div>
+                </a>
+
+                <a href="subscribe.html" class="assessment-card assessment-card--yellow">
+                    <div class="assessment-card__image">
+                        <img src="assets/images/assessments/trust-formula.svg" alt="Trust Formula Assessment">
+                    </div>
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">Trust Formula</h3>
+                        <p class="assessment-card__desc">Measure the four components of trust. See exactly where you're building or breaking it.</p>
+                        <span class="assessment-card__time">10 min</span>
+                    </div>
+                </a>
+
+                <a href="subscribe.html" class="assessment-card assessment-card--lilac">
+                    <div class="assessment-card__image">
+                        <img src="assets/images/assessments/culture-diagnostics.svg" alt="Culture Diagnostics Assessment">
+                    </div>
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">Culture Diagnostics</h3>
+                        <p class="assessment-card__desc">Is your culture an asset or a liability? Diagnose the gaps before they cost you.</p>
+                        <span class="assessment-card__time">20 min</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="btn-center">
+                <a href="subscribe.html" class="btn btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <polyline points="10 17 15 12 10 7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                    Start for $15/month
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools & Apps Gallery Section -->
+    <section id="tools" class="section section--dark">
+        <div class="container">
+            <p class="section__title">> ceo-lab --tools</p>
+            <h2 class="section__subtitle">Your Leadership <em>Toolkit</em></h2>
+            <p class="section__description">Everything you need to <strong>measure, track, and accelerate</strong> your growth. Built for CEOs who think in systems.</p>
+
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-card__image">
+                        <img src="assets/images/tools/beautiful-mind.svg" alt="Beautiful Mind Meditation App">
+                    </div>
+                    <div class="tool-card__content">
+                        <h3 class="tool-card__title">Beautiful Mind App</h3>
+                        <p class="tool-card__desc">5-minute meditations built for high-performers. Regulate your nervous system without wasting time.</p>
+                        <span class="tool-card__tag">Mobile App</span>
+                    </div>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-card__image">
+                        <img src="assets/images/tools/frameworks-library.svg" alt="50+ Leadership Frameworks">
+                    </div>
+                    <div class="tool-card__content">
+                        <h3 class="tool-card__title">50+ Proven Frameworks</h3>
+                        <p class="tool-card__desc">The exact materials from $15,000 coaching engagements. Download and use today.</p>
+                        <span class="tool-card__tag">PDF Library</span>
+                    </div>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-card__image">
+                        <img src="assets/images/tools/progress-dashboard.svg" alt="Progress Tracking Dashboard">
+                    </div>
+                    <div class="tool-card__content">
+                        <h3 class="tool-card__title">Progress Dashboard</h3>
+                        <p class="tool-card__desc">Watch yourself evolve over months and years. Real data for your own board meetings.</p>
+                        <span class="tool-card__tag">Analytics</span>
+                    </div>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-card__image">
+                        <img src="assets/images/tools/ai-analysis.svg" alt="AI-Powered Analysis Reports">
+                    </div>
+                    <div class="tool-card__content">
+                        <h3 class="tool-card__title">AI Analysis Reports</h3>
+                        <p class="tool-card__desc">Monthly AI finds patterns you miss. One focused recommendation for maximum impact.</p>
+                        <span class="tool-card__tag">AI-Powered</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Archive Section -->
+    <section id="newsletter" class="section">
+        <div class="container">
+            <p class="section__title">> ceo-lab --insights</p>
+            <h2 class="section__subtitle">Weekly <em>Insights</em></h2>
+            <p class="section__description">The Mindful CEO Newsletter. <strong>Included with your membership.</strong> Real patterns from working with founders. No fluff.</p>
+
+            <div class="newsletter-grid">
+                <article class="newsletter-card">
+                    <div class="newsletter-card__image">
+                        <img src="assets/images/newsletter/deep-work.svg" alt="The CEO's Guide to Deep Work">
+                    </div>
+                    <span class="newsletter-card__date">Jan 15, 2026</span>
+                    <h3 class="newsletter-card__title">The CEO's Guide to Deep Work</h3>
+                    <p class="newsletter-card__excerpt">Why most founders work 60 hours but produce 20 hours of value. The system I use to protect my highest-leverage time.</p>
+                    <a href="subscribe.html" class="newsletter-card__link">Read with membership</a>
+                </article>
+
+                <article class="newsletter-card">
+                    <div class="newsletter-card__image">
+                        <img src="assets/images/newsletter/building-trust.svg" alt="Building Trust in Your Leadership Team">
+                    </div>
+                    <span class="newsletter-card__date">Jan 8, 2026</span>
+                    <h3 class="newsletter-card__title">Building Trust in Your Leadership Team</h3>
+                    <p class="newsletter-card__excerpt">The four components of trust that matter. And the one most founders accidentally destroy every week.</p>
+                    <a href="subscribe.html" class="newsletter-card__link">Read with membership</a>
+                </article>
+
+                <article class="newsletter-card">
+                    <div class="newsletter-card__image">
+                        <img src="assets/images/newsletter/mental-biases.svg" alt="5 Mental Biases That Sabotage Strategy">
+                    </div>
+                    <span class="newsletter-card__date">Jan 1, 2026</span>
+                    <h3 class="newsletter-card__title">5 Mental Biases That Sabotage Strategy</h3>
+                    <p class="newsletter-card__excerpt">You're not immune to cognitive bias. Here's how to catch yourself before your brain costs you a year of progress.</p>
+                    <a href="subscribe.html" class="newsletter-card__link">Read with membership</a>
+                </article>
+
+                <article class="newsletter-card">
+                    <div class="newsletter-card__image">
+                        <img src="assets/images/newsletter/annual-review.svg" alt="The Annual Review Framework">
+                    </div>
+                    <span class="newsletter-card__date">Dec 25, 2025</span>
+                    <h3 class="newsletter-card__title">The Annual Review Framework</h3>
+                    <p class="newsletter-card__excerpt">Forget SMART goals. Here's the reflection process that actually changes how you lead next year.</p>
+                    <a href="subscribe.html" class="newsletter-card__link">Read with membership</a>
+                </article>
+
+                <article class="newsletter-card">
+                    <div class="newsletter-card__image">
+                        <img src="assets/images/newsletter/fire-cofounder.svg" alt="When to Fire Your Co-Founder">
+                    </div>
+                    <span class="newsletter-card__date">Dec 18, 2025</span>
+                    <h3 class="newsletter-card__title">When to Fire Your Co-Founder</h3>
+                    <p class="newsletter-card__excerpt">The conversation nobody wants to have. A framework for the hardest decision you might face.</p>
+                    <a href="subscribe.html" class="newsletter-card__link">Read with membership</a>
+                </article>
+
+                <article class="newsletter-card">
+                    <div class="newsletter-card__image">
+                        <img src="assets/images/newsletter/scaling-soul.svg" alt="Scaling Without Losing Your Soul">
+                    </div>
+                    <span class="newsletter-card__date">Dec 11, 2025</span>
+                    <h3 class="newsletter-card__title">Scaling Without Losing Your Soul</h3>
+                    <p class="newsletter-card__excerpt">Culture doesn't scale automatically. Here's how to encode your values into systems that work at 100 people.</p>
+                    <a href="subscribe.html" class="newsletter-card__link">Read with membership</a>
+                </article>
+            </div>
+
+            <div class="newsletter-cta">
+                <p>New edition every week. Full archive access with membership.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leadership Challenge Bento -->
+    <section id="challenge" class="section">
+        <div class="container">
+            <div class="challenge-bento">
+                <h2 class="challenge-bento__question">What's your number 1 obstacle as a leader right now?</h2>
+                <textarea
+                    class="challenge-bento__input"
+                    id="challengeInput"
+                    placeholder="Type your biggest leadership challenge here..."
+                    rows="3"
+                ></textarea>
+                <button class="challenge-bento__btn" id="analyzeBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                        <path d="M11 8v6"/>
+                        <path d="M8 11h6"/>
+                    </svg>
+                    Analyze Solutions
+                </button>
+            </div>
         </div>
     </section>
 
@@ -316,25 +376,26 @@
                 <div class="footer__section">
                     <h4>CEO Lab</h4>
                     <p style="color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.6;">
-                        Battle-tested frameworks and systems for exceptional leadership.
+                        Measure your leadership. Track your growth. Have the evidence.
                     </p>
                 </div>
 
                 <div class="footer__section">
                     <h4>Product</h4>
                     <ul>
-                        <li><a href="#library">Library</a></li>
-                        <li><a href="#pricing">Pricing</a></li>
-                        <li><a href="login.html">Login</a></li>
-                        <li><a href="signup.html">Sign Up</a></li>
+                        <li><a href="#assessments">Assessments</a></li>
+                        <li><a href="#tools">Tools</a></li>
+                        <li><a href="product.html">Full Overview</a></li>
+                        <li><a href="login.html">Member Login</a></li>
                     </ul>
                 </div>
 
                 <div class="footer__section">
-                    <h4>Resources</h4>
+                    <h4>Learn More</h4>
                     <ul>
-                        <li><a href="#preview">Featured Frameworks</a></li>
-                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="product.html#how-it-works">How It Works</a></li>
+                        <li><a href="product.html#pricing">Pricing Details</a></li>
+                        <li><a href="product.html#faq">FAQ</a></li>
                     </ul>
                 </div>
 
@@ -358,6 +419,69 @@
         </div>
     </footer>
 
+    <!-- Benefits Slide -->
+    <div id="benefitsSlide" class="benefits-slide expanded">
+        <button class="benefits-slide__trigger" id="benefitsTrigger" aria-label="Toggle benefits">
+            <span>What You'll Discover</span>
+            <svg class="benefits-slide__arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="18 15 12 9 6 15"/>
+            </svg>
+        </button>
+        <div class="benefits-slide__content" id="benefitsContent">
+            <ul class="benefits-slide__list">
+                <li>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <span>Discover what's <strong>driving</strong> your decisions</span>
+                </li>
+                <li>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span>Measure how <strong>reliable</strong> your team finds you</span>
+                </li>
+                <li>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v6m0 0l4-4m-4 4L8 4m4 18v-6m0 0l4 4m-4-4l-4 4"/>
+                    </svg>
+                    <span>See if your culture is <strong>fixed or growable</strong></span>
+                </li>
+                <li>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    <span>Track how <strong>clearly</strong> you communicate your vision</span>
+                </li>
+                <li>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                    <span>Identify which tasks <strong>energize or drain</strong> you</span>
+                </li>
+                <li>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                    <span>Know if you're <strong>rushing</strong> or <strong>thinking strategically</strong></span>
+                </li>
+                <li>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <span>Measure the <strong>trust</strong> with your team</span>
+                </li>
+            </ul>
+            <a href="subscribe.html" class="benefits-slide__cta">Start Measuring</a>
+        </div>
+    </div>
+
+    <script src="js/hero-scroll.js"></script>
     <script src="landing.js"></script>
+    <script src="js/prompt-input.js"></script>
 </body>
 </html>
