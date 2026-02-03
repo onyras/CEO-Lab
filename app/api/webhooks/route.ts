@@ -4,6 +4,10 @@ import { stripe } from '@/lib/stripe'
 import { supabase } from '@/lib/supabase'
 import Stripe from 'stripe'
 
+export async function GET() {
+  return NextResponse.json({ message: 'Webhook endpoint is ready' })
+}
+
 export async function POST(request: Request) {
   const body = await request.text()
   const headersList = await headers()
