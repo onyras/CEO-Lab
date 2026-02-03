@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { calculateBaselineScores, getScoreColor, getScoreLabel, type BaselineScores } from '@/lib/scoring'
 
-export default function BaselineResults() {
+function BaselineResultsContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const stage = parseInt(searchParams.get('stage') || '1') as 1 | 2 | 3
@@ -215,5 +215,17 @@ export default function BaselineResults() {
         </div>
       </main>
     </div>
+  )
+}
+
+export default function BaselineResults() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-gray-600">Loading...</div>
+      </div>
+    }>
+      <BaselineResultsContent />
+    </Suspense>
   )
 }
