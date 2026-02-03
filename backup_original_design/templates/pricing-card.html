@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Cards Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../styles-redesign.css">
+</head>
+<body>
+    <section class="section section--dark">
+        <div class="container">
+            <div class="pricing-grid">
+                <!-- Pricing Card Module -->
+                <!-- Variables to customize:
+                    - pricing-card--featured: Add class for featured styling
+                    - pricing-card__badge: Optional badge text (only for featured)
+                    - price-amount: Price number
+                    - price-period: Period text (/month, /year)
+                    - pricing-card__desc: Plan description
+                    - Features list: Customize feature items
+                    - btn href: Subscribe link with tier parameter
+                -->
+
+                <!-- FREE TIER -->
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3>Free</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$0</span>
+                        </div>
+                        <p class="pricing-card__desc">Get started. See what's possible.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Sample assessment
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            3 weekly insights
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            5 tools from library
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Dashboard preview
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=free" class="btn btn-secondary btn-block">Start Free</a>
+                </div>
+
+                <!-- PRO TIER (FEATURED) -->
+                <div class="pricing-card pricing-card--featured">
+                    <div class="pricing-card__badge">Recommended</div>
+                    <div class="pricing-card__header">
+                        <h3>Pro</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$19</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Full tracking. Full library. Full growth.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Monthly leadership assessment</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Automated progress reports</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Weekly insights (full archive)
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            50+ tools & frameworks
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Trend tracking & charts
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Community access
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=pro" class="btn btn-primary btn-block">Start 14-Day Trial</a>
+                    <p style="margin-top: 0.75rem; font-size: 0.875rem; opacity: 0.7; text-align: center;">
+                        Or $190/year (save $38)
+                    </p>
+                </div>
+
+                <!-- PREMIUM TIER -->
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3>Premium</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$49</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Everything in Pro, plus expert support.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Everything in Pro</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>1:1 review call monthly</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Priority support
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Custom report insights
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            API access for integrations
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=premium" class="btn btn-secondary btn-block">Start 14-Day Trial</a>
+                    <p style="margin-top: 0.75rem; font-size: 0.875rem; opacity: 0.7; text-align: center;">
+                        Or $470/year (save $118)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ALTERNATIVE VERSION 1: Single Tier, Simple ==================== -->
+    <section class="section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #000000;">Alternative 1: Single Tier</h2>
+            <div style="max-width: 500px; margin: 0 auto;">
+                <div class="pricing-card pricing-card--featured">
+                    <div class="pricing-card__badge">All Features</div>
+                    <div class="pricing-card__header">
+                        <h3>CEO Lab</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$29</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Everything you need to track your leadership growth.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Monthly assessment
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Automated reports
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Weekly insights
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            50+ tools & frameworks
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Community access
+                        </li>
+                    </ul>
+                    <a href="subscribe.html" class="btn btn-primary btn-block">Start 14-Day Trial</a>
+                    <p style="margin-top: 0.75rem; font-size: 0.875rem; opacity: 0.7; text-align: center;">
+                        Or $290/year (save 2 months)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ALTERNATIVE VERSION 2: Two Tiers, Higher Price Point ==================== -->
+    <section class="section section--dark">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: white;">Alternative 2: Two Tiers, Premium Positioning</h2>
+            <div class="pricing-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 800px; margin: 0 auto;">
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3>Essential</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$39</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Core assessment & tracking.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Monthly assessment
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Automated reports
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Progress tracking
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            20+ frameworks
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=essential" class="btn btn-secondary btn-block">Get Started</a>
+                </div>
+
+                <div class="pricing-card pricing-card--featured">
+                    <div class="pricing-card__badge">Best Value</div>
+                    <div class="pricing-card__header">
+                        <h3>Complete</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$79</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Full platform + coaching support.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Everything in Essential</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Weekly insights</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            50+ tools & frameworks
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Monthly 1:1 coaching call
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Priority support
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=complete" class="btn btn-primary btn-block">Start Trial</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ALTERNATIVE VERSION 3: Usage-Based Pricing ==================== -->
+    <section class="section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #000000;">Alternative 3: Assessment-Based Pricing</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3>1 Assessment</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$15</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Track one area of leadership.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            1 monthly assessment
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Progress reports
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            10 tools
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=one" class="btn btn-secondary btn-block">Start</a>
+                </div>
+
+                <div class="pricing-card pricing-card--featured">
+                    <div class="pricing-card__badge">Most Popular</div>
+                    <div class="pricing-card__header">
+                        <h3>3 Assessments</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$35</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Full leadership tracking.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>3 monthly assessments</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Progress reports
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Weekly insights
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            50+ tools
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=three" class="btn btn-primary btn-block">Start Trial</a>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3>Unlimited</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$59</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">All assessments, all features.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Unlimited assessments</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Everything in 3 Assessments
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Advanced analytics
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Priority support
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=unlimited" class="btn btn-secondary btn-block">Start Trial</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ALTERNATIVE VERSION 4: Freemium + Single Paid ==================== -->
+    <section class="section section--dark">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: white;">Alternative 4: Freemium Model</h2>
+            <div class="pricing-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 800px; margin: 0 auto;">
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3>Free</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$0</span>
+                        </div>
+                        <p class="pricing-card__desc">Try before you commit.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            1 assessment per quarter
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Basic report
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            5 tools
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=free" class="btn btn-secondary btn-block">Start Free</a>
+                </div>
+
+                <div class="pricing-card pricing-card--featured">
+                    <div class="pricing-card__badge">Unlimited Everything</div>
+                    <div class="pricing-card__header">
+                        <h3>Pro</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$24</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Full access, no limits.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Monthly assessments</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Automated reports</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Weekly insights
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            50+ tools & frameworks
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Community access
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Priority support
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=pro" class="btn btn-primary btn-block">Upgrade Now</a>
+                    <p style="margin-top: 0.75rem; font-size: 0.875rem; opacity: 0.7; text-align: center;">
+                        Or $240/year (save $48)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ALTERNATIVE VERSION 5: Budget-Friendly ==================== -->
+    <section class="section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #000000;">Alternative 5: Budget-Friendly</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3>Starter</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$9</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Start tracking your growth.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Monthly assessment
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Basic report
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            10 frameworks
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=starter" class="btn btn-secondary btn-block">Get Started</a>
+                </div>
+
+                <div class="pricing-card pricing-card--featured">
+                    <div class="pricing-card__badge">Most Popular</div>
+                    <div class="pricing-card__header">
+                        <h3>Growth</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$19</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Full platform access.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Everything in Starter</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Full reports</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Weekly insights
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            50+ frameworks & tools
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Community
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=growth" class="btn btn-primary btn-block">Start Trial</a>
+                    <p style="margin-top: 0.75rem; font-size: 0.875rem; opacity: 0.7; text-align: center;">
+                        Or $190/year (save $38)
+                    </p>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3>Elite</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$39</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Growth + personal support.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Everything in Growth</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Monthly coaching call</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Custom insights
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Priority support
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=elite" class="btn btn-secondary btn-block">Start Trial</a>
+                    <p style="margin-top: 0.75rem; font-size: 0.875rem; opacity: 0.7; text-align: center;">
+                        Or $390/year (save $78)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ALTERNATIVE VERSION 6: Annual Only ==================== -->
+    <section class="section section--dark">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: white;">Alternative 6: Annual Membership</h2>
+            <div style="max-width: 500px; margin: 0 auto;">
+                <div class="pricing-card pricing-card--featured">
+                    <div class="pricing-card__badge">Annual Membership</div>
+                    <div class="pricing-card__header">
+                        <h3>CEO Lab</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$199</span>
+                            <span class="price-period">/year</span>
+                        </div>
+                        <p class="pricing-card__desc">One year of leadership tracking.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            12 monthly assessments
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            12 progress reports
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            52 weekly insights
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            50+ tools & frameworks
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Community access
+                        </li>
+                    </ul>
+                    <a href="subscribe.html" class="btn btn-primary btn-block">Join for $199</a>
+                    <p style="margin-top: 0.75rem; font-size: 0.875rem; opacity: 0.7; text-align: center;">
+                        Less than $17/month. Cancel anytime, pro-rated refund.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ALTERNATIVE VERSION 7: Team/Individual Split ==================== -->
+    <section class="section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #000000;">Alternative 7: Individual vs Team</h2>
+            <div class="pricing-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 800px; margin: 0 auto;">
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3>Individual</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$29</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">For solo founders & CEOs.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            1 user account
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Monthly assessments
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Progress reports
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            All tools & insights
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=individual" class="btn btn-secondary btn-block">Start Trial</a>
+                </div>
+
+                <div class="pricing-card pricing-card--featured">
+                    <div class="pricing-card__badge">For Leadership Teams</div>
+                    <div class="pricing-card__header">
+                        <h3>Team</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$99</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Up to 5 leadership team members.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>5 user accounts</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Team dashboard</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Everything in Individual
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Team alignment reports
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Admin controls
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=team" class="btn btn-primary btn-block">Start Trial</a>
+                    <p style="margin-top: 0.75rem; font-size: 0.875rem; opacity: 0.7; text-align: center;">
+                        $20/user. Add more seats for $20/month each.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ALTERNATIVE VERSION 8: Coaching Tiers ==================== -->
+    <section class="section section--dark">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: white;">Alternative 8: Self-Serve to Full Coaching</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3>Self-Guided</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$19</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">DIY leadership development.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Monthly assessment
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Automated reports
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            All tools & frameworks
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=self" class="btn btn-secondary btn-block">Get Started</a>
+                </div>
+
+                <div class="pricing-card pricing-card--featured">
+                    <div class="pricing-card__badge">Recommended</div>
+                    <div class="pricing-card__header">
+                        <h3>Guided</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$49</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Platform + quarterly coaching.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Everything in Self-Guided</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Quarterly coaching call (4/year)</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Email support
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=guided" class="btn btn-primary btn-block">Start Trial</a>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3>Coached</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$149</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Platform + monthly coaching.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Everything in Guided</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Monthly 1:1 coaching (12/year)</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Custom action plans
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Direct access to Nikolas
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=coached" class="btn btn-secondary btn-block">Apply</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ALTERNATIVE VERSION 9: Value-Based Naming ==================== -->
+    <section class="section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #000000;">Alternative 9: Value-Based Tiers</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3>Foundation</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$19</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Build your baseline.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Monthly assessment
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Progress tracking
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            15 core frameworks
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=foundation" class="btn btn-secondary btn-block">Start</a>
+                </div>
+
+                <div class="pricing-card pricing-card--featured">
+                    <div class="pricing-card__badge">Best for Growth</div>
+                    <div class="pricing-card__header">
+                        <h3>Accelerate</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$39</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Rapid improvement mode.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Everything in Foundation</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Weekly insights</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            50+ advanced frameworks
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Peer community
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=accelerate" class="btn btn-primary btn-block">Start Trial</a>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3>Mastery</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$79</span>
+                            <span class="price-period">/month</span>
+                        </div>
+                        <p class="pricing-card__desc">Elite leadership development.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Everything in Accelerate</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>Monthly coaching session</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Personalized action plans
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Private Slack access
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=mastery" class="btn btn-secondary btn-block">Apply</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ALTERNATIVE VERSION 10: Quarterly Commitment ==================== -->
+    <section class="section section--dark">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: white;">Alternative 10: Quarterly Packages</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3>1 Quarter</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$99</span>
+                            <span class="price-period">/3 months</span>
+                        </div>
+                        <p class="pricing-card__desc">Try it for one quarter.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            3 monthly assessments
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            3 progress reports
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Full platform access
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=quarterly" class="btn btn-secondary btn-block">Start Now</a>
+                    <p style="margin-top: 0.75rem; font-size: 0.875rem; opacity: 0.7; text-align: center;">
+                        $33/month
+                    </p>
+                </div>
+
+                <div class="pricing-card pricing-card--featured">
+                    <div class="pricing-card__badge">Best Value</div>
+                    <div class="pricing-card__header">
+                        <h3>6 Months</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$159</span>
+                            <span class="price-period">/6 months</span>
+                        </div>
+                        <p class="pricing-card__desc">See real transformation.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>6 monthly assessments</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            6 progress reports
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Full platform access
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            6-month trend analysis
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=sixmonth" class="btn btn-primary btn-block">Start Now</a>
+                    <p style="margin-top: 0.75rem; font-size: 0.875rem; opacity: 0.7; text-align: center;">
+                        $26.50/month (save $39)
+                    </p>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-card__header">
+                        <h3>Full Year</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-amount">$249</span>
+                            <span class="price-period">/year</span>
+                        </div>
+                        <p class="pricing-card__desc">Full year of growth tracking.</p>
+                    </div>
+                    <ul class="pricing-card__features">
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <strong>12 monthly assessments</strong>
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            12 progress reports
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Full platform access
+                        </li>
+                        <li>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Annual review session
+                        </li>
+                    </ul>
+                    <a href="subscribe.html?tier=annual" class="btn btn-secondary btn-block">Start Now</a>
+                    <p style="margin-top: 0.75rem; font-size: 0.875rem; opacity: 0.7; text-align: center;">
+                        $20.75/month (save $147)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

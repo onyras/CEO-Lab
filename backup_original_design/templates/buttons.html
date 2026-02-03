@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Variations - Inverse Style</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --nk-blue: #7FABC8;
+            --nk-bg-primary: #0a0a0a;
+            --nk-font-sans: 'DM Sans', sans-serif;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #ffffff;
+            font-family: var(--nk-font-sans);
+            padding: 4rem 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .variant {
+            margin-bottom: 4rem;
+            padding: 3rem;
+            background: rgba(26, 26, 26, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+        }
+
+        .variant h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--nk-blue);
+        }
+
+        .variant p {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        /* OPTION 1: Inverse with Subtle Lift */
+        .btn-1-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid var(--nk-blue);
+            border-radius: 8px;
+            background: var(--nk-blue);
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-1-primary:hover {
+            background: transparent;
+            color: var(--nk-blue);
+            transform: translateY(-2px);
+        }
+
+        .btn-1-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid #ffffff;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-1-secondary:hover {
+            background: transparent;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        /* OPTION 2: Inverse with Shadow */
+        .btn-2-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid var(--nk-blue);
+            border-radius: 8px;
+            background: var(--nk-blue);
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(127, 171, 200, 0.3);
+        }
+
+        .btn-2-primary:hover {
+            background: transparent;
+            color: var(--nk-blue);
+            box-shadow: 0 0 0 rgba(127, 171, 200, 0);
+        }
+
+        .btn-2-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid #ffffff;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-2-secondary:hover {
+            background: transparent;
+            color: #ffffff;
+            box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+        }
+
+        /* OPTION 3: Inverse with Scale */
+        .btn-3-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid var(--nk-blue);
+            border-radius: 8px;
+            background: var(--nk-blue);
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+        }
+
+        .btn-3-primary:hover {
+            background: transparent;
+            color: var(--nk-blue);
+            transform: scale(1.05);
+        }
+
+        .btn-3-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid #ffffff;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+        }
+
+        .btn-3-secondary:hover {
+            background: transparent;
+            color: #ffffff;
+            transform: scale(1.05);
+        }
+
+        /* OPTION 4: Inverse with Glow */
+        .btn-4-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid var(--nk-blue);
+            border-radius: 8px;
+            background: var(--nk-blue);
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 0 0 rgba(127, 171, 200, 0.4);
+        }
+
+        .btn-4-primary:hover {
+            background: transparent;
+            color: var(--nk-blue);
+            box-shadow: 0 0 20px rgba(127, 171, 200, 0.6);
+        }
+
+        .btn-4-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid #ffffff;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 0 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-4-secondary:hover {
+            background: transparent;
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+        }
+
+        /* OPTION 5: Inverse with Lift & Shadow */
+        .btn-5-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid var(--nk-blue);
+            border-radius: 8px;
+            background: var(--nk-blue);
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(127, 171, 200, 0.3);
+        }
+
+        .btn-5-primary:hover {
+            background: transparent;
+            color: var(--nk-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(127, 171, 200, 0.4);
+        }
+
+        .btn-5-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid #ffffff;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-5-secondary:hover {
+            background: transparent;
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        /* OPTION 6: Inverse Rounded Pill */
+        .btn-6-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 32px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid var(--nk-blue);
+            border-radius: 50px;
+            background: var(--nk-blue);
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-6-primary:hover {
+            background: transparent;
+            color: var(--nk-blue);
+        }
+
+        .btn-6-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 32px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid #ffffff;
+            border-radius: 50px;
+            background: #ffffff;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-6-secondary:hover {
+            background: transparent;
+            color: #ffffff;
+        }
+
+        /* OPTION 7: Inverse with Scale & Shadow */
+        .btn-7-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid var(--nk-blue);
+            border-radius: 8px;
+            background: var(--nk-blue);
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(127, 171, 200, 0.3);
+        }
+
+        .btn-7-primary:hover {
+            background: transparent;
+            color: var(--nk-blue);
+            transform: scale(1.05);
+            box-shadow: 0 6px 24px rgba(127, 171, 200, 0.4);
+        }
+
+        .btn-7-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid #ffffff;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-7-secondary:hover {
+            background: transparent;
+            color: #ffffff;
+            transform: scale(1.05);
+            box-shadow: 0 6px 24px rgba(255, 255, 255, 0.3);
+        }
+
+        /* OPTION 8: Inverse with Border Thickening */
+        .btn-8-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid var(--nk-blue);
+            border-radius: 8px;
+            background: var(--nk-blue);
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-8-primary:hover {
+            background: transparent;
+            color: var(--nk-blue);
+            border-width: 3px;
+            padding: 11px 27px;
+        }
+
+        .btn-8-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid #ffffff;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-8-secondary:hover {
+            background: transparent;
+            color: #ffffff;
+            border-width: 3px;
+            padding: 11px 27px;
+        }
+
+        /* OPTION 9: Inverse Pill with Scale */
+        .btn-9-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 32px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid var(--nk-blue);
+            border-radius: 50px;
+            background: var(--nk-blue);
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(127, 171, 200, 0.3);
+        }
+
+        .btn-9-primary:hover {
+            background: transparent;
+            color: var(--nk-blue);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(127, 171, 200, 0.4);
+        }
+
+        .btn-9-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 32px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid #ffffff;
+            border-radius: 50px;
+            background: #ffffff;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-9-secondary:hover {
+            background: transparent;
+            color: #ffffff;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        /* OPTION 10: Inverse with Smooth Glow Transition */
+        .btn-10-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid var(--nk-blue);
+            border-radius: 8px;
+            background: var(--nk-blue);
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(127, 171, 200, 0.3);
+        }
+
+        .btn-10-primary:hover {
+            background: transparent;
+            color: var(--nk-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(127, 171, 200, 0.5);
+        }
+
+        .btn-10-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            font-family: var(--nk-font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid #ffffff;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-10-secondary:hover {
+            background: transparent;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Inverse Button Variations</h1>
+
+        <!-- OPTION 1 -->
+        <div class="variant">
+            <h2>Option 1: Inverse with Subtle Lift</h2>
+            <p>Filled inverts to outline with subtle upward movement. Clean and minimal.</p>
+            <div class="button-row">
+                <a href="#" class="btn-1-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <polyline points="10 17 15 12 10 7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                    Start Free Trial
+                </a>
+                <a href="#" class="btn-1-secondary">Login</a>
+            </div>
+        </div>
+
+        <!-- OPTION 2 -->
+        <div class="variant">
+            <h2>Option 2: Inverse with Shadow</h2>
+            <p>Shadow fades out as button inverts. Smooth depth transition.</p>
+            <div class="button-row">
+                <a href="#" class="btn-2-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <polyline points="10 17 15 12 10 7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                    Start Free Trial
+                </a>
+                <a href="#" class="btn-2-secondary">Login</a>
+            </div>
+        </div>
+
+        <!-- OPTION 3 -->
+        <div class="variant">
+            <h2>Option 3: Inverse with Scale</h2>
+            <p>Grows slightly as it inverts. Playful and responsive.</p>
+            <div class="button-row">
+                <a href="#" class="btn-3-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <polyline points="10 17 15 12 10 7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                    Start Free Trial
+                </a>
+                <a href="#" class="btn-3-secondary">Login</a>
+            </div>
+        </div>
+
+        <!-- OPTION 4 -->
+        <div class="variant">
+            <h2>Option 4: Inverse with Glow</h2>
+            <p>Adds glowing effect as background disappears. Ethereal and modern.</p>
+            <div class="button-row">
+                <a href="#" class="btn-4-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <polyline points="10 17 15 12 10 7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                    Start Free Trial
+                </a>
+                <a href="#" class="btn-4-secondary">Login</a>
+            </div>
+        </div>
+
+        <!-- OPTION 5 -->
+        <div class="variant">
+            <h2>Option 5: Inverse with Lift & Shadow</h2>
+            <p>Lifts up and shadow intensifies during inversion. Elegant elevation.</p>
+            <div class="button-row">
+                <a href="#" class="btn-5-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <polyline points="10 17 15 12 10 7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                    Start Free Trial
+                </a>
+                <a href="#" class="btn-5-secondary">Login</a>
+            </div>
+        </div>
+
+        <!-- OPTION 6 -->
+        <div class="variant">
+            <h2>Option 6: Inverse Rounded Pill</h2>
+            <p>Pill shape with clean inversion. Friendly and modern.</p>
+            <div class="button-row">
+                <a href="#" class="btn-6-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <polyline points="10 17 15 12 10 7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                    Start Free Trial
+                </a>
+                <a href="#" class="btn-6-secondary">Login</a>
+            </div>
+        </div>
+
+        <!-- OPTION 7 -->
+        <div class="variant">
+            <h2>Option 7: Inverse with Scale & Shadow</h2>
+            <p>Scales up with enhanced shadow during inversion. Premium feel.</p>
+            <div class="button-row">
+                <a href="#" class="btn-7-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <polyline points="10 17 15 12 10 7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                    Start Free Trial
+                </a>
+                <a href="#" class="btn-7-secondary">Login</a>
+            </div>
+        </div>
+
+        <!-- OPTION 8 -->
+        <div class="variant">
+            <h2>Option 8: Inverse with Border Thickening</h2>
+            <p>Border gets thicker as button inverts. Subtle emphasis change.</p>
+            <div class="button-row">
+                <a href="#" class="btn-8-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <polyline points="10 17 15 12 10 7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                    Start Free Trial
+                </a>
+                <a href="#" class="btn-8-secondary">Login</a>
+            </div>
+        </div>
+
+        <!-- OPTION 9 -->
+        <div class="variant">
+            <h2>Option 9: Inverse Pill with Scale</h2>
+            <p>Rounded pill that scales and inverts. Smooth and polished.</p>
+            <div class="button-row">
+                <a href="#" class="btn-9-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <polyline points="10 17 15 12 10 7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                    Start Free Trial
+                </a>
+                <a href="#" class="btn-9-secondary">Login</a>
+            </div>
+        </div>
+
+        <!-- OPTION 10 -->
+        <div class="variant">
+            <h2>Option 10: Inverse with Smooth Glow Transition</h2>
+            <p>Shadow transforms to glow as button lifts and inverts. Refined and smooth.</p>
+            <div class="button-row">
+                <a href="#" class="btn-10-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <polyline points="10 17 15 12 10 7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                    Start Free Trial
+                </a>
+                <a href="#" class="btn-10-secondary">Login</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

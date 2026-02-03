@@ -1,0 +1,38 @@
+{
+  "name": "09_ceo_lab",
+  "version": "1.0.0",
+  "description": "**The Only Subscription You Need to Stay at the Edge of Exceptional Leadership**",
+  "main": "landing.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onyras/CEO-Lab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/onyras/CEO-Lab/issues"
+  },
+  "homepage": "https://github.com/onyras/CEO-Lab#readme",
+  "dependencies": {
+    "@stripe/stripe-js": "^8.7.0",
+    "@supabase/auth-helpers-nextjs": "^0.15.0",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.93.3",
+    "next": "^16.1.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "stripe": "^20.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.0",
+    "@types/react": "^19.2.10",
+    "typescript": "^5.9.3"
+  }
+}

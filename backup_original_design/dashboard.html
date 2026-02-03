@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | CEO Lab</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Dashboard-specific styles */
+    .dashboard {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #F7F3ED;
+      min-height: 100vh;
+    }
+
+    .dashboard__header {
+      margin-bottom: 48px;
+    }
+
+    .dashboard__greeting {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.5);
+      margin-bottom: 8px;
+    }
+
+    .dashboard__title {
+      font-family: 'Crimson Pro', serif;
+      font-size: 48px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 4px;
+    }
+
+    .dashboard__subtitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* Score Card - The CEO Mirror */
+    .score-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 40px;
+      margin-bottom: 32px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .score-card__label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.5);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .score-card__main {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .score-card__score {
+      font-family: 'Crimson Pro', serif;
+      font-size: 96px;
+      font-weight: 600;
+      color: #000;
+      line-height: 1;
+    }
+
+    .score-card__max {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 32px;
+      color: rgba(0, 0, 0, 0.3);
+    }
+
+    .score-card__change {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: #A6BEA4;
+      margin-bottom: 8px;
+    }
+
+    .score-card__date {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Dimensions Grid */
+    .dimensions {
+      margin-bottom: 32px;
+    }
+
+    .dimensions__title {
+      font-family: 'Crimson Pro', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 16px;
+    }
+
+    .dimensions__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .dimension-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 24px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .dimension-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .dimension-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .dimension-card__name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    .dimension-card__score {
+      font-family: 'Crimson Pro', serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    .dimension-card__bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .dimension-card__progress {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.6s ease;
+    }
+
+    .dimension-card__progress--high {
+      background: #A6BEA4;
+    }
+
+    .dimension-card__progress--medium {
+      background: #C6A55B;
+    }
+
+    .dimension-card__progress--low {
+      background: #E08F6A;
+    }
+
+    .dimension-card__status {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Prescribed Content */
+    .prescribed {
+      margin-bottom: 32px;
+    }
+
+    .prescribed__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .prescribed__title {
+      font-family: 'Crimson Pro', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    .prescribed__subtitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    .prescribed__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .framework-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 24px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .framework-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .framework-card__tag {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(127, 171, 200, 0.1);
+      color: #7FABC8;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+
+    .framework-card__title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 8px;
+    }
+
+    .framework-card__description {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .framework-card__meta {
+      display: flex;
+      gap: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Weekly Check-ins */
+    .checkins {
+      margin-bottom: 32px;
+    }
+
+    .checkins__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .checkins__title {
+      font-family: 'Crimson Pro', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    .checkins__streak {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(166, 190, 164, 0.1);
+      border-radius: 20px;
+    }
+
+    .checkins__streak-icon {
+      font-size: 18px;
+    }
+
+    .checkins__streak-text {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #A6BEA4;
+    }
+
+    .checkin-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 24px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      margin-bottom: 16px;
+    }
+
+    .checkin-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .checkin-card__status {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 4px;
+    }
+
+    .checkin-card__status--pending {
+      background: rgba(198, 165, 91, 0.1);
+      color: #C6A55B;
+    }
+
+    .checkin-card__status--complete {
+      background: rgba(166, 190, 164, 0.1);
+      color: #A6BEA4;
+    }
+
+    .checkin-card__date {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    .checkin-card__question {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: #000;
+      margin-bottom: 16px;
+    }
+
+    .checkin-card__button {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #000;
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .checkin-card__button:hover {
+      opacity: 0.8;
+    }
+
+    /* Reports Section */
+    .reports {
+      margin-bottom: 32px;
+    }
+
+    .reports__title {
+      font-family: 'Crimson Pro', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 16px;
+    }
+
+    .reports__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .report-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 24px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .report-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .report-card__month {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 4px;
+    }
+
+    .report-card__meta {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.5);
+      margin-bottom: 12px;
+    }
+
+    .report-card__tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .report-card__tag {
+      padding: 4px 10px;
+      background: rgba(0, 0, 0, 0.05);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.6);
+      border-radius: 4px;
+    }
+
+    /* Navigation */
+    .nav {
+      background: #fff;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+
+    .nav__container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav__logo {
+      font-family: 'Crimson Pro', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: #000;
+      text-decoration: none;
+    }
+
+    .nav__user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav__container">
+      <a href="index.html" class="nav__logo">CEO Lab</a>
+      <div class="nav__user">
+        <span>Sarah Chen</span>
+        <a href="login.html" style="color: rgba(0,0,0,0.6); text-decoration: none;">Sign Out</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dashboard -->
+  <div class="dashboard">
+
+    <!-- Header -->
+    <div class="dashboard__header">
+      <div class="dashboard__greeting">Week 8, 2026</div>
+      <h1 class="dashboard__title">Your CEO Mirror</h1>
+      <p class="dashboard__subtitle">Objective measurement of where you stand as a leader</p>
+    </div>
+
+    <!-- Overall Leadership Score -->
+    <div class="score-card">
+      <div class="score-card__label">Overall Leadership Score</div>
+      <div class="score-card__main">
+        <div class="score-card__score">7.4</div>
+        <div class="score-card__max">/10</div>
+      </div>
+      <div class="score-card__change">↑ +0.6 from baseline</div>
+      <div class="score-card__date">Last updated: Feb 1, 2026</div>
+    </div>
+
+    <!-- Leadership Dimensions -->
+    <section class="dimensions">
+      <h2 class="dimensions__title">Leadership Dimensions</h2>
+      <div class="dimensions__grid">
+
+        <div class="dimension-card">
+          <div class="dimension-card__header">
+            <span class="dimension-card__name">Strategic Vision</span>
+            <span class="dimension-card__score">8.2</span>
+          </div>
+          <div class="dimension-card__bar">
+            <div class="dimension-card__progress dimension-card__progress--high" style="width: 82%"></div>
+          </div>
+          <div class="dimension-card__status">Strong</div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-card__header">
+            <span class="dimension-card__name">Decision Making</span>
+            <span class="dimension-card__score">7.8</span>
+          </div>
+          <div class="dimension-card__bar">
+            <div class="dimension-card__progress dimension-card__progress--high" style="width: 78%"></div>
+          </div>
+          <div class="dimension-card__status">Strong</div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-card__header">
+            <span class="dimension-card__name">Team Trust</span>
+            <span class="dimension-card__score">6.5</span>
+          </div>
+          <div class="dimension-card__bar">
+            <div class="dimension-card__progress dimension-card__progress--medium" style="width: 65%"></div>
+          </div>
+          <div class="dimension-card__status">Needs attention</div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-card__header">
+            <span class="dimension-card__name">Communication</span>
+            <span class="dimension-card__score">7.2</span>
+          </div>
+          <div class="dimension-card__bar">
+            <div class="dimension-card__progress dimension-card__progress--high" style="width: 72%"></div>
+          </div>
+          <div class="dimension-card__status">Good</div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-card__header">
+            <span class="dimension-card__name">Execution</span>
+            <span class="dimension-card__score">8.5</span>
+          </div>
+          <div class="dimension-card__bar">
+            <div class="dimension-card__progress dimension-card__progress--high" style="width: 85%"></div>
+          </div>
+          <div class="dimension-card__status">Excellent</div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-card__header">
+            <span class="dimension-card__name">Self-Leadership</span>
+            <span class="dimension-card__score">6.8</span>
+          </div>
+          <div class="dimension-card__bar">
+            <div class="dimension-card__progress dimension-card__progress--medium" style="width: 68%"></div>
+          </div>
+          <div class="dimension-card__status">Needs attention</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Prescribed Content -->
+    <section class="prescribed">
+      <div class="prescribed__header">
+        <div>
+          <h2 class="prescribed__title">Recommended For You</h2>
+          <p class="prescribed__subtitle">Based on your gaps</p>
+        </div>
+      </div>
+      <div class="prescribed__grid">
+
+        <div class="framework-card">
+          <span class="framework-card__tag">Team Trust • 6.5/10</span>
+          <h3 class="framework-card__title">Trust Formula</h3>
+          <p class="framework-card__description">Build credibility, reliability, and intimacy with your team while reducing self-orientation.</p>
+          <div class="framework-card__meta">
+            <span>📄 Framework</span>
+            <span>•</span>
+            <span>15 min read</span>
+          </div>
+        </div>
+
+        <div class="framework-card">
+          <span class="framework-card__tag">Self-Leadership • 6.8/10</span>
+          <h3 class="framework-card__title">Deep Work Protocol</h3>
+          <p class="framework-card__description">Create uninterrupted focus blocks to do your most important strategic thinking.</p>
+          <div class="framework-card__meta">
+            <span>🛠 Toolkit</span>
+            <span>•</span>
+            <span>20 min read</span>
+          </div>
+        </div>
+
+        <div class="framework-card">
+          <span class="framework-card__tag">Self-Leadership • 6.8/10</span>
+          <h3 class="framework-card__title">Meditation Lab</h3>
+          <p class="framework-card__description">Guided practices to build presence, stillness, and nervous system regulation.</p>
+          <div class="framework-card__meta">
+            <span>🧘 Practice</span>
+            <span>•</span>
+            <span>10-20 min sessions</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Weekly Check-ins -->
+    <section class="checkins">
+      <div class="checkins__header">
+        <h2 class="checkins__title">Weekly Check-ins</h2>
+        <div class="checkins__streak">
+          <span class="checkins__streak-icon">🔥</span>
+          <span class="checkins__streak-text">12 week streak</span>
+        </div>
+      </div>
+
+      <div class="checkin-card">
+        <div class="checkin-card__header">
+          <span class="checkin-card__status checkin-card__status--pending">This Week</span>
+          <span class="checkin-card__date">Due Friday</span>
+        </div>
+        <p class="checkin-card__question">What's one decision you made this week where you consulted your team first?</p>
+        <button class="checkin-card__button">Answer Now</button>
+      </div>
+
+      <div class="checkin-card">
+        <div class="checkin-card__header">
+          <span class="checkin-card__status checkin-card__status--complete">✓ Completed</span>
+          <span class="checkin-card__date">Last Week</span>
+        </div>
+        <p class="checkin-card__question">What was your biggest leadership challenge this week?</p>
+        <p style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(0,0,0,0.6); margin-top: 8px; font-style: italic;">"Delegating the product roadmap to my VP instead of controlling it myself. Had to let go."</p>
+      </div>
+
+    </section>
+
+    <!-- Monthly Reports -->
+    <section class="reports">
+      <h2 class="reports__title">Monthly Insights</h2>
+      <div class="reports__grid">
+
+        <div class="report-card">
+          <div class="report-card__month">January 2026</div>
+          <div class="report-card__meta">4 check-ins completed</div>
+          <div class="report-card__tags">
+            <span class="report-card__tag">Strategy Focus</span>
+            <span class="report-card__tag">Delegation</span>
+          </div>
+        </div>
+
+        <div class="report-card">
+          <div class="report-card__month">December 2025</div>
+          <div class="report-card__meta">4 check-ins completed</div>
+          <div class="report-card__tags">
+            <span class="report-card__tag">Team Building</span>
+            <span class="report-card__tag">Trust</span>
+          </div>
+        </div>
+
+        <div class="report-card">
+          <div class="report-card__month">November 2025</div>
+          <div class="report-card__meta">3 check-ins completed</div>
+          <div class="report-card__tags">
+            <span class="report-card__tag">Execution</span>
+            <span class="report-card__tag">Decision Making</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>

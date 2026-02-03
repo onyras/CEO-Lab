@@ -1,0 +1,480 @@
+/* Additional styles for CEO Lab redesign */
+/* Include this after styles.css */
+
+/* Process Steps - Staggered Animation */
+.process-steps {
+    max-width: 800px;
+    margin: 4rem auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.process-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 2rem;
+    background: white;
+    border: 1px solid #E0DDD6;
+    border-radius: 12px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.process-step.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered delays for each step */
+.process-step[data-step="1"] { transition-delay: 0s; }
+.process-step[data-step="2"] { transition-delay: 0.15s; }
+.process-step[data-step="3"] { transition-delay: 0.3s; }
+.process-step[data-step="4"] { transition-delay: 0.45s; }
+.process-step[data-step="5"] { transition-delay: 0.6s; }
+
+.process-step:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border-color: #7FABC8;
+}
+
+.process-step__number {
+    font-family: 'Crimson Pro', serif;
+    font-size: 3rem;
+    font-weight: 600;
+    color: #E0DDD6;
+    line-height: 1;
+    flex-shrink: 0;
+    min-width: 80px;
+}
+
+.process-step__content {
+    flex: 1;
+}
+
+.process-step__title {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #000000;
+}
+
+.process-step__desc {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: #666666;
+    margin: 0;
+}
+
+/* How It Works Grid */
+.how-it-works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 3rem;
+    margin-top: 3rem;
+}
+
+.how-card {
+    position: relative;
+    background: white;
+    border: 1px solid #E0DDD6;
+    border-radius: 12px;
+    padding: 2.5rem;
+    transition: all 0.3s ease;
+}
+
+.how-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.how-card__number {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-family: 'Crimson Pro', serif;
+    font-size: 3rem;
+    font-weight: 600;
+    color: #E0DDD6;
+    line-height: 1;
+}
+
+.how-card__image {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.how-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.how-card__title {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.how-card__desc {
+    color: #666666;
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* Dashboard Preview */
+.dashboard-preview {
+    background: white;
+    border: 1px solid #E0DDD6;
+    border-radius: 16px;
+    padding: 3rem;
+    margin-top: 3rem;
+}
+
+.dashboard-preview__chart {
+    margin-bottom: 3rem;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.chart-header h4 {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.75rem;
+    margin: 0;
+}
+
+.chart-trend {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #4CAF50;
+}
+
+.chart-visual {
+    background: #F7F3ED;
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.chart-bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 300px;
+    gap: 1rem;
+}
+
+.chart-bar-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.chart-bar {
+    width: 100%;
+    background: #7FABC8;
+    border-radius: 6px 6px 0 0;
+    transition: all 0.3s ease;
+    min-height: 20px;
+}
+
+.chart-bar[data-current] {
+    background: #000000;
+}
+
+.chart-bar:hover {
+    opacity: 0.8;
+}
+
+.chart-label {
+    font-size: 0.875rem;
+    color: #666666;
+    font-weight: 500;
+}
+
+.chart-value {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #000000;
+}
+
+.dashboard-preview__pillars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.pillar-card {
+    background: #F7F3ED;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.pillar-card h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: #666666;
+}
+
+.pillar-score {
+    font-family: 'Crimson Pro', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 0.5rem;
+}
+
+.pillar-trend {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #4CAF50;
+}
+
+/* Pricing Grid - 3 Cards */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.pricing-card {
+    background: #1a1a1a;
+    border: 2px solid #333333;
+    border-radius: 16px;
+    padding: 2.5rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Force all text in pricing cards to be light */
+.pricing-card * {
+    color: #FFFFFF !important;
+}
+
+.pricing-card svg {
+    stroke: #7FABC8 !important;
+}
+
+.pricing-card .pricing-card__badge {
+    color: white !important;
+}
+
+.pricing-card p {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.pricing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.pricing-card--featured {
+    border-color: #7FABC8;
+    border-width: 3px;
+    background: #222222;
+}
+
+.pricing-card__badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #7FABC8;
+    color: white;
+    padding: 0.25rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.pricing-card__header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #333333;
+}
+
+.pricing-card__header h3 {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    color: #FFFFFF !important;
+}
+
+.pricing-card__price {
+    margin-bottom: 1rem;
+}
+
+.price-amount {
+    font-family: 'Crimson Pro', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #FFFFFF !important;
+}
+
+.price-period {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.pricing-card__desc {
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-size: 1rem;
+}
+
+.pricing-card__features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+}
+
+.pricing-card__features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    color: #FFFFFF !important;
+}
+
+.pricing-card__features li svg {
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+    stroke: #7FABC8 !important;
+}
+
+.pricing-note {
+    text-align: center;
+    margin-top: 2rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.875rem;
+}
+
+/* Testimonials */
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.testimonial-card {
+    background: white;
+    border: 1px solid #E0DDD6;
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.testimonial-quote {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #000000;
+    margin-bottom: 1.5rem;
+}
+
+.testimonial-author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.testimonial-author strong {
+    font-weight: 600;
+    color: #000000;
+}
+
+.testimonial-author span {
+    font-size: 0.875rem;
+    color: #666666;
+}
+
+/* Button Block */
+.btn-block {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .process-steps {
+        margin-top: 2rem;
+    }
+
+    .process-step {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+
+    .process-step__number {
+        font-size: 2rem;
+        min-width: auto;
+    }
+
+    .process-step__title {
+        font-size: 1.5rem;
+    }
+
+    .process-step__desc {
+        font-size: 1rem;
+    }
+
+    .how-it-works-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .pricing-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .testimonial-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-preview {
+        padding: 1.5rem;
+    }
+
+    .chart-bars {
+        height: 200px;
+    }
+
+    .dashboard-preview__pillars {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .chart-header h4 {
+        font-size: 1.25rem;
+    }
+
+    .price-amount {
+        font-size: 2.5rem;
+    }
+}

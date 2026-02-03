@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEO Lab | You Don't Know Where You Stand</title>
+    <meta name="description" content="CEO Lab is your mirror—objective measurement of how you're actually doing as a leader. Weekly accountability. Real data. Measurable growth.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav__left">
+            <a href="https://www.nikolaskonstantin.com" target="_blank" rel="noopener noreferrer">
+                <img src="../assets/images/nk_logo.png" alt="NK" class="nav__logo-img">
+            </a>
+            <span class="nav__brand">CEO Lab</span>
+        </div>
+
+        <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12h18M3 6h18M3 18h18"/>
+            </svg>
+        </button>
+
+        <div class="nav__center" id="navLinks">
+            <a href="#how-it-works">How It Works</a>
+            <a href="#for-who">Who This Is For</a>
+            <a href="#pricing">Pricing</a>
+        </div>
+
+        <div class="nav__right">
+            <a href="#assessment" class="nav__cta">Take Free Assessment</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-scroll-container">
+            <div class="hero-perspective-wrapper">
+                <div class="hero-header">
+                    <div class="container">
+                        <h1 class="hero__title">You Don't Know <em>Where You Stand</em></h1>
+                        <p class="hero__subtitle">Traditional markers of success don't work anymore. Everyone has AI, but nobody feels safe. CEO Lab is your mirror—objective measurement of how you're actually doing as a leader.</p>
+
+                        <div style="display: flex; gap: 16px; margin-top: 32px; flex-wrap: wrap; justify-content: center;">
+                            <a href="#assessment" class="btn btn-primary">
+                                Take the Free Assessment
+                            </a>
+                            <a href="#how-it-works" class="btn btn-secondary">
+                                See How It Works
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-3d-card">
+                    <div class="hero-3d-card-inner">
+                        <img src="../assets/images/dashboard-preview.svg" alt="CEO Lab Dashboard">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Who This Is For Section -->
+    <section id="for-who" class="section section--dark">
+        <div class="container">
+            <p class="section__title">> ceo-lab --audience</p>
+            <h2 class="section__subtitle">Is This <em>You?</em></h2>
+            <p class="section__description">If you recognize yourself in any of these, CEO Lab was built for you.</p>
+
+            <div class="assessment-grid" style="margin-top: 60px;">
+                <!-- Persona 1 -->
+                <div class="assessment-card assessment-card--blue">
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">You Were the Technical Expert</h3>
+                        <p class="assessment-card__desc">Now you're running teams. Your coding skills won't save you here. You need to lead, and you're not sure how to measure if you're doing it right.</p>
+                    </div>
+                </div>
+
+                <!-- Persona 2 -->
+                <div class="assessment-card assessment-card--orange">
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">AI Just Disrupted Your Edge</h3>
+                        <p class="assessment-card__desc">That skill you spent 10 years building? AI does it faster. You're high-paid but anxious. Self-leadership is the only edge that remains.</p>
+                    </div>
+                </div>
+
+                <!-- Persona 3 -->
+                <div class="assessment-card assessment-card--green">
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">You're a First-Time Founder</h3>
+                        <p class="assessment-card__desc">Building fast, shipping product, raising capital. But nobody's giving you feedback on your leadership. Are you actually getting better?</p>
+                    </div>
+                </div>
+
+                <!-- Persona 4 -->
+                <div class="assessment-card assessment-card--yellow">
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">You Make $200k+ Solo</h3>
+                        <p class="assessment-card__desc">Your career IS a business. Are you running it like one? CEO Lab helps you measure and manage yourself like you manage your best projects.</p>
+                    </div>
+                </div>
+
+                <!-- Persona 5 -->
+                <div class="assessment-card assessment-card--lilac">
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">Every New Tool Makes You Anxious</h3>
+                        <p class="assessment-card__desc">Another productivity system. Another AI assistant. You have no framework to decide what actually matters. Measurement > more tools.</p>
+                    </div>
+                </div>
+
+                <!-- Persona 6 -->
+                <div class="assessment-card assessment-card--blue">
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">You Don't Feel Like a 'Natural CEO'</h3>
+                        <p class="assessment-card__desc">Imposter syndrome is loud when there's no data. CEO Lab gives you objective measurement instead of guesswork.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Insight Section -->
+    <section class="section">
+        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <p class="section__title">> ceo-lab --insight</p>
+            <h2 class="section__subtitle">The Only Reliable Edge is <em>Continuous Adaptation</em></h2>
+
+            <div style="margin-top: 48px;">
+                <p style="font-size: 24px; line-height: 1.6; color: rgba(0,0,0,0.8); margin-bottom: 32px;">
+                    In times of extreme change, it's not about what you know today.
+                </p>
+                <p style="font-size: 32px; font-weight: 500; line-height: 1.4; color: #000; margin-bottom: 48px;">
+                    Not your product. Not your network. Not your credentials.
+                </p>
+                <p style="font-size: 36px; font-weight: 600; line-height: 1.3; color: #000;">
+                    Your ability to <em>adapt</em>.
+                </p>
+            </div>
+
+            <div style="margin-top: 60px; padding: 40px; background: rgba(0,0,0,0.02); border-radius: 16px;">
+                <p style="font-size: 20px; line-height: 1.6; color: rgba(0,0,0,0.7);">
+                    But you can't adapt if you don't have measurement.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="section section--dark">
+        <div class="container">
+            <p class="section__title">> ceo-lab --process</p>
+            <h2 class="section__subtitle">How <em>It Works</em></h2>
+            <p class="section__description">Accountability + measurement that actually sticks.</p>
+
+            <div class="features-grid" style="margin-top: 60px;">
+                <!-- Step 1 -->
+                <div class="feature-card feature-card--3col">
+                    <div class="feature-split">
+                        <div>
+                            <div style="display: inline-block; padding: 4px 12px; background: rgba(127, 171, 200, 0.15); border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--nk-blue); margin-bottom: 16px;">
+                                STEP 1
+                            </div>
+                            <h3 class="feature-title" style="font-size: 24px; margin-bottom: 12px;">Take the Free Assessment</h3>
+                            <p class="feature-description" style="font-size: 16px;">"What's your #1 obstacle as a leader right now?" → Complete baseline CEO Leadership Test (15-20 min). See where you stand.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="feature-card feature-card--3col">
+                    <div class="feature-split">
+                        <div>
+                            <div style="display: inline-block; padding: 4px 12px; background: rgba(166, 190, 164, 0.15); border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--nk-green); margin-bottom: 16px;">
+                                STEP 2
+                            </div>
+                            <h3 class="feature-title" style="font-size: 24px; margin-bottom: 12px;">Get Weekly Accountability</h3>
+                            <p class="feature-description" style="font-size: 16px;">Every week, WhatsApp sends you 3-5 questions. Quick reflection (2-3 min). Track how you're changing over time.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="feature-card feature-card--2col">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"/>
+                            <line x1="12" y1="20" x2="12" y2="4"/>
+                            <line x1="6" y1="20" x2="6" y2="14"/>
+                        </svg>
+                    </div>
+                    <div style="display: inline-block; padding: 4px 12px; background: rgba(224, 143, 106, 0.15); border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--nk-orange); margin-bottom: 12px;">
+                        STEP 3
+                    </div>
+                    <h3 class="feature-title">Watch Yourself Evolve</h3>
+                    <p class="feature-description">Dashboard shows your progress month over month. AI spots patterns you'd miss. One focused recommendation per month.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="feature-card feature-card--2col">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                            <line x1="12" y1="22.08" x2="12" y2="12"/>
+                        </svg>
+                    </div>
+                    <div style="display: inline-block; padding: 4px 12px; background: rgba(199, 185, 211, 0.15); border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--nk-lilac); margin-bottom: 12px;">
+                        STEP 4
+                    </div>
+                    <h3 class="feature-title">Get AI-Powered Insights</h3>
+                    <p class="feature-description">Monthly reports, quarterly deep-dives, annual "Spotify Wrapped" style review. Pattern recognition you'd miss on your own.</p>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="feature-card feature-card--2col">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                    </div>
+                    <div style="display: inline-block; padding: 4px 12px; background: rgba(127, 171, 200, 0.15); border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--nk-blue); margin-bottom: 12px;">
+                        STEP 5
+                    </div>
+                    <h3 class="feature-title">Close the Gaps</h3>
+                    <p class="feature-description">When scores reveal weakness, get prescribed frameworks. Not a library to browse—exactly what you need, when you need it.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Unique Mix Section -->
+    <section class="section">
+        <div class="container">
+            <p class="section__title">> ceo-lab --difference</p>
+            <h2 class="section__subtitle">Hard Measurement + <em>Deep Stillness</em></h2>
+            <p class="section__description">Most leadership tools give you one or the other. CEO Lab gives you both.</p>
+
+            <div style="margin-top: 60px; max-width: 900px; margin-left: auto; margin-right: auto;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+                    <!-- Masculine/Hard Side -->
+                    <div style="background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.1); border-radius: 16px; padding: 40px;">
+                        <div style="width: 48px; height: 48px; background: rgba(127, 171, 200, 0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2">
+                                <line x1="18" y1="20" x2="18" y2="10"/>
+                                <line x1="12" y1="20" x2="12" y2="4"/>
+                                <line x1="6" y1="20" x2="6" y2="14"/>
+                            </svg>
+                        </div>
+                        <h3 style="font-size: 24px; font-weight: 600; margin-bottom: 16px; color: #000;">Objective Business Lens</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0; color: rgba(0,0,0,0.7); line-height: 2;">
+                            <li>→ Structure</li>
+                            <li>→ Metrics</li>
+                            <li>→ Accountability</li>
+                            <li>→ Measurement</li>
+                        </ul>
+                    </div>
+
+                    <!-- Feminine/Soft Side -->
+                    <div style="background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.1); border-radius: 16px; padding: 40px;">
+                        <div style="width: 48px; height: 48px; background: rgba(166, 190, 164, 0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--nk-green)" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <h3 style="font-size: 24px; font-weight: 600; margin-bottom: 16px; color: #000;">Nervous System Depth</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0; color: rgba(0,0,0,0.7); line-height: 2;">
+                            <li>→ Presence</li>
+                            <li>→ Inner work</li>
+                            <li>→ Stillness</li>
+                            <li>→ What can't be measured</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px; padding: 32px; background: rgba(127, 171, 200, 0.1); border-radius: 16px; text-align: center;">
+                    <p style="font-size: 20px; line-height: 1.6; color: rgba(0,0,0,0.8); margin: 0;">
+                        This combination is rare. That's what makes CEO Lab different.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="section section--dark">
+        <div class="container">
+            <p class="section__title">> ceo-lab --pricing</p>
+            <h2 class="section__subtitle">Serious Work for <em>Serious Leaders</em></h2>
+            <p class="section__description">Start with the free assessment. Upgrade when you're ready for accountability.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; margin-top: 60px; max-width: 1000px; margin-left: auto; margin-right: auto;">
+                <!-- Free Assessment -->
+                <div style="background: rgba(255,255,255,0.03); border: 2px solid rgba(127, 171, 200, 0.3); border-radius: 16px; padding: 40px;">
+                    <div style="margin-bottom: 24px;">
+                        <h3 style="font-size: 24px; font-weight: 600; margin-bottom: 8px; color: #ffffff;">Free Assessment</h3>
+                        <div style="font-size: 48px; font-weight: 600; color: var(--nk-blue);">€0</div>
+                        <p style="font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 8px;">No credit card required</p>
+                    </div>
+
+                    <p style="font-size: 16px; color: rgba(255,255,255,0.8); margin-bottom: 24px;">
+                        "What's your #1 obstacle as a leader right now?"
+                    </p>
+
+                    <ul style="list-style: none; padding: 0; margin: 0 0 32px 0;">
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.8);">Complete CEO Leadership Test</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.8);">See where you stand</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.8);">Get your baseline scores</span>
+                        </li>
+                    </ul>
+
+                    <a href="#assessment" class="btn btn-secondary" style="width: 100%; justify-content: center;">
+                        Take Free Assessment
+                    </a>
+                </div>
+
+                <!-- CEO Lab Premium -->
+                <div style="background: linear-gradient(135deg, rgba(127, 171, 200, 0.15) 0%, rgba(166, 190, 164, 0.15) 100%); border: 2px solid var(--nk-blue); border-radius: 16px; padding: 40px; position: relative;">
+                    <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--nk-blue); color: #000; padding: 4px 16px; border-radius: 6px; font-size: 12px; font-weight: 600;">
+                        PREMIUM
+                    </div>
+
+                    <div style="margin-bottom: 24px;">
+                        <h3 style="font-size: 24px; font-weight: 600; margin-bottom: 8px; color: #ffffff;">CEO Lab Premium</h3>
+                        <div style="font-size: 48px; font-weight: 600; color: var(--nk-blue);">
+                            €100<span style="font-size: 18px; font-weight: 400; color: rgba(255,255,255,0.6);">/month</span>
+                        </div>
+                        <p style="font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 8px;">Cancel anytime. No contracts.</p>
+                    </div>
+
+                    <p style="font-size: 16px; color: rgba(255,255,255,0.9); margin-bottom: 24px; font-weight: 500;">
+                        Accountability + measurement that actually works
+                    </p>
+
+                    <ul style="list-style: none; padding: 0; margin: 0 0 32px 0;">
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.9);">Weekly check-ins via WhatsApp</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.9);">Progress dashboard (see evolution)</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.9);">Monthly AI insights</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.9);">Quarterly deep-dive reports</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.9);">Annual "Spotify Wrapped" review</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.9);">Prescribed frameworks (not browsed)</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.9);">Shareable snapshots (optional)</span>
+                        </li>
+                    </ul>
+
+                    <a href="../subscribe.html" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+
+            <!-- Why €100/month -->
+            <div style="margin-top: 60px; padding: 40px; background: rgba(127, 171, 200, 0.05); border: 1px solid rgba(127, 171, 200, 0.2); border-radius: 16px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                <h3 style="text-align: center; margin-bottom: 24px; font-size: 20px; color: #ffffff;">Why €100/month?</h3>
+                <p style="font-size: 16px; line-height: 1.7; color: rgba(255,255,255,0.8); text-align: center; margin: 0;">
+                    This isn't another cheap SaaS tool. This is serious work for serious leaders. The price reflects the cognitive load, premium positioning, and unique combination of hard measurement + spiritual depth. This is your leadership operating system.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Free Assessment CTA Section -->
+    <section id="assessment" class="section">
+        <div class="container">
+            <p class="section__title">> ceo-lab --start</p>
+            <h2 class="section__subtitle">What's Your #1 Obstacle <em>as a Leader?</em></h2>
+            <p class="section__description">Take the free CEO Leadership Test. See where you stand. Get your baseline scores.</p>
+
+            <div style="max-width: 600px; margin: 60px auto 0;">
+                <div style="background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.1); border-radius: 16px; padding: 48px; text-align: center;">
+                    <p style="font-size: 18px; line-height: 1.6; color: rgba(0,0,0,0.7); margin-bottom: 32px;">
+                        The assessment takes 15-20 minutes. You'll get objective measurement across all leadership dimensions. No judgment. Just data.
+                    </p>
+                    <a href="../subscribe.html" class="btn btn-primary" style="font-size: 18px; padding: 16px 40px;">
+                        Take the Free Assessment
+                    </a>
+                    <p style="font-size: 14px; color: rgba(0,0,0,0.5); margin-top: 20px;">
+                        No credit card required
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="section section--dark">
+        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <p class="section__title">> ceo-lab --truth</p>
+            <h2 class="section__subtitle">You Can't Adapt If You Don't Have <em>Measurement</em></h2>
+
+            <p style="font-size: 24px; line-height: 1.6; color: rgba(255,255,255,0.9); margin: 40px 0;">
+                Most founders spend years wondering if they're getting better as leaders.
+            </p>
+
+            <p style="font-size: 32px; font-weight: 500; line-height: 1.4; color: #ffffff; margin: 40px 0;">
+                CEO Lab members know their answer in 90 days.
+            </p>
+
+            <div style="margin-top: 60px;">
+                <a href="#assessment" class="btn btn-primary" style="font-size: 18px; padding: 16px 40px;">
+                    Take the Free Assessment
+                </a>
+            </div>
+
+            <!-- Trust Badges -->
+            <div style="display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-top: 60px; font-size: 14px; color: rgba(255,255,255,0.6);">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    <span>Bank-level security</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    <span>Cancel anytime</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span>Your data stays private</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h4>CEO Lab</h4>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.6;">
+                        Your mirror. Objective measurement of how you're actually doing as a leader.
+                    </p>
+                </div>
+
+                <div class="footer__section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#assessment">Free Assessment</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__section">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="https://nikolaskonstantin.com" target="_blank">Website</a></li>
+                        <li><a href="https://linkedin.com/in/nikolaskonstantin" target="_blank">LinkedIn</a></li>
+                        <li><a href="mailto:nikolas@forchiefs.com">Email</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <p>&copy; 2026 Nikolas Konstantin. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/hero-scroll.js"></script>
+    <script src="../landing.js"></script>
+</body>
+</html>

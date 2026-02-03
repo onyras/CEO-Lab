@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <!-- Navigation Module -->
+    <!-- Variables to customize:
+        - nav__logo img src: Logo path
+        - nav__links: Menu items
+    -->
+    <nav class="nav">
+        <div class="nav__logo">
+            <img src="../assets/images/nk_logo.png" alt="Nikolas Konstantin">
+        </div>
+        <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12h18M3 6h18M3 18h18"/>
+            </svg>
+        </button>
+        <div class="nav__links" id="navLinks">
+            <a href="#how-it-works">How It Works</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#tools">Tools</a>
+            <a href="login.html" class="btn btn-secondary">Login</a>
+        </div>
+    </nav>
+
+    <script src="../landing.js"></script>
+</body>
+</html>

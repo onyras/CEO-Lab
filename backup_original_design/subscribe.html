@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe to CEO Lab | Nikolas Konstantin</title>
+    <meta name="description" content="Get instant access to 50+ leadership assessments and frameworks. $15/month, billed annually.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #000000;
+            --white: #F7F3ED;
+            --blue: #7FABC8;
+            --muted: rgba(247, 243, 237, 0.5);
+            --serif: 'Crimson Pro', Georgia, serif;
+            --sans: 'DM Sans', -apple-system, sans-serif;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--black);
+            color: var(--white);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 100vh;
+        }
+
+        /* Left Side */
+        .left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 8vw;
+        }
+
+        .left-content {
+            max-width: 520px;
+        }
+
+        .logo {
+            margin-bottom: 4rem;
+        }
+
+        .logo img {
+            height: 36px;
+            opacity: 0.9;
+        }
+
+        h1 {
+            font-family: var(--serif);
+            font-size: clamp(2.5rem, 4vw, 4.5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 4rem;
+        }
+
+        .features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .features li {
+            font-size: 0.9375rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .features li::before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background: var(--blue);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Right Side */
+        .right {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 8vw;
+            position: relative;
+        }
+
+        .right::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(180deg, transparent, rgba(247, 243, 237, 0.1), transparent);
+        }
+
+        .form-wrapper {
+            max-width: 420px;
+        }
+
+        .price-block {
+            margin-bottom: 4rem;
+        }
+
+        .price {
+            font-family: var(--serif);
+            font-size: 4rem;
+            font-weight: 300;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .price span {
+            font-size: 1.5rem;
+            color: var(--muted);
+        }
+
+        .price-detail {
+            font-size: 0.875rem;
+            color: var(--muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .trial-badge {
+            display: inline-block;
+            background: rgba(127, 171, 200, 0.1);
+            color: var(--blue);
+            padding: 0.375rem 0.875rem;
+            border-radius: 2rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        label {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(247, 243, 237, 0.1);
+            border-radius: 0.5rem;
+            color: var(--white);
+            font-size: 0.9375rem;
+            font-family: var(--sans);
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--blue);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        input::placeholder {
+            color: var(--muted);
+        }
+
+        button {
+            width: 100%;
+            padding: 1.125rem;
+            background: var(--white);
+            color: var(--black);
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            font-family: var(--sans);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(247, 243, 237, 0.15);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 1.5rem;
+        }
+
+        .back {
+            position: absolute;
+            top: 2.5rem;
+            right: 3rem;
+            font-size: 0.875rem;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .back:hover {
+            color: var(--white);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                overflow-y: auto;
+            }
+
+            .left, .right {
+                padding: 4rem 2rem;
+                height: auto;
+            }
+
+            .logo {
+                margin-bottom: 3rem;
+            }
+
+            .subtitle {
+                margin-bottom: 2rem;
+            }
+
+            .right::before {
+                display: none;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .left, .right {
+                padding: 3rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .price {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back">← Back</a>
+
+    <div class="container">
+        <!-- Left Side -->
+        <div class="left">
+            <div class="left-content">
+                <div class="logo">
+                    <img src="assets/images/nk_logo.png" alt="Nikolas Konstantin">
+                </div>
+
+                <h1>Stop guessing.<br>Start measuring.</h1>
+
+                <p class="subtitle">
+                    50+ battle-tested assessments and frameworks that show your leadership evolution in real numbers.
+                </p>
+
+                <ul class="features">
+                    <li>Zone of Genius, CEO Test, 5 Drivers, and more</li>
+                    <li>4 comprehensive toolkits for communication, strategy, and scaling</li>
+                    <li>Meditation lab with guided audio recordings</li>
+                    <li>Monthly implementation sessions with live Q&A</li>
+                    <li>New content added every month</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Right Side -->
+        <div class="right">
+            <div class="form-wrapper">
+                <div class="price-block">
+                    <div class="price">$15<span>/mo</span></div>
+                    <div class="price-detail">Billed annually at $180 • Save $60</div>
+                    <span class="trial-badge">14-day free trial</span>
+                </div>
+
+                <form id="subscribeForm">
+                    <div>
+                        <label for="email">Email Address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="your@email.com"
+                            required
+                            autocomplete="email"
+                        >
+                    </div>
+
+                    <button type="submit">Start Free Trial</button>
+                </form>
+
+                <p class="note">
+                    No credit card required • Cancel anytime • 14-day money-back guarantee
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('subscribeForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+
+            if (!email) {
+                alert('Please enter your email address');
+                return;
+            }
+
+            // TODO: Integrate with Supabase/Stripe
+            console.log('Subscribe:', { email, plan: 'annual' });
+
+            // Redirect to signup
+            window.location.href = `signup.html?email=${encodeURIComponent(email)}&plan=annual`;
+        });
+    </script>
+</body>
+</html>

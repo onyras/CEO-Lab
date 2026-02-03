@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEO Lab - Recording Feature Cards</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(-50%); }
+            50% { transform: translateY(-12px) translateX(-50%); }
+        }
+        .record-pulse {
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .float-control {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1200px; margin: 0 auto;">
+
+            <p class="section__title">> ceo-lab --record</p>
+
+            <!-- Main Headline with Embedded Control -->
+            <div style="text-align: center; margin: 60px 0 80px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 64px; font-weight: 400; line-height: 1.3; margin: 0;">
+                    <span style="color: rgba(255, 255, 255, 0.3);">Stop babysitting your notes.</span><br>
+                    <span style="color: #ffffff;">Records built </span>
+
+                    <!-- Inline Recording Control -->
+                    <span style="display: inline-flex; align-items: center; vertical-align: middle; margin: 0 16px;">
+                        <span style="background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(30, 30, 30, 0.95) 100%); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 100px; padding: 12px 20px; display: inline-flex; align-items: center; gap: 16px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 1px rgba(127, 171, 200, 0.3);">
+                            <!-- Record button -->
+                            <span class="record-pulse" style="width: 40px; height: 40px; background: linear-gradient(135deg, #E08F6A 0%, #d47853 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(224, 143, 106, 0.4);">
+                                <span style="width: 12px; height: 12px; background: #ffffff; border-radius: 50%;"></span>
+                            </span>
+
+                            <!-- Control buttons -->
+                            <span style="display: flex; gap: 12px; align-items: center;">
+                                <!-- Pause -->
+                                <span style="width: 32px; height: 32px; background: rgba(255, 255, 255, 0.08); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <span style="display: flex; gap: 3px;">
+                                        <span style="width: 3px; height: 12px; background: rgba(255, 255, 255, 0.6); border-radius: 1px;"></span>
+                                        <span style="width: 3px; height: 12px; background: rgba(255, 255, 255, 0.6); border-radius: 1px;"></span>
+                                    </span>
+                                </span>
+
+                                <!-- Skip back -->
+                                <span style="width: 32px; height: 32px; background: rgba(255, 255, 255, 0.08); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.6)" stroke-width="2">
+                                        <polygon points="11 19 2 12 11 5 11 19"/>
+                                        <polygon points="22 19 13 12 22 5 22 19"/>
+                                    </svg>
+                                </span>
+
+                                <!-- Skip forward -->
+                                <span style="width: 32px; height: 32px; background: rgba(255, 255, 255, 0.08); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.6)" stroke-width="2">
+                                        <polygon points="13 19 22 12 13 5 13 19"/>
+                                        <polygon points="2 19 11 12 2 5 2 19"/>
+                                    </svg>
+                                </span>
+
+                                <!-- Menu -->
+                                <span style="width: 32px; height: 32px; background: rgba(255, 255, 255, 0.08); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.6)" stroke-width="2">
+                                        <rect x="3" y="3" width="7" height="7"/>
+                                        <rect x="14" y="3" width="7" height="7"/>
+                                        <rect x="14" y="14" width="7" height="7"/>
+                                        <rect x="3" y="14" width="7" height="7"/>
+                                    </svg>
+                                </span>
+                            </span>
+                        </span>
+                    </span>
+
+                    <span style="color: #ffffff;">to keep up with</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">how teams actually work.</span>
+                </h2>
+            </div>
+
+            <!-- Two Feature Cards -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 60px;">
+
+                <!-- LEFT CARD: Instant Summaries (Orange) -->
+                <div style="background: linear-gradient(135deg, #E08F6A 0%, #d47853 100%); border-radius: 32px; padding: 48px; box-shadow: 0 24px 48px rgba(224, 143, 106, 0.3); position: relative; overflow: hidden; min-height: 500px; display: flex; flex-direction: column; justify-content: space-between;">
+
+                    <!-- Subtle accent -->
+                    <div style="position: absolute; top: -100px; right: -100px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%); border-radius: 50%;"></div>
+
+                    <div style="position: relative; z-index: 2;">
+                        <h3 style="font-family: 'Crimson Pro', serif; font-size: 40px; font-weight: 400; color: #ffffff; margin: 0 0 16px 0; line-height: 1.2;">
+                            Instant summaries,<br>created for you.
+                        </h3>
+
+                        <p style="font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.6; color: rgba(255, 255, 255, 0.9); margin: 0; max-width: 400px;">
+                            Get instant summaries with key insights and action items.
+                        </p>
+                    </div>
+
+                    <!-- Big Stat -->
+                    <div style="position: relative; z-index: 2;">
+                        <p style="font-family: 'Crimson Pro', serif; font-size: 72px; font-weight: 400; color: rgba(255, 255, 255, 0.95); margin: 0 0 8px 0; line-height: 1;">
+                            92%
+                        </p>
+                        <p style="font-family: 'DM Sans', sans-serif; font-size: 24px; line-height: 1.4; color: rgba(255, 255, 255, 0.85); margin: 0; max-width: 420px;">
+                            less time spent maintaining summaries.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- RIGHT CARD: From Recording to Insights (Blue/Neutral) -->
+                <div style="background: linear-gradient(135deg, rgba(30, 30, 30, 0.98) 0%, rgba(40, 40, 40, 0.95) 100%); border: 1px solid rgba(127, 171, 200, 0.2); border-radius: 32px; padding: 48px; box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4); position: relative; overflow: hidden; min-height: 500px; display: flex; flex-direction: column; justify-content: space-between;">
+
+                    <!-- Subtle accent -->
+                    <div style="position: absolute; bottom: -80px; left: -80px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(127, 171, 200, 0.15) 0%, transparent 70%); border-radius: 50%; filter: blur(40px);"></div>
+
+                    <div style="position: relative; z-index: 2;">
+                        <h3 style="font-family: 'Crimson Pro', serif; font-size: 40px; font-weight: 400; color: #ffffff; margin: 0 0 16px 0; line-height: 1.2;">
+                            From recording<br>to insights
+                        </h3>
+                    </div>
+
+                    <!-- Floating Recording Control -->
+                    <div style="position: relative; z-index: 2; display: flex; justify-content: center; align-items: center; min-height: 220px;">
+                        <div class="float-control" style="position: absolute; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(25, 25, 25, 0.95) 100%); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 100px; padding: 16px 24px; display: flex; align-items: center; gap: 20px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 1px rgba(127, 171, 200, 0.4);">
+
+                            <!-- Large Record button -->
+                            <div class="record-pulse" style="width: 56px; height: 56px; background: linear-gradient(135deg, #E08F6A 0%, #d47853 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(224, 143, 106, 0.4);">
+                                <div style="width: 16px; height: 16px; background: #ffffff; border-radius: 2px;"></div>
+                            </div>
+
+                            <!-- Controls -->
+                            <div style="display: flex; gap: 14px; align-items: center;">
+                                <!-- Pause -->
+                                <button style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.08); border: none; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                    <div style="display: flex; gap: 4px;">
+                                        <div style="width: 4px; height: 16px; background: rgba(255, 255, 255, 0.7); border-radius: 1px;"></div>
+                                        <div style="width: 4px; height: 16px; background: rgba(255, 255, 255, 0.7); border-radius: 1px;"></div>
+                                    </div>
+                                </button>
+
+                                <!-- Skip back -->
+                                <button style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.08); border: none; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.7)" stroke-width="2">
+                                        <polygon points="11 19 2 12 11 5 11 19"/>
+                                        <polygon points="22 19 13 12 22 5 22 19"/>
+                                    </svg>
+                                </button>
+
+                                <!-- Skip forward -->
+                                <button style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.08); border: none; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.7)" stroke-width="2">
+                                        <polygon points="13 19 22 12 13 5 13 19"/>
+                                        <polygon points="2 19 11 12 2 5 2 19"/>
+                                    </svg>
+                                </button>
+
+                                <!-- Menu -->
+                                <button style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.08); border: none; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.7)" stroke-width="2">
+                                        <rect x="3" y="3" width="7" height="7"/>
+                                        <rect x="14" y="3" width="7" height="7"/>
+                                        <rect x="14" y="14" width="7" height="7"/>
+                                        <rect x="3" y="14" width="7" height="7"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Text -->
+                    <div style="position: relative; z-index: 2;">
+                        <p style="font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.6; color: rgba(255, 255, 255, 0.6); margin: 0; max-width: 450px;">
+                            No complicated setup. No learning curve. Just record, and let our AI handle the rest while you focus on what matters.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge Section - CEO Lab Branded Options</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --nk-bg-primary: #1a1a1a;
+            --nk-bg-dark: #0a0a0a;
+            --nk-blue: #7FABC8;
+            --nk-green: #A6BEA4;
+            --nk-yellow: #C6A55B;
+            --nk-orange: #E08F6A;
+            --nk-lilac: #C7B9D3;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--nk-bg-primary);
+            color: #ffffff;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 80px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-header h1 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+
+        .page-header p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 120px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .option {
+            position: relative;
+        }
+
+        .option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .option-number {
+            font-family: 'Monaco', monospace;
+            font-size: 14px;
+            color: var(--nk-blue);
+            letter-spacing: 0.5px;
+        }
+
+        .option-name {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Common elements */
+        .challenge-input {
+            width: 100%;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 18px;
+            resize: none;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .challenge-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .challenge-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Option 1: Subtle Depth */
+        .option-1 {
+            background: rgba(26, 26, 26, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 64px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .option-1 h2 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 32px;
+            line-height: 1.3;
+        }
+
+        .option-1 .challenge-input {
+            background: rgba(10, 10, 10, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 20px 24px;
+            color: #ffffff;
+            margin-bottom: 24px;
+        }
+
+        .option-1 .challenge-input::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .option-1 .challenge-input:focus {
+            border-color: rgba(127, 171, 200, 0.4);
+            background: rgba(10, 10, 10, 0.8);
+        }
+
+        .option-1 .challenge-btn {
+            background: linear-gradient(135deg, #7FABC8 0%, #6A96B3 100%);
+            color: #ffffff;
+            padding: 18px 48px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(127, 171, 200, 0.25);
+        }
+
+        .option-1 .challenge-btn:hover {
+            box-shadow: 0 6px 24px rgba(127, 171, 200, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Option 2: Refined Minimal */
+        .option-2 {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 72px 64px;
+        }
+
+        .option-2 h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 36px;
+            font-weight: 400;
+            color: #ffffff;
+            margin-bottom: 36px;
+            line-height: 1.3;
+        }
+
+        .option-2 .challenge-input {
+            background: rgba(10, 10, 10, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 20px 24px;
+            color: #ffffff;
+            margin-bottom: 28px;
+        }
+
+        .option-2 .challenge-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .option-2 .challenge-input:focus {
+            border-color: rgba(127, 171, 200, 0.3);
+            background: rgba(10, 10, 10, 0.6);
+        }
+
+        .option-2 .challenge-btn {
+            background: transparent;
+            color: var(--nk-blue);
+            padding: 16px 40px;
+            border-radius: 10px;
+            border: 1px solid rgba(127, 171, 200, 0.3);
+        }
+
+        .option-2 .challenge-btn:hover {
+            border-color: var(--nk-blue);
+            background: rgba(127, 171, 200, 0.1);
+        }
+
+        /* Option 3: Accent Edge */
+        .option-3 {
+            background: rgba(10, 10, 10, 0.6);
+            border: 1px solid rgba(127, 171, 200, 0.2);
+            border-radius: 24px;
+            padding: 64px;
+            position: relative;
+        }
+
+        .option-3::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 24px;
+            right: 24px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--nk-blue), transparent);
+        }
+
+        .option-3 h2 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 32px;
+            line-height: 1.3;
+        }
+
+        .option-3 .challenge-input {
+            background: rgba(127, 171, 200, 0.05);
+            border: 1px solid rgba(127, 171, 200, 0.15);
+            border-radius: 16px;
+            padding: 20px 24px;
+            color: #ffffff;
+            margin-bottom: 24px;
+        }
+
+        .option-3 .challenge-input::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .option-3 .challenge-input:focus {
+            border-color: rgba(127, 171, 200, 0.4);
+            background: rgba(127, 171, 200, 0.08);
+        }
+
+        .option-3 .challenge-btn {
+            background: var(--nk-blue);
+            color: #000000;
+            padding: 18px 48px;
+            border-radius: 12px;
+        }
+
+        .option-3 .challenge-btn:hover {
+            background: #8BB8D4;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(127, 171, 200, 0.3);
+        }
+
+        /* Option 4: Elevated Focus */
+        .option-4 {
+            background: linear-gradient(145deg, #1e1e1e 0%, #171717 100%);
+            border: none;
+            border-radius: 28px;
+            padding: 68px;
+            box-shadow:
+                0 1px 0 rgba(255, 255, 255, 0.03) inset,
+                0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .option-4 h2 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 32px;
+            line-height: 1.3;
+        }
+
+        .option-4 .challenge-input {
+            background: #0a0a0a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 20px 24px;
+            color: #ffffff;
+            margin-bottom: 24px;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .option-4 .challenge-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .option-4 .challenge-input:focus {
+            border-color: var(--nk-blue);
+            box-shadow:
+                inset 0 2px 6px rgba(0, 0, 0, 0.3),
+                0 0 0 3px rgba(127, 171, 200, 0.15);
+        }
+
+        .option-4 .challenge-btn {
+            background: linear-gradient(135deg, #7FABC8 0%, #6A96B3 100%);
+            color: #000000;
+            padding: 18px 48px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(127, 171, 200, 0.25);
+        }
+
+        .option-4 .challenge-btn:hover {
+            box-shadow: 0 6px 24px rgba(127, 171, 200, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Option 5: Soft Gradient */
+        .option-5 {
+            background: linear-gradient(135deg, rgba(127, 171, 200, 0.06) 0%, rgba(166, 190, 164, 0.06) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
+            padding: 64px;
+        }
+
+        .option-5 h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 36px;
+            font-weight: 400;
+            color: #ffffff;
+            margin-bottom: 36px;
+            line-height: 1.3;
+        }
+
+        .option-5 .challenge-input {
+            background: rgba(10, 10, 10, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px 24px;
+            color: #ffffff;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .option-5 .challenge-input::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .option-5 .challenge-input:focus {
+            border-color: rgba(127, 171, 200, 0.3);
+            background: rgba(10, 10, 10, 0.7);
+        }
+
+        .option-5 .challenge-btn {
+            background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+            color: #000000;
+            padding: 18px 48px;
+            border-radius: 12px;
+        }
+
+        .option-5 .challenge-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(127, 171, 200, 0.3);
+        }
+
+        /* Option 6: Clean Border */
+        .option-6 {
+            background: transparent;
+            border: 1.5px solid rgba(127, 171, 200, 0.2);
+            border-radius: 20px;
+            padding: 64px;
+        }
+
+        .option-6 h2 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 32px;
+            line-height: 1.3;
+        }
+
+        .option-6 .challenge-input {
+            background: rgba(10, 10, 10, 0.4);
+            border: 1px solid rgba(127, 171, 200, 0.15);
+            border-radius: 14px;
+            padding: 20px 24px;
+            color: #ffffff;
+            margin-bottom: 24px;
+        }
+
+        .option-6 .challenge-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .option-6 .challenge-input:focus {
+            border-color: var(--nk-blue);
+            background: rgba(10, 10, 10, 0.6);
+        }
+
+        .option-6 .challenge-btn {
+            background: var(--nk-blue);
+            color: #000000;
+            padding: 17px 44px;
+            border-radius: 11px;
+            font-weight: 600;
+        }
+
+        .option-6 .challenge-btn:hover {
+            background: #8BB8D4;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(127, 171, 200, 0.3);
+        }
+
+        /* Option 7: Dark Depth */
+        .option-7 {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 28px;
+            padding: 68px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+        }
+
+        .option-7 h2 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 32px;
+            line-height: 1.3;
+        }
+
+        .option-7 .challenge-input {
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px 24px;
+            color: #ffffff;
+            margin-bottom: 24px;
+        }
+
+        .option-7 .challenge-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .option-7 .challenge-input:focus {
+            border-color: rgba(127, 171, 200, 0.4);
+            background: rgba(10, 10, 10, 0.9);
+        }
+
+        .option-7 .challenge-btn {
+            background: linear-gradient(135deg, #7FABC8 0%, #6A96B3 100%);
+            color: #ffffff;
+            padding: 18px 48px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(127, 171, 200, 0.2);
+        }
+
+        .option-7 .challenge-btn:hover {
+            box-shadow: 0 6px 24px rgba(127, 171, 200, 0.35);
+            transform: translateY(-2px);
+        }
+
+        /* Option 8: Centered Zen */
+        .option-8 {
+            background: rgba(26, 26, 26, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 32px;
+            padding: 80px 64px;
+            text-align: center;
+        }
+
+        .option-8 h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 36px;
+            font-weight: 400;
+            color: #ffffff;
+            margin-bottom: 40px;
+            line-height: 1.3;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .option-8 .input-wrapper {
+            max-width: 650px;
+            margin: 0 auto 32px;
+        }
+
+        .option-8 .challenge-input {
+            background: rgba(10, 10, 10, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 20px 24px;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        .option-8 .challenge-input::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .option-8 .challenge-input:focus {
+            border-color: rgba(127, 171, 200, 0.4);
+            background: rgba(10, 10, 10, 0.8);
+        }
+
+        .option-8 .challenge-btn {
+            background: linear-gradient(135deg, #7FABC8 0%, #6A96B3 100%);
+            color: #ffffff;
+            padding: 18px 48px;
+            border-radius: 12px;
+        }
+
+        .option-8 .challenge-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(127, 171, 200, 0.4);
+        }
+
+        /* Option 9: Subtle Glow */
+        .option-9 {
+            background: rgba(26, 26, 26, 0.6);
+            border: 1px solid rgba(127, 171, 200, 0.15);
+            border-radius: 24px;
+            padding: 64px;
+            box-shadow: 0 0 40px rgba(127, 171, 200, 0.05);
+        }
+
+        .option-9 h2 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 32px;
+            line-height: 1.3;
+        }
+
+        .option-9 .challenge-input {
+            background: rgba(10, 10, 10, 0.6);
+            border: 1px solid rgba(127, 171, 200, 0.2);
+            border-radius: 16px;
+            padding: 20px 24px;
+            color: #ffffff;
+            margin-bottom: 24px;
+        }
+
+        .option-9 .challenge-input::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .option-9 .challenge-input:focus {
+            border-color: rgba(127, 171, 200, 0.5);
+            background: rgba(10, 10, 10, 0.8);
+            box-shadow: 0 0 20px rgba(127, 171, 200, 0.1);
+        }
+
+        .option-9 .challenge-btn {
+            background: var(--nk-blue);
+            color: #000000;
+            padding: 18px 48px;
+            border-radius: 12px;
+        }
+
+        .option-9 .challenge-btn:hover {
+            background: #8BB8D4;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(127, 171, 200, 0.4);
+        }
+
+        /* Option 10: Split Layout */
+        .option-10 {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            gap: 48px;
+            background: rgba(26, 26, 26, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
+            padding: 56px;
+            align-items: center;
+        }
+
+        .option-10 h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 32px;
+            font-weight: 400;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+
+        .option-10-right .challenge-input {
+            background: rgba(10, 10, 10, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 20px 24px;
+            color: #ffffff;
+            margin-bottom: 24px;
+        }
+
+        .option-10 .challenge-input::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .option-10 .challenge-input:focus {
+            border-color: rgba(127, 171, 200, 0.4);
+            background: rgba(10, 10, 10, 0.8);
+        }
+
+        .option-10 .challenge-btn {
+            background: linear-gradient(135deg, #7FABC8 0%, #6A96B3 100%);
+            color: #ffffff;
+            padding: 18px 48px;
+            border-radius: 12px;
+        }
+
+        .option-10 .challenge-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(127, 171, 200, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 30px 16px;
+            }
+
+            .page-header {
+                margin-bottom: 60px;
+            }
+
+            .page-header h1 {
+                font-size: 36px;
+            }
+
+            .options-grid {
+                gap: 80px;
+            }
+
+            .option-1, .option-2, .option-3, .option-4, .option-5,
+            .option-6, .option-7, .option-8, .option-9, .option-10 {
+                padding: 48px 32px;
+            }
+
+            .option-1 h2, .option-2 h2, .option-3 h2, .option-4 h2,
+            .option-5 h2, .option-6 h2, .option-7 h2, .option-8 h2,
+            .option-9 h2, .option-10 h2 {
+                font-size: 26px;
+                margin-bottom: 28px;
+            }
+
+            .challenge-input {
+                font-size: 16px;
+                padding: 18px 20px !important;
+            }
+
+            .challenge-btn {
+                font-size: 16px;
+                padding: 16px 36px !important;
+            }
+
+            .option-10 {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h1>Challenge Section Design Options</h1>
+        <p>10 alternatives matching CEO Lab branding</p>
+    </div>
+
+    <div class="options-grid">
+        <!-- Option 1: Subtle Depth -->
+        <div class="option">
+            <div class="option-header">
+                <div class="option-number">> option_01</div>
+                <div class="option-name">Subtle Depth</div>
+            </div>
+            <div class="option-1">
+                <h2>What's your number 1 obstacle as a leader right now?</h2>
+                <textarea class="challenge-input" rows="3" placeholder="Type your biggest leadership challenge here..."></textarea>
+                <button class="challenge-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    Analyze Solutions
+                </button>
+            </div>
+        </div>
+
+        <!-- Option 2: Refined Minimal -->
+        <div class="option">
+            <div class="option-header">
+                <div class="option-number">> option_02</div>
+                <div class="option-name">Refined Minimal</div>
+            </div>
+            <div class="option-2">
+                <h2>What's your number 1 obstacle as a leader right now?</h2>
+                <textarea class="challenge-input" rows="3" placeholder="Type your biggest leadership challenge here..."></textarea>
+                <button class="challenge-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    Analyze Solutions
+                </button>
+            </div>
+        </div>
+
+        <!-- Option 3: Accent Edge -->
+        <div class="option">
+            <div class="option-header">
+                <div class="option-number">> option_03</div>
+                <div class="option-name">Accent Edge</div>
+            </div>
+            <div class="option-3">
+                <h2>What's your number 1 obstacle as a leader right now?</h2>
+                <textarea class="challenge-input" rows="3" placeholder="Type your biggest leadership challenge here..."></textarea>
+                <button class="challenge-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    Analyze Solutions
+                </button>
+            </div>
+        </div>
+
+        <!-- Option 4: Elevated Focus -->
+        <div class="option">
+            <div class="option-header">
+                <div class="option-number">> option_04</div>
+                <div class="option-name">Elevated Focus</div>
+            </div>
+            <div class="option-4">
+                <h2>What's your number 1 obstacle as a leader right now?</h2>
+                <textarea class="challenge-input" rows="3" placeholder="Type your biggest leadership challenge here..."></textarea>
+                <button class="challenge-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    Analyze Solutions
+                </button>
+            </div>
+        </div>
+
+        <!-- Option 5: Soft Gradient -->
+        <div class="option">
+            <div class="option-header">
+                <div class="option-number">> option_05</div>
+                <div class="option-name">Soft Gradient</div>
+            </div>
+            <div class="option-5">
+                <h2>What's your number 1 obstacle as a leader right now?</h2>
+                <textarea class="challenge-input" rows="3" placeholder="Type your biggest leadership challenge here..."></textarea>
+                <button class="challenge-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    Analyze Solutions
+                </button>
+            </div>
+        </div>
+
+        <!-- Option 6: Clean Border -->
+        <div class="option">
+            <div class="option-header">
+                <div class="option-number">> option_06</div>
+                <div class="option-name">Clean Border</div>
+            </div>
+            <div class="option-6">
+                <h2>What's your number 1 obstacle as a leader right now?</h2>
+                <textarea class="challenge-input" rows="3" placeholder="Type your biggest leadership challenge here..."></textarea>
+                <button class="challenge-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    Analyze Solutions
+                </button>
+            </div>
+        </div>
+
+        <!-- Option 7: Dark Depth -->
+        <div class="option">
+            <div class="option-header">
+                <div class="option-number">> option_07</div>
+                <div class="option-name">Dark Depth</div>
+            </div>
+            <div class="option-7">
+                <h2>What's your number 1 obstacle as a leader right now?</h2>
+                <textarea class="challenge-input" rows="3" placeholder="Type your biggest leadership challenge here..."></textarea>
+                <button class="challenge-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    Analyze Solutions
+                </button>
+            </div>
+        </div>
+
+        <!-- Option 8: Centered Zen -->
+        <div class="option">
+            <div class="option-header">
+                <div class="option-number">> option_08</div>
+                <div class="option-name">Centered Zen</div>
+            </div>
+            <div class="option-8">
+                <h2>What's your number 1 obstacle as a leader right now?</h2>
+                <div class="input-wrapper">
+                    <textarea class="challenge-input" rows="3" placeholder="Type your biggest leadership challenge here..."></textarea>
+                </div>
+                <button class="challenge-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    Analyze Solutions
+                </button>
+            </div>
+        </div>
+
+        <!-- Option 9: Subtle Glow -->
+        <div class="option">
+            <div class="option-header">
+                <div class="option-number">> option_09</div>
+                <div class="option-name">Subtle Glow</div>
+            </div>
+            <div class="option-9">
+                <h2>What's your number 1 obstacle as a leader right now?</h2>
+                <textarea class="challenge-input" rows="3" placeholder="Type your biggest leadership challenge here..."></textarea>
+                <button class="challenge-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    Analyze Solutions
+                </button>
+            </div>
+        </div>
+
+        <!-- Option 10: Split Layout -->
+        <div class="option">
+            <div class="option-header">
+                <div class="option-number">> option_10</div>
+                <div class="option-name">Split Layout</div>
+            </div>
+            <div class="option-10">
+                <div class="option-10-left">
+                    <h2>What's your number 1 obstacle as a leader right now?</h2>
+                </div>
+                <div class="option-10-right">
+                    <textarea class="challenge-input" rows="3" placeholder="Type your biggest leadership challenge here..."></textarea>
+                    <button class="challenge-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        Analyze Solutions
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

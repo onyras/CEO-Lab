@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Section - CEO Lab Template</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --nk-bg-primary: #1a1a1a;
+            --nk-bg-dark: #0a0a0a;
+            --nk-blue: #7FABC8;
+            --nk-green: #A6BEA4;
+            --nk-yellow: #C6A55B;
+            --nk-orange: #E08F6A;
+            --nk-lilac: #C7B9D3;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--nk-bg-primary);
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* Assessment Section */
+        .assessment-section {
+            padding: 100px 0;
+            background: var(--nk-bg-primary);
+        }
+
+        .assessment-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        .assessment-header {
+            margin-bottom: 48px;
+        }
+
+        .assessment-title {
+            font-family: 'Monaco', monospace;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 16px;
+        }
+
+        .assessment-subtitle {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 56px;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .assessment-subtitle em {
+            font-style: normal;
+            color: var(--nk-blue);
+        }
+
+        .assessment-description {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 800px;
+        }
+
+        /* Grid */
+        .assessment-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+        }
+
+        .assessment-card {
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 28px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .assessment-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(127, 171, 200, 0.15);
+        }
+
+        .assessment-card--4col {
+            grid-column: span 4;
+        }
+
+        .assessment-card--3col {
+            grid-column: span 3;
+        }
+
+        .assessment-card--2col {
+            grid-column: span 2;
+        }
+
+        /* Hero Card (CEO Test) */
+        .assessment-hero {
+            background: linear-gradient(135deg, rgba(127, 171, 200, 0.1) 0%, rgba(10, 10, 10, 0.8) 100%);
+            border: 1px solid rgba(127, 171, 200, 0.2);
+        }
+
+        .assessment-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(127, 171, 200, 0.15);
+            border: 1px solid rgba(127, 171, 200, 0.3);
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--nk-blue);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+
+        .assessment-card-title {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .assessment-card-title--large {
+            font-size: 40px;
+        }
+
+        .assessment-card-desc {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .assessment-stats {
+            display: flex;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .assessment-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .assessment-stat-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--nk-blue);
+            line-height: 1;
+        }
+
+        .assessment-stat-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 4px;
+        }
+
+        /* Icon */
+        .assessment-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .assessment-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: var(--nk-blue);
+        }
+
+        .assessment-icon--green svg {
+            stroke: var(--nk-green);
+        }
+
+        .assessment-icon--orange svg {
+            stroke: var(--nk-orange);
+        }
+
+        .assessment-icon--yellow svg {
+            stroke: var(--nk-yellow);
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: start;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .timeline-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .timeline-icon--blue {
+            background: rgba(127, 171, 200, 0.1);
+        }
+
+        .timeline-icon--orange {
+            background: rgba(224, 143, 106, 0.1);
+        }
+
+        .timeline-icon--yellow {
+            background: rgba(198, 165, 91, 0.1);
+        }
+
+        .timeline-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .timeline-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+
+        .timeline-content p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Chart mockup */
+        .mini-chart {
+            width: 100%;
+            height: 80px;
+            margin: 20px 0;
+        }
+
+        .chart-line {
+            stroke: var(--nk-blue);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .assessment-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .assessment-card--4col,
+            .assessment-card--3col,
+            .assessment-card--2col {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .assessment-section {
+                padding: 80px 0;
+            }
+
+            .assessment-subtitle {
+                font-size: 42px;
+            }
+
+            .assessment-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .assessment-card--4col,
+            .assessment-card--3col,
+            .assessment-card--2col {
+                grid-column: span 1;
+            }
+
+            .assessment-card {
+                padding: 24px;
+            }
+
+            .assessment-card-title--large {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="assessment-section">
+        <div class="assessment-container">
+            <!-- Header -->
+            <div class="assessment-header">
+                <p class="assessment-title">> ceo-lab --assess</p>
+                <h2 class="assessment-subtitle">One Test. <em>Continuous Growth.</em></h2>
+                <p class="assessment-description">Take the CEO Leadership Test once. Track your progress weekly. See your evolution in real-time.</p>
+            </div>
+
+            <!-- Assessment Grid -->
+            <div class="assessment-grid">
+                <!-- Card 1: CEO Leadership Test (Hero) -->
+                <div class="assessment-card assessment-card--4col assessment-hero">
+                    <span class="assessment-badge">Start Here</span>
+                    <h3 class="assessment-card-title assessment-card-title--large">CEO Leadership Test</h3>
+                    <p class="assessment-card-desc">Your comprehensive baseline. Measure yourself across 12 core leadership dimensions. This is where your journey begins.</p>
+
+                    <div class="assessment-stats">
+                        <div class="assessment-stat">
+                            <span class="assessment-stat-value">15 min</span>
+                            <span class="assessment-stat-label">One-time setup</span>
+                        </div>
+                        <div class="assessment-stat">
+                            <span class="assessment-stat-value">12</span>
+                            <span class="assessment-stat-label">Dimensions tracked</span>
+                        </div>
+                        <div class="assessment-stat">
+                            <span class="assessment-stat-value">∞</span>
+                            <span class="assessment-stat-label">Retakes included</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Weekly Check-ins -->
+                <div class="assessment-card assessment-card--2col">
+                    <div class="assessment-icon assessment-icon--green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                        </svg>
+                    </div>
+                    <h3 class="assessment-card-title">Weekly Check-Ins</h3>
+                    <p class="assessment-card-desc">Get a WhatsApp link every week. Click it. Answer 3-5 questions. Done in 2 minutes. No login required.</p>
+
+                    <!-- WhatsApp mockup visual -->
+                    <div style="margin-top: 24px; padding: 16px; background: rgba(166, 190, 164, 0.05); border: 1px solid rgba(166, 190, 164, 0.15); border-radius: 12px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--nk-green);"></div>
+                            <span style="font-size: 11px; color: var(--nk-green); font-weight: 600;">CEO Lab</span>
+                        </div>
+                        <p style="font-size: 13px; color: rgba(255, 255, 255, 0.7); line-height: 1.5; margin-bottom: 8px;">Your weekly check-in is ready 👇</p>
+                        <div style="padding: 8px 12px; background: rgba(127, 171, 200, 0.1); border: 1px solid rgba(127, 171, 200, 0.2); border-radius: 8px;">
+                            <span style="font-size: 11px; color: var(--nk-blue); font-family: 'Monaco', monospace;">ceolab.com/check-in?t=...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Real-time Dashboard -->
+                <div class="assessment-card assessment-card--3col">
+                    <div class="assessment-icon assessment-icon--orange">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"/>
+                            <line x1="12" y1="20" x2="12" y2="4"/>
+                            <line x1="6" y1="20" x2="6" y2="14"/>
+                        </svg>
+                    </div>
+                    <h3 class="assessment-card-title">Real-time Dashboard</h3>
+                    <p class="assessment-card-desc">Watch your metrics update live. See trends across all 12 dimensions. Know exactly where you're growing.</p>
+
+                    <!-- Mini chart -->
+                    <svg class="mini-chart" viewBox="0 0 200 80" fill="none">
+                        <defs>
+                            <linearGradient id="dashGradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" style="stop-color: rgba(224, 143, 106, 0.2); stop-opacity: 1" />
+                                <stop offset="100%" style="stop-color: rgba(224, 143, 106, 0); stop-opacity: 0" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M0 60 L25 55 L50 50 L75 45 L100 40 L125 35 L150 30 L175 28 L200 25 L200 80 L0 80 Z" fill="url(#dashGradient)" />
+                        <path class="chart-line" d="M0 60 L25 55 L50 50 L75 45 L100 40 L125 35 L150 30 L175 28 L200 25" style="stroke: var(--nk-orange);" />
+                    </svg>
+                </div>
+
+                <!-- Card 4: Review Timeline -->
+                <div class="assessment-card assessment-card--3col">
+                    <div class="assessment-icon assessment-icon--yellow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                    </div>
+                    <h3 class="assessment-card-title">Review Milestones</h3>
+                    <p class="assessment-card-desc">AI analyzes your progress and generates detailed insights at key intervals.</p>
+
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-icon timeline-icon--blue">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="stroke: var(--nk-blue);">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                </svg>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Monthly Reviews</h4>
+                                <p>Deep analysis with one focused recommendation</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-icon timeline-icon--orange">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="stroke: var(--nk-orange);">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                </svg>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Quarterly Deep-Dives</h4>
+                                <p>Comprehensive report with strategic insights</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-icon timeline-icon--yellow">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="stroke: var(--nk-yellow);">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                </svg>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Annual Wrap-Up</h4>
+                                <p>Your year in leadership—Spotify Wrapped style</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

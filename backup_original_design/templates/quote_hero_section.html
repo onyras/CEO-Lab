@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEO Lab - Quote Hero Sections</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Version 1: Abstract Ink Wash Style -->
+<section class="section section--dark" style="min-height: 600px; display: flex; align-items: center; position: relative; overflow: hidden;">
+    <!-- Artistic Background -->
+    <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); z-index: 1;"></div>
+
+    <!-- Abstract ink blot effects -->
+    <div style="position: absolute; top: -10%; right: -5%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(127, 171, 200, 0.15) 0%, transparent 70%); border-radius: 50%; filter: blur(80px); z-index: 2;"></div>
+    <div style="position: absolute; bottom: -10%; left: -5%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(224, 143, 106, 0.12) 0%, transparent 70%); border-radius: 50%; filter: blur(80px); z-index: 2;"></div>
+    <div style="position: absolute; top: 20%; left: 30%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(166, 190, 164, 0.08) 0%, transparent 70%); border-radius: 50%; filter: blur(60px); z-index: 2;"></div>
+
+    <div class="container" style="position: relative; z-index: 10;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; max-width: 1400px; margin: 0 auto; padding: 100px 0;">
+
+            <!-- Left: Quote -->
+            <div class="fade-in">
+                <p style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; color: rgba(255, 255, 255, 0.95); margin: 0;">
+                    "A measured record<br>
+                    of leadership growth,<br>
+                    weekly check-ins,<br>
+                    and evidence."
+                </p>
+            </div>
+
+            <!-- Right: Logo/Icon -->
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <div class="float" style="position: relative;">
+                    <!-- Circular icon with growth visual -->
+                    <svg width="300" height="300" viewBox="0 0 300 300">
+                        <defs>
+                            <linearGradient id="iconGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color: #7FABC8; stop-opacity: 0.8" />
+                                <stop offset="100%" style="stop-color: rgba(127, 171, 200, 0.3); stop-opacity: 0.6" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Outer ring -->
+                        <circle cx="150" cy="150" r="120" fill="none" stroke="rgba(127, 171, 200, 0.2)" stroke-width="2"/>
+
+                        <!-- Growth spiral -->
+                        <path d="M 150 30 Q 200 50 220 100 T 230 150 Q 225 200 180 220 T 150 225 Q 100 220 70 180 T 60 150 Q 65 100 110 70 T 150 60"
+                              fill="none"
+                              stroke="url(#iconGradient1)"
+                              stroke-width="3"
+                              opacity="0.8"/>
+
+                        <!-- Center dot -->
+                        <circle cx="150" cy="150" r="8" fill="#7FABC8" opacity="0.9"/>
+
+                        <!-- Growth arrow markers -->
+                        <circle cx="150" cy="30" r="4" fill="#7FABC8" opacity="0.6"/>
+                        <circle cx="220" cy="100" r="4" fill="#A6BEA4" opacity="0.6"/>
+                        <circle cx="230" cy="150" r="4" fill="#E08F6A" opacity="0.6"/>
+                        <circle cx="180" cy="220" r="4" fill="#C6A55B" opacity="0.6"/>
+
+                        <!-- Connecting lines -->
+                        <line x1="150" y1="150" x2="150" y2="30" stroke="#7FABC8" stroke-width="1" opacity="0.3"/>
+                        <line x1="150" y1="150" x2="220" y2="100" stroke="#A6BEA4" stroke-width="1" opacity="0.3"/>
+                        <line x1="150" y1="150" x2="230" y2="150" stroke="#E08F6A" stroke-width="1" opacity="0.3"/>
+                        <line x1="150" y1="150" x2="180" y2="220" stroke="#C6A55B" stroke-width="1" opacity="0.3"/>
+                    </svg>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Version 2: Bold Typography Focus -->
+<section class="section section--dark" style="min-height: 600px; display: flex; align-items: center; position: relative; overflow: hidden; margin-top: 80px;">
+    <!-- Background -->
+    <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); z-index: 1;"></div>
+
+    <!-- Gradient orbs -->
+    <div style="position: absolute; top: 15%; right: 10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(166, 190, 164, 0.12) 0%, transparent 70%); border-radius: 50%; filter: blur(70px); z-index: 2;"></div>
+
+    <div class="container" style="position: relative; z-index: 10;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 100px 0; text-align: center;">
+
+            <p style="font-family: 'DM Sans', sans-serif; font-size: 13px; color: rgba(255, 255, 255, 0.4); margin-bottom: 40px; text-transform: uppercase; letter-spacing: 0.2em;">The CEO Lab Philosophy</p>
+
+            <blockquote style="margin: 0; padding: 0; border: none;">
+                <p style="font-family: 'Crimson Pro', serif; font-size: 72px; font-weight: 400; line-height: 1.2; color: #ffffff; margin: 0 0 40px 0;">
+                    "You can't manage<br>
+                    what you don't measure."
+                </p>
+                <footer style="font-family: 'DM Sans', sans-serif; font-size: 16px; color: rgba(255, 255, 255, 0.5);">
+                    — Peter Drucker
+                </footer>
+            </blockquote>
+
+            <div style="margin-top: 60px; display: flex; justify-content: center; gap: 60px;">
+                <div>
+                    <p style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #7FABC8; margin: 0;">50+</p>
+                    <p style="font-family: 'DM Sans', sans-serif; font-size: 13px; color: rgba(255, 255, 255, 0.5); margin: 8px 0 0 0;">Frameworks</p>
+                </div>
+                <div style="width: 1px; background: rgba(255, 255, 255, 0.1);"></div>
+                <div>
+                    <p style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #A6BEA4; margin: 0;">Weekly</p>
+                    <p style="font-family: 'DM Sans', sans-serif; font-size: 13px; color: rgba(255, 255, 255, 0.5); margin: 8px 0 0 0;">Check-ins</p>
+                </div>
+                <div style="width: 1px; background: rgba(255, 255, 255, 0.1);"></div>
+                <div>
+                    <p style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #E08F6A; margin: 0;">Real</p>
+                    <p style="font-family: 'DM Sans', sans-serif; font-size: 13px; color: rgba(255, 255, 255, 0.5); margin: 8px 0 0 0;">Progress</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Version 3: Split with Visual -->
+<section class="section section--dark" style="min-height: 700px; display: flex; align-items: center; position: relative; overflow: hidden; margin-top: 80px;">
+    <!-- Background -->
+    <div style="position: absolute; inset: 0; background: #1a1a1a; z-index: 1;"></div>
+
+    <!-- Abstract shapes -->
+    <div style="position: absolute; top: 10%; left: 5%; width: 250px; height: 250px; background: radial-gradient(circle, rgba(199, 185, 211, 0.1) 0%, transparent 70%); border-radius: 50%; filter: blur(60px); z-index: 2;"></div>
+    <div style="position: absolute; bottom: 10%; right: 5%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(127, 171, 200, 0.12) 0%, transparent 70%); border-radius: 50%; filter: blur(70px); z-index: 2;"></div>
+
+    <div class="container" style="position: relative; z-index: 10;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 120px; align-items: center; max-width: 1400px; margin: 0 auto; padding: 120px 0;">
+
+            <!-- Left: Quote -->
+            <div>
+                <p style="font-family: 'DM Sans', sans-serif; font-size: 13px; color: #7FABC8; margin-bottom: 32px; text-transform: uppercase; letter-spacing: 0.15em;">> ceo-lab --mission</p>
+
+                <p style="font-family: 'Crimson Pro', serif; font-size: 64px; font-weight: 400; line-height: 1.2; color: #ffffff; margin: 0 0 32px 0;">
+                    "Leadership without self-awareness is just momentum."
+                </p>
+
+                <p style="font-family: 'DM Sans', sans-serif; font-size: 18px; line-height: 1.6; color: rgba(255, 255, 255, 0.6); margin: 0; max-width: 500px;">
+                    CEO Lab gives you the mirror, the metrics, and the map to transform how you lead.
+                </p>
+            </div>
+
+            <!-- Right: Abstract Metric Visual -->
+            <div style="position: relative; height: 500px;">
+                <!-- Background card -->
+                <div style="background: linear-gradient(135deg, rgba(20, 20, 20, 0.8) 0%, rgba(30, 30, 30, 0.6) 100%); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 32px; padding: 60px; height: 100%; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;">
+
+                    <!-- Subtle gradient overlay -->
+                    <div style="position: absolute; inset: 0; background: radial-gradient(circle at 70% 30%, rgba(127, 171, 200, 0.08) 0%, transparent 60%); border-radius: 32px;"></div>
+
+                    <!-- Growth bars visualization -->
+                    <div style="position: relative; z-index: 2;">
+                        <div style="margin-bottom: 32px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.7);">Trust</span>
+                                <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #7FABC8;">+18%</span>
+                            </div>
+                            <div style="height: 12px; background: rgba(127, 171, 200, 0.15); border-radius: 6px; overflow: hidden;">
+                                <div style="width: 85%; height: 100%; background: linear-gradient(90deg, rgba(127, 171, 200, 0.6), #7FABC8); border-radius: 6px;"></div>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 32px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.7);">Vision Clarity</span>
+                                <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #A6BEA4;">+22%</span>
+                            </div>
+                            <div style="height: 12px; background: rgba(166, 190, 164, 0.15); border-radius: 6px; overflow: hidden;">
+                                <div style="width: 78%; height: 100%; background: linear-gradient(90deg, rgba(166, 190, 164, 0.6), #A6BEA4); border-radius: 6px;"></div>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 32px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.7);">Strategic Focus</span>
+                                <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #E08F6A;">+31%</span>
+                            </div>
+                            <div style="height: 12px; background: rgba(224, 143, 106, 0.15); border-radius: 6px; overflow: hidden;">
+                                <div style="width: 92%; height: 100%; background: linear-gradient(90deg, rgba(224, 143, 106, 0.6), #E08F6A); border-radius: 6px;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Summary stat -->
+                        <div style="background: rgba(127, 171, 200, 0.08); border: 1px solid rgba(127, 171, 200, 0.2); border-radius: 16px; padding: 24px; margin-top: 40px;">
+                            <p style="font-family: 'DM Sans', sans-serif; font-size: 13px; color: rgba(255, 255, 255, 0.5); margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.1em;">12 Week Growth</p>
+                            <p style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #7FABC8; margin: 0; line-height: 1;">+24%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Version 4: Minimal Centered -->
+<section class="section section--dark" style="min-height: 600px; display: flex; align-items: center; position: relative; overflow: hidden; margin-top: 80px;">
+    <!-- Background -->
+    <div style="position: absolute; inset: 0; background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%); z-index: 1;"></div>
+
+    <div class="container" style="position: relative; z-index: 10;">
+        <div style="max-width: 900px; margin: 0 auto; padding: 100px 0; text-align: center;">
+
+            <!-- Decorative element -->
+            <div style="width: 60px; height: 2px; background: linear-gradient(90deg, transparent, #7FABC8, transparent); margin: 0 auto 60px;"></div>
+
+            <blockquote style="margin: 0; padding: 0; border: none;">
+                <p style="font-family: 'Crimson Pro', serif; font-size: 64px; font-weight: 400; line-height: 1.3; color: #ffffff; margin: 0;">
+                    "The unexamined life<br>
+                    is not worth leading."
+                </p>
+            </blockquote>
+
+            <!-- Decorative element -->
+            <div style="width: 60px; height: 2px; background: linear-gradient(90deg, transparent, #7FABC8, transparent); margin: 60px auto 40px;"></div>
+
+            <p style="font-family: 'DM Sans', sans-serif; font-size: 16px; color: rgba(255, 255, 255, 0.5); margin: 0;">
+                CEO Lab • Measure Your Leadership
+            </p>
+
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

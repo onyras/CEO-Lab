@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Action Card Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../styles-redesign.css">
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <div class="quick-actions">
+                <!-- Dashboard Action Card Module -->
+                <!-- Variables to customize:
+                    - action-icon: Emoji or icon
+                    - action-card__title: Card heading
+                    - action-card description: Card text
+                    - action-button href: Link destination
+                    - action-button text: Button label
+                    - Optional: Add "due-badge" div for urgent items
+                -->
+
+                <!-- With Due Badge -->
+                <div class="action-card">
+                    <div class="action-icon">📋</div>
+                    <div class="due-badge">Due in 5 days</div>
+                    <h3>Next Assessment</h3>
+                    <p>Your February assessment is ready. Takes about 15 minutes to complete.</p>
+                    <a href="#" class="action-button">Take Assessment →</a>
+                </div>
+
+                <!-- Without Due Badge -->
+                <div class="action-card">
+                    <div class="action-icon">📊</div>
+                    <h3>Latest Report</h3>
+                    <p>January 2026 report shows +0.3 improvement. Review your progress and focus areas.</p>
+                    <a href="#" class="action-button">View Report →</a>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon">💡</div>
+                    <h3>This Week's Insight</h3>
+                    <p><strong>The Energy Audit</strong> - Finding your peak performance windows for strategic work.</p>
+                    <a href="#" class="action-button">Read (5 min) →</a>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon">🔧</div>
+                    <h3>Tools Library</h3>
+                    <p>Access 50+ frameworks, templates, and interactive tools. 3 new tools added this week.</p>
+                    <a href="#" class="action-button">Browse Tools →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

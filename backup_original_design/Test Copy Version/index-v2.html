@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEO Lab | Most CEOs Guess. You'll Measure.</title>
+    <meta name="description" content="Track your leadership evolution with 50+ battle-tested assessments. Monthly reports. Weekly check-ins. Real data for real growth.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav__left">
+            <a href="https://www.nikolaskonstantin.com" target="_blank" rel="noopener noreferrer">
+                <img src="../assets/images/nk_logo.png" alt="NK" class="nav__logo-img">
+            </a>
+            <span class="nav__brand">CEO Lab</span>
+        </div>
+
+        <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12h18M3 6h18M3 18h18"/>
+            </svg>
+        </button>
+
+        <div class="nav__center" id="navLinks">
+            <a href="#how-it-works">How It Works</a>
+            <a href="#assessments">Assessments</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
+        </div>
+
+        <div class="nav__right">
+            <a href="#pricing" class="nav__cta">Start Free Trial</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-scroll-container">
+            <div class="hero-perspective-wrapper">
+                <div class="hero-header">
+                    <div class="container">
+                        <h1 class="hero__title">Most CEOs Guess. <em>You'll Measure.</em></h1>
+                        <p class="hero__subtitle">Track your leadership evolution with 50+ battle-tested assessments. Monthly reports. Weekly check-ins. Real data for real growth.</p>
+
+                        <div style="display: flex; gap: 16px; margin-top: 32px; flex-wrap: wrap; justify-content: center;">
+                            <a href="#pricing" class="btn btn-primary">
+                                Start Free Trial
+                            </a>
+                            <a href="#how-it-works" class="btn btn-secondary">
+                                See How It Works
+                            </a>
+                        </div>
+
+                        <!-- Stats Bar -->
+                        <div style="display: flex; gap: 32px; margin-top: 48px; flex-wrap: wrap; justify-content: center; font-size: 14px; color: rgba(255,255,255,0.6);">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                </svg>
+                                <span>Join 100+ founders measuring their leadership</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                                </svg>
+                                <span>Battle-tested from $15K coaching engagements</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-3d-card">
+                    <div class="hero-3d-card-inner">
+                        <img src="../assets/images/dashboard-preview.svg" alt="CEO Lab Dashboard">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section id="why-this-matters" class="section section--dark">
+        <div class="container">
+            <p class="section__title">> ceo-lab --mirror</p>
+            <h2 class="section__subtitle">You Need a <em>Mirror</em></h2>
+            <p class="section__description">Athletes track performance. CEOs guess.</p>
+
+            <div style="margin-top: 60px;">
+                <!-- PROBLEMS -->
+                <div style="margin-bottom: 80px;">
+                    <h3 style="font-size: 18px; color: rgba(255, 255, 255, 0.4); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 40px; font-family: 'DM Sans', sans-serif; font-weight: 500;">
+                        The Reality
+                    </h3>
+
+                    <div style="display: flex; flex-direction: column; gap: 32px;">
+                        <div style="display: flex; gap: 24px; align-items: flex-start;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 100, 100, 0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 4px;">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            <div>
+                                <h4 style="font-size: 28px; color: #ffffff; line-height: 1.3; margin-bottom: 10px; font-weight: 400;">
+                                    You're stuck in execution while AI reshapes your industry.
+                                </h4>
+                                <p style="font-size: 18px; color: rgba(255, 255, 255, 0.6); line-height: 1.6;">
+                                    Shipping features and fixing bugs while competitors rethink their entire business model.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 24px; align-items: flex-start;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 100, 100, 0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 4px;">
+                                <path d="M23 6l-9.5 9.5-5-5L1 18"></path>
+                                <polyline points="17 6 23 6 23 12"></polyline>
+                            </svg>
+                            <div>
+                                <h4 style="font-size: 28px; color: #ffffff; line-height: 1.3; margin-bottom: 10px; font-weight: 400;">
+                                    Your strategic bets are based on gut feel, not data.
+                                </h4>
+                                <p style="font-size: 18px; color: rgba(255, 255, 255, 0.6); line-height: 1.6;">
+                                    Which AI investments pay off? Which team structures work? You're guessing in a market that punishes guesswork.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 24px; align-items: flex-start;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 100, 100, 0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 4px;">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                            </svg>
+                            <div>
+                                <h4 style="font-size: 28px; color: #ffffff; line-height: 1.3; margin-bottom: 10px; font-weight: 400;">
+                                    You keep adding tools when you need to pause.
+                                </h4>
+                                <p style="font-size: 18px; color: rgba(255, 255, 255, 0.6); line-height: 1.6;">
+                                    Another productivity system. Another AI assistant. You're stacking solutions instead of stepping back to reassess.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- THE COST -->
+                <div>
+                    <h3 style="font-size: 18px; color: rgba(255, 255, 255, 0.4); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 40px; font-family: 'DM Sans', sans-serif; font-weight: 500;">
+                        The Cost
+                    </h3>
+
+                    <div style="display: flex; flex-direction: column; gap: 32px;">
+                        <div style="display: flex; gap: 24px; align-items: flex-start;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 100, 100, 0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 4px;">
+                                <path d="M6 2v6h.01M6 8a6 6 0 1 0 9 5.197"></path>
+                                <polyline points="6 2 2 6 6 10"></polyline>
+                            </svg>
+                            <div>
+                                <h4 style="font-size: 28px; color: #ffffff; line-height: 1.3; margin-bottom: 10px; font-weight: 400;">
+                                    Your technical edge is depreciating in real-time.
+                                </h4>
+                                <p style="font-size: 18px; color: rgba(255, 255, 255, 0.6); line-height: 1.6;">
+                                    The coding skills that made you valuable? AI does it better. And you're not building what comes next.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 24px; align-items: flex-start;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 100, 100, 0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 4px;">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            <div>
+                                <h4 style="font-size: 28px; color: #ffffff; line-height: 1.3; margin-bottom: 10px; font-weight: 400;">
+                                    You're building yesterday's company in tomorrow's world.
+                                </h4>
+                                <p style="font-size: 18px; color: rgba(255, 255, 255, 0.6); line-height: 1.6;">
+                                    While you optimize the current model, AI-native founders are rewriting the rules.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 24px; align-items: flex-start;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 100, 100, 0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 4px;">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M12 1v6m0 6v6M1 12h6m6 0h6"></path>
+                            </svg>
+                            <div>
+                                <h4 style="font-size: 28px; color: #ffffff; line-height: 1.3; margin-bottom: 10px; font-weight: 400;">
+                                    You're burning out on complexity when clarity is one pause away.
+                                </h4>
+                                <p style="font-size: 18px; color: rgba(255, 255, 255, 0.6); line-height: 1.6;">
+                                    All the tools in the world won't help if you don't know which direction to point them.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Differentiation Section -->
+    <section class="section">
+        <div class="container">
+            <p class="section__title">> ceo-lab --different</p>
+            <h2 class="section__subtitle">Not Another Course. <em>Not More Theory.</em></h2>
+            <p class="section__description">You don't need more information. You need measurement.</p>
+
+            <div style="margin-top: 60px; max-width: 900px; margin-left: auto; margin-right: auto;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden;">
+                    <!-- Header -->
+                    <div style="background: rgba(0,0,0,0.3); padding: 20px; font-weight: 600; color: rgba(255,255,255,0.5);">Other Solutions</div>
+                    <div style="background: rgba(127, 171, 200, 0.15); padding: 20px; font-weight: 600; color: var(--nk-blue);">CEO Lab</div>
+
+                    <!-- Row 1 -->
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <p style="margin: 0; color: rgba(255,255,255,0.6);">Read 300-page books</p>
+                    </div>
+                    <div style="background: rgba(127, 171, 200, 0.05); padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <p style="margin: 0; color: rgba(255,255,255,0.9);">Complete 8-minute assessments</p>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <p style="margin: 0; color: rgba(255,255,255,0.6);">Consume more content</p>
+                    </div>
+                    <div style="background: rgba(127, 171, 200, 0.05); padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <p style="margin: 0; color: rgba(255,255,255,0.9);">Measure actual progress</p>
+                    </div>
+
+                    <!-- Row 3 -->
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <p style="margin: 0; color: rgba(255,255,255,0.6);">Hope you're improving</p>
+                    </div>
+                    <div style="background: rgba(127, 171, 200, 0.05); padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <p style="margin: 0; color: rgba(255,255,255,0.9);">See your evolution in data</p>
+                    </div>
+
+                    <!-- Row 4 -->
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <p style="margin: 0; color: rgba(255,255,255,0.6);">Generic business advice</p>
+                    </div>
+                    <div style="background: rgba(127, 171, 200, 0.05); padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <p style="margin: 0; color: rgba(255,255,255,0.9);">Personalized AI insights</p>
+                    </div>
+
+                    <!-- Row 5 -->
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <p style="margin: 0; color: rgba(255,255,255,0.6);">One-time purchase, then nothing</p>
+                    </div>
+                    <div style="background: rgba(127, 171, 200, 0.05); padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <p style="margin: 0; color: rgba(255,255,255,0.9);">Monthly evolution tracking</p>
+                    </div>
+
+                    <!-- Row 6 -->
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <p style="margin: 0; color: rgba(255,255,255,0.6);">Theory from consultants</p>
+                    </div>
+                    <div style="background: rgba(127, 171, 200, 0.05); padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <p style="margin: 0; color: rgba(255,255,255,0.9);">Battle-tested from $15K engagements</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-center" style="margin-top: 48px;">
+                <a href="#pricing" class="btn btn-primary">
+                    Start Free Trial
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="section section--dark">
+        <div class="container">
+            <p class="section__title">> ceo-lab --process</p>
+            <h2 class="section__subtitle">Five Steps to <em>Measurable Growth</em></h2>
+            <p class="section__description">The system that turns guesswork into data.</p>
+
+            <div class="features-grid">
+                <!-- Step 1 -->
+                <div class="feature-card feature-card--3col">
+                    <div class="feature-split">
+                        <div>
+                            <div style="display: inline-block; padding: 4px 12px; background: rgba(127, 171, 200, 0.15); border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--nk-blue); margin-bottom: 16px;">
+                                STEP 1
+                            </div>
+                            <h3 class="feature-title" style="font-size: 24px; margin-bottom: 12px;">Start Measuring</h3>
+                            <p class="feature-description" style="font-size: 16px;">Sign up and complete your first assessment (8-15 minutes). See where you stand right now.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="feature-card feature-card--3col">
+                    <div class="feature-split">
+                        <div>
+                            <div style="display: inline-block; padding: 4px 12px; background: rgba(166, 190, 164, 0.15); border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--nk-green); margin-bottom: 16px;">
+                                STEP 2
+                            </div>
+                            <h3 class="feature-title" style="font-size: 24px; margin-bottom: 12px;">Get Your Baseline</h3>
+                            <p class="feature-description" style="font-size: 16px;">Receive your initial scores across leadership fundamentals. No judgment. Just data.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="feature-card feature-card--2col">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                        </svg>
+                    </div>
+                    <div style="display: inline-block; padding: 4px 12px; background: rgba(224, 143, 106, 0.15); border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--nk-orange); margin-bottom: 12px;">
+                        STEP 3
+                    </div>
+                    <h3 class="feature-title">Track Weekly</h3>
+                    <p class="feature-description">Quick WhatsApp check-ins keep you accountable. Answer 2-3 reflection questions per week.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="feature-card feature-card--2col">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                            <line x1="12" y1="22.08" x2="12" y2="12"/>
+                        </svg>
+                    </div>
+                    <div style="display: inline-block; padding: 4px 12px; background: rgba(199, 185, 211, 0.15); border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--nk-lilac); margin-bottom: 12px;">
+                        STEP 4
+                    </div>
+                    <h3 class="feature-title">Review Monthly</h3>
+                    <p class="feature-description">Complete monthly assessments. AI analyzes your progress and gives you one focused recommendation.</p>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="feature-card feature-card--2col">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                    </div>
+                    <div style="display: inline-block; padding: 4px 12px; background: rgba(127, 171, 200, 0.15); border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--nk-blue); margin-bottom: 12px;">
+                        STEP 5
+                    </div>
+                    <h3 class="feature-title">Access Tools</h3>
+                    <p class="feature-description">Download frameworks, meditation recordings, and implementation toolkits as you need them.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof Section -->
+    <section class="section">
+        <div class="container">
+            <p class="section__title">> ceo-lab --proof</p>
+            <h2 class="section__subtitle">CEOs Who Measure, <em>Win</em></h2>
+            <p class="section__description">Real transformations from founders who stopped guessing.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; margin-top: 60px;">
+                <!-- Testimonial 1 -->
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 32px;">
+                    <div style="margin-bottom: 20px;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="1.5">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
+                    <p style="font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.9); margin-bottom: 24px;">
+                        "I thought I was communicating our vision clearly. The assessment showed I was at 38% clarity. That number haunted me. Three months later I'm at 81% and my team finally understands where we're headed. Revenue followed—up 47% this quarter."
+                    </p>
+                    <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                        <p style="font-weight: 600; color: #ffffff; margin-bottom: 4px;">Sarah Chen</p>
+                        <p style="font-size: 14px; color: rgba(255,255,255,0.6);">CEO, Velocity AI</p>
+                        <p style="font-size: 13px; color: rgba(255,255,255,0.4);">Series A, $8M raised</p>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 32px;">
+                    <div style="margin-bottom: 20px;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--nk-green)" stroke-width="1.5">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
+                    <p style="font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.9); margin-bottom: 24px;">
+                        "I was grinding 70-hour weeks. The Zone of Genius assessment showed I was spending 68% of my time in tasks that drain me. I hired an EA, restructured my calendar. Now I work 42 hours and we're growing faster."
+                    </p>
+                    <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                        <p style="font-weight: 600; color: #ffffff; margin-bottom: 4px;">Marcus Rodriguez</p>
+                        <p style="font-size: 14px; color: rgba(255,255,255,0.6);">Founder & CEO, BuildRight</p>
+                        <p style="font-size: 13px; color: rgba(255,255,255,0.4);">50 employees, $12M ARR</p>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 32px;">
+                    <div style="margin-bottom: 20px;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--nk-orange)" stroke-width="1.5">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
+                    <p style="font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.9); margin-bottom: 24px;">
+                        "The Trust Formula revealed my blind spot: 89% credibility but only 31% vulnerability. I started sharing my thinking process and asking for help. Our team alignment went from 4/10 to 9/10 in 60 days."
+                    </p>
+                    <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                        <p style="font-weight: 600; color: #ffffff; margin-bottom: 4px;">David Kim</p>
+                        <p style="font-size: 14px; color: rgba(255,255,255,0.6);">CEO, NextGen Robotics</p>
+                        <p style="font-size: 13px; color: rgba(255,255,255,0.4);">Series B, 120 employees</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Beta Notice -->
+            <div style="margin-top: 40px; padding: 20px; background: rgba(127, 171, 200, 0.05); border: 1px solid rgba(127, 171, 200, 0.2); border-radius: 12px; text-align: center;">
+                <p style="font-size: 14px; color: rgba(255,255,255,0.7); margin: 0;">
+                    <em>Testimonials represent example transformations based on common coaching outcomes. Beta launching February 2026.</em>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Assessments Section -->
+    <section id="assessments" class="section section--dark">
+        <div class="container">
+            <p class="section__title">> ceo-lab --assess</p>
+            <h2 class="section__subtitle">Try an <em>Assessment</em></h2>
+            <p class="section__description">Jump in. See where you stand right now. <strong>Measure what matters.</strong> Track your evolution over time.</p>
+
+            <div class="assessment-grid">
+                <a href="#pricing" class="assessment-card assessment-card--blue">
+                    <div class="assessment-card__image">
+                        <img src="../assets/images/assessments/zone-of-genius.svg" alt="Zone of Genius Assessment">
+                    </div>
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">Zone of Genius</h3>
+                        <p class="assessment-card__desc">Discover what you do better than anyone else. Stop wasting time on tasks that drain you.</p>
+                        <span class="assessment-card__time">8 min</span>
+                    </div>
+                </a>
+
+                <a href="#pricing" class="assessment-card assessment-card--green">
+                    <div class="assessment-card__image">
+                        <img src="../assets/images/assessments/five-drivers.svg" alt="5 Drivers Assessment">
+                    </div>
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">5 Drivers Assessment</h3>
+                        <p class="assessment-card__desc">Uncover the hidden motivations behind every decision you make as a leader.</p>
+                        <span class="assessment-card__time">12 min</span>
+                    </div>
+                </a>
+
+                <a href="#pricing" class="assessment-card assessment-card--orange">
+                    <div class="assessment-card__image">
+                        <img src="../assets/images/assessments/ceo-test.svg" alt="CEO Test Assessment">
+                    </div>
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">CEO Test</h3>
+                        <p class="assessment-card__desc">Where do you really stand as a CEO? Get honest data on your leadership fundamentals.</p>
+                        <span class="assessment-card__time">15 min</span>
+                    </div>
+                </a>
+
+                <a href="#pricing" class="assessment-card assessment-card--yellow">
+                    <div class="assessment-card__image">
+                        <img src="../assets/images/assessments/trust-formula.svg" alt="Trust Formula Assessment">
+                    </div>
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">Trust Formula</h3>
+                        <p class="assessment-card__desc">Measure the four components of trust. See exactly where you're building or breaking it.</p>
+                        <span class="assessment-card__time">10 min</span>
+                    </div>
+                </a>
+
+                <a href="#pricing" class="assessment-card assessment-card--lilac">
+                    <div class="assessment-card__image">
+                        <img src="../assets/images/assessments/culture-diagnostics.svg" alt="Culture Diagnostics Assessment">
+                    </div>
+                    <div class="assessment-card__content">
+                        <h3 class="assessment-card__title">Culture Diagnostics</h3>
+                        <p class="assessment-card__desc">Is your culture an asset or a liability? Diagnose the gaps before they cost you.</p>
+                        <span class="assessment-card__time">20 min</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="btn-center">
+                <a href="#pricing" class="btn btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                        <polyline points="10 17 15 12 10 7"/>
+                        <line x1="15" y1="12" x2="3" y2="12"/>
+                    </svg>
+                    Start Free Trial
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="section">
+        <div class="container">
+            <p class="section__title">> ceo-lab --pricing</p>
+            <h2 class="section__subtitle">Transparent <em>Pricing</em></h2>
+            <p class="section__description">Start free. Upgrade when you see the value. Cancel anytime.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; margin-top: 60px; max-width: 900px; margin-left: auto; margin-right: auto;">
+                <!-- Free Trial -->
+                <div style="background: rgba(255,255,255,0.03); border: 2px solid rgba(127, 171, 200, 0.3); border-radius: 16px; padding: 40px;">
+                    <div style="margin-bottom: 24px;">
+                        <h3 style="font-size: 24px; font-weight: 600; margin-bottom: 8px;">Free Trial</h3>
+                        <div style="font-size: 48px; font-weight: 600; color: var(--nk-blue);">7 Days</div>
+                        <p style="font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 8px;">No credit card required</p>
+                    </div>
+
+                    <ul style="list-style: none; padding: 0; margin: 0 0 32px 0;">
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.8);">3 starter assessments</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.8);">Basic progress tracking</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.8);">Sample from one toolkit</span>
+                        </li>
+                    </ul>
+
+                    <a href="../subscribe.html" class="btn btn-secondary" style="width: 100%; justify-content: center;">
+                        Start Free Trial
+                    </a>
+                </div>
+
+                <!-- CEO Lab Pro -->
+                <div style="background: linear-gradient(135deg, rgba(127, 171, 200, 0.1) 0%, rgba(166, 190, 164, 0.1) 100%); border: 2px solid var(--nk-blue); border-radius: 16px; padding: 40px; position: relative;">
+                    <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--nk-blue); color: #000; padding: 4px 16px; border-radius: 6px; font-size: 12px; font-weight: 600;">
+                        RECOMMENDED
+                    </div>
+
+                    <div style="margin-bottom: 24px;">
+                        <h3 style="font-size: 24px; font-weight: 600; margin-bottom: 8px;">CEO Lab Pro</h3>
+                        <div style="font-size: 48px; font-weight: 600; color: var(--nk-blue);">
+                            $15<span style="font-size: 18px; font-weight: 400; color: rgba(255,255,255,0.6);">/month</span>
+                        </div>
+                        <p style="font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 8px;">Cancel anytime</p>
+                    </div>
+
+                    <ul style="list-style: none; padding: 0; margin: 0 0 32px 0;">
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.9); font-weight: 500;">Full library (50+ assessments)</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.9);">Unlimited progress tracking</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.9);">Weekly WhatsApp check-ins</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.9);">Monthly AI analysis reports</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.9);">4 comprehensive toolkits</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.9);">Beautiful Mind meditation app</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span style="color: rgba(255,255,255,0.9);">Full newsletter archive</span>
+                        </li>
+                    </ul>
+
+                    <a href="../subscribe.html" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+
+            <!-- Value Stack -->
+            <div style="margin-top: 60px; padding: 40px; background: rgba(127, 171, 200, 0.05); border: 1px solid rgba(127, 171, 200, 0.2); border-radius: 16px; max-width: 700px; margin-left: auto; margin-right: auto;">
+                <h3 style="text-align: center; margin-bottom: 32px; font-size: 20px;">What You Get for $15/month</h3>
+
+                <div style="display: grid; gap: 16px;">
+                    <div style="display: flex; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <span style="color: rgba(255,255,255,0.8);">50+ Leadership Assessments</span>
+                        <span style="color: rgba(255,255,255,0.5);">$2,500</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <span style="color: rgba(255,255,255,0.8);">Weekly Accountability Check-ins</span>
+                        <span style="color: rgba(255,255,255,0.5);">$200/mo</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <span style="color: rgba(255,255,255,0.8);">Monthly AI Analysis</span>
+                        <span style="color: rgba(255,255,255,0.5);">$100/mo</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <span style="color: rgba(255,255,255,0.8);">4 Comprehensive Toolkits</span>
+                        <span style="color: rgba(255,255,255,0.5);">$1,200</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <span style="color: rgba(255,255,255,0.8);">Beautiful Mind Meditation App</span>
+                        <span style="color: rgba(255,255,255,0.5);">$15/mo</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <span style="color: rgba(255,255,255,0.8);">Newsletter Archive Access</span>
+                        <span style="color: rgba(255,255,255,0.5);">$10/mo</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 24px; padding-top: 24px; border-top: 2px solid rgba(127, 171, 200, 0.3); display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 4px;">Total Value</div>
+                        <div style="font-size: 32px; font-weight: 600; color: rgba(255,255,255,0.4); text-decoration: line-through;">$4,025+</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 14px; color: var(--nk-blue); margin-bottom: 4px;">Your Price</div>
+                        <div style="font-size: 48px; font-weight: 600; color: var(--nk-blue);">$15</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="section section--dark">
+        <div class="container">
+            <p class="section__title">> ceo-lab --faq</p>
+            <h2 class="section__subtitle">Common <em>Questions</em></h2>
+
+            <div style="max-width: 800px; margin: 60px auto 0; display: flex; flex-direction: column; gap: 24px;">
+                <!-- FAQ 1 -->
+                <details style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
+                    <summary style="font-size: 18px; font-weight: 600; cursor: pointer; color: #ffffff;">
+                        How is this different from a course?
+                    </summary>
+                    <p style="margin-top: 16px; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                        Courses give you information. CEO Lab gives you measurement. You track your actual evolution over time with data, not hope.
+                    </p>
+                </details>
+
+                <!-- FAQ 2 -->
+                <details style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
+                    <summary style="font-size: 18px; font-weight: 600; cursor: pointer; color: #ffffff;">
+                        How long does it take?
+                    </summary>
+                    <p style="margin-top: 16px; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                        8-20 minutes per month for assessments. 2 minutes per week for check-ins. Less time than your daily coffee run.
+                    </p>
+                </details>
+
+                <!-- FAQ 3 -->
+                <details style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
+                    <summary style="font-size: 18px; font-weight: 600; cursor: pointer; color: #ffffff;">
+                        What if I'm too busy to keep up?
+                    </summary>
+                    <p style="margin-top: 16px; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                        That's exactly why you need this. The system keeps you accountable with minimal time investment. We reach out to you, not the other way around.
+                    </p>
+                </details>
+
+                <!-- FAQ 4 -->
+                <details style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
+                    <summary style="font-size: 18px; font-weight: 600; cursor: pointer; color: #ffffff;">
+                        Is my data private?
+                    </summary>
+                    <p style="margin-top: 16px; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                        Completely. Bank-level encryption. Your leadership data is yours alone. We never share or sell your information.
+                    </p>
+                </details>
+
+                <!-- FAQ 5 -->
+                <details style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
+                    <summary style="font-size: 18px; font-weight: 600; cursor: pointer; color: #ffffff;">
+                        Can I cancel anytime?
+                    </summary>
+                    <p style="margin-top: 16px; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                        Yes. No contracts. Cancel with one click. But most members stay because they finally see their growth in real numbers.
+                    </p>
+                </details>
+
+                <!-- FAQ 6 -->
+                <details style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
+                    <summary style="font-size: 18px; font-weight: 600; cursor: pointer; color: #ffffff;">
+                        Who is this for?
+                    </summary>
+                    <p style="margin-top: 16px; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                        CEOs, founders, and leaders who want to measure their growth instead of guessing. If you're responsible for a team, this is for you.
+                    </p>
+                </details>
+
+                <!-- FAQ 7 -->
+                <details style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
+                    <summary style="font-size: 18px; font-weight: 600; cursor: pointer; color: #ffffff;">
+                        What if I don't see results?
+                    </summary>
+                    <p style="margin-top: 16px; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                        7-day free trial. If you don't get value from your first assessment, cancel before the trial ends. Zero risk.
+                    </p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="section">
+        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <p class="section__title">> ceo-lab --start</p>
+            <h2 class="section__subtitle">Stop Guessing. <em>Start Measuring.</em></h2>
+
+            <p style="font-size: 24px; line-height: 1.5; color: rgba(255,255,255,0.9); margin: 40px 0;">
+                Most CEOs spend 10 years wondering if they're getting better.<br>
+                CEO Lab members know their answer in 90 days.
+            </p>
+
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 40px; margin: 48px 0; text-align: left;">
+                <h3 style="font-size: 20px; margin-bottom: 24px; text-align: center;">Here's What Happens Next:</h3>
+                <ol style="list-style: decimal; padding-left: 24px; color: rgba(255,255,255,0.8); line-height: 2;">
+                    <li>Start your 7-day free trial (no credit card)</li>
+                    <li>Complete your first assessment (8 minutes)</li>
+                    <li>See where you stand today</li>
+                    <li>Track your evolution over time</li>
+                </ol>
+            </div>
+
+            <div style="background: rgba(127, 171, 200, 0.1); border: 1px solid rgba(127, 171, 200, 0.3); border-radius: 16px; padding: 32px; margin: 48px 0;">
+                <h3 style="font-size: 18px; margin-bottom: 20px;">Your Leadership Affects Everything:</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; text-align: center;">
+                    <div>
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="margin: 0 auto 8px;">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                        <p style="font-size: 14px; color: rgba(255,255,255,0.8);">Team Performance</p>
+                    </div>
+                    <div>
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="margin: 0 auto 8px;">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        <p style="font-size: 14px; color: rgba(255,255,255,0.8);">Company Culture</p>
+                    </div>
+                    <div>
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="margin: 0 auto 8px;">
+                            <line x1="12" y1="1" x2="12" y2="23"/>
+                            <polyline points="17 5 12 1 7 5"/>
+                            <polyline points="7 19 12 23 17 19"/>
+                        </svg>
+                        <p style="font-size: 14px; color: rgba(255,255,255,0.8);">Ability to Scale</p>
+                    </div>
+                    <div>
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--nk-blue)" stroke-width="2" style="margin: 0 auto 8px;">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        <p style="font-size: 14px; color: rgba(255,255,255,0.8);">Personal Fulfillment</p>
+                    </div>
+                </div>
+            </div>
+
+            <p style="font-size: 28px; font-weight: 500; color: rgba(255,255,255,0.9); margin: 48px 0;">
+                Can you afford to keep guessing?
+            </p>
+
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 40px;">
+                <a href="../subscribe.html" class="btn btn-primary" style="font-size: 18px; padding: 16px 40px;">
+                    Start Free Trial
+                </a>
+                <a href="#assessments" class="btn btn-secondary" style="font-size: 18px; padding: 16px 40px;">
+                    See Sample Assessment
+                </a>
+            </div>
+
+            <!-- Trust Badges -->
+            <div style="display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-top: 48px; font-size: 14px; color: rgba(255,255,255,0.6);">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    <span>Bank-level security</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    <span>Cancel anytime</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                        <line x1="1" y1="10" x2="23" y2="10"/>
+                    </svg>
+                    <span>No credit card for trial</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h4>CEO Lab</h4>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.6;">
+                        Measure your leadership. Track your growth. Have the evidence.
+                    </p>
+                </div>
+
+                <div class="footer__section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#assessments">Assessments</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="../login.html">Member Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="../privacy.html">Privacy Policy</a></li>
+                        <li><a href="../terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__section">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="https://nikolaskonstantin.com" target="_blank">Website</a></li>
+                        <li><a href="https://linkedin.com/in/nikolaskonstantin" target="_blank">LinkedIn</a></li>
+                        <li><a href="mailto:nikolas@forchiefs.com">Email</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <p>&copy; 2026 Nikolas Konstantin. All rights reserved.</p>
+                <p style="margin-top: 0.5rem; font-size: 0.875rem; color: rgba(255,255,255,0.5);">
+                    Testimonials represent example transformations. Results may vary. Beta launching February 2026.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/hero-scroll.js"></script>
+    <script src="../landing.js"></script>
+</body>
+</html>

@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features Section - CEO Lab Template</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --nk-bg-primary: #1a1a1a;
+            --nk-bg-dark: #0a0a0a;
+            --nk-blue: #7FABC8;
+            --nk-green: #A6BEA4;
+            --nk-yellow: #C6A55B;
+            --nk-orange: #E08F6A;
+            --nk-lilac: #C7B9D3;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--nk-bg-primary);
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 100px 0;
+            background: var(--nk-bg-primary);
+        }
+
+        .features-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        .features-header {
+            margin-bottom: 48px;
+        }
+
+        .features-title {
+            font-family: 'Monaco', monospace;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 16px;
+        }
+
+        .features-subtitle {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 56px;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .features-subtitle em {
+            font-style: normal;
+            color: var(--nk-blue);
+        }
+
+        .features-description {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 800px;
+        }
+
+        /* Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+        }
+
+        .feature-card {
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 28px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(127, 171, 200, 0.15);
+        }
+
+        /* Card sizes */
+        .feature-card--2col {
+            grid-column: span 2;
+        }
+
+        .feature-card--3col {
+            grid-column: span 3;
+        }
+
+        .feature-card--4col {
+            grid-column: span 4;
+        }
+
+        .feature-card--full {
+            grid-column: span 6;
+        }
+
+        /* Icon */
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .feature-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: var(--nk-blue);
+        }
+
+        /* Stat Circle */
+        .stat-circle {
+            position: relative;
+            width: 180px;
+            height: 70px;
+            margin: 0 auto 20px;
+        }
+
+        .stat-circle-bg {
+            position: absolute;
+            inset: 0;
+            color: rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        /* Content */
+        .feature-title {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .feature-title--large {
+            font-size: 42px;
+            text-align: center;
+        }
+
+        .feature-description {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.55);
+            line-height: 1.5;
+        }
+
+        .feature-description--center {
+            text-align: center;
+        }
+
+        /* Chart Mockup */
+        .chart-mockup {
+            width: 100%;
+            height: 100px;
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .chart-line {
+            stroke: var(--nk-blue);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .chart-fill {
+            fill: url(#chartGradient);
+        }
+
+        /* Split Layout */
+        .feature-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .feature-visual {
+            position: relative;
+        }
+
+        /* Download Badge */
+        .download-badge {
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px 18px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .download-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(127, 171, 200, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .download-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--nk-blue);
+        }
+
+        .download-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .download-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .download-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        /* Metric Badge */
+        .metric-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(127, 171, 200, 0.1);
+            border: 1px solid rgba(127, 171, 200, 0.2);
+            border-radius: 7px;
+            font-size: 13px;
+            color: var(--nk-blue);
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .feature-card--2col,
+            .feature-card--3col,
+            .feature-card--4col {
+                grid-column: span 3;
+            }
+
+            .feature-split {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .features-section {
+                padding: 80px 0;
+            }
+
+            .features-subtitle {
+                font-size: 48px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .feature-card--2col,
+            .feature-card--3col,
+            .feature-card--4col,
+            .feature-card--full {
+                grid-column: span 1;
+            }
+
+            .feature-card {
+                padding: 32px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="features-section">
+        <div class="features-container">
+            <!-- Header -->
+            <div class="features-header">
+                <p class="features-title">> ceo-lab --features</p>
+                <h2 class="features-subtitle">Everything You Need to <em>Lead</em></h2>
+                <p class="features-description">Proven frameworks, real-time tracking, and AI-powered insights. Built for CEOs who measure what matters.</p>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="features-grid">
+                <!-- Card 1: 100% Customizable -->
+                <div class="feature-card feature-card--2col">
+                    <div class="stat-circle">
+                        <svg class="stat-circle-bg" viewBox="0 0 254 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M112.891 97.7022C140.366 97.0802 171.004 94.6715 201.087 87.5116C210.43 85.2881 219.615 82.6412 228.284 78.2473C232.198 76.3179 235.905 73.9942 239.348 71.3124C241.85 69.2557 243.954 66.7571 245.555 63.9408C249.34 57.3235 248.281 50.5341 242.498 45.6109C239.033 42.7237 235.228 40.2703 231.169 38.3054C219.443 32.7209 207.141 28.4382 194.482 25.534C184.013 23.1927 173.358 21.7755 162.64 21.2989C161.376 21.3512 160.113 21.181 158.908 20.796C158.034 20.399 156.857 19.1682 156.962 18.4535C157.115 17.8927 157.381 17.3689 157.743 16.9139C158.104 16.4588 158.555 16.0821 159.067 15.8066C160.14 15.4683 161.274 15.3733 162.389 15.5286C179.805 15.3566 196.626 18.8373 212.998 24.462C220.978 27.2494 228.798 30.4747 236.423 34.1232C240.476 36.1159 244.202 38.7131 247.474 41.8258C254.342 48.2578 255.745 56.9397 251.841 65.4892C249.793 69.8582 246.736 73.6777 242.921 76.6327C236.224 82.0192 228.522 85.4602 220.502 88.2924C205.017 93.7847 188.964 96.9081 172.738 99.2109C153.442 101.949 133.993 103.478 114.506 103.79C91.1468 104.161 67.9334 102.97 45.1169 97.5831C36.0094 95.5616 27.2626 92.1655 19.1771 87.5116C13.839 84.5746 9.1557 80.5802 5.41318 75.7725C-0.54238 67.7259 -1.13794 59.1763 3.25594 50.2827C5.82447 45.3918 9.29572 41.0315 13.4863 37.4319C24.2989 27.5721 37.0438 20.9681 50.5431 15.7272C68.1451 8.8849 86.4883 5.1395 105.175 2.83669C129.045 0.0992292 153.151 0.134761 177.013 2.94256C197.672 5.23215 218.04 9.01724 237.588 16.3889C240.089 17.3418 242.498 18.5197 244.933 19.6446C246.627 20.4387 247.725 21.6695 246.997 23.615C246.455 25.1105 244.814 25.5605 242.63 24.5811C230.322 18.9961 217.233 16.1904 204.117 13.4376C188.761 10.3438 173.2 8.36665 157.558 7.52174C129.914 5.70776 102.154 8.06792 75.2124 14.5228C60.6177 17.8788 46.5758 23.2977 33.5102 30.6161C26.6595 34.3329 20.4123 39.0673 14.9818 44.658C12.9433 46.8071 11.1336 49.1622 9.58207 51.6855C4.87056 59.5336 5.61172 67.2494 11.9246 73.7608C15.2064 77.0494 18.8775 79.925 22.8564 82.3236C31.6176 87.7101 41.3848 90.5291 51.3902 92.5804C70.6068 96.5773 90.0219 97.7419 112.891 97.7022Z"
+                                fill="currentColor"
+                            />
+                        </svg>
+                        <span class="stat-value">100%</span>
+                    </div>
+                    <h3 class="feature-title feature-title--large">Customizable</h3>
+                    <p class="feature-description feature-description--center">Adapt every framework and tool to your unique leadership style and company culture.</p>
+                </div>
+
+                <!-- Card 2: Secure by Default -->
+                <div class="feature-card feature-card--2col">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Secure by Default</h3>
+                    <p class="feature-description">Your leadership data is encrypted and private. Bank-level security for sensitive insights.</p>
+                </div>
+
+                <!-- Card 3: Real-time Tracking -->
+                <div class="feature-card feature-card--2col">
+                    <div class="chart-mockup">
+                        <svg viewBox="0 0 386 123" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" style="stop-color: rgba(127, 171, 200, 0.2); stop-opacity: 1" />
+                                    <stop offset="100%" style="stop-color: rgba(127, 171, 200, 0); stop-opacity: 0" />
+                                </linearGradient>
+                            </defs>
+                            <path class="chart-fill" d="M3 123C3 123 14.3298 94.153 35.1282 88.0957C55.9266 82.0384 65.9333 80.5508 65.9333 80.5508C65.9333 80.5508 80.699 80.5508 92.1777 80.5508C103.656 80.5508 100.887 63.5348 109.06 63.5348C117.233 63.5348 117.217 91.9728 124.78 91.9728C132.343 91.9728 142.264 78.03 153.831 80.5508C165.398 83.0716 186.825 91.9728 193.761 91.9728C200.697 91.9728 206.296 63.5348 214.07 63.5348C221.844 63.5348 238.653 93.7771 244.234 91.9728C249.814 90.1684 258.8 60 266.19 60C272.075 60 284.1 88.057 286.678 88.0957C294.762 88.2171 300.192 72.9284 305.423 72.9284C312.323 72.9284 323.377 65.2437 335.553 63.5348C347.729 61.8259 348.218 82.07 363.639 80.5508C367.875 80.1335 372.949 82.2017 376.437 87.1008C379.446 91.3274 381.054 97.4325 382.521 104.647C383.479 109.364 382.521 123 382.521 123" />
+                            <path class="chart-line" d="M3 121.077C3 121.077 15.3041 93.6691 36.0195 87.756C56.7349 81.8429 66.6632 80.9723 66.6632 80.9723C66.6632 80.9723 80.0327 80.9723 91.4656 80.9723C102.898 80.9723 100.415 64.2824 108.556 64.2824C116.696 64.2824 117.693 92.1332 125.226 92.1332C132.759 92.1332 142.07 78.5115 153.591 80.9723C165.113 83.433 186.092 92.1332 193 92.1332C199.908 92.1332 205.274 64.2824 213.017 64.2824C220.76 64.2824 237.832 93.8946 243.39 92.1332C248.948 90.3718 257.923 60.5 265.284 60.5C271.145 60.5 283.204 87.7182 285.772 87.756C293.823 87.8746 299.2 73.0802 304.411 73.0802C311.283 73.0802 321.425 65.9506 333.552 64.2824C345.68 62.6141 346.91 82.4553 362.27 80.9723C377.629 79.4892 383 106.605 383 106.605" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Real-time Tracking</h3>
+                    <p class="feature-description">See your leadership growth in real numbers. Track progress across all assessments over time.</p>
+                </div>
+
+                <!-- Card 4: 50+ Frameworks -->
+                <div class="feature-card feature-card--3col">
+                    <div class="feature-split">
+                        <div>
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                </svg>
+                            </div>
+                            <h3 class="feature-title">50+ Proven Frameworks</h3>
+                            <p class="feature-description">Battle-tested tools from $15,000 coaching engagements. Download and use immediately.</p>
+                            <div style="margin-top: 24px;">
+                                <span class="metric-badge">Updated Monthly</span>
+                            </div>
+                        </div>
+                        <div class="feature-visual">
+                            <div class="download-badge">
+                                <div class="download-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="7 10 12 15 17 10"/>
+                                        <line x1="12" y1="15" x2="12" y2="3"/>
+                                    </svg>
+                                </div>
+                                <div class="download-text">
+                                    <span class="download-label">Downloads this month</span>
+                                    <span class="download-value">1,447 PDFs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5: AI-Powered Insights -->
+                <div class="feature-card feature-card--3col">
+                    <div class="feature-split">
+                        <div>
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                                    <line x1="12" y1="22.08" x2="12" y2="12"/>
+                                </svg>
+                            </div>
+                            <h3 class="feature-title">AI-Powered Analysis</h3>
+                            <p class="feature-description">Monthly AI finds patterns you miss. One focused recommendation for maximum impact.</p>
+                        </div>
+                        <div class="feature-visual">
+                            <div style="background: rgba(127, 171, 200, 0.05); border: 1px solid rgba(127, 171, 200, 0.15); border-radius: 12px; padding: 20px;">
+                                <div style="font-size: 12px; color: rgba(255, 255, 255, 0.4); margin-bottom: 8px;">AI Insight:</div>
+                                <div style="font-size: 14px; color: #ffffff; line-height: 1.6;">
+                                    "Your <strong style="color: var(--nk-blue);">Trust Formula</strong> scores are consistently high, but <strong style="color: var(--nk-orange);">Zone of Genius</strong> delegation is low. Consider empowering your team more."
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="features-section" style="padding-top: 0;">
+        <div class="features-container">
+            <!-- Header -->
+            <div class="features-header">
+                <p class="features-title">> ceo-lab --process</p>
+                <h2 class="features-subtitle">Your Leadership Growth, <em>Systematized</em></h2>
+                <p class="features-description">Five simple steps to measure and accelerate your leadership growth.</p>
+            </div>
+
+            <!-- Process Grid -->
+            <div class="features-grid">
+                <!-- Card 1: 50+ Frameworks (Simplified) -->
+                <div class="feature-card feature-card--2col">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">50+ Proven Frameworks</h3>
+                    <p class="feature-description">Battle-tested tools from $15,000 coaching engagements. Explore frameworks and apply decision-making tools in real time.</p>
+                    <div style="margin-top: 20px;">
+                        <span class="metric-badge">Updated Monthly</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Secure by Default -->
+                <div class="feature-card feature-card--2col">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Secure by Default</h3>
+                    <p class="feature-description">Your leadership data is encrypted and private. Bank-level security for sensitive insights.</p>
+                </div>
+
+                <!-- Card 3: Real-time Tracking -->
+                <div class="feature-card feature-card--2col">
+                    <div class="chart-mockup">
+                        <svg viewBox="0 0 386 123" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="chartGradient2" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" style="stop-color: rgba(127, 171, 200, 0.2); stop-opacity: 1" />
+                                    <stop offset="100%" style="stop-color: rgba(127, 171, 200, 0); stop-opacity: 0" />
+                                </linearGradient>
+                            </defs>
+                            <path class="chart-fill" d="M3 123C3 123 14.3298 94.153 35.1282 88.0957C55.9266 82.0384 65.9333 80.5508 65.9333 80.5508C65.9333 80.5508 80.699 80.5508 92.1777 80.5508C103.656 80.5508 100.887 63.5348 109.06 63.5348C117.233 63.5348 117.217 91.9728 124.78 91.9728C132.343 91.9728 142.264 78.03 153.831 80.5508C165.398 83.0716 186.825 91.9728 193.761 91.9728C200.697 91.9728 206.296 63.5348 214.07 63.5348C221.844 63.5348 238.653 93.7771 244.234 91.9728C249.814 90.1684 258.8 60 266.19 60C272.075 60 284.1 88.057 286.678 88.0957C294.762 88.2171 300.192 72.9284 305.423 72.9284C312.323 72.9284 323.377 65.2437 335.553 63.5348C347.729 61.8259 348.218 82.07 363.639 80.5508C367.875 80.1335 372.949 82.2017 376.437 87.1008C379.446 91.3274 381.054 97.4325 382.521 104.647C383.479 109.364 382.521 123 382.521 123" fill="url(#chartGradient2)" />
+                            <path class="chart-line" d="M3 121.077C3 121.077 15.3041 93.6691 36.0195 87.756C56.7349 81.8429 66.6632 80.9723 66.6632 80.9723C66.6632 80.9723 80.0327 80.9723 91.4656 80.9723C102.898 80.9723 100.415 64.2824 108.556 64.2824C116.696 64.2824 117.693 92.1332 125.226 92.1332C132.759 92.1332 142.07 78.5115 153.591 80.9723C165.113 83.433 186.092 92.1332 193 92.1332C199.908 92.1332 205.274 64.2824 213.017 64.2824C220.76 64.2824 237.832 93.8946 243.39 92.1332C248.948 90.3718 257.923 60.5 265.284 60.5C271.145 60.5 283.204 87.7182 285.772 87.756C293.823 87.8746 299.2 73.0802 304.411 73.0802C311.283 73.0802 321.425 65.9506 333.552 64.2824C345.68 62.6141 346.91 82.4553 362.27 80.9723C377.629 79.4892 383 106.605 383 106.605" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Real-time Tracking</h3>
+                    <p class="feature-description">See your leadership growth in real numbers. Track progress across all assessments over time.</p>
+                </div>
+
+                <!-- Card 4: The Big One - Assess + Check-ins + Reports -->
+                <div class="feature-card feature-card--3col">
+                    <div class="feature-split" style="gap: 24px;">
+                        <div>
+                            <h3 class="feature-title" style="font-size: 24px; margin-bottom: 12px;">Track Your Growth</h3>
+                            <p class="feature-description" style="font-size: 16px; margin-bottom: 24px;">Complete monthly assessments, get weekly WhatsApp check-ins, and review your progress with automated reports.</p>
+
+                            <div style="display: flex; flex-direction: column; gap: 16px;">
+                                <!-- Assess -->
+                                <div style="display: flex; gap: 12px; align-items: start;">
+                                    <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(127, 171, 200, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; stroke: var(--nk-blue);">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                            <polyline points="14 2 14 8 20 8"/>
+                                            <line x1="16" y1="13" x2="8" y2="13"/>
+                                            <line x1="16" y1="17" x2="8" y2="17"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 style="font-size: 15px; font-weight: 600; color: #ffffff; margin-bottom: 4px;">Monthly Assessments</h4>
+                                        <p style="font-size: 13px; color: rgba(255, 255, 255, 0.6);">Complete assessments to track your leadership skills over time</p>
+                                    </div>
+                                </div>
+
+                                <!-- Check-ins -->
+                                <div style="display: flex; gap: 12px; align-items: start;">
+                                    <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(166, 190, 164, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; stroke: var(--nk-green);">
+                                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 style="font-size: 15px; font-weight: 600; color: #ffffff; margin-bottom: 4px;">Weekly Check-Ins</h4>
+                                        <p style="font-size: 13px; color: rgba(255, 255, 255, 0.6);">We reach out to you weekly via WhatsApp to reflect and respond</p>
+                                    </div>
+                                </div>
+
+                                <!-- Reports -->
+                                <div style="display: flex; gap: 12px; align-items: start;">
+                                    <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(224, 143, 106, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; stroke: var(--nk-orange);">
+                                            <line x1="12" y1="1" x2="12" y2="23"/>
+                                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 style="font-size: 15px; font-weight: 600; color: #ffffff; margin-bottom: 4px;">Growth Reports</h4>
+                                        <p style="font-size: 13px; color: rgba(255, 255, 255, 0.6);">Review your monthly progress with detailed insights and trends</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual mockup -->
+                        <div class="feature-visual" style="min-width: 260px;">
+                            <div style="background: rgba(10, 10, 10, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; padding: 20px;">
+                                <!-- Progress circles -->
+                                <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+                                    <div style="text-align: center;">
+                                        <div style="width: 52px; height: 52px; border-radius: 50%; background: conic-gradient(var(--nk-blue) 0% 75%, rgba(127, 171, 200, 0.1) 75% 100%); display: flex; align-items: center; justify-content: center; margin: 0 auto 6px;">
+                                            <div style="width: 42px; height: 42px; border-radius: 50%; background: rgba(10, 10, 10, 0.8); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;">75%</div>
+                                        </div>
+                                        <div style="font-size: 10px; color: rgba(255, 255, 255, 0.5);">Trust</div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="width: 52px; height: 52px; border-radius: 50%; background: conic-gradient(var(--nk-green) 0% 60%, rgba(166, 190, 164, 0.1) 60% 100%); display: flex; align-items: center; justify-content: center; margin: 0 auto 6px;">
+                                            <div style="width: 42px; height: 42px; border-radius: 50%; background: rgba(10, 10, 10, 0.8); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;">60%</div>
+                                        </div>
+                                        <div style="font-size: 10px; color: rgba(255, 255, 255, 0.5);">Focus</div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="width: 52px; height: 52px; border-radius: 50%; background: conic-gradient(var(--nk-orange) 0% 85%, rgba(224, 143, 106, 0.1) 85% 100%); display: flex; align-items: center; justify-content: center; margin: 0 auto 6px;">
+                                            <div style="width: 42px; height: 42px; border-radius: 50%; background: rgba(10, 10, 10, 0.8); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;">85%</div>
+                                        </div>
+                                        <div style="font-size: 10px; color: rgba(255, 255, 255, 0.5);">Vision</div>
+                                    </div>
+                                </div>
+
+                                <!-- Mini chart -->
+                                <div style="height: 70px; margin-bottom: 14px; position: relative;">
+                                    <svg viewBox="0 0 200 80" style="width: 100%; height: 100%;">
+                                        <defs>
+                                            <linearGradient id="miniGradient" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" style="stop-color: rgba(127, 171, 200, 0.2); stop-opacity: 1" />
+                                                <stop offset="100%" style="stop-color: rgba(127, 171, 200, 0); stop-opacity: 0" />
+                                            </linearGradient>
+                                        </defs>
+                                        <path d="M0 60 L25 55 L50 50 L75 45 L100 40 L125 35 L150 30 L175 28 L200 25 L200 80 L0 80 Z" fill="url(#miniGradient)" />
+                                        <path d="M0 60 L25 55 L50 50 L75 45 L100 40 L125 35 L150 30 L175 28 L200 25" stroke="var(--nk-blue)" stroke-width="2" fill="none" />
+                                    </svg>
+                                </div>
+
+                                <!-- Stats -->
+                                <div style="display: flex; justify-content: space-between; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                                    <div>
+                                        <div style="font-size: 10px; color: rgba(255, 255, 255, 0.4);">This Month</div>
+                                        <div style="font-size: 15px; font-weight: 600; color: var(--nk-blue);">+12%</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 10px; color: rgba(255, 255, 255, 0.4);">Check-ins</div>
+                                        <div style="font-size: 15px; font-weight: 600; color: var(--nk-green);">4/4</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 10px; color: rgba(255, 255, 255, 0.4);">Streak</div>
+                                        <div style="font-size: 15px; font-weight: 600; color: var(--nk-orange);">8 wks</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5: AI-Powered Insights -->
+                <div class="feature-card feature-card--3col">
+                    <div class="feature-split">
+                        <div>
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                                    <line x1="12" y1="22.08" x2="12" y2="12"/>
+                                </svg>
+                            </div>
+                            <h3 class="feature-title">AI-Powered Analysis</h3>
+                            <p class="feature-description">Monthly AI finds patterns you miss. One focused recommendation for maximum impact.</p>
+                        </div>
+                        <div class="feature-visual">
+                            <div style="background: rgba(127, 171, 200, 0.05); border: 1px solid rgba(127, 171, 200, 0.15); border-radius: 12px; padding: 20px;">
+                                <div style="font-size: 12px; color: rgba(255, 255, 255, 0.4); margin-bottom: 8px;">AI Insight:</div>
+                                <div style="font-size: 14px; color: #ffffff; line-height: 1.6;">
+                                    "Your <strong style="color: var(--nk-blue);">Trust Formula</strong> scores are consistently high, but <strong style="color: var(--nk-orange);">Zone of Genius</strong> delegation is low. Consider empowering your team more."
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OPTION 2: Split Process Section (Actions vs Results) -->
+    <section class="features-section" style="padding-top: 0; background: #0f0f0f;">
+        <div class="features-container">
+            <!-- Header -->
+            <div class="features-header">
+                <p class="features-title">> ceo-lab --process-v2</p>
+                <h2 class="features-subtitle">Your Leadership Growth, <em>Systematized</em></h2>
+                <p class="features-description">Five simple steps to measure and accelerate your leadership growth.</p>
+            </div>
+
+            <!-- Process Grid -->
+            <div class="features-grid">
+                <!-- Card 1: 50+ Frameworks -->
+                <div class="feature-card feature-card--2col">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">50+ Proven Frameworks</h3>
+                    <p class="feature-description">Battle-tested tools from $15,000 coaching engagements. Explore frameworks and apply decision-making tools in real time.</p>
+                    <div style="margin-top: 20px;">
+                        <span class="metric-badge">Updated Monthly</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Secure by Default -->
+                <div class="feature-card feature-card--2col">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Secure by Default</h3>
+                    <p class="feature-description">Your leadership data is encrypted and private. Bank-level security for sensitive insights.</p>
+                </div>
+
+                <!-- Card 3: Real-time Tracking -->
+                <div class="feature-card feature-card--2col">
+                    <div class="chart-mockup">
+                        <svg viewBox="0 0 386 123" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="chartGradient3" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" style="stop-color: rgba(127, 171, 200, 0.2); stop-opacity: 1" />
+                                    <stop offset="100%" style="stop-color: rgba(127, 171, 200, 0); stop-opacity: 0" />
+                                </linearGradient>
+                            </defs>
+                            <path class="chart-fill" d="M3 123C3 123 14.3298 94.153 35.1282 88.0957C55.9266 82.0384 65.9333 80.5508 65.9333 80.5508C65.9333 80.5508 80.699 80.5508 92.1777 80.5508C103.656 80.5508 100.887 63.5348 109.06 63.5348C117.233 63.5348 117.217 91.9728 124.78 91.9728C132.343 91.9728 142.264 78.03 153.831 80.5508C165.398 83.0716 186.825 91.9728 193.761 91.9728C200.697 91.9728 206.296 63.5348 214.07 63.5348C221.844 63.5348 238.653 93.7771 244.234 91.9728C249.814 90.1684 258.8 60 266.19 60C272.075 60 284.1 88.057 286.678 88.0957C294.762 88.2171 300.192 72.9284 305.423 72.9284C312.323 72.9284 323.377 65.2437 335.553 63.5348C347.729 61.8259 348.218 82.07 363.639 80.5508C367.875 80.1335 372.949 82.2017 376.437 87.1008C379.446 91.3274 381.054 97.4325 382.521 104.647C383.479 109.364 382.521 123 382.521 123" fill="url(#chartGradient3)" />
+                            <path class="chart-line" d="M3 121.077C3 121.077 15.3041 93.6691 36.0195 87.756C56.7349 81.8429 66.6632 80.9723 66.6632 80.9723C66.6632 80.9723 80.0327 80.9723 91.4656 80.9723C102.898 80.9723 100.415 64.2824 108.556 64.2824C116.696 64.2824 117.693 92.1332 125.226 92.1332C132.759 92.1332 142.07 78.5115 153.591 80.9723C165.113 83.433 186.092 92.1332 193 92.1332C199.908 92.1332 205.274 64.2824 213.017 64.2824C220.76 64.2824 237.832 93.8946 243.39 92.1332C248.948 90.3718 257.923 60.5 265.284 60.5C271.145 60.5 283.204 87.7182 285.772 87.756C293.823 87.8746 299.2 73.0802 304.411 73.0802C311.283 73.0802 321.425 65.9506 333.552 64.2824C345.68 62.6141 346.91 82.4553 362.27 80.9723C377.629 79.4892 383 106.605 383 106.605" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Real-time Tracking</h3>
+                    <p class="feature-description">See your leadership growth in real numbers. Track progress across all assessments over time.</p>
+                </div>
+
+                <!-- Card 4: Track Your Progress (Actions) -->
+                <div class="feature-card feature-card--3col">
+                    <div class="feature-split" style="gap: 24px;">
+                        <div>
+                            <h3 class="feature-title" style="font-size: 24px; margin-bottom: 12px;">Track Your Progress</h3>
+                            <p class="feature-description" style="font-size: 16px; margin-bottom: 24px;">Build the habit of consistent self-assessment and reflection.</p>
+
+                            <div style="display: flex; flex-direction: column; gap: 16px;">
+                                <!-- Monthly Assessments -->
+                                <div style="display: flex; gap: 12px; align-items: start;">
+                                    <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(127, 171, 200, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; stroke: var(--nk-blue);">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                            <polyline points="14 2 14 8 20 8"/>
+                                            <line x1="16" y1="13" x2="8" y2="13"/>
+                                            <line x1="16" y1="17" x2="8" y2="17"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 style="font-size: 15px; font-weight: 600; color: #ffffff; margin-bottom: 4px;">Monthly Assessments</h4>
+                                        <p style="font-size: 13px; color: rgba(255, 255, 255, 0.6);">Complete assessments to track your leadership skills over time</p>
+                                    </div>
+                                </div>
+
+                                <!-- Weekly Check-ins -->
+                                <div style="display: flex; gap: 12px; align-items: start;">
+                                    <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(166, 190, 164, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; stroke: var(--nk-green);">
+                                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 style="font-size: 15px; font-weight: 600; color: #ffffff; margin-bottom: 4px;">Weekly Check-Ins</h4>
+                                        <p style="font-size: 13px; color: rgba(255, 255, 255, 0.6);">We reach out weekly via WhatsApp for quick reflections</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual mockup - simplified check-in visual -->
+                        <div class="feature-visual" style="min-width: 260px;">
+                            <div style="background: rgba(10, 10, 10, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; padding: 20px;">
+                                <!-- Calendar/Schedule visual -->
+                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px;">
+                                    <div style="aspect-ratio: 1; background: rgba(127, 171, 200, 0.2); border: 1px solid rgba(127, 171, 200, 0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; stroke: var(--nk-blue);">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div style="aspect-ratio: 1; background: rgba(127, 171, 200, 0.2); border: 1px solid rgba(127, 171, 200, 0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; stroke: var(--nk-blue);">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div style="aspect-ratio: 1; background: rgba(127, 171, 200, 0.2); border: 1px solid rgba(127, 171, 200, 0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; stroke: var(--nk-blue);">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div style="aspect-ratio: 1; background: rgba(127, 171, 200, 0.05); border: 1px solid rgba(127, 171, 200, 0.15); border-radius: 8px;"></div>
+                                </div>
+
+                                <div style="text-align: center; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                                    <div style="font-size: 10px; color: rgba(255, 255, 255, 0.4); margin-bottom: 6px;">Current Streak</div>
+                                    <div style="font-size: 28px; font-weight: 600; color: var(--nk-blue);">8 weeks</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5: Measure Your Growth (Results) -->
+                <div class="feature-card feature-card--3col">
+                    <div class="feature-split" style="gap: 24px;">
+                        <div>
+                            <h3 class="feature-title" style="font-size: 24px; margin-bottom: 12px;">Measure Your Growth</h3>
+                            <p class="feature-description" style="font-size: 16px; margin-bottom: 24px;">See patterns in your progress and get AI-powered insights.</p>
+
+                            <div style="display: flex; flex-direction: column; gap: 16px;">
+                                <!-- Growth Reports -->
+                                <div style="display: flex; gap: 12px; align-items: start;">
+                                    <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(224, 143, 106, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; stroke: var(--nk-orange);">
+                                            <line x1="18" y1="20" x2="18" y2="10"/>
+                                            <line x1="12" y1="20" x2="12" y2="4"/>
+                                            <line x1="6" y1="20" x2="6" y2="14"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 style="font-size: 15px; font-weight: 600; color: #ffffff; margin-bottom: 4px;">Growth Reports</h4>
+                                        <p style="font-size: 13px; color: rgba(255, 255, 255, 0.6);">Review monthly progress with detailed insights and trends</p>
+                                    </div>
+                                </div>
+
+                                <!-- AI Analysis -->
+                                <div style="display: flex; gap: 12px; align-items: start;">
+                                    <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(199, 185, 211, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; stroke: var(--nk-lilac);">
+                                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                                            <line x1="12" y1="22.08" x2="12" y2="12"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 style="font-size: 15px; font-weight: 600; color: #ffffff; margin-bottom: 4px;">AI-Powered Analysis</h4>
+                                        <p style="font-size: 13px; color: rgba(255, 255, 255, 0.6);">Monthly AI spots patterns and gives one focused recommendation</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual mockup - AI insight -->
+                        <div class="feature-visual" style="min-width: 260px;">
+                            <div style="background: rgba(10, 10, 10, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; padding: 20px;">
+                                <!-- Progress bars -->
+                                <div style="margin-bottom: 16px;">
+                                    <div style="margin-bottom: 12px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                            <span style="font-size: 11px; color: rgba(255, 255, 255, 0.6);">Trust Formula</span>
+                                            <span style="font-size: 11px; font-weight: 600; color: var(--nk-blue);">85%</span>
+                                        </div>
+                                        <div style="height: 6px; background: rgba(127, 171, 200, 0.1); border-radius: 3px; overflow: hidden;">
+                                            <div style="width: 85%; height: 100%; background: var(--nk-blue);"></div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-bottom: 12px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                            <span style="font-size: 11px; color: rgba(255, 255, 255, 0.6);">Zone of Genius</span>
+                                            <span style="font-size: 11px; font-weight: 600; color: var(--nk-orange);">42%</span>
+                                        </div>
+                                        <div style="height: 6px; background: rgba(224, 143, 106, 0.1); border-radius: 3px; overflow: hidden;">
+                                            <div style="width: 42%; height: 100%; background: var(--nk-orange);"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                            <span style="font-size: 11px; color: rgba(255, 255, 255, 0.6);">Time Mastery</span>
+                                            <span style="font-size: 11px; font-weight: 600; color: var(--nk-green);">68%</span>
+                                        </div>
+                                        <div style="height: 6px; background: rgba(166, 190, 164, 0.1); border-radius: 3px; overflow: hidden;">
+                                            <div style="width: 68%; height: 100%; background: var(--nk-green);"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- AI Insight Box -->
+                                <div style="background: rgba(199, 185, 211, 0.05); border: 1px solid rgba(199, 185, 211, 0.15); border-radius: 10px; padding: 12px;">
+                                    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px; stroke: var(--nk-lilac);">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <line x1="12" y1="16" x2="12" y2="12"/>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                                        </svg>
+                                        <span style="font-size: 10px; color: var(--nk-lilac); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">AI Insight</span>
+                                    </div>
+                                    <p style="font-size: 12px; color: rgba(255, 255, 255, 0.7); line-height: 1.5;">Your trust scores are high but delegation is low. Consider empowering your team more.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

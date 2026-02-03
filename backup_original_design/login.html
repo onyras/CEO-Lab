@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | CEO Lab</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: var(--nk-space-md);
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-logo {
+      width: 80px;
+      height: 80px;
+      background-color: var(--nk-blue);
+      border-radius: var(--nk-radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--nk-space-md);
+    }
+
+    .login-logo-text {
+      font-family: var(--nk-font-heading);
+      font-size: var(--nk-text-3xl);
+      font-weight: var(--nk-font-semibold);
+      color: var(--nk-black);
+    }
+
+    .login-title {
+      font-size: var(--nk-text-4xl);
+      font-weight: var(--nk-font-light);
+      margin-bottom: var(--nk-space-xs);
+    }
+
+    .login-subtitle {
+      color: var(--nk-text-secondary);
+      margin-bottom: var(--nk-space-lg);
+    }
+
+    .login-card {
+      background-color: var(--nk-bg-secondary);
+      border: 1px solid var(--nk-border-default);
+      border-radius: var(--nk-radius-xl);
+      padding: var(--nk-space-lg);
+      margin-bottom: var(--nk-space-md);
+    }
+
+    .form-group {
+      margin-bottom: var(--nk-space-md);
+      text-align: left;
+    }
+
+    .form-label {
+      display: block;
+      font-size: var(--nk-text-sm);
+      font-weight: var(--nk-font-medium);
+      margin-bottom: var(--nk-space-xs);
+      color: var(--nk-text-primary);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      background-color: var(--nk-bg-tertiary);
+      border: 1px solid var(--nk-border-subtle);
+      border-radius: var(--nk-radius-md);
+      color: var(--nk-text-primary);
+      font-family: var(--nk-font-body);
+      font-size: var(--nk-text-base);
+      transition: border-color var(--nk-transition-fast);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--nk-blue);
+    }
+
+    .form-input::placeholder {
+      color: var(--nk-text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="login-logo">
+      <span class="login-logo-text">NK</span>
+    </div>
+
+    <h1 class="login-title font-heading">CEO Lab</h1>
+    <p class="login-subtitle">Build exceptional leadership capabilities</p>
+
+    <div class="login-card">
+      <form action="dashboard.html" method="get">
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            id="email"
+            class="form-input"
+            placeholder="your@email.com"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-input"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg">
+          Sign In →
+        </button>
+      </form>
+    </div>
+
+    <p class="text-muted text-sm">
+      Demo mode: Click Sign In to access the dashboard
+    </p>
+  </div>
+
+</body>
+</html>

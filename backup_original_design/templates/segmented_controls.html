@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEO Lab - Segmented Controls & Upload States</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .progress-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+    </style>
+</head>
+<body>
+
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 800px; margin: 0 auto;">
+
+            <p class="section__title">> ceo-lab --ui-components</p>
+
+            <h2 style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #ffffff; margin: 32px 0 64px 0;">
+                Interface Components
+            </h2>
+
+            <!-- SEGMENTED CONTROL - Version 1: Blue Active -->
+            <div style="margin-bottom: 80px;">
+                <p style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.4); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.1em;">Segmented Control - Blue Theme</p>
+
+                <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 100px; padding: 8px; display: inline-flex; gap: 8px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);">
+                    <!-- Active button -->
+                    <button style="background: rgba(127, 171, 200, 0.2); border: 1px solid rgba(127, 171, 200, 0.4); border-radius: 100px; padding: 16px 40px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; color: #7FABC8; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(127, 171, 200, 0.15);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="16"/>
+                            <line x1="8" y1="12" x2="16" y2="12"/>
+                        </svg>
+                        Start New Session
+                    </button>
+
+                    <!-- Inactive button -->
+                    <button style="background: transparent; border: none; border-radius: 100px; padding: 16px 40px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; color: rgba(255, 255, 255, 0.5); cursor: pointer; transition: all 0.3s ease;">
+                        My Sessions
+                    </button>
+                </div>
+            </div>
+
+            <!-- SEGMENTED CONTROL - Version 2: Orange Active -->
+            <div style="margin-bottom: 80px;">
+                <p style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.4); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.1em;">Segmented Control - Orange Theme</p>
+
+                <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 100px; padding: 8px; display: inline-flex; gap: 8px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);">
+                    <!-- Active button -->
+                    <button style="background: rgba(224, 143, 106, 0.2); border: 1px solid rgba(224, 143, 106, 0.4); border-radius: 100px; padding: 16px 40px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; color: #E08F6A; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(224, 143, 106, 0.15);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                        Create Project
+                    </button>
+
+                    <!-- Inactive button -->
+                    <button style="background: transparent; border: none; border-radius: 100px; padding: 16px 40px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; color: rgba(255, 255, 255, 0.5); cursor: pointer; transition: all 0.3s ease;">
+                        My Projects
+                    </button>
+                </div>
+            </div>
+
+            <!-- SEGMENTED CONTROL - Version 3: Green Active -->
+            <div style="margin-bottom: 80px;">
+                <p style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.4); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.1em;">Segmented Control - Green Theme</p>
+
+                <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 100px; padding: 8px; display: inline-flex; gap: 8px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);">
+                    <!-- Inactive button -->
+                    <button style="background: transparent; border: none; border-radius: 100px; padding: 16px 40px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; color: rgba(255, 255, 255, 0.5); cursor: pointer; transition: all 0.3s ease;">
+                        Active
+                    </button>
+
+                    <!-- Active button -->
+                    <button style="background: rgba(166, 190, 164, 0.2); border: 1px solid rgba(166, 190, 164, 0.4); border-radius: 100px; padding: 16px 40px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; color: #A6BEA4; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(166, 190, 164, 0.15);">
+                        Completed
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- UPLOAD PROGRESS CARD - Blue -->
+            <div style="margin-bottom: 60px;">
+                <p style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.4); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.1em;">Upload Progress - Blue Theme</p>
+
+                <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 32px; padding: 28px 32px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); max-width: 600px;">
+                    <div style="display: flex; align-items: center; gap: 24px;">
+                        <!-- Icon circle -->
+                        <div style="width: 72px; height: 72px; border-radius: 50%; background: rgba(127, 171, 200, 0.15); border: 2px solid rgba(127, 171, 200, 0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#7FABC8" stroke-width="2">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                            </svg>
+                        </div>
+
+                        <!-- Content -->
+                        <div style="flex: 1;">
+                            <h3 style="font-family: 'DM Sans', sans-serif; font-size: 20px; font-weight: 600; color: #ffffff; margin: 0 0 6px 0;">
+                                Processing Session
+                            </h3>
+                            <p style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.5); margin: 0 0 16px 0;">
+                                session_001.mp4 • 45 MB • 23 sec left
+                            </p>
+
+                            <!-- Progress bar -->
+                            <div style="background: rgba(255, 255, 255, 0.08); border-radius: 100px; height: 8px; overflow: hidden; position: relative;">
+                                <div class="progress-shimmer" style="width: 65%; height: 100%; background: linear-gradient(90deg, #7FABC8 0%, rgba(127, 171, 200, 0.6) 100%); border-radius: 100px; position: relative;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UPLOAD PROGRESS CARD - Orange -->
+            <div style="margin-bottom: 60px;">
+                <p style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.4); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.1em;">Upload Progress - Orange Theme</p>
+
+                <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 32px; padding: 28px 32px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); max-width: 600px;">
+                    <div style="display: flex; align-items: center; gap: 24px;">
+                        <!-- Icon circle -->
+                        <div style="width: 72px; height: 72px; border-radius: 50%; background: rgba(224, 143, 106, 0.15); border: 2px solid rgba(224, 143, 106, 0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E08F6A" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                        </div>
+
+                        <!-- Content -->
+                        <div style="flex: 1;">
+                            <h3 style="font-family: 'DM Sans', sans-serif; font-size: 20px; font-weight: 600; color: #ffffff; margin: 0 0 6px 0;">
+                                Uploading File
+                            </h3>
+                            <p style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.5); margin: 0 0 16px 0;">
+                                vid001.mp4 • 20 MB • 15 sec left
+                            </p>
+
+                            <!-- Progress bar -->
+                            <div style="background: rgba(255, 255, 255, 0.08); border-radius: 100px; height: 8px; overflow: hidden; position: relative;">
+                                <div class="progress-shimmer" style="width: 42%; height: 100%; background: linear-gradient(90deg, #E08F6A 0%, rgba(224, 143, 106, 0.6) 100%); border-radius: 100px; position: relative;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UPLOAD COMPLETE CARD - Green -->
+            <div style="margin-bottom: 60px;">
+                <p style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.4); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.1em;">Upload Complete - Green Theme</p>
+
+                <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(166, 190, 164, 0.2); border-radius: 32px; padding: 28px 32px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); max-width: 600px;">
+                    <div style="display: flex; align-items: center; gap: 24px;">
+                        <!-- Icon circle with checkmark -->
+                        <div style="width: 72px; height: 72px; border-radius: 50%; background: rgba(166, 190, 164, 0.2); border: 2px solid rgba(166, 190, 164, 0.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#A6BEA4" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </div>
+
+                        <!-- Content -->
+                        <div style="flex: 1;">
+                            <h3 style="font-family: 'DM Sans', sans-serif; font-size: 20px; font-weight: 600; color: #A6BEA4; margin: 0 0 6px 0;">
+                                Session Complete
+                            </h3>
+                            <p style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.5); margin: 0;">
+                                session_001.mp4 • 45 MB • Ready to view
+                            </p>
+                        </div>
+
+                        <!-- View button -->
+                        <button style="background: rgba(166, 190, 164, 0.2); border: 1px solid rgba(166, 190, 164, 0.3); border-radius: 12px; padding: 12px 24px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #A6BEA4; cursor: pointer; transition: all 0.3s ease;">
+                            View
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UPLOAD ERROR CARD - Yellow -->
+            <div style="margin-bottom: 60px;">
+                <p style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.4); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.1em;">Upload Error - Yellow Theme</p>
+
+                <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(198, 165, 91, 0.2); border-radius: 32px; padding: 28px 32px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); max-width: 600px;">
+                    <div style="display: flex; align-items: center; gap: 24px;">
+                        <!-- Icon circle with alert -->
+                        <div style="width: 72px; height: 72px; border-radius: 50%; background: rgba(198, 165, 91, 0.15); border: 2px solid rgba(198, 165, 91, 0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#C6A55B" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="8" x2="12" y2="12"/>
+                                <line x1="12" y1="16" x2="12.01" y2="16"/>
+                            </svg>
+                        </div>
+
+                        <!-- Content -->
+                        <div style="flex: 1;">
+                            <h3 style="font-family: 'DM Sans', sans-serif; font-size: 20px; font-weight: 600; color: #C6A55B; margin: 0 0 6px 0;">
+                                Upload Failed
+                            </h3>
+                            <p style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.5); margin: 0;">
+                                session_002.mp4 • Connection timeout
+                            </p>
+                        </div>
+
+                        <!-- Retry button -->
+                        <button style="background: rgba(198, 165, 91, 0.2); border: 1px solid rgba(198, 165, 91, 0.3); border-radius: 12px; padding: 12px 24px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #C6A55B; cursor: pointer; transition: all 0.3s ease;">
+                            Retry
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

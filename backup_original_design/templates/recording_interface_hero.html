@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEO Lab - Recording Interface Hero</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+        @keyframes waveform {
+            0%, 100% { height: 40%; }
+            50% { height: 80%; }
+        }
+        .record-pulse {
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .wave-bar {
+            animation: waveform 1.2s ease-in-out infinite;
+        }
+        .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+        .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+        .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+        .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+        .wave-bar:nth-child(6) { animation-delay: 0.5s; }
+        .wave-bar:nth-child(7) { animation-delay: 0.6s; }
+        .wave-bar:nth-child(8) { animation-delay: 0.7s; }
+        .wave-bar:nth-child(9) { animation-delay: 0.8s; }
+        .wave-bar:nth-child(10) { animation-delay: 0.9s; }
+    </style>
+</head>
+<body>
+
+<section class="section section--dark">
+    <div class="container">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; max-width: 1400px; margin: 0 auto;">
+
+            <!-- LEFT: Text Content -->
+            <div>
+                <p class="section__title">> ceo-lab --transform</p>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 72px; font-weight: 400; line-height: 1.2; color: #ffffff; margin: 32px 0 28px 0;">
+                    From chaos to clarity in minutes.
+                </h2>
+
+                <p style="font-family: 'DM Sans', sans-serif; font-size: 20px; line-height: 1.6; color: rgba(255, 255, 255, 0.6); margin-bottom: 48px; max-width: 500px;">
+                    No complicated setup, no learning curve. Just record your thoughts, and let CEO Lab structure them while you focus on what matters.
+                </p>
+
+                <a href="#" style="display: inline-flex; align-items: center; gap: 12px; background: #E08F6A; color: #ffffff; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; padding: 16px 32px; border-radius: 50px; text-decoration: none; transition: all 0.3s ease;">
+                    Start Recording
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                        <polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- RIGHT: Recording Interface Mockup -->
+            <div style="position: relative; padding: 60px 0;">
+                <!-- Main floating interface card -->
+                <div style="background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(30, 30, 30, 0.9) 100%); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 100px; padding: 24px 32px; box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5), 0 0 1px rgba(127, 171, 200, 0.3); backdrop-filter: blur(20px); position: relative; z-index: 10;">
+
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <!-- Icon buttons -->
+                        <div style="display: flex; gap: 12px;">
+                            <!-- Folder icon -->
+                            <button style="width: 48px; height: 48px; border-radius: 50%; background: rgba(255, 255, 255, 0.08); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7FABC8" stroke-width="2">
+                                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                </svg>
+                            </button>
+
+                            <!-- Message icon -->
+                            <button style="width: 48px; height: 48px; border-radius: 50%; background: rgba(255, 255, 255, 0.08); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A6BEA4" stroke-width="2">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                </svg>
+                            </button>
+
+                            <!-- User icon -->
+                            <button style="width: 48px; height: 48px; border-radius: 50%; background: rgba(255, 255, 255, 0.08); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C6A55B" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Divider -->
+                        <div style="width: 1px; height: 40px; background: rgba(255, 255, 255, 0.1);"></div>
+
+                        <!-- Time display -->
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 24px; font-weight: 500; color: #ffffff; min-width: 90px; letter-spacing: 0.05em;">
+                            00:47
+                        </div>
+
+                        <!-- Waveform visualization -->
+                        <div style="display: flex; gap: 4px; align-items: center; height: 48px; flex: 1;">
+                            <div class="wave-bar" style="width: 4px; background: linear-gradient(180deg, #7FABC8 0%, rgba(127, 171, 200, 0.4) 100%); border-radius: 2px; height: 60%;"></div>
+                            <div class="wave-bar" style="width: 4px; background: linear-gradient(180deg, #7FABC8 0%, rgba(127, 171, 200, 0.4) 100%); border-radius: 2px; height: 40%;"></div>
+                            <div class="wave-bar" style="width: 4px; background: linear-gradient(180deg, #7FABC8 0%, rgba(127, 171, 200, 0.4) 100%); border-radius: 2px; height: 70%;"></div>
+                            <div class="wave-bar" style="width: 4px; background: linear-gradient(180deg, #7FABC8 0%, rgba(127, 171, 200, 0.4) 100%); border-radius: 2px; height: 50%;"></div>
+                            <div class="wave-bar" style="width: 4px; background: linear-gradient(180deg, #7FABC8 0%, rgba(127, 171, 200, 0.4) 100%); border-radius: 2px; height: 80%;"></div>
+                            <div class="wave-bar" style="width: 4px; background: linear-gradient(180deg, #7FABC8 0%, rgba(127, 171, 200, 0.4) 100%); border-radius: 2px; height: 45%;"></div>
+                            <div class="wave-bar" style="width: 4px; background: linear-gradient(180deg, #7FABC8 0%, rgba(127, 171, 200, 0.4) 100%); border-radius: 2px; height: 65%;"></div>
+                            <div class="wave-bar" style="width: 4px; background: linear-gradient(180deg, #7FABC8 0%, rgba(127, 171, 200, 0.4) 100%); border-radius: 2px; height: 55%;"></div>
+                            <div class="wave-bar" style="width: 4px; background: linear-gradient(180deg, #7FABC8 0%, rgba(127, 171, 200, 0.4) 100%); border-radius: 2px; height: 75%;"></div>
+                            <div class="wave-bar" style="width: 4px; background: linear-gradient(180deg, #7FABC8 0%, rgba(127, 171, 200, 0.4) 100%); border-radius: 2px; height: 48%;"></div>
+
+                            <!-- Grayed out bars -->
+                            <div style="width: 4px; background: rgba(127, 171, 200, 0.15); border-radius: 2px; height: 35%;"></div>
+                            <div style="width: 4px; background: rgba(127, 171, 200, 0.15); border-radius: 2px; height: 40%;"></div>
+                            <div style="width: 4px; background: rgba(127, 171, 200, 0.15); border-radius: 2px; height: 30%;"></div>
+                            <div style="width: 4px; background: rgba(127, 171, 200, 0.15); border-radius: 2px; height: 35%;"></div>
+                            <div style="width: 4px; background: rgba(127, 171, 200, 0.15); border-radius: 2px; height: 38%;"></div>
+                        </div>
+
+                        <!-- Divider -->
+                        <div style="width: 1px; height: 40px; background: rgba(255, 255, 255, 0.1);"></div>
+
+                        <!-- Pause button -->
+                        <button style="width: 52px; height: 52px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease;">
+                            <div style="display: flex; gap: 4px;">
+                                <div style="width: 4px; height: 16px; background: #ffffff; border-radius: 1px;"></div>
+                                <div style="width: 4px; height: 16px; background: #ffffff; border-radius: 1px;"></div>
+                            </div>
+                        </button>
+
+                        <!-- Record button -->
+                        <button class="record-pulse" style="width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #E08F6A 0%, #d47853 100%); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 24px rgba(224, 143, 106, 0.4), 0 0 1px rgba(224, 143, 106, 0.8);">
+                            <div style="width: 18px; height: 18px; background: #ffffff; border-radius: 50%;"></div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bottom label -->
+                <div style="text-align: center; margin-top: 48px;">
+                    <p style="font-family: 'DM Sans', sans-serif; font-size: 18px; font-weight: 500; color: rgba(255, 255, 255, 0.9); margin-bottom: 8px;">
+                        CEO Lab Intelligence Recorder
+                    </p>
+                    <p style="font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.6; color: rgba(255, 255, 255, 0.4); max-width: 520px; margin: 0 auto;">
+                        No complicated setup. No learning curve. Just record, and let our intelligence handle the rest while you focus on what matters.
+                    </p>
+                </div>
+
+                <!-- Floating accent elements -->
+                <div style="position: absolute; top: 0; right: -40px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(127, 171, 200, 0.15) 0%, transparent 70%); border-radius: 50%; filter: blur(40px); z-index: 1;"></div>
+                <div style="position: absolute; bottom: 0; left: -40px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(224, 143, 106, 0.12) 0%, transparent 70%); border-radius: 50%; filter: blur(40px); z-index: 1;"></div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,424 @@
+/**
+ * CEO Lab Dashboard - Base Styles & Design System
+ * Foundation using NK brand tokens
+ */
+
+/* ============================================
+   CSS RESET & BASE
+   ============================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--nk-font-body);
+  background-color: var(--nk-bg-primary);
+  color: var(--nk-text-primary);
+  line-height: var(--nk-leading-normal);
+  min-height: 100vh;
+}
+
+/* ============================================
+   NK DESIGN TOKENS
+   ============================================ */
+
+:root {
+  /* Colors - NK Brand Palette */
+  --nk-black: #000000;
+  --nk-white: #FFFFFF;
+  --nk-off-white: #F7F3ED;
+  --nk-dark-gray: #1a1a1a;
+  --nk-darker-gray: #0a0a0a;
+
+  /* Accent Colors */
+  --nk-blue: #7FABC8;
+  --nk-green: #A6BEA4;
+  --nk-orange: #E08F6A;
+  --nk-yellow: #C6A55B;
+  --nk-lilac: #C7B9D3;
+
+  /* Semantic Colors */
+  --nk-bg-primary: var(--nk-black);
+  --nk-bg-secondary: var(--nk-dark-gray);
+  --nk-bg-tertiary: var(--nk-darker-gray);
+
+  --nk-text-primary: var(--nk-off-white);
+  --nk-text-secondary: rgba(247, 243, 237, 0.7);
+  --nk-text-muted: rgba(247, 243, 237, 0.5);
+
+  --nk-border-subtle: rgba(247, 243, 237, 0.1);
+  --nk-border-default: rgba(247, 243, 237, 0.2);
+
+  /* Assessment Colors */
+  --nk-assessment-zone: var(--nk-blue);
+  --nk-assessment-drivers: var(--nk-green);
+  --nk-assessment-ceo: var(--nk-orange);
+  --nk-assessment-trust: var(--nk-yellow);
+  --nk-assessment-culture: var(--nk-lilac);
+
+  /* Typography */
+  --nk-font-heading: 'Crimson Pro', serif;
+  --nk-font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --nk-text-xs: 0.75rem;      /* 12px */
+  --nk-text-sm: 0.875rem;     /* 14px */
+  --nk-text-base: 1rem;       /* 16px */
+  --nk-text-lg: 1.125rem;     /* 18px */
+  --nk-text-xl: 1.25rem;      /* 20px */
+  --nk-text-2xl: 1.5rem;      /* 24px */
+  --nk-text-3xl: 2rem;        /* 32px */
+  --nk-text-4xl: 3rem;        /* 48px */
+
+  --nk-font-light: 300;
+  --nk-font-normal: 400;
+  --nk-font-medium: 500;
+  --nk-font-semibold: 600;
+
+  --nk-leading-tight: 1.25;
+  --nk-leading-normal: 1.5;
+  --nk-leading-relaxed: 1.6;
+  --nk-leading-loose: 1.8;
+
+  /* Spacing */
+  --nk-space-xs: 0.5rem;      /* 8px */
+  --nk-space-sm: 1rem;        /* 16px */
+  --nk-space-md: 2rem;        /* 32px */
+  --nk-space-lg: 4rem;        /* 64px */
+  --nk-space-xl: 6rem;        /* 96px */
+
+  /* Border Radius */
+  --nk-radius-sm: 4px;
+  --nk-radius-md: 8px;
+  --nk-radius-lg: 16px;
+  --nk-radius-xl: 24px;
+  --nk-radius-full: 9999px;
+
+  /* Shadows */
+  --nk-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --nk-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --nk-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --nk-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+  /* Transitions */
+  --nk-transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --nk-transition-base: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --nk-transition-slow: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Z-index */
+  --nk-z-dropdown: 50;
+  --nk-z-sticky: 60;
+  --nk-z-fixed: 70;
+  --nk-z-modal-backdrop: 80;
+  --nk-z-modal: 90;
+  --nk-z-popover: 100;
+  --nk-z-toast: 110;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--nk-font-heading);
+  font-weight: var(--nk-font-light);
+  color: var(--nk-text-primary);
+  line-height: var(--nk-leading-tight);
+  margin-bottom: var(--nk-space-sm);
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
+h3 {
+  font-size: var(--nk-text-xl);
+}
+
+h4 {
+  font-size: var(--nk-text-lg);
+}
+
+p {
+  margin-bottom: var(--nk-space-sm);
+  line-height: var(--nk-leading-relaxed);
+}
+
+a {
+  color: var(--nk-text-primary);
+  text-decoration: none;
+  transition: color var(--nk-transition-fast);
+}
+
+a:hover {
+  color: var(--nk-blue);
+  text-decoration: underline;
+}
+
+strong {
+  font-weight: var(--nk-font-semibold);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.text-muted {
+  color: var(--nk-text-secondary);
+}
+
+.text-xs {
+  font-size: var(--nk-text-xs);
+}
+
+.text-sm {
+  font-size: var(--nk-text-sm);
+}
+
+.text-lg {
+  font-size: var(--nk-text-lg);
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.font-heading {
+  font-family: var(--nk-font-heading);
+}
+
+.font-body {
+  font-family: var(--nk-font-body);
+}
+
+/* Spacing Utilities */
+.mt-0 { margin-top: 0; }
+.mt-xs { margin-top: var(--nk-space-xs); }
+.mt-sm { margin-top: var(--nk-space-sm); }
+.mt-md { margin-top: var(--nk-space-md); }
+.mt-lg { margin-top: var(--nk-space-lg); }
+
+.mb-0 { margin-bottom: 0; }
+.mb-xs { margin-bottom: var(--nk-space-xs); }
+.mb-sm { margin-bottom: var(--nk-space-sm); }
+.mb-md { margin-bottom: var(--nk-space-md); }
+.mb-lg { margin-bottom: var(--nk-space-lg); }
+
+.p-sm { padding: var(--nk-space-sm); }
+.p-md { padding: var(--nk-space-md); }
+.p-lg { padding: var(--nk-space-lg); }
+
+/* Layout Utilities */
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--nk-space-md);
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.gap-xs { gap: var(--nk-space-xs); }
+.gap-sm { gap: var(--nk-space-sm); }
+.gap-md { gap: var(--nk-space-md); }
+.gap-lg { gap: var(--nk-space-lg); }
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Visibility Utilities */
+.hidden {
+  display: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+@media (max-width: 1024px) {
+  :root {
+    --nk-space-md: 1.5rem;
+    --nk-space-lg: 3rem;
+  }
+
+  .grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --nk-space-md: 1rem;
+    --nk-space-lg: 2rem;
+  }
+
+  .grid-cols-2,
+  .grid-cols-3,
+  .grid-cols-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --nk-space-sm: 0.75rem;
+    --nk-space-md: 1rem;
+    --nk-space-lg: 1.5rem;
+  }
+
+  html {
+    font-size: 14px;
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--nk-transition-slow) ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp var(--nk-transition-slow) ease-out;
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+:focus-visible {
+  outline: 2px solid var(--nk-blue);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--nk-blue);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --nk-border-subtle: rgba(247, 243, 237, 0.3);
+    --nk-border-default: rgba(247, 243, 237, 0.4);
+  }
+}

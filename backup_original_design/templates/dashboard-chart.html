@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Chart Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../styles-redesign.css">
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <div class="dashboard-preview">
+                <!-- Dashboard Chart Module -->
+                <!-- Variables to customize:
+                    - chart-header h4: Chart title with current score
+                    - chart-trend: Percentage improvement
+                    - chart-bar heights: Adjust height percentages
+                    - chart-label: Month names
+                    - chart-value: Score values
+                    - data-current: Add to current month's bar
+                -->
+                <div class="dashboard-preview__chart">
+                    <div class="chart-header">
+                        <h4>Leadership Score: 8.6 / 10</h4>
+                        <span class="chart-trend">↗ +19% since October</span>
+                    </div>
+                    <div class="chart-visual">
+                        <div class="chart-bars">
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar" style="height: 72%;"></div>
+                                <span class="chart-label">Oct</span>
+                                <span class="chart-value">7.2</span>
+                            </div>
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar" style="height: 74%;"></div>
+                                <span class="chart-label">Nov</span>
+                                <span class="chart-value">7.4</span>
+                            </div>
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar" style="height: 78%;"></div>
+                                <span class="chart-label">Dec</span>
+                                <span class="chart-value">7.8</span>
+                            </div>
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar" style="height: 81%;"></div>
+                                <span class="chart-label">Jan</span>
+                                <span class="chart-value">8.1</span>
+                            </div>
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar" style="height: 83%;"></div>
+                                <span class="chart-label">Feb</span>
+                                <span class="chart-value">8.3</span>
+                            </div>
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar" style="height: 86%;" data-current></div>
+                                <span class="chart-label">Mar</span>
+                                <span class="chart-value">8.6</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

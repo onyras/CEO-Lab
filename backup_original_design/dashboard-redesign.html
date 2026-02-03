@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CEO Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-bg: #F7F3ED;
+            --text-primary: #000000;
+            --text-secondary: #666666;
+            --accent-blue: #7FABC8;
+            --accent-green: #A6BEA4;
+            --border: #E0DDD6;
+            --white: #FFFFFF;
+            --success: #4CAF50;
+            --warning: #FF9800;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Crimson Pro', serif;
+            line-height: 1.2;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent-blue);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Main Layout */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Welcome Section */
+        .welcome {
+            margin-bottom: 2rem;
+        }
+
+        .welcome h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome p {
+            color: var(--text-secondary);
+        }
+
+        /* Progress Card */
+        .progress-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .score-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        .trend {
+            font-size: 1rem;
+            color: var(--success);
+        }
+
+        .chart-container {
+            background: var(--primary-bg);
+            border-radius: 8px;
+            padding: 2rem;
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .chart-bar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .bar {
+            width: 100%;
+            background: var(--accent-blue);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .bar:hover {
+            opacity: 0.8;
+        }
+
+        .bar-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .bar-value {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        /* Quick Actions Grid */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .action-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .action-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .action-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-blue);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .action-button:hover {
+            gap: 0.75rem;
+        }
+
+        /* Due Badge */
+        .due-badge {
+            display: inline-block;
+            background: var(--warning);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Notifications Panel */
+        .notifications {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .notifications h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .notification-item {
+            padding: 1rem;
+            border-left: 3px solid var(--accent-blue);
+            background: var(--primary-bg);
+            margin-bottom: 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        .notification-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .notification-time {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                padding: 1rem;
+            }
+
+            .welcome h1 {
+                font-size: 1.5rem;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-container {
+                height: 200px;
+            }
+
+            .progress-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">CEO Lab</div>
+        <div class="header-right">
+            <div class="notification-icon">
+                🔔
+                <span class="notification-badge">4</span>
+            </div>
+            <div class="user-menu">
+                <div class="avatar">NK</div>
+                <span>Nikolas</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Welcome -->
+        <section class="welcome">
+            <h1>Welcome back, Nikolas</h1>
+            <p>Here's your leadership progress at a glance</p>
+        </section>
+
+        <!-- Progress Chart -->
+        <section class="progress-card">
+            <div class="progress-header">
+                <h2>Your Leadership Score</h2>
+                <div class="score-badge">
+                    8.6
+                    <span class="trend">↗ +19%</span>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-bar">
+                    <div class="bar" style="height: 144px; background: #C5D8E5;"></div>
+                    <div class="bar-value">7.2</div>
+                    <div class="bar-label">Oct</div>
+                </div>
+                <div class="chart-bar">
+                    <div class="bar" style="height: 148px; background: #B8CFE0;"></div>
+                    <div class="bar-value">7.4</div>
+                    <div class="bar-label">Nov</div>
+                </div>
+                <div class="chart-bar">
+                    <div class="bar" style="height: 156px; background: #A8C5DB;"></div>
+                    <div class="bar-value">7.8</div>
+                    <div class="bar-label">Dec</div>
+                </div>
+                <div class="chart-bar">
+                    <div class="bar" style="height: 162px; background: #96BBD5;"></div>
+                    <div class="bar-value">8.1</div>
+                    <div class="bar-label">Jan</div>
+                </div>
+                <div class="chart-bar">
+                    <div class="bar" style="height: 166px; background: #88B3D0;"></div>
+                    <div class="bar-value">8.3</div>
+                    <div class="bar-label">Feb</div>
+                </div>
+                <div class="chart-bar">
+                    <div class="bar" style="height: 172px; background: #7FABC8;"></div>
+                    <div class="bar-value">8.6</div>
+                    <div class="bar-label">Mar</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <div class="action-card">
+                <div class="action-icon">📋</div>
+                <div class="due-badge">Due in 5 days</div>
+                <h3>Next Assessment</h3>
+                <p>Your February assessment is ready. Takes about 15 minutes to complete.</p>
+                <a href="#" class="action-button">Take Assessment →</a>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">📊</div>
+                <h3>Latest Report</h3>
+                <p>January 2026 report shows +0.3 improvement. Review your progress and focus areas.</p>
+                <a href="#" class="action-button">View Report →</a>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">💡</div>
+                <h3>This Week's Insight</h3>
+                <p><strong>The Energy Audit</strong> - Finding your peak performance windows for strategic work.</p>
+                <a href="#" class="action-button">Read (5 min) →</a>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">🔧</div>
+                <h3>Tools Library</h3>
+                <p>Access 50+ frameworks, templates, and interactive tools. 3 new tools added this week.</p>
+                <a href="#" class="action-button">Browse Tools →</a>
+            </div>
+        </section>
+
+        <!-- Notifications -->
+        <section class="notifications">
+            <h3>🔔 Recent Activity</h3>
+            <div class="notification-item">
+                <div>Your January report is ready to view</div>
+                <div class="notification-time">2 hours ago</div>
+            </div>
+            <div class="notification-item">
+                <div>New weekly update: "The 3 Types of Delegation"</div>
+                <div class="notification-time">1 day ago</div>
+            </div>
+            <div class="notification-item">
+                <div>Assessment reminder: Due February 1, 2026</div>
+                <div class="notification-time">2 days ago</div>
+            </div>
+            <div class="notification-item">
+                <div>3 new tools added to Strategy category</div>
+                <div class="notification-time">3 days ago</div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

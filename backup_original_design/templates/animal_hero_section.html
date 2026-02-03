@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEO Lab - Eagle Vision Hero</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes soar {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        .fade-in {
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+        .soar {
+            animation: soar 8s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Version 1: Eagle Silhouette with Typography -->
+<section class="section section--dark" style="min-height: 700px; display: flex; align-items: center; position: relative; overflow: hidden;">
+    <!-- Dark Background -->
+    <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #1a1a1a 100%); z-index: 1;"></div>
+
+    <!-- Eagle Silhouette SVG -->
+    <div class="soar" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; max-width: 1400px; height: 600px; opacity: 0.15; z-index: 2;">
+        <svg viewBox="0 0 1400 600" style="width: 100%; height: 100%;">
+            <defs>
+                <linearGradient id="eagleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color: #7FABC8; stop-opacity: 0.3" />
+                    <stop offset="50%" style="stop-color: #ffffff; stop-opacity: 0.2" />
+                    <stop offset="100%" style="stop-color: #7FABC8; stop-opacity: 0.3" />
+                </linearGradient>
+                <filter id="texture">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/>
+                    <feColorMatrix in="noise" type="saturate" values="0"/>
+                    <feBlend in="SourceGraphic" in2="noise" mode="multiply"/>
+                </filter>
+            </defs>
+
+            <!-- Eagle wings spread silhouette -->
+            <g filter="url(#texture)">
+                <!-- Left wing -->
+                <path d="M 400 300 Q 250 200, 100 220 Q 150 280, 250 320 Q 300 340, 400 330 Z"
+                      fill="url(#eagleGradient)"
+                      stroke="rgba(127, 171, 200, 0.2)"
+                      stroke-width="1"/>
+
+                <!-- Right wing -->
+                <path d="M 1000 300 Q 1150 200, 1300 220 Q 1250 280, 1150 320 Q 1100 340, 1000 330 Z"
+                      fill="url(#eagleGradient)"
+                      stroke="rgba(127, 171, 200, 0.2)"
+                      stroke-width="1"/>
+
+                <!-- Body and head -->
+                <ellipse cx="700" cy="300" rx="80" ry="120"
+                         fill="url(#eagleGradient)"
+                         stroke="rgba(127, 171, 200, 0.2)"
+                         stroke-width="1"/>
+
+                <!-- Head -->
+                <circle cx="700" cy="220" r="45"
+                        fill="url(#eagleGradient)"
+                        stroke="rgba(127, 171, 200, 0.2)"
+                        stroke-width="1"/>
+
+                <!-- Beak -->
+                <path d="M 730 220 L 770 220 L 730 230 Z"
+                      fill="rgba(198, 165, 91, 0.3)"/>
+
+                <!-- Tail feathers -->
+                <path d="M 680 380 L 660 480 L 680 470 L 700 480 L 720 470 L 740 480 L 720 380 Z"
+                      fill="url(#eagleGradient)"
+                      stroke="rgba(127, 171, 200, 0.2)"
+                      stroke-width="1"/>
+
+                <!-- Wing details (feathers) -->
+                <path d="M 300 280 Q 280 300, 290 320" stroke="rgba(127, 171, 200, 0.15)" stroke-width="2" fill="none"/>
+                <path d="M 250 260 Q 230 280, 240 300" stroke="rgba(127, 171, 200, 0.15)" stroke-width="2" fill="none"/>
+                <path d="M 200 250 Q 180 270, 190 290" stroke="rgba(127, 171, 200, 0.15)" stroke-width="2" fill="none"/>
+
+                <path d="M 1100 280 Q 1120 300, 1110 320" stroke="rgba(127, 171, 200, 0.15)" stroke-width="2" fill="none"/>
+                <path d="M 1150 260 Q 1170 280, 1160 300" stroke="rgba(127, 171, 200, 0.15)" stroke-width="2" fill="none"/>
+                <path d="M 1200 250 Q 1220 270, 1210 290" stroke="rgba(127, 171, 200, 0.15)" stroke-width="2" fill="none"/>
+            </g>
+        </svg>
+    </div>
+
+    <!-- Subtle radial gradient overlays -->
+    <div style="position: absolute; top: 20%; right: 15%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(127, 171, 200, 0.08) 0%, transparent 70%); border-radius: 50%; filter: blur(80px); z-index: 3;"></div>
+    <div style="position: absolute; bottom: 20%; left: 15%; width: 350px; height: 350px; background: radial-gradient(circle, rgba(166, 190, 164, 0.06) 0%, transparent 70%); border-radius: 50%; filter: blur(70px); z-index: 3;"></div>
+
+    <!-- Content -->
+    <div class="container" style="position: relative; z-index: 10;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 120px 0; text-align: center;">
+
+            <div class="fade-in">
+                <p style="font-family: 'DM Sans', sans-serif; font-size: 13px; color: rgba(127, 171, 200, 0.8); margin-bottom: 40px; text-transform: uppercase; letter-spacing: 0.2em;">The CEO Lab Vision</p>
+
+                <h1 style="font-family: 'Crimson Pro', serif; font-size: 96px; font-weight: 400; line-height: 1.1; color: #ffffff; margin: 0 0 40px 0; letter-spacing: -0.02em;">
+                    ceo lab
+                </h1>
+
+                <p style="font-family: 'DM Sans', sans-serif; font-size: 20px; line-height: 1.6; color: rgba(255, 255, 255, 0.6); margin: 0 auto; max-width: 600px;">
+                    Rise above. See the whole landscape. Lead with clarity.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Version 2: Split Layout with Eagle Visual -->
+<section class="section section--dark" style="min-height: 800px; display: flex; align-items: center; position: relative; overflow: hidden; margin-top: 80px;">
+    <!-- Background -->
+    <div style="position: absolute; inset: 0; background: #0a0a0a; z-index: 1;"></div>
+
+    <div class="container" style="position: relative; z-index: 10;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; max-width: 1400px; margin: 0 auto; padding: 100px 0;">
+
+            <!-- Left: Content -->
+            <div>
+                <p style="font-family: 'DM Sans', sans-serif; font-size: 13px; color: #7FABC8; margin-bottom: 32px; text-transform: uppercase; letter-spacing: 0.15em;">> ceo-lab --perspective</p>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 72px; font-weight: 400; line-height: 1.1; color: #ffffff; margin: 0 0 32px 0;">
+                    The Vision<br>
+                    to Lead
+                </h2>
+
+                <p style="font-family: 'DM Sans', sans-serif; font-size: 18px; line-height: 1.6; color: rgba(255, 255, 255, 0.6); margin: 0 0 40px 0; max-width: 500px;">
+                    Like an eagle surveying vast territories, CEO Lab gives you the elevated perspective to see patterns, anticipate challenges, and make strategic decisions with confidence.
+                </p>
+
+                <div style="display: flex; gap: 40px; margin-top: 48px;">
+                    <div>
+                        <p style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #7FABC8; margin: 0; line-height: 1;">360°</p>
+                        <p style="font-family: 'DM Sans', sans-serif; font-size: 13px; color: rgba(255, 255, 255, 0.5); margin: 8px 0 0 0;">View</p>
+                    </div>
+                    <div>
+                        <p style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #A6BEA4; margin: 0; line-height: 1;">10x</p>
+                        <p style="font-family: 'DM Sans', sans-serif; font-size: 13px; color: rgba(255, 255, 255, 0.5); margin: 8px 0 0 0;">Clarity</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Eagle Illustration -->
+            <div style="position: relative; height: 600px;">
+                <!-- Container with subtle glow -->
+                <div style="position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+
+                    <!-- Gradient background -->
+                    <div style="position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(127, 171, 200, 0.1) 0%, transparent 70%); border-radius: 50%; filter: blur(60px);"></div>
+
+                    <!-- Eagle SVG -->
+                    <svg viewBox="0 0 600 600" style="width: 100%; height: 100%; filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));">
+                        <defs>
+                            <linearGradient id="eagleGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color: rgba(127, 171, 200, 0.4); stop-opacity: 1" />
+                                <stop offset="50%" style="stop-color: #7FABC8; stop-opacity: 1" />
+                                <stop offset="100%" style="stop-color: rgba(127, 171, 200, 0.4); stop-opacity: 1" />
+                            </linearGradient>
+                            <linearGradient id="yellowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color: rgba(198, 165, 91, 0.6); stop-opacity: 1" />
+                                <stop offset="100%" style="stop-color: #C6A55B; stop-opacity: 1" />
+                            </linearGradient>
+                            <radialGradient id="eyeGlow">
+                                <stop offset="0%" style="stop-color: #C6A55B; stop-opacity: 1" />
+                                <stop offset="100%" style="stop-color: rgba(198, 165, 91, 0.3); stop-opacity: 0" />
+                            </radialGradient>
+                        </defs>
+
+                        <!-- Eagle in profile/soaring position -->
+                        <g transform="translate(300, 300)">
+                            <!-- Left wing (back) -->
+                            <path d="M -20 -50 Q -180 -120, -250 -80 Q -230 -40, -180 -20 Q -100 0, -20 -20 Z"
+                                  fill="url(#eagleGrad2)"
+                                  stroke="rgba(127, 171, 200, 0.4)"
+                                  stroke-width="2"
+                                  opacity="0.7"/>
+
+                            <!-- Body -->
+                            <ellipse cx="0" cy="0" rx="40" ry="70"
+                                     fill="url(#eagleGrad2)"
+                                     stroke="rgba(127, 171, 200, 0.5)"
+                                     stroke-width="2"/>
+
+                            <!-- Head -->
+                            <circle cx="0" cy="-80" r="35"
+                                    fill="url(#eagleGrad2)"
+                                    stroke="rgba(127, 171, 200, 0.5)"
+                                    stroke-width="2"/>
+
+                            <!-- Beak -->
+                            <path d="M 20 -85 L 55 -85 L 35 -75 Z"
+                                  fill="url(#yellowGrad)"/>
+
+                            <!-- Eye with glow -->
+                            <circle cx="15" cy="-85" r="12" fill="url(#eyeGlow)"/>
+                            <circle cx="15" cy="-85" r="4" fill="#C6A55B"/>
+
+                            <!-- Right wing (front) -->
+                            <path d="M 20 -50 Q 180 -140, 260 -90 Q 240 -50, 190 -30 Q 110 0, 20 -20 Z"
+                                  fill="url(#eagleGrad2)"
+                                  stroke="rgba(127, 171, 200, 0.5)"
+                                  stroke-width="2"/>
+
+                            <!-- Tail -->
+                            <path d="M -15 60 L -30 120 L -15 110 L 0 120 L 15 110 L 30 120 L 15 60 Z"
+                                  fill="url(#eagleGrad2)"
+                                  stroke="rgba(127, 171, 200, 0.4)"
+                                  stroke-width="2"/>
+
+                            <!-- Wing feather details -->
+                            <g opacity="0.6">
+                                <path d="M 140 -90 L 155 -95" stroke="rgba(127, 171, 200, 0.6)" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M 170 -85 L 185 -88" stroke="rgba(127, 171, 200, 0.6)" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M 200 -75 L 215 -76" stroke="rgba(127, 171, 200, 0.6)" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M 220 -60 L 235 -60" stroke="rgba(127, 171, 200, 0.6)" stroke-width="3" stroke-linecap="round"/>
+                            </g>
+
+                            <!-- Perspective lines radiating from eye -->
+                            <g opacity="0.2">
+                                <line x1="15" y1="-85" x2="200" y2="-200" stroke="#7FABC8" stroke-width="1" stroke-dasharray="4 4"/>
+                                <line x1="15" y1="-85" x2="250" y2="-100" stroke="#7FABC8" stroke-width="1" stroke-dasharray="4 4"/>
+                                <line x1="15" y1="-85" x2="230" y2="0" stroke="#7FABC8" stroke-width="1" stroke-dasharray="4 4"/>
+                                <circle cx="200" cy="-200" r="3" fill="#7FABC8"/>
+                                <circle cx="250" cy="-100" r="3" fill="#A6BEA4"/>
+                                <circle cx="230" cy="0" r="3" fill="#E08F6A"/>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Version 3: Minimal with Abstract Eagle Form -->
+<section class="section section--dark" style="min-height: 600px; display: flex; align-items: center; position: relative; overflow: hidden; margin-top: 80px;">
+    <!-- Background -->
+    <div style="position: absolute; inset: 0; background: linear-gradient(180deg, #000000 0%, #1a1a1a 100%); z-index: 1;"></div>
+
+    <!-- Abstract eagle wing shape in background -->
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); width: 80%; height: 400px; z-index: 2;">
+        <svg viewBox="0 0 1200 400" style="width: 100%; height: 100%; opacity: 0.08;">
+            <path d="M 100 200 Q 300 50, 600 180 Q 900 50, 1100 200"
+                  fill="none"
+                  stroke="#7FABC8"
+                  stroke-width="120"
+                  stroke-linecap="round"/>
+        </svg>
+    </div>
+
+    <div class="container" style="position: relative; z-index: 10;">
+        <div style="max-width: 800px; margin: 0 auto; padding: 100px 0; text-align: center;">
+
+            <h2 style="font-family: 'Crimson Pro', serif; font-size: 80px; font-weight: 400; line-height: 1.2; color: #ffffff; margin: 0 0 32px 0;">
+                Soar Above<br>
+                the Noise
+            </h2>
+
+            <p style="font-family: 'DM Sans', sans-serif; font-size: 18px; line-height: 1.6; color: rgba(255, 255, 255, 0.6); margin: 0 auto; max-width: 600px;">
+                CEO Lab equips you with the perspective and precision of an eagle—seeing what others miss, acting with strategic clarity.
+            </p>
+
+        </div>
+    </div>
+</section>
+
+<!-- Version 4: Technical Diagram Style (Like the donut reference) -->
+<section class="section section--dark" style="min-height: 800px; display: flex; align-items: center; position: relative; overflow: hidden; margin-top: 80px; padding: 120px 0;">
+    <div style="position: absolute; inset: 0; background: #0a0a0a; z-index: 1;"></div>
+
+    <div class="container" style="position: relative; z-index: 10;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+
+            <p style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.4); margin-bottom: 60px; text-transform: uppercase; letter-spacing: 0.1em; text-align: center;">Eagle Vision Framework</p>
+
+            <!-- Technical diagram grid -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;">
+
+                <!-- Left: Specifications -->
+                <div>
+                    <h3 style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #ffffff; margin: 0 0 40px 0;">
+                        Leadership<br>
+                        Perspective
+                    </h3>
+
+                    <div style="display: flex; flex-direction: column; gap: 24px;">
+                        <div style="display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.5);">Field of View</span>
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; color: #7FABC8;">360° Strategic</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.5);">Tracking Frequency</span>
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; color: #A6BEA4;">Weekly</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.5);">Assessment Depth</span>
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; color: #E08F6A;">50+ Frameworks</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.5);">Growth Visibility</span>
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; color: #C6A55B;">Real-Time Data</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Technical Eagle Diagram -->
+                <div style="position: relative;">
+                    <svg viewBox="0 0 600 600" style="width: 100%; height: auto;">
+                        <defs>
+                            <linearGradient id="techGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color: rgba(127, 171, 200, 0.6); stop-opacity: 1" />
+                                <stop offset="100%" style="stop-color: rgba(127, 171, 200, 0.2); stop-opacity: 1" />
+                            </linearGradient>
+                            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(127, 171, 200, 0.1)" stroke-width="0.5"/>
+                            </pattern>
+                        </defs>
+
+                        <!-- Grid background -->
+                        <rect width="600" height="600" fill="url(#grid)"/>
+
+                        <!-- Eagle silhouette with measurement lines -->
+                        <g transform="translate(300, 300)">
+                            <!-- Wingspan measurement line -->
+                            <line x1="-220" y1="-180" x2="220" y2="-180" stroke="rgba(127, 171, 200, 0.4)" stroke-width="1" stroke-dasharray="4 4"/>
+                            <line x1="-220" y1="-185" x2="-220" y2="-175" stroke="rgba(127, 171, 200, 0.4)" stroke-width="1"/>
+                            <line x1="220" y1="-185" x2="220" y2="-175" stroke="rgba(127, 171, 200, 0.4)" stroke-width="1"/>
+                            <text x="0" y="-195" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="12" fill="rgba(127, 171, 200, 0.8)">360° Vision</text>
+
+                            <!-- Height measurement line -->
+                            <line x1="240" y1="-120" x2="240" y2="140" stroke="rgba(166, 190, 164, 0.4)" stroke-width="1" stroke-dasharray="4 4"/>
+                            <line x1="235" y1="-120" x2="245" y2="-120" stroke="rgba(166, 190, 164, 0.4)" stroke-width="1"/>
+                            <line x1="235" y1="140" x2="245" y2="140" stroke="rgba(166, 190, 164, 0.4)" stroke-width="1"/>
+                            <text x="260" y="10" text-anchor="start" font-family="DM Sans, sans-serif" font-size="12" fill="rgba(166, 190, 164, 0.8)">Full Scope</text>
+
+                            <!-- Simplified eagle wings -->
+                            <path d="M -30 -40 Q -150 -120, -200 -80 Q -180 -40, -120 -20 Q -60 0, -30 -20 Z"
+                                  fill="url(#techGrad)"
+                                  stroke="#7FABC8"
+                                  stroke-width="2"/>
+
+                            <path d="M 30 -40 Q 150 -120, 200 -80 Q 180 -40, 120 -20 Q 60 0, 30 -20 Z"
+                                  fill="url(#techGrad)"
+                                  stroke="#7FABC8"
+                                  stroke-width="2"/>
+
+                            <!-- Body -->
+                            <ellipse cx="0" cy="10" rx="35" ry="60" fill="url(#techGrad)" stroke="#7FABC8" stroke-width="2"/>
+
+                            <!-- Head -->
+                            <circle cx="0" cy="-60" r="30" fill="url(#techGrad)" stroke="#7FABC8" stroke-width="2"/>
+
+                            <!-- Eye with focus indicator -->
+                            <circle cx="10" cy="-65" r="8" fill="rgba(198, 165, 91, 0.3)" stroke="#C6A55B" stroke-width="2"/>
+                            <circle cx="10" cy="-65" r="3" fill="#C6A55B"/>
+
+                            <!-- Focus lines from eye -->
+                            <g opacity="0.4">
+                                <line x1="10" y1="-65" x2="180" y2="-150" stroke="#7FABC8" stroke-width="1" stroke-dasharray="2 2"/>
+                                <circle cx="180" cy="-150" r="4" fill="none" stroke="#7FABC8" stroke-width="1"/>
+                                <text x="190" y="-145" font-family="DM Sans, sans-serif" font-size="10" fill="rgba(127, 171, 200, 0.7)">Strategic Point</text>
+
+                                <line x1="10" y1="-65" x2="150" y2="80" stroke="#A6BEA4" stroke-width="1" stroke-dasharray="2 2"/>
+                                <circle cx="150" cy="80" r="4" fill="none" stroke="#A6BEA4" stroke-width="1"/>
+                                <text x="160" y="85" font-family="DM Sans, sans-serif" font-size="10" fill="rgba(166, 190, 164, 0.7)">Growth Metric</text>
+
+                                <line x1="10" y1="-65" x2="-150" y2="60" stroke="#E08F6A" stroke-width="1" stroke-dasharray="2 2"/>
+                                <circle cx="-150" cy="60" r="4" fill="none" stroke="#E08F6A" stroke-width="1"/>
+                                <text x="-220" y="65" font-family="DM Sans, sans-serif" font-size="10" fill="rgba(224, 143, 106, 0.7)">Development Area</text>
+                            </g>
+
+                            <!-- Tail -->
+                            <path d="M -12 65 L -20 120 L -10 110 L 0 118 L 10 110 L 20 120 L 12 65 Z"
+                                  fill="url(#techGrad)"
+                                  stroke="#7FABC8"
+                                  stroke-width="2"/>
+                        </g>
+                    </svg>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

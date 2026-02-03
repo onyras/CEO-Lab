@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Center with Graphic - BOLD Options</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        @keyframes slideDown {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes orbit {
+            from { transform: rotate(0deg) translateX(120px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(120px) rotate(-360deg); }
+        }
+        @keyframes expand {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes matrixRain {
+            0% { transform: translateY(-100%); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100%); opacity: 0; }
+        }
+        @keyframes neonPulse {
+            0%, 100% { filter: drop-shadow(0 0 5px currentColor) brightness(1); }
+            50% { filter: drop-shadow(0 0 20px currentColor) brightness(1.3); }
+        }
+        @keyframes float3d {
+            0%, 100% { transform: translateY(0) rotateX(0deg); }
+            50% { transform: translateY(-20px) rotateX(5deg); }
+        }
+        @keyframes expandRadar {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes particle {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+        .template-separator {
+            margin: 120px 0;
+            text-align: center;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ========================================
+     OPTION 11: MASSIVE DIAGONAL SPLIT
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-11 --diagonal-split</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 60px 0;">
+                    <span style="color: #ffffff;">Stop living in chaos</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">Start measuring reality</span>
+                </h2>
+
+                <!-- Diagonal split visual -->
+                <div style="position: relative; height: 400px; margin: 60px 0; overflow: hidden; border-radius: 24px;">
+                    <!-- Left side - Chaos -->
+                    <div style="position: absolute; left: 0; top: 0; width: 50%; height: 100%; background: linear-gradient(135deg, rgba(255, 100, 100, 0.15) 0%, rgba(255, 100, 100, 0.05) 100%); clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; border-right: 2px solid rgba(255, 100, 100, 0.3);">
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 72px; font-weight: 400; color: rgba(255, 100, 100, 0.6); line-height: 1; margin-bottom: 20px;">?</div>
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.5); text-align: center; max-width: 200px;">
+                            No data<br>
+                            No clarity<br>
+                            No measurement<br>
+                            Just anxiety
+                        </div>
+                    </div>
+
+                    <!-- Right side - Data -->
+                    <div style="position: absolute; right: 0; top: 0; width: 50%; height: 100%; background: linear-gradient(135deg, rgba(127, 171, 200, 0.15) 0%, rgba(127, 171, 200, 0.05) 100%); clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px;">
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; width: 250px;">
+                                <span style="font-family: 'DM Sans', sans-serif; font-size: 13px; color: rgba(255, 255, 255, 0.6);">Trust</span>
+                                <span style="font-family: 'Crimson Pro', serif; font-size: 28px; color: #7FABC8;">85</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; width: 250px;">
+                                <span style="font-family: 'DM Sans', sans-serif; font-size: 13px; color: rgba(255, 255, 255, 0.6);">Vision</span>
+                                <span style="font-family: 'Crimson Pro', serif; font-size: 28px; color: #A6BEA4;">92</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; width: 250px;">
+                                <span style="font-family: 'DM Sans', sans-serif; font-size: 13px; color: rgba(255, 255, 255, 0.6);">Focus</span>
+                                <span style="font-family: 'Crimson Pro', serif; font-size: 28px; color: #E08F6A;">78</span>
+                            </div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: rgba(127, 171, 200, 0.8); margin-top: 12px; text-align: center;">
+                                ✓ Real numbers<br>
+                                ✓ Clear direction<br>
+                                ✓ Measurable growth
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 60px 0 0 0;">
+                    <span style="color: #ffffff;">Choose data over doubt.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                One decision changes everything. Start measuring today.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 12: 3D ISOMETRIC DASHBOARD
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1100px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-12 --isometric-3d</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 60px 0;">
+                    <span style="color: rgba(255, 255, 255, 0.3);">Your leadership dashboard</span><br>
+                    <span style="color: #ffffff;">in 3D perspective</span>
+                </h2>
+
+                <!-- Isometric dashboard mockup -->
+                <div style="margin: 80px 0; perspective: 1000px;">
+                    <div style="transform: rotateX(20deg) rotateY(-5deg); transform-style: preserve-3d; animation: float3d 6s ease-in-out infinite;">
+                        <!-- Main dashboard surface -->
+                        <div style="background: linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(26, 26, 26, 0.9) 100%); border: 2px solid rgba(127, 171, 200, 0.3); border-radius: 24px; padding: 48px; box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 0 0 40px rgba(127, 171, 200, 0.1); max-width: 700px; margin: 0 auto; transform: translateZ(20px);">
+
+                            <!-- Header row -->
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 40px;">
+                                <div style="font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; color: #7FABC8;">Leadership Metrics</div>
+                                <div style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.4);">Live Dashboard</div>
+                            </div>
+
+                            <!-- 3D chart bars -->
+                            <div style="display: flex; gap: 20px; align-items: flex-end; justify-content: center; margin: 40px 0;">
+                                <div style="display: flex; flex-direction: column; align-items: center;">
+                                    <div style="width: 60px; height: 180px; background: linear-gradient(180deg, #7FABC8 0%, rgba(127, 171, 200, 0.3) 100%); border-radius: 8px 8px 0 0; box-shadow: -8px 8px 16px rgba(0, 0, 0, 0.4); transform: skewY(-3deg);"></div>
+                                    <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: rgba(255, 255, 255, 0.5); margin-top: 12px;">Week 1</div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: center;">
+                                    <div style="width: 60px; height: 210px; background: linear-gradient(180deg, #A6BEA4 0%, rgba(166, 190, 164, 0.3) 100%); border-radius: 8px 8px 0 0; box-shadow: -8px 8px 16px rgba(0, 0, 0, 0.4); transform: skewY(-3deg);"></div>
+                                    <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: rgba(255, 255, 255, 0.5); margin-top: 12px;">Week 2</div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: center;">
+                                    <div style="width: 60px; height: 195px; background: linear-gradient(180deg, #E08F6A 0%, rgba(224, 143, 106, 0.3) 100%); border-radius: 8px 8px 0 0; box-shadow: -8px 8px 16px rgba(0, 0, 0, 0.4); transform: skewY(-3deg);"></div>
+                                    <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: rgba(255, 255, 255, 0.5); margin-top: 12px;">Week 3</div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: center;">
+                                    <div style="width: 60px; height: 240px; background: linear-gradient(180deg, #7FABC8 0%, rgba(127, 171, 200, 0.3) 100%); border-radius: 8px 8px 0 0; box-shadow: -8px 8px 16px rgba(0, 0, 0, 0.4), 0 0 20px rgba(127, 171, 200, 0.4); transform: skewY(-3deg);"></div>
+                                    <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: #7FABC8; font-weight: 600; margin-top: 12px;">Now</div>
+                                </div>
+                            </div>
+
+                            <!-- Stats footer -->
+                            <div style="display: flex; justify-content: space-around; padding-top: 32px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                                <div style="text-align: center;">
+                                    <div style="font-family: 'Crimson Pro', serif; font-size: 28px; color: #7FABC8;">+18%</div>
+                                    <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">Growth</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-family: 'Crimson Pro', serif; font-size: 28px; color: #A6BEA4;">87</div>
+                                    <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">Score</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-family: 'Crimson Pro', serif; font-size: 28px; color: #E08F6A;">4/4</div>
+                                    <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">Streak</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 80px 0 0 0;">
+                    <span style="color: #ffffff;">See every dimension.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">From every angle.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Your complete leadership picture, visualized in real-time.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 13: MATRIX DATA WATERFALL
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-13 --data-waterfall</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 40px 0;">
+                    <span style="color: rgba(255, 255, 255, 0.3);">Data flowing in</span><br>
+                    <span style="color: #ffffff;">real-time</span>
+                </h2>
+
+                <!-- Matrix-style cascading numbers -->
+                <div style="position: relative; height: 300px; background: rgba(0, 0, 0, 0.6); border-radius: 20px; overflow: hidden; margin: 60px 0; border: 1px solid rgba(127, 171, 200, 0.2);">
+                    <!-- Cascading columns -->
+                    <div style="display: flex; justify-content: space-around; height: 100%; align-items: flex-start; padding: 20px;">
+                        <div style="display: flex; flex-direction: column; gap: 12px; animation: matrixRain 4s linear infinite; animation-delay: 0s;">
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(127, 171, 200, 0.8);">85</div>
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(127, 171, 200, 0.6);">87</div>
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(127, 171, 200, 0.4);">89</div>
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(127, 171, 200, 0.2);">91</div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 12px; animation: matrixRain 4s linear infinite; animation-delay: 0.5s;">
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(166, 190, 164, 0.8);">92</div>
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(166, 190, 164, 0.6);">94</div>
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(166, 190, 164, 0.4);">96</div>
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(166, 190, 164, 0.2);">98</div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 12px; animation: matrixRain 4s linear infinite; animation-delay: 1s;">
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(224, 143, 106, 0.8);">78</div>
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(224, 143, 106, 0.6);">80</div>
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(224, 143, 106, 0.4);">82</div>
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(224, 143, 106, 0.2);">84</div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 12px; animation: matrixRain 4s linear infinite; animation-delay: 1.5s;">
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(198, 165, 91, 0.8);">81</div>
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(198, 165, 91, 0.6);">83</div>
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(198, 165, 91, 0.4);">85</div>
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(198, 165, 91, 0.2);">87</div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 12px; animation: matrixRain 4s linear infinite; animation-delay: 2s;">
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(199, 185, 211, 0.8);">75</div>
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(199, 185, 211, 0.6);">77</div>
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(199, 185, 211, 0.4);">79</div>
+                            <div style="font-family: 'DM Sans', monospace; font-size: 18px; color: rgba(199, 185, 211, 0.2);">81</div>
+                        </div>
+                    </div>
+
+                    <!-- Center focus -->
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; background: rgba(10, 10, 10, 0.9); padding: 32px 48px; border-radius: 16px; border: 2px solid rgba(127, 171, 200, 0.4);">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; color: rgba(127, 171, 200, 0.8); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;">Current Score</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 64px; font-weight: 400; color: #7FABC8; line-height: 1;">85</div>
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: rgba(255, 255, 255, 0.4); margin-top: 8px;">Updating live...</div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 60px 0 0 0;">
+                    <span style="color: #ffffff;">capturing everything.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">Every week. Every dimension.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Your leadership data, flowing in. Always measuring. Always tracking.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 14: NEON CIRCUIT BOARD
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1100px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-14 --circuit-board</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 60px 0;">
+                    <span style="color: #ffffff;">Connect every dimension</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">of your leadership</span>
+                </h2>
+
+                <!-- Circuit board visualization -->
+                <div style="position: relative; height: 350px; margin: 80px 0; background: radial-gradient(circle at center, rgba(26, 26, 26, 1) 0%, rgba(10, 10, 10, 1) 100%); border-radius: 24px; padding: 40px; overflow: hidden;">
+                    <!-- Circuit paths (SVG-style with divs) -->
+                    <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.3;">
+                        <line x1="50%" y1="50%" x2="20%" y2="20%" stroke="#7FABC8" stroke-width="2" stroke-dasharray="5,5">
+                            <animate attributeName="stroke-dashoffset" from="0" to="100" dur="3s" repeatCount="indefinite"/>
+                        </line>
+                        <line x1="50%" y1="50%" x2="80%" y2="20%" stroke="#A6BEA4" stroke-width="2" stroke-dasharray="5,5">
+                            <animate attributeName="stroke-dashoffset" from="0" to="100" dur="3s" repeatCount="indefinite"/>
+                        </line>
+                        <line x1="50%" y1="50%" x2="80%" y2="80%" stroke="#E08F6A" stroke-width="2" stroke-dasharray="5,5">
+                            <animate attributeName="stroke-dashoffset" from="0" to="100" dur="3s" repeatCount="indefinite"/>
+                        </line>
+                        <line x1="50%" y1="50%" x2="20%" y2="80%" stroke="#C6A55B" stroke-width="2" stroke-dasharray="5,5">
+                            <animate attributeName="stroke-dashoffset" from="0" to="100" dur="3s" repeatCount="indefinite"/>
+                        </line>
+                    </svg>
+
+                    <!-- Center hub -->
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle, rgba(127, 171, 200, 0.2) 0%, transparent 70%); border: 3px solid #7FABC8; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 40px rgba(127, 171, 200, 0.4); animation: neonPulse 2s ease-in-out infinite;">
+                        <div style="text-align: center;">
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 36px; font-weight: 400; color: #7FABC8;">YOU</div>
+                        </div>
+                    </div>
+
+                    <!-- Corner nodes -->
+                    <div style="position: absolute; top: 15%; left: 15%; width: 80px; height: 80px; border-radius: 12px; background: rgba(127, 171, 200, 0.15); border: 2px solid #7FABC8; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(127, 171, 200, 0.3);">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; color: rgba(127, 171, 200, 0.8); margin-bottom: 4px;">VISION</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 24px; color: #7FABC8;">85</div>
+                    </div>
+
+                    <div style="position: absolute; top: 15%; right: 15%; width: 80px; height: 80px; border-radius: 12px; background: rgba(166, 190, 164, 0.15); border: 2px solid #A6BEA4; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(166, 190, 164, 0.3);">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; color: rgba(166, 190, 164, 0.8); margin-bottom: 4px;">TRUST</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 24px; color: #A6BEA4;">92</div>
+                    </div>
+
+                    <div style="position: absolute; bottom: 15%; right: 15%; width: 80px; height: 80px; border-radius: 12px; background: rgba(224, 143, 106, 0.15); border: 2px solid #E08F6A; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(224, 143, 106, 0.3);">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; color: rgba(224, 143, 106, 0.8); margin-bottom: 4px;">FOCUS</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 24px; color: #E08F6A;">78</div>
+                    </div>
+
+                    <div style="position: absolute; bottom: 15%; left: 15%; width: 80px; height: 80px; border-radius: 12px; background: rgba(198, 165, 91, 0.15); border: 2px solid #C6A55B; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(198, 165, 91, 0.3);">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; color: rgba(198, 165, 91, 0.8); margin-bottom: 4px;">TIME</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 24px; color: #C6A55B;">81</div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 80px 0 0 0;">
+                    <span style="color: #ffffff;">All systems connected.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">All metrics tracked.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Your complete leadership network, measured and monitored.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 15: EXPANDING RADAR CHART
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-15 --radar-chart</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 60px 0;">
+                    <span style="color: rgba(255, 255, 255, 0.3);">Map your entire</span><br>
+                    <span style="color: #ffffff;">leadership profile</span>
+                </h2>
+
+                <!-- Radar/Spider chart -->
+                <div style="position: relative; width: 400px; height: 400px; margin: 80px auto; animation: expandRadar 1s ease-out;">
+                    <!-- Radar grid circles -->
+                    <svg width="400" height="400" style="position: absolute; top: 0; left: 0;">
+                        <circle cx="200" cy="200" r="160" fill="none" stroke="rgba(127, 171, 200, 0.1)" stroke-width="1"/>
+                        <circle cx="200" cy="200" r="120" fill="none" stroke="rgba(127, 171, 200, 0.15)" stroke-width="1"/>
+                        <circle cx="200" cy="200" r="80" fill="none" stroke="rgba(127, 171, 200, 0.2)" stroke-width="1"/>
+                        <circle cx="200" cy="200" r="40" fill="none" stroke="rgba(127, 171, 200, 0.25)" stroke-width="1"/>
+
+                        <!-- Axes -->
+                        <line x1="200" y1="200" x2="200" y2="40" stroke="rgba(127, 171, 200, 0.2)" stroke-width="1"/>
+                        <line x1="200" y1="200" x2="339" y2="117" stroke="rgba(166, 190, 164, 0.2)" stroke-width="1"/>
+                        <line x1="200" y1="200" x2="339" y2="283" stroke="rgba(224, 143, 106, 0.2)" stroke-width="1"/>
+                        <line x1="200" y1="200" x2="200" y2="360" stroke="rgba(198, 165, 91, 0.2)" stroke-width="1"/>
+                        <line x1="200" y1="200" x2="61" y2="283" stroke="rgba(199, 185, 211, 0.2)" stroke-width="1"/>
+                        <line x1="200" y1="200" x2="61" y2="117" stroke="rgba(127, 171, 200, 0.2)" stroke-width="1"/>
+
+                        <!-- Data polygon -->
+                        <polygon points="200,72 285,136 285,264 200,312 115,264 115,136"
+                                fill="rgba(127, 171, 200, 0.2)"
+                                stroke="#7FABC8"
+                                stroke-width="3"
+                                stroke-linejoin="round"/>
+                    </svg>
+
+                    <!-- Metric labels -->
+                    <div style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); text-align: center;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; color: #7FABC8;">VISION</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #7FABC8;">85</div>
+                    </div>
+
+                    <div style="position: absolute; top: 75px; right: 20px; text-align: center;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; color: #A6BEA4;">TRUST</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #A6BEA4;">92</div>
+                    </div>
+
+                    <div style="position: absolute; bottom: 75px; right: 20px; text-align: center;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; color: #E08F6A;">FOCUS</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #E08F6A;">78</div>
+                    </div>
+
+                    <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); text-align: center;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; color: #C6A55B;">TIME</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #C6A55B;">81</div>
+                    </div>
+
+                    <div style="position: absolute; bottom: 75px; left: 20px; text-align: center;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; color: #C7B9D3;">TEAM</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #C7B9D3;">75</div>
+                    </div>
+
+                    <div style="position: absolute; top: 75px; left: 20px; text-align: center;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; color: #7FABC8;">CULTURE</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #7FABC8;">88</div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 80px 0 0 0;">
+                    <span style="color: #ffffff;">Six dimensions. One view.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">Your complete profile mapped.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                See your strengths. Spot your gaps. Track your evolution.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 16: STACKED GLASS CARDS
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-16 --glass-cards</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 60px 0;">
+                    <span style="color: #ffffff;">Layer by layer</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">your leadership reveals itself</span>
+                </h2>
+
+                <!-- Stacked translucent cards -->
+                <div style="position: relative; height: 400px; margin: 80px 0;">
+                    <!-- Card 5 (back) -->
+                    <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) translateY(80px) scale(0.85); width: 500px; height: 140px; background: rgba(199, 185, 211, 0.08); backdrop-filter: blur(10px); border: 1px solid rgba(199, 185, 211, 0.2); border-radius: 20px; padding: 28px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); opacity: 0.6;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: rgba(199, 185, 211, 0.8); text-transform: uppercase; margin-bottom: 8px;">Delegation</div>
+                                <div style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #C7B9D3;">68</div>
+                            </div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; color: rgba(255, 255, 255, 0.5);">↑ +5</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) translateY(40px) scale(0.9); width: 500px; height: 140px; background: rgba(198, 165, 91, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(198, 165, 91, 0.25); border-radius: 20px; padding: 28px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25); opacity: 0.75;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: rgba(198, 165, 91, 0.9); text-transform: uppercase; margin-bottom: 8px;">Communication</div>
+                                <div style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #C6A55B;">81</div>
+                            </div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; color: rgba(255, 255, 255, 0.5);">↑ +10</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(0.95); width: 500px; height: 140px; background: rgba(224, 143, 106, 0.12); backdrop-filter: blur(10px); border: 1px solid rgba(224, 143, 106, 0.3); border-radius: 20px; padding: 28px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); opacity: 0.85;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: rgba(224, 143, 106, 0.9); text-transform: uppercase; margin-bottom: 8px;">Deep Work</div>
+                                <div style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #E08F6A;">78</div>
+                            </div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; color: rgba(255, 255, 255, 0.6);">↑ +15</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) translateY(-40px); width: 500px; height: 140px; background: rgba(166, 190, 164, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(166, 190, 164, 0.35); border-radius: 20px; padding: 28px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35); opacity: 0.95;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: rgba(166, 190, 164, 0.9); text-transform: uppercase; margin-bottom: 8px;">Team Trust</div>
+                                <div style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #A6BEA4;">92</div>
+                            </div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; color: rgba(255, 255, 255, 0.6);">↑ +8</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 1 (front) -->
+                    <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) translateY(-80px); width: 500px; height: 140px; background: rgba(127, 171, 200, 0.18); backdrop-filter: blur(10px); border: 2px solid rgba(127, 171, 200, 0.4); border-radius: 20px; padding: 28px; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 40px rgba(127, 171, 200, 0.2);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: #7FABC8; text-transform: uppercase; margin-bottom: 8px;">Strategic Vision</div>
+                                <div style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #7FABC8;">85</div>
+                            </div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; color: rgba(255, 255, 255, 0.7);">↑ +12</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 80px 0 0 0;">
+                    <span style="color: #ffffff;">Every layer measured.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">Every dimension transparent.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                See through the complexity. Focus on what matters. Track everything.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 17: ORBITAL METRICS
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-17 --orbital-system</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 60px 0;">
+                    <span style="color: rgba(255, 255, 255, 0.3);">Your leadership universe</span><br>
+                    <span style="color: #ffffff;">everything orbits you</span>
+                </h2>
+
+                <!-- Orbital system -->
+                <div style="position: relative; width: 500px; height: 500px; margin: 80px auto;">
+                    <!-- Center (YOU) -->
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 140px; height: 140px; border-radius: 50%; background: radial-gradient(circle, rgba(127, 171, 200, 0.3) 0%, rgba(127, 171, 200, 0.1) 70%); border: 3px solid #7FABC8; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 60px rgba(127, 171, 200, 0.5); z-index: 10;">
+                        <div style="text-align: center;">
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #7FABC8; line-height: 1;">85</div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: rgba(255, 255, 255, 0.6); margin-top: 4px;">Overall Score</div>
+                        </div>
+                    </div>
+
+                    <!-- Orbit rings -->
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; border-radius: 50%; border: 1px solid rgba(127, 171, 200, 0.15);"></div>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; height: 400px; border-radius: 50%; border: 1px solid rgba(127, 171, 200, 0.1);"></div>
+
+                    <!-- Orbiting metrics -->
+                    <div style="position: absolute; top: 50%; left: 50%; animation: orbit 12s linear infinite;">
+                        <div style="width: 70px; height: 70px; border-radius: 50%; background: rgba(127, 171, 200, 0.2); border: 2px solid #7FABC8; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(127, 171, 200, 0.3);">
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 9px; color: rgba(127, 171, 200, 0.8);">VISION</div>
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #7FABC8;">85</div>
+                        </div>
+                    </div>
+
+                    <div style="position: absolute; top: 50%; left: 50%; animation: orbit 14s linear infinite; animation-delay: -2s;">
+                        <div style="width: 70px; height: 70px; border-radius: 50%; background: rgba(166, 190, 164, 0.2); border: 2px solid #A6BEA4; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(166, 190, 164, 0.3);">
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 9px; color: rgba(166, 190, 164, 0.8);">TRUST</div>
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #A6BEA4;">92</div>
+                        </div>
+                    </div>
+
+                    <div style="position: absolute; top: 50%; left: 50%; animation: orbit 16s linear infinite; animation-delay: -4s;">
+                        <div style="width: 70px; height: 70px; border-radius: 50%; background: rgba(224, 143, 106, 0.2); border: 2px solid #E08F6A; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(224, 143, 106, 0.3);">
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 9px; color: rgba(224, 143, 106, 0.8);">FOCUS</div>
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #E08F6A;">78</div>
+                        </div>
+                    </div>
+
+                    <div style="position: absolute; top: 50%; left: 50%; animation: orbit 18s linear infinite; animation-delay: -6s;">
+                        <div style="width: 70px; height: 70px; border-radius: 50%; background: rgba(198, 165, 91, 0.2); border: 2px solid #C6A55B; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(198, 165, 91, 0.3);">
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 9px; color: rgba(198, 165, 91, 0.8);">TIME</div>
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #C6A55B;">81</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 80px 0 0 0;">
+                    <span style="color: #ffffff;">You're the center.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">Everything revolves around your growth.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Track every dimension. See the full system. Measure your universe.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 18: VERTICAL PROGRESS TOWER
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-18 --progress-tower</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 60px 0;">
+                    <span style="color: #ffffff;">Climb the tower</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">level by level</span>
+                </h2>
+
+                <!-- Vertical tower visualization -->
+                <div style="position: relative; width: 300px; height: 500px; margin: 60px auto; background: linear-gradient(180deg, rgba(10, 10, 10, 0.8) 0%, rgba(26, 26, 26, 0.6) 100%); border-radius: 20px; border: 2px solid rgba(127, 171, 200, 0.2); padding: 30px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);">
+                    <!-- Level 5 (Top) -->
+                    <div style="background: linear-gradient(135deg, rgba(127, 171, 200, 0.3) 0%, rgba(127, 171, 200, 0.15) 100%); border: 2px solid #7FABC8; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 30px rgba(127, 171, 200, 0.4); position: relative;">
+                        <div style="position: absolute; top: -12px; left: -12px; width: 30px; height: 30px; background: #7FABC8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; color: #000;">5</div>
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; color: #7FABC8; text-transform: uppercase; margin-bottom: 6px;">Master</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 32px; font-weight: 400; color: #7FABC8; line-height: 1;">92</div>
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; color: rgba(255, 255, 255, 0.5); margin-top: 4px;">Current Level</div>
+                    </div>
+
+                    <!-- Level 4 -->
+                    <div style="background: rgba(166, 190, 164, 0.1); border: 1px solid rgba(166, 190, 164, 0.3); border-radius: 12px; padding: 18px; margin-bottom: 18px;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 600; color: rgba(166, 190, 164, 0.8); text-transform: uppercase; margin-bottom: 4px;">Advanced</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 24px; font-weight: 400; color: #A6BEA4;">85</div>
+                    </div>
+
+                    <!-- Level 3 -->
+                    <div style="background: rgba(224, 143, 106, 0.08); border: 1px solid rgba(224, 143, 106, 0.25); border-radius: 12px; padding: 18px; margin-bottom: 18px;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 600; color: rgba(224, 143, 106, 0.8); text-transform: uppercase; margin-bottom: 4px;">Proficient</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 24px; font-weight: 400; color: #E08F6A;">75</div>
+                    </div>
+
+                    <!-- Level 2 -->
+                    <div style="background: rgba(198, 165, 91, 0.08); border: 1px solid rgba(198, 165, 91, 0.25); border-radius: 12px; padding: 18px; margin-bottom: 18px;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 600; color: rgba(198, 165, 91, 0.8); text-transform: uppercase; margin-bottom: 4px;">Intermediate</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 24px; font-weight: 400; color: #C6A55B;">65</div>
+                    </div>
+
+                    <!-- Level 1 (Base) -->
+                    <div style="background: rgba(199, 185, 211, 0.08); border: 1px solid rgba(199, 185, 211, 0.25); border-radius: 12px; padding: 18px;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 600; color: rgba(199, 185, 211, 0.8); text-transform: uppercase; margin-bottom: 4px;">Foundation</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 24px; font-weight: 400; color: #C7B9D3;">50</div>
+                    </div>
+
+                    <!-- Progress indicator -->
+                    <div style="position: absolute; left: -20px; top: 30px; bottom: 30px; width: 4px; background: linear-gradient(180deg, #7FABC8 0%, rgba(127, 171, 200, 0.2) 100%); border-radius: 2px;"></div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 60px 0 0 0;">
+                    <span style="color: #ffffff;">Track your ascent.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">Measure every milestone.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                From foundation to master. Every step tracked. Every level earned.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 19: HOLOGRAPHIC DISPLAY
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1100px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-19 --holographic</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 60px 0;">
+                    <span style="color: rgba(255, 255, 255, 0.3);">Project your leadership</span><br>
+                    <span style="color: #ffffff;">into the future</span>
+                </h2>
+
+                <!-- Holographic projection effect -->
+                <div style="position: relative; height: 400px; margin: 80px 0;">
+                    <!-- Base platform -->
+                    <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 400px; height: 8px; background: linear-gradient(90deg, transparent 0%, rgba(127, 171, 200, 0.5) 20%, rgba(127, 171, 200, 0.8) 50%, rgba(127, 171, 200, 0.5) 80%, transparent 100%); border-radius: 4px; box-shadow: 0 0 30px rgba(127, 171, 200, 0.6);"></div>
+
+                    <!-- Holographic projection lines -->
+                    <div style="position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); width: 2px; height: 350px; background: linear-gradient(180deg, rgba(127, 171, 200, 0.8) 0%, transparent 100%); animation: neonPulse 2s ease-in-out infinite;"></div>
+
+                    <!-- Floating holographic data -->
+                    <div style="position: absolute; top: 50px; left: 50%; transform: translateX(-50%); width: 500px;">
+                        <!-- Main score hologram -->
+                        <div style="text-align: center; margin-bottom: 40px; animation: float3d 4s ease-in-out infinite;">
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 120px; font-weight: 400; background: linear-gradient(180deg, #7FABC8 0%, rgba(127, 171, 200, 0.4) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 0 40px rgba(127, 171, 200, 0.6)); line-height: 1;">
+                                85
+                            </div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: rgba(127, 171, 200, 0.8); text-transform: uppercase; letter-spacing: 0.2em; margin-top: 12px;">Leadership Score</div>
+                        </div>
+
+                        <!-- Floating metrics -->
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="text-align: center; animation: float3d 3s ease-in-out infinite; animation-delay: 0.5s;">
+                                <div style="font-family: 'Crimson Pro', serif; font-size: 36px; color: rgba(166, 190, 164, 0.9); filter: drop-shadow(0 0 15px rgba(166, 190, 164, 0.5));">92</div>
+                                <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; color: rgba(166, 190, 164, 0.7);">TRUST</div>
+                            </div>
+                            <div style="text-align: center; animation: float3d 3.5s ease-in-out infinite; animation-delay: 1s;">
+                                <div style="font-family: 'Crimson Pro', serif; font-size: 36px; color: rgba(224, 143, 106, 0.9); filter: drop-shadow(0 0 15px rgba(224, 143, 106, 0.5));">78</div>
+                                <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; color: rgba(224, 143, 106, 0.7);">FOCUS</div>
+                            </div>
+                            <div style="text-align: center; animation: float3d 4s ease-in-out infinite; animation-delay: 1.5s;">
+                                <div style="font-family: 'Crimson Pro', serif; font-size: 36px; color: rgba(198, 165, 91, 0.9); filter: drop-shadow(0 0 15px rgba(198, 165, 91, 0.5));">81</div>
+                                <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; color: rgba(198, 165, 91, 0.7);">TIME</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Projection grid lines -->
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: repeating-linear-gradient(0deg, transparent 0px, rgba(127, 171, 200, 0.05) 1px, transparent 2px, transparent 20px); pointer-events: none;"></div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 80px 0 0 0;">
+                    <span style="color: #ffffff;">Your data, projected.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">Your future, measurable.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                See your leadership in 3D. Track your trajectory. Project your growth.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 20: SCORE EXPLOSION
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-20 --score-burst</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 60px 0;">
+                    <span style="color: #ffffff;">Your growth</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">exploding outward</span>
+                </h2>
+
+                <!-- Score explosion visualization -->
+                <div style="position: relative; width: 600px; height: 600px; margin: 80px auto;">
+                    <!-- Center score (explosion source) -->
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10;">
+                        <div style="width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(127, 171, 200, 0.4) 0%, rgba(127, 171, 200, 0.1) 50%, transparent 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 80px rgba(127, 171, 200, 0.6); animation: expand 2s ease-out infinite;">
+                            <div style="text-align: center;">
+                                <div style="font-family: 'Crimson Pro', serif; font-size: 96px; font-weight: 400; color: #7FABC8; line-height: 1; text-shadow: 0 0 40px rgba(127, 171, 200, 0.8);">85</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exploding particles/scores -->
+                    <div style="position: absolute; top: 20%; left: 20%; width: 60px; height: 60px; border-radius: 50%; background: rgba(127, 171, 200, 0.3); border: 2px solid #7FABC8; display: flex; align-items: center; justify-content: center; animation: particle 3s ease-out infinite; --tx: -100px; --ty: -100px;">
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #7FABC8;">85</div>
+                    </div>
+
+                    <div style="position: absolute; top: 10%; left: 50%; width: 60px; height: 60px; border-radius: 50%; background: rgba(166, 190, 164, 0.3); border: 2px solid #A6BEA4; display: flex; align-items: center; justify-content: center; animation: particle 3s ease-out infinite; animation-delay: 0.3s; --tx: 0px; --ty: -120px;">
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #A6BEA4;">92</div>
+                    </div>
+
+                    <div style="position: absolute; top: 20%; right: 20%; width: 60px; height: 60px; border-radius: 50%; background: rgba(224, 143, 106, 0.3); border: 2px solid #E08F6A; display: flex; align-items: center; justify-content: center; animation: particle 3s ease-out infinite; animation-delay: 0.6s; --tx: 100px; --ty: -100px;">
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #E08F6A;">78</div>
+                    </div>
+
+                    <div style="position: absolute; top: 50%; right: 10%; width: 60px; height: 60px; border-radius: 50%; background: rgba(198, 165, 91, 0.3); border: 2px solid #C6A55B; display: flex; align-items: center; justify-content: center; animation: particle 3s ease-out infinite; animation-delay: 0.9s; --tx: 120px; --ty: 0px;">
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #C6A55B;">81</div>
+                    </div>
+
+                    <div style="position: absolute; bottom: 20%; right: 20%; width: 60px; height: 60px; border-radius: 50%; background: rgba(199, 185, 211, 0.3); border: 2px solid #C7B9D3; display: flex; align-items: center; justify-content: center; animation: particle 3s ease-out infinite; animation-delay: 1.2s; --tx: 100px; --ty: 100px;">
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #C7B9D3;">75</div>
+                    </div>
+
+                    <div style="position: absolute; bottom: 10%; left: 50%; width: 60px; height: 60px; border-radius: 50%; background: rgba(127, 171, 200, 0.3); border: 2px solid #7FABC8; display: flex; align-items: center; justify-content: center; animation: particle 3s ease-out infinite; animation-delay: 1.5s; --tx: 0px; --ty: 120px;">
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #7FABC8;">88</div>
+                    </div>
+
+                    <div style="position: absolute; bottom: 20%; left: 20%; width: 60px; height: 60px; border-radius: 50%; background: rgba(166, 190, 164, 0.3); border: 2px solid #A6BEA4; display: flex; align-items: center; justify-content: center; animation: particle 3s ease-out infinite; animation-delay: 1.8s; --tx: -100px; --ty: 100px;">
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #A6BEA4;">90</div>
+                    </div>
+
+                    <div style="position: absolute; top: 50%; left: 10%; width: 60px; height: 60px; border-radius: 50%; background: rgba(224, 143, 106, 0.3); border: 2px solid #E08F6A; display: flex; align-items: center; justify-content: center; animation: particle 3s ease-out infinite; animation-delay: 2.1s; --tx: -120px; --ty: 0px;">
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 20px; color: #E08F6A;">82</div>
+                    </div>
+
+                    <!-- Radial lines -->
+                    <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.15;">
+                        <line x1="50%" y1="50%" x2="20%" y2="20%" stroke="#7FABC8" stroke-width="1"/>
+                        <line x1="50%" y1="50%" x2="50%" y2="10%" stroke="#A6BEA4" stroke-width="1"/>
+                        <line x1="50%" y1="50%" x2="80%" y2="20%" stroke="#E08F6A" stroke-width="1"/>
+                        <line x1="50%" y1="50%" x2="90%" y2="50%" stroke="#C6A55B" stroke-width="1"/>
+                        <line x1="50%" y1="50%" x2="80%" y2="80%" stroke="#C7B9D3" stroke-width="1"/>
+                        <line x1="50%" y1="50%" x2="50%" y2="90%" stroke="#7FABC8" stroke-width="1"/>
+                        <line x1="50%" y1="50%" x2="20%" y2="80%" stroke="#A6BEA4" stroke-width="1"/>
+                        <line x1="50%" y1="50%" x2="10%" y2="50%" stroke="#E08F6A" stroke-width="1"/>
+                    </svg>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 80px 0 0 0;">
+                    <span style="color: #ffffff;">Radiating improvement.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">Every dimension growing.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                From your core, growth spreads. Every metric measured. Every score expanding.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div style="height: 120px;"></div>
+
+</body>
+</html>

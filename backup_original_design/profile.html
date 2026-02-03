@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile | CEO Lab</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/dashboard.css">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="nav">
+    <div class="nav__container">
+      <div class="nav__brand">
+        <a href="dashboard.html" class="nav__logo">
+          <span class="nav__logo-text">NK</span>
+        </a>
+        <span class="nav__title">CEO Lab</span>
+      </div>
+
+      <div class="nav__menu">
+        <a href="dashboard.html" class="nav__link">Dashboard</a>
+        <a href="assessments.html" class="nav__link">Assessments</a>
+        <a href="frameworks.html" class="nav__link">Frameworks</a>
+        <a href="tools.html" class="nav__link">Tools</a>
+      </div>
+
+      <div class="nav__actions">
+        <button class="nav__icon-btn" aria-label="Notifications">🔔</button>
+        <div class="nav__user">
+          <button class="nav__user-btn">
+            <img src="https://ui-avatars.com/api/?name=Sarah+Chen&background=7FABC8&color=fff&size=40" alt="Sarah Chen" class="nav__avatar">
+            <span class="nav__user-name">SC</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="layout">
+    <main class="main-content" style="text-align: center; padding: var(--nk-space-xl);">
+      <h1 class="font-heading" style="font-size: var(--nk-text-4xl); margin-bottom: var(--nk-space-md);">Profile</h1>
+      <p class="text-muted" style="font-size: var(--nk-text-lg);">Coming soon...</p>
+      <a href="dashboard.html" class="btn btn-primary mt-lg">← Back to Dashboard</a>
+    </main>
+  </div>
+
+  <!-- Mobile Bottom Tab Bar -->
+  <nav class="bottom-tabs">
+    <a href="dashboard.html" class="bottom-tabs__item">
+      <span class="bottom-tabs__icon">🏠</span>
+      <span class="bottom-tabs__label">Home</span>
+    </a>
+    <a href="assessments.html" class="bottom-tabs__item">
+      <span class="bottom-tabs__icon">📊</span>
+      <span class="bottom-tabs__label">Assess</span>
+    </a>
+    <a href="frameworks.html" class="bottom-tabs__item">
+      <span class="bottom-tabs__icon">📚</span>
+      <span class="bottom-tabs__label">Learn</span>
+    </a>
+    <a href="tools.html" class="bottom-tabs__item">
+      <span class="bottom-tabs__icon">🔧</span>
+      <span class="bottom-tabs__label">Tools</span>
+    </a>
+    <a href="profile.html" class="bottom-tabs__item bottom-tabs__item--active">
+      <span class="bottom-tabs__icon">👤</span>
+      <span class="bottom-tabs__label">Profile</span>
+    </a>
+  </nav>
+
+</body>
+</html>

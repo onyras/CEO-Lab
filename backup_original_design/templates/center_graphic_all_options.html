@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Center with Graphic - All Options</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes slideIn {
+            from { width: 0%; opacity: 0; }
+            to { width: 100%; opacity: 1; }
+        }
+        .pulse-dot { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        .float-card { animation: float 3s ease-in-out infinite; }
+        .spin-ring { animation: spin 20s linear infinite; }
+        .slide-bar { animation: slideIn 2s ease-out forwards; }
+
+        /* Section separator */
+        .template-separator {
+            margin: 120px 0;
+            text-align: center;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ========================================
+     OPTION 1: INLINE BADGE
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-01 --inline-badge</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.2; margin: 0;">
+                    <span style="color: rgba(255, 255, 255, 0.3);">Stop guessing about your growth.</span><br>
+                    <span style="color: #ffffff;">Track leadership like</span>
+
+                    <span style="display: inline-flex; align-items: center; margin: 0 16px; vertical-align: middle;">
+                        <span style="display: inline-flex; align-items: center; gap: 12px; background: rgba(127, 171, 200, 0.15); border: 2px solid rgba(127, 171, 200, 0.3); border-radius: 60px; padding: 12px 28px;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7FABC8" stroke-width="2">
+                                <line x1="18" y1="20" x2="18" y2="10"/>
+                                <line x1="12" y1="20" x2="12" y2="4"/>
+                                <line x1="6" y1="20" x2="6" y2="14"/>
+                            </svg>
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 18px; font-weight: 600; color: #7FABC8;">METRICS</span>
+                        </span>
+                    </span>
+
+                    <span style="color: #ffffff;">matter.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">with real data you can trust.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Athletes track performance. CEOs guess. Not anymore.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 2: METRIC CARDS
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-02 --metric-cards</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.2; margin: 0;">
+                    <span style="color: rgba(255, 255, 255, 0.3);">You track revenue.</span><br>
+                    <span style="color: #ffffff;">Why not track</span>
+                </h2>
+
+                <div style="margin: 48px auto; display: flex; justify-content: center; gap: 24px;">
+                    <div style="background: rgba(127, 171, 200, 0.08); border: 1px solid rgba(127, 171, 200, 0.2); border-radius: 16px; padding: 24px 32px; min-width: 160px;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: rgba(127, 171, 200, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Trust</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #7FABC8;">85%</div>
+                    </div>
+
+                    <div style="background: rgba(166, 190, 164, 0.08); border: 1px solid rgba(166, 190, 164, 0.2); border-radius: 16px; padding: 24px 32px; min-width: 160px;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: rgba(166, 190, 164, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Vision</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #A6BEA4;">72%</div>
+                    </div>
+
+                    <div style="background: rgba(224, 143, 106, 0.08); border: 1px solid rgba(224, 143, 106, 0.2); border-radius: 16px; padding: 24px 32px; min-width: 160px;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: rgba(224, 143, 106, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Focus</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #E08F6A;">91%</div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.2; margin: 0;">
+                    <span style="color: #ffffff;">your leadership?</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">Measure what actually matters.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Every score tracked. Every week measured. Real progress you can see.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 3: LIVE TRACKING UI
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-03 --live-tracker</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0;">
+                    <span style="color: rgba(255, 255, 255, 0.3);">Most founders work blind.</span><br>
+                    <span style="color: #ffffff;">Start tracking</span>
+
+                    <span style="display: inline-flex; align-items: center; margin: 0 12px; vertical-align: middle;">
+                        <span style="display: inline-flex; align-items: center; gap: 10px; background: rgba(10, 10, 10, 0.8); border: 2px solid rgba(127, 171, 200, 0.3); border-radius: 50px; padding: 10px 24px; box-shadow: 0 4px 20px rgba(127, 171, 200, 0.15);">
+                            <span class="pulse-dot" style="width: 12px; height: 12px; border-radius: 50%; background: #7FABC8;"></span>
+
+                            <span style="display: flex; gap: 3px; align-items: center;">
+                                <span style="width: 4px; height: 18px; background: rgba(127, 171, 200, 0.3); border-radius: 2px;"></span>
+                                <span style="width: 4px; height: 26px; background: #7FABC8; border-radius: 2px;"></span>
+                                <span style="width: 4px; height: 20px; background: #7FABC8; border-radius: 2px;"></span>
+                                <span style="width: 4px; height: 28px; background: rgba(127, 171, 200, 0.6); border-radius: 2px;"></span>
+                                <span style="width: 4px; height: 16px; background: rgba(127, 171, 200, 0.3); border-radius: 2px;"></span>
+                            </span>
+
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #7FABC8; letter-spacing: 0.02em;">LIVE</span>
+                        </span>
+                    </span>
+
+                    <span style="color: #ffffff;">now.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">See your actual progress every week.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Weekly check-ins. Real data. Measurable growth you can prove.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 4: DASHBOARD MOCKUP
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1100px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-04 --dashboard</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 48px 0;">
+                    <span style="color: rgba(255, 255, 255, 0.3);">Stop wondering if you're improving.</span><br>
+                    <span style="color: #ffffff;">Your dashboard shows</span>
+                </h2>
+
+                <div style="background: rgba(10, 10, 10, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 40px; max-width: 700px; margin: 0 auto; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.4);">Last 12 Weeks</div>
+                        <div style="display: flex; gap: 8px;">
+                            <span style="width: 8px; height: 8px; border-radius: 50%; background: rgba(224, 143, 106, 0.5);"></span>
+                            <span style="width: 8px; height: 8px; border-radius: 50%; background: rgba(166, 190, 164, 0.5);"></span>
+                            <span style="width: 8px; height: 8px; border-radius: 50%; background: rgba(127, 171, 200, 0.5);"></span>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; align-items: flex-end; height: 180px; margin-bottom: 32px;">
+                        <div style="flex: 1; background: rgba(127, 171, 200, 0.2); border-radius: 6px 6px 0 0; height: 45%;"></div>
+                        <div style="flex: 1; background: rgba(127, 171, 200, 0.25); border-radius: 6px 6px 0 0; height: 52%;"></div>
+                        <div style="flex: 1; background: rgba(127, 171, 200, 0.3); border-radius: 6px 6px 0 0; height: 48%;"></div>
+                        <div style="flex: 1; background: rgba(127, 171, 200, 0.35); border-radius: 6px 6px 0 0; height: 58%;"></div>
+                        <div style="flex: 1; background: rgba(127, 171, 200, 0.4); border-radius: 6px 6px 0 0; height: 65%;"></div>
+                        <div style="flex: 1; background: rgba(127, 171, 200, 0.45); border-radius: 6px 6px 0 0; height: 62%;"></div>
+                        <div style="flex: 1; background: rgba(127, 171, 200, 0.5); border-radius: 6px 6px 0 0; height: 70%;"></div>
+                        <div style="flex: 1; background: rgba(127, 171, 200, 0.6); border-radius: 6px 6px 0 0; height: 75%;"></div>
+                        <div style="flex: 1; background: rgba(127, 171, 200, 0.7); border-radius: 6px 6px 0 0; height: 78%;"></div>
+                        <div style="flex: 1; background: rgba(127, 171, 200, 0.8); border-radius: 6px 6px 0 0; height: 85%;"></div>
+                        <div style="flex: 1; background: rgba(127, 171, 200, 0.9); border-radius: 6px 6px 0 0; height: 88%;"></div>
+                        <div style="flex: 1; background: #7FABC8; border-radius: 6px 6px 0 0; height: 100%; box-shadow: 0 0 20px rgba(127, 171, 200, 0.4);"></div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-around; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                        <div>
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 32px; font-weight: 400; color: #7FABC8;">+28%</div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">Growth</div>
+                        </div>
+                        <div>
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 32px; font-weight: 400; color: #A6BEA4;">12/12</div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">Streak</div>
+                        </div>
+                        <div>
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 32px; font-weight: 400; color: #E08F6A;">Top 10%</div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">Cohort</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 48px 0 0 0;">
+                    <span style="color: #ffffff;">exactly where you stand.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">No more guessing.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Real metrics. Real progress. Real confidence in your growth.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 5: CIRCULAR PROGRESS RINGS (BOLD)
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-05 --progress-rings</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 60px 0;">
+                    <span style="color: #ffffff;">Leadership isn't vibes.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">It's progress you can</span>
+                </h2>
+
+                <!-- Large circular progress rings -->
+                <div style="display: flex; justify-content: center; gap: 40px; margin: 60px 0;">
+                    <!-- Ring 1 -->
+                    <div style="position: relative; width: 160px; height: 160px;">
+                        <svg style="width: 100%; height: 100%; transform: rotate(-90deg);">
+                            <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(127, 171, 200, 0.1)" stroke-width="12"/>
+                            <circle cx="80" cy="80" r="70" fill="none" stroke="#7FABC8" stroke-width="12" stroke-dasharray="440" stroke-dashoffset="88" stroke-linecap="round"/>
+                        </svg>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 36px; font-weight: 400; color: #7FABC8;">80%</div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: rgba(127, 171, 200, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px;">Trust</div>
+                        </div>
+                    </div>
+
+                    <!-- Ring 2 -->
+                    <div style="position: relative; width: 200px; height: 200px; margin-top: -20px;">
+                        <svg class="spin-ring" style="width: 100%; height: 100%; transform: rotate(-90deg);">
+                            <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(166, 190, 164, 0.1)" stroke-width="14"/>
+                            <circle cx="100" cy="100" r="90" fill="none" stroke="#A6BEA4" stroke-width="14" stroke-dasharray="565" stroke-dashoffset="113" stroke-linecap="round"/>
+                        </svg>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #A6BEA4;">92%</div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; color: rgba(166, 190, 164, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px;">Vision</div>
+                        </div>
+                    </div>
+
+                    <!-- Ring 3 -->
+                    <div style="position: relative; width: 160px; height: 160px;">
+                        <svg style="width: 100%; height: 100%; transform: rotate(-90deg);">
+                            <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(224, 143, 106, 0.1)" stroke-width="12"/>
+                            <circle cx="80" cy="80" r="70" fill="none" stroke="#E08F6A" stroke-width="12" stroke-dasharray="440" stroke-dashoffset="132" stroke-linecap="round"/>
+                        </svg>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 36px; font-weight: 400; color: #E08F6A;">70%</div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: rgba(224, 143, 106, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px;">Focus</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 60px 0 0 0;">
+                    <span style="color: #ffffff;">actually measure.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">Week by week. Score by score.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Stop wondering. Start knowing. See your exact numbers.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 6: TERMINAL OUTPUT (COMPACT & BOLD)
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-06 --terminal</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 40px 0;">
+                    <span style="color: rgba(255, 255, 255, 0.3);">Run the command.</span><br>
+                    <span style="color: #ffffff;">See where you actually stand</span>
+                </h2>
+
+                <!-- Terminal window -->
+                <div style="background: #0a0a0a; border: 1px solid rgba(127, 171, 200, 0.2); border-radius: 12px; padding: 24px 32px; max-width: 600px; margin: 0 auto; text-align: left; box-shadow: 0 20px 60px rgba(127, 171, 200, 0.15);">
+                    <!-- Terminal header -->
+                    <div style="display: flex; gap: 6px; margin-bottom: 20px;">
+                        <span style="width: 12px; height: 12px; border-radius: 50%; background: #E08F6A;"></span>
+                        <span style="width: 12px; height: 12px; border-radius: 50%; background: #C6A55B;"></span>
+                        <span style="width: 12px; height: 12px; border-radius: 50%; background: #A6BEA4;"></span>
+                    </div>
+
+                    <!-- Terminal content -->
+                    <div style="font-family: 'DM Sans', monospace; font-size: 14px; line-height: 1.8;">
+                        <div style="color: rgba(255, 255, 255, 0.5);">$ ceo-lab --assess</div>
+                        <div style="color: rgba(255, 255, 255, 0.3); margin: 8px 0;">Running leadership assessment...</div>
+                        <div style="color: #A6BEA4; margin: 4px 0;">✓ Strategic Vision: 85/100</div>
+                        <div style="color: #7FABC8; margin: 4px 0;">✓ Team Trust: 92/100</div>
+                        <div style="color: #E08F6A; margin: 4px 0;">✓ Time Mastery: 78/100</div>
+                        <div style="color: rgba(255, 255, 255, 0.3); margin: 8px 0;">Assessment complete.</div>
+                        <div style="color: #7FABC8; margin-top: 12px;">→ View full report</div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 40px 0 0 0;">
+                    <span style="color: #ffffff;">in real numbers.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                No fluff. No guessing. Just your leadership scores, tracked weekly.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 7: BEFORE/AFTER SPLIT (BOLD)
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1100px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-07 --before-after</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 60px 0;">
+                    <span style="color: #ffffff;">From guessing to knowing</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">in 12 weeks</span>
+                </h2>
+
+                <!-- Before/After comparison -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 800px; margin: 0 auto;">
+                    <!-- BEFORE -->
+                    <div style="background: rgba(255, 100, 100, 0.05); border: 2px solid rgba(255, 100, 100, 0.2); border-radius: 16px; padding: 32px;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: rgba(255, 100, 100, 0.8); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 24px;">Before</div>
+
+                        <div style="text-align: left; display: flex; flex-direction: column; gap: 16px;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="color: rgba(255, 100, 100, 0.6); font-size: 20px;">✕</span>
+                                <span style="font-family: 'DM Sans', sans-serif; font-size: 16px; color: rgba(255, 255, 255, 0.6);">No data on growth</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="color: rgba(255, 100, 100, 0.6); font-size: 20px;">✕</span>
+                                <span style="font-family: 'DM Sans', sans-serif; font-size: 16px; color: rgba(255, 255, 255, 0.6);">Can't see blind spots</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="color: rgba(255, 100, 100, 0.6); font-size: 20px;">✕</span>
+                                <span style="font-family: 'DM Sans', sans-serif; font-size: 16px; color: rgba(255, 255, 255, 0.6);">Anxiety-driven decisions</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AFTER -->
+                    <div style="background: rgba(127, 171, 200, 0.08); border: 2px solid rgba(127, 171, 200, 0.3); border-radius: 16px; padding: 32px;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #7FABC8; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 24px;">After</div>
+
+                        <div style="text-align: left; display: flex; flex-direction: column; gap: 16px;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="color: #7FABC8; font-size: 20px;">✓</span>
+                                <span style="font-family: 'DM Sans', sans-serif; font-size: 16px; color: #ffffff;">Track every dimension</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="color: #7FABC8; font-size: 20px;">✓</span>
+                                <span style="font-family: 'DM Sans', sans-serif; font-size: 16px; color: #ffffff;">See gaps before crises</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="color: #7FABC8; font-size: 20px;">✓</span>
+                                <span style="font-family: 'DM Sans', sans-serif; font-size: 16px; color: #ffffff;">Data-driven strategy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 60px 0 0 0;">
+                    <span style="color: rgba(255, 255, 255, 0.3);">That's the difference</span><br>
+                    <span style="color: #ffffff;">measurement makes.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Stop guessing. Start measuring. See the difference.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 8: FLOATING 3D CARDS (WILD)
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1000px; margin: 0 auto; text-align: center; position: relative;">
+            <p class="section__title">> option-08 --floating-cards</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 80px 0;">
+                    <span style="color: #ffffff;">Every dimension of leadership</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">tracked. measured. visible.</span>
+                </h2>
+
+                <!-- Floating card arrangement -->
+                <div style="position: relative; height: 300px; margin: 60px 0;">
+                    <!-- Card 1 - Left -->
+                    <div class="float-card" style="position: absolute; left: 10%; top: 20%; width: 180px; background: rgba(127, 171, 200, 0.1); border: 2px solid rgba(127, 171, 200, 0.3); border-radius: 16px; padding: 20px; transform: rotate(-8deg); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); animation-delay: 0s;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; color: rgba(127, 171, 200, 0.7); text-transform: uppercase; margin-bottom: 8px;">Strategic Vision</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 40px; font-weight: 400; color: #7FABC8;">87</div>
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">↑ +12 this month</div>
+                    </div>
+
+                    <!-- Card 2 - Center Front -->
+                    <div class="float-card" style="position: absolute; left: 50%; top: 0; width: 200px; margin-left: -100px; background: rgba(166, 190, 164, 0.12); border: 2px solid rgba(166, 190, 164, 0.4); border-radius: 16px; padding: 24px; transform: rotate(2deg); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4); z-index: 2; animation-delay: 0.5s;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; color: rgba(166, 190, 164, 0.8); text-transform: uppercase; margin-bottom: 10px;">Team Trust</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 48px; font-weight: 400; color: #A6BEA4;">92</div>
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: rgba(255, 255, 255, 0.4); margin-top: 6px;">↑ +8 this month</div>
+                    </div>
+
+                    <!-- Card 3 - Right -->
+                    <div class="float-card" style="position: absolute; right: 10%; top: 30%; width: 180px; background: rgba(224, 143, 106, 0.1); border: 2px solid rgba(224, 143, 106, 0.3); border-radius: 16px; padding: 20px; transform: rotate(10deg); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); animation-delay: 1s;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; color: rgba(224, 143, 106, 0.7); text-transform: uppercase; margin-bottom: 8px;">Deep Work</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 40px; font-weight: 400; color: #E08F6A;">74</div>
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">↑ +15 this month</div>
+                    </div>
+
+                    <!-- Card 4 - Bottom Left -->
+                    <div class="float-card" style="position: absolute; left: 25%; bottom: 0; width: 160px; background: rgba(199, 185, 211, 0.1); border: 2px solid rgba(199, 185, 211, 0.3); border-radius: 16px; padding: 18px; transform: rotate(-5deg); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); animation-delay: 1.5s;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 600; color: rgba(199, 185, 211, 0.7); text-transform: uppercase; margin-bottom: 6px;">Delegation</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 36px; font-weight: 400; color: #C7B9D3;">68</div>
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">↑ +5 this month</div>
+                    </div>
+
+                    <!-- Card 5 - Bottom Right -->
+                    <div class="float-card" style="position: absolute; right: 25%; bottom: 10%; width: 160px; background: rgba(198, 165, 91, 0.1); border: 2px solid rgba(198, 165, 91, 0.3); border-radius: 16px; padding: 18px; transform: rotate(7deg); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); animation-delay: 2s;">
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 600; color: rgba(198, 165, 91, 0.7); text-transform: uppercase; margin-bottom: 6px;">Communication</div>
+                        <div style="font-family: 'Crimson Pro', serif; font-size: 36px; font-weight: 400; color: #C6A55B;">81</div>
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 10px; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">↑ +10 this month</div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 80px 0 0 0;">
+                    <span style="color: #ffffff;">All in one place.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">All measurable. All improving.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                50+ dimensions tracked. Every week measured. Your full picture, visible.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 9: PROGRESS BAR ANIMATION (COMPACT)
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-09 --progress-bars</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0;">
+                    <span style="color: rgba(255, 255, 255, 0.3);">See your scores</span>
+                </h2>
+
+                <!-- Animated progress bars -->
+                <div style="max-width: 600px; margin: 48px auto; display: flex; flex-direction: column; gap: 24px;">
+                    <!-- Bar 1 -->
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.6);">Strategic Vision</span>
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #7FABC8;">85%</span>
+                        </div>
+                        <div style="height: 8px; background: rgba(127, 171, 200, 0.1); border-radius: 4px; overflow: hidden;">
+                            <div class="slide-bar" style="height: 100%; width: 85%; background: linear-gradient(90deg, #7FABC8, rgba(127, 171, 200, 0.6)); border-radius: 4px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bar 2 -->
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.6);">Team Trust</span>
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #A6BEA4;">92%</span>
+                        </div>
+                        <div style="height: 8px; background: rgba(166, 190, 164, 0.1); border-radius: 4px; overflow: hidden;">
+                            <div class="slide-bar" style="height: 100%; width: 92%; background: linear-gradient(90deg, #A6BEA4, rgba(166, 190, 164, 0.6)); border-radius: 4px; animation-delay: 0.2s;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bar 3 -->
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.6);">Deep Work</span>
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #E08F6A;">78%</span>
+                        </div>
+                        <div style="height: 8px; background: rgba(224, 143, 106, 0.1); border-radius: 4px; overflow: hidden;">
+                            <div class="slide-bar" style="height: 100%; width: 78%; background: linear-gradient(90deg, #E08F6A, rgba(224, 143, 106, 0.6)); border-radius: 4px; animation-delay: 0.4s;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bar 4 -->
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.6);">Communication</span>
+                            <span style="font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #C6A55B;">81%</span>
+                        </div>
+                        <div style="height: 8px; background: rgba(198, 165, 91, 0.1); border-radius: 4px; overflow: hidden;">
+                            <div class="slide-bar" style="height: 100%; width: 81%; background: linear-gradient(90deg, #C6A55B, rgba(198, 165, 91, 0.6)); border-radius: 4px; animation-delay: 0.6s;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0;">
+                    <span style="color: #ffffff;">climb every week.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">Track your actual growth.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Every score tracked. Every week compared. Real progress you can prove.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="template-separator">◆ ◆ ◆</div>
+
+<!-- ========================================
+     OPTION 10: MASSIVE NUMBER FOCUS (BOLD)
+     ======================================== -->
+<section class="section section--dark">
+    <div class="container">
+        <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+            <p class="section__title">> option-10 --big-numbers</p>
+
+            <div style="margin: 40px 0;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 0 0 40px 0;">
+                    <span style="color: rgba(255, 255, 255, 0.3);">Your leadership isn't a feeling.</span><br>
+                    <span style="color: #ffffff;">It's a number</span>
+                </h2>
+
+                <!-- Massive number display -->
+                <div style="margin: 60px 0;">
+                    <div style="font-family: 'Crimson Pro', serif; font-size: 180px; font-weight: 400; color: #7FABC8; line-height: 1; text-shadow: 0 0 80px rgba(127, 171, 200, 0.3);">
+                        85
+                    </div>
+                    <div style="font-family: 'DM Sans', sans-serif; font-size: 20px; font-weight: 500; color: rgba(127, 171, 200, 0.7); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 16px;">
+                        Your Leadership Score
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 48px; margin-top: 32px;">
+                        <div>
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 32px; color: #A6BEA4;">+12</div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">This Month</div>
+                        </div>
+                        <div>
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 32px; color: #E08F6A;">+28</div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">This Quarter</div>
+                        </div>
+                        <div>
+                            <div style="font-family: 'Crimson Pro', serif; font-size: 32px; color: #C6A55B;">Top 5%</div>
+                            <div style="font-family: 'DM Sans', sans-serif; font-size: 12px; color: rgba(255, 255, 255, 0.4); margin-top: 4px;">Cohort Rank</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 56px; font-weight: 400; line-height: 1.3; margin: 40px 0 0 0;">
+                    <span style="color: #ffffff;">you can track.</span><br>
+                    <span style="color: rgba(255, 255, 255, 0.3);">That's the difference.</span>
+                </h2>
+            </div>
+
+            <p class="section__description" style="margin-top: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                One number. Real data. Measurable progress every single week.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div style="height: 120px;"></div>
+
+</body>
+</html>
