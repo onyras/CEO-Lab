@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konstantin Method Results - Leadership Assessment Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">Assessment Complete</div>
+      <h1 class="hero-title">Your Leadership Profile</h1>
+      <p class="hero-subtitle">Konstantin Method™ Comprehensive Assessment</p>
+      <div class="hero-meta">
+        <div class="meta-item">
+          <span class="meta-label">Participant</span>
+          <span class="meta-value">Sarah Chen</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Completed</span>
+          <span class="meta-value">February 4, 2026</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Confidence Score</span>
+          <span class="meta-value">94%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Overall Leadership Score -->
+  <section class="section">
+    <div class="container">
+      <div class="score-card">
+        <div class="score-card-header">
+          <h2>Overall Leadership Score</h2>
+          <p>Composite index across all 18 sub-dimensions</p>
+        </div>
+        <div class="score-card-body">
+          <div class="score-main">
+            <div class="score-number">76</div>
+            <div class="score-context">
+              <div class="percentile">84th Percentile</div>
+              <div class="delta positive">+4 pts last 30 days</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three Rings -->
+  <section class="section">
+    <div class="container">
+      <div class="rings-grid">
+        <div class="ring-card">
+          <h3>Readiness</h3>
+          <canvas id="readinessRing" width="200" height="200"></canvas>
+          <div class="ring-score">82</div>
+          <p class="ring-label">High capacity to lead</p>
+        </div>
+        <div class="ring-card">
+          <h3>Strain</h3>
+          <canvas id="strainRing" width="200" height="200"></canvas>
+          <div class="ring-score">34</div>
+          <p class="ring-label">Well-managed load</p>
+        </div>
+        <div class="ring-card">
+          <h3>Consistency</h3>
+          <canvas id="consistencyRing" width="200" height="200"></canvas>
+          <div class="ring-score">78</div>
+          <p class="ring-label">Reliable patterns</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Konstantin Method Map -->
+  <section class="section bg-white">
+    <div class="container">
+      <div class="method-map">
+        <h2 class="section-title">The Konstantin Method</h2>
+        <p class="section-intro">A framework measuring leadership across three interconnected territories, 18 sub-dimensions, and 100 targeted questions.</p>
+        <div class="domains-grid">
+          <div class="domain-card domain-self">
+            <div class="domain-icon">●</div>
+            <h3>Leading Yourself</h3>
+            <p>Energy, Resilience, Strategy, Time, Focus, Renewal</p>
+            <div class="frameworks">Tools: Deep Work, Recovery Protocol</div>
+          </div>
+          <div class="domain-card domain-team">
+            <div class="domain-icon">●</div>
+            <h3>Leading Teams</h3>
+            <p>Hiring, Delegation, Feedback, Meetings, Culture, Motivation</p>
+            <div class="frameworks">Tools: EOS, Radical Candor</div>
+          </div>
+          <div class="domain-card domain-org">
+            <div class="domain-icon">●</div>
+            <h3>Leading Organizations</h3>
+            <p>Vision, Execution, Systems, Decisions, Communication, Scaling</p>
+            <div class="frameworks">Tools: OKRs, Strategic Clarity</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Territory Scores -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Territory Scores</h2>
+      <div class="territory-cards">
+        <div class="territory-card">
+          <div class="territory-header">
+            <h3>Leading Yourself</h3>
+            <span class="territory-score">81</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" data-percent="81" style="width: 81%; background: #7FABC8;"></div>
+          </div>
+          <p class="territory-insight">Strong self-management with excellent energy and focus discipline. Consider deeper renewal practices.</p>
+        </div>
+        <div class="territory-card">
+          <div class="territory-header">
+            <h3>Leading Teams</h3>
+            <span class="territory-score">74</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" data-percent="74" style="width: 74%; background: #8FB996;"></div>
+          </div>
+          <p class="territory-insight">Solid team leadership. Delegation and feedback could unlock 15% more capacity with targeted improvement.</p>
+        </div>
+        <div class="territory-card">
+          <div class="territory-header">
+            <h3>Leading Organizations</h3>
+            <span class="territory-score">73</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" data-percent="73" style="width: 73%; background: #D4A574;"></div>
+          </div>
+          <p class="territory-insight">Vision clarity is high. Execution systems need refinement to match your strategic ambition.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sub-Dimension Heatmap -->
+  <section class="section bg-white">
+    <div class="container">
+      <h2 class="section-title">Sub-Dimension Heatmap</h2>
+      <p class="section-intro">18 core competencies measured across 100 questions</p>
+      <div class="heatmap">
+        <!-- Leading Yourself -->
+        <div class="heatmap-group">
+          <h3 class="heatmap-group-title">Leading Yourself</h3>
+          <div class="heatmap-cells">
+            <div class="heatmap-cell score-high">
+              <div class="cell-name">Energy</div>
+              <div class="cell-score">88</div>
+              <div class="cell-note">Peak performance zone</div>
+            </div>
+            <div class="heatmap-cell score-high">
+              <div class="cell-name">Resilience</div>
+              <div class="cell-score">82</div>
+              <div class="cell-note">Handles pressure well</div>
+            </div>
+            <div class="heatmap-cell score-medium">
+              <div class="cell-name">Strategy</div>
+              <div class="cell-score">79</div>
+              <div class="cell-note">Clear direction</div>
+            </div>
+            <div class="heatmap-cell score-high">
+              <div class="cell-name">Time</div>
+              <div class="cell-score">84</div>
+              <div class="cell-note">Strong boundaries</div>
+            </div>
+            <div class="heatmap-cell score-high">
+              <div class="cell-name">Focus</div>
+              <div class="cell-score">85</div>
+              <div class="cell-note">Excellent deep work</div>
+            </div>
+            <div class="heatmap-cell score-medium">
+              <div class="cell-name">Renewal</div>
+              <div class="cell-score">72</div>
+              <div class="cell-note">Needs attention</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leading Teams -->
+        <div class="heatmap-group">
+          <h3 class="heatmap-group-title">Leading Teams</h3>
+          <div class="heatmap-cells">
+            <div class="heatmap-cell score-medium">
+              <div class="cell-name">Hiring</div>
+              <div class="cell-score">76</div>
+              <div class="cell-note">Good process</div>
+            </div>
+            <div class="heatmap-cell score-low">
+              <div class="cell-name">Delegation</div>
+              <div class="cell-score">68</div>
+              <div class="cell-note">High leverage area</div>
+            </div>
+            <div class="heatmap-cell score-medium">
+              <div class="cell-name">Feedback</div>
+              <div class="cell-score">71</div>
+              <div class="cell-note">More frequency needed</div>
+            </div>
+            <div class="heatmap-cell score-high">
+              <div class="cell-name">Meetings</div>
+              <div class="cell-score">80</div>
+              <div class="cell-note">Well-structured</div>
+            </div>
+            <div class="heatmap-cell score-medium">
+              <div class="cell-name">Culture</div>
+              <div class="cell-score">75</div>
+              <div class="cell-note">Intentional building</div>
+            </div>
+            <div class="heatmap-cell score-medium">
+              <div class="cell-name">Motivation</div>
+              <div class="cell-score">74</div>
+              <div class="cell-note">Inspiring but inconsistent</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leading Organizations -->
+        <div class="heatmap-group">
+          <h3 class="heatmap-group-title">Leading Organizations</h3>
+          <div class="heatmap-cells">
+            <div class="heatmap-cell score-high">
+              <div class="cell-name">Vision</div>
+              <div class="cell-score">83</div>
+              <div class="cell-note">Clarity + buy-in</div>
+            </div>
+            <div class="heatmap-cell score-low">
+              <div class="cell-name">Execution</div>
+              <div class="cell-score">67</div>
+              <div class="cell-note">Vision-execution gap</div>
+            </div>
+            <div class="heatmap-cell score-medium">
+              <div class="cell-name">Systems</div>
+              <div class="cell-score">70</div>
+              <div class="cell-note">Ad-hoc processes</div>
+            </div>
+            <div class="heatmap-cell score-medium">
+              <div class="cell-name">Decisions</div>
+              <div class="cell-score">77</div>
+              <div class="cell-note">Fast but needs rigor</div>
+            </div>
+            <div class="heatmap-cell score-medium">
+              <div class="cell-name">Communication</div>
+              <div class="cell-score">75</div>
+              <div class="cell-note">Clear, could be more frequent</div>
+            </div>
+            <div class="heatmap-cell score-medium">
+              <div class="cell-name">Scaling</div>
+              <div class="cell-score">71</div>
+              <div class="cell-note">Building foundations</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leadership Signature (Radar) -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Leadership Signature</h2>
+      <p class="section-intro">Your unique balance across the three territories</p>
+      <div class="radar-container">
+        <canvas id="radarChart" width="500" height="500"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- Archetype, Blind Spot, Growth Edge -->
+  <section class="section bg-white">
+    <div class="container">
+      <div class="insight-cards">
+        <div class="insight-card card-archetype">
+          <div class="insight-icon">🎯</div>
+          <h3>Your Archetype</h3>
+          <div class="archetype-name">The Focused Operator</div>
+          <p>You excel at personal discipline and driving clarity, but can over-index on doing vs. delegating. Strong vision paired with execution gaps suggests you're ready to scale through others.</p>
+        </div>
+        <div class="insight-card card-blindspot">
+          <div class="insight-icon">⚠️</div>
+          <h3>Blind Spot</h3>
+          <div class="blindspot-name">Delegation Reluctance</div>
+          <p>Your high energy and focus make you effective at execution, but delegation scores reveal a 16-point gap. This is costing you ~12 hours/week that could be spent on strategic work.</p>
+        </div>
+        <div class="insight-card card-growth">
+          <div class="insight-icon">🚀</div>
+          <h3>Growth Edge</h3>
+          <div class="growth-name">Systems Builder</div>
+          <p>Your vision clarity (83) + decision speed (77) position you perfectly to build repeatable systems. Focus here unlocks organizational scale without personal burnout.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Insights You Didn't Know -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Insights You Didn't Know</h2>
+      <p class="section-intro">Hidden patterns revealed by cross-dimensional analysis</p>
+      <div class="insights-grid">
+        <div class="insight-card-small">
+          <div class="insight-number">01</div>
+          <h4>Your meetings are structured, but your delegation isn't</h4>
+          <p>Meeting discipline (80) is 12 points higher than delegation (68). You've systematized how you gather input but not how you distribute work. This asymmetry creates bottlenecks.</p>
+        </div>
+        <div class="insight-card-small">
+          <div>
+            <div class="insight-number">02</div>
+            <h4>Vision clarity without execution rigor is creating team confusion</h4>
+            <p>Your vision score (83) outpaces execution systems (67) by 16 points—the largest gap in your profile. Teams know where to go but not how to get there reliably.</p>
+          </div>
+        </div>
+        <div class="insight-card-small">
+          <div class="insight-number">03</div>
+          <h4>You're a "high output, low recovery" leader</h4>
+          <p>Energy (88) and Focus (85) are peak, but Renewal (72) lags. This 16-point spread predicts burnout risk within 6-9 months without intervention.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Question Drivers -->
+  <section class="section bg-white">
+    <div class="container">
+      <h2 class="section-title">Question Drivers</h2>
+      <p class="section-intro">Top 6 question clusters driving your overall score</p>
+      <div class="drivers-list">
+        <div class="driver-item">
+          <div class="driver-rank">1</div>
+          <div class="driver-content">
+            <h4>Deep work hours per week</h4>
+            <p class="driver-cluster">Energy + Focus cluster (8 questions)</p>
+            <div class="driver-leverage">High leverage: Maintain 15+ hours/week to sustain 85+ scores</div>
+          </div>
+          <div class="driver-score">88</div>
+        </div>
+        <div class="driver-item">
+          <div class="driver-rank">2</div>
+          <div class="driver-content">
+            <h4>Strategic clarity and communication</h4>
+            <p class="driver-cluster">Vision + Communication cluster (12 questions)</p>
+            <div class="driver-leverage">High leverage: Monthly all-hands increases this 8-10 points</div>
+          </div>
+          <div class="driver-score">83</div>
+        </div>
+        <div class="driver-item">
+          <div class="driver-rank">3</div>
+          <div class="driver-content">
+            <h4>Decision-making velocity and clarity</h4>
+            <p class="driver-cluster">Decisions cluster (6 questions)</p>
+            <div class="driver-leverage">Medium leverage: Faster decisions, but need better documentation</div>
+          </div>
+          <div class="driver-score">77</div>
+        </div>
+        <div class="driver-item">
+          <div class="driver-rank">4</div>
+          <div class="driver-content">
+            <h4>Hiring process and A-player bar</h4>
+            <p class="driver-cluster">Hiring cluster (7 questions)</p>
+            <div class="driver-leverage">Medium leverage: Scorecards + structured interviews improve 5 pts</div>
+          </div>
+          <div class="driver-score">76</div>
+        </div>
+        <div class="driver-item">
+          <div class="driver-rank">5</div>
+          <div class="driver-content">
+            <h4>Feedback frequency and quality</h4>
+            <p class="driver-cluster">Feedback cluster (6 questions)</p>
+            <div class="driver-leverage">High leverage: Weekly 1-on-1s unlock 10+ point gains here</div>
+          </div>
+          <div class="driver-score">71</div>
+        </div>
+        <div class="driver-item">
+          <div class="driver-rank">6</div>
+          <div class="driver-content">
+            <h4>Delegation and ownership clarity</h4>
+            <p class="driver-cluster">Delegation cluster (9 questions)</p>
+            <div class="driver-leverage">Critical leverage: Biggest bottleneck—fixing adds 12 hrs/week</div>
+          </div>
+          <div class="driver-score">68</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trendlines -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">12-Week Trends</h2>
+      <p class="section-intro">Readiness, Strain, and Consistency over time</p>
+      <div class="trends-container">
+        <canvas id="trendsChart" width="1000" height="400"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benchmark Distribution -->
+  <section class="section bg-white">
+    <div class="container">
+      <h2 class="section-title">Benchmark Distribution</h2>
+      <p class="section-intro">Your position relative to 2,847 CEOs assessed</p>
+      <div class="benchmark-container">
+        <canvas id="distributionChart" width="800" height="300"></canvas>
+      </div>
+      <div class="variance-grid">
+        <div class="variance-item">
+          <span class="variance-label">Mean</span>
+          <span class="variance-value">68</span>
+        </div>
+        <div class="variance-item">
+          <span class="variance-label">Median</span>
+          <span class="variance-value">71</span>
+        </div>
+        <div class="variance-item">
+          <span class="variance-label">Your Score</span>
+          <span class="variance-value highlight">76</span>
+        </div>
+        <div class="variance-item">
+          <span class="variance-label">90th Percentile</span>
+          <span class="variance-value">82</span>
+        </div>
+        <div class="variance-item">
+          <span class="variance-label">Std Dev</span>
+          <span class="variance-value">±9.2</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metrics Library -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Metrics Library</h2>
+      <p class="section-intro">12 KPIs derived from your assessment</p>
+      <div class="metrics-grid">
+        <div class="metric-tile">
+          <div class="metric-label">Deep Work Hours/Week</div>
+          <div class="metric-value">18.5</div>
+          <div class="metric-trend positive">+2.3 vs. baseline</div>
+        </div>
+        <div class="metric-tile">
+          <div class="metric-label">Delegation Ratio</div>
+          <div class="metric-value">42%</div>
+          <div class="metric-trend negative">-8% vs. optimal</div>
+        </div>
+        <div class="metric-tile">
+          <div class="metric-label">Meeting Load</div>
+          <div class="metric-value">12 hrs</div>
+          <div class="metric-trend neutral">Within range</div>
+        </div>
+        <div class="metric-tile">
+          <div class="metric-label">1-on-1 Frequency</div>
+          <div class="metric-value">2.1/mo</div>
+          <div class="metric-trend negative">Target: 4/mo</div>
+        </div>
+        <div class="metric-tile">
+          <div class="metric-label">Strategic Clarity</div>
+          <div class="metric-value">8.3/10</div>
+          <div class="metric-trend positive">Top quartile</div>
+        </div>
+        <div class="metric-tile">
+          <div class="metric-label">Decision Velocity</div>
+          <div class="metric-value">2.4 days</div>
+          <div class="metric-trend positive">Fast decisiveness</div>
+        </div>
+        <div class="metric-tile">
+          <div class="metric-label">Team Autonomy</div>
+          <div class="metric-value">6.2/10</div>
+          <div class="metric-trend neutral">Moderate</div>
+        </div>
+        <div class="metric-tile">
+          <div class="metric-label">Culture Intentionality</div>
+          <div class="metric-value">7.1/10</div>
+          <div class="metric-trend positive">Above average</div>
+        </div>
+        <div class="metric-tile">
+          <div class="metric-label">Recovery Index</div>
+          <div class="metric-value">6.8/10</div>
+          <div class="metric-trend negative">Needs improvement</div>
+        </div>
+        <div class="metric-tile">
+          <div class="metric-label">Execution Systems</div>
+          <div class="metric-value">5.9/10</div>
+          <div class="metric-trend negative">High priority</div>
+        </div>
+        <div class="metric-tile">
+          <div class="metric-label">Communication Cadence</div>
+          <div class="metric-value">7.5/10</div>
+          <div class="metric-trend positive">Consistent</div>
+        </div>
+        <div class="metric-tile">
+          <div class="metric-label">Scaling Readiness</div>
+          <div class="metric-value">6.6/10</div>
+          <div class="metric-trend neutral">Preparing</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leverage Matrix -->
+  <section class="section bg-white">
+    <div class="container">
+      <h2 class="section-title">Leverage Matrix</h2>
+      <p class="section-intro">Impact vs. Control: Where to focus your energy</p>
+      <div class="matrix-container">
+        <canvas id="leverageMatrix" width="600" height="600"></canvas>
+      </div>
+      <div class="matrix-legend">
+        <div class="legend-item">
+          <div class="legend-dot" style="background: #7FABC8;"></div>
+          <span>Leading Yourself</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background: #8FB996;"></div>
+          <span>Leading Teams</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background: #D4A574;"></div>
+          <span>Leading Organizations</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Next 30 Days -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Your Next 30 Days</h2>
+      <p class="section-intro">Targeted actions with highest leverage</p>
+      <div class="action-cards">
+        <div class="action-card">
+          <div class="action-priority">Priority 1</div>
+          <h3>Implement Weekly Delegation Reviews</h3>
+          <p class="action-why"><strong>Why:</strong> Your delegation score (68) is 16 points below your potential. This single intervention reclaims 12 hours/week.</p>
+          <div class="action-how">
+            <strong>How:</strong>
+            <ul>
+              <li>Friday 4pm: 30-min review of what you did that could be delegated</li>
+              <li>Create delegation doc: Task | Owner | Due | Success criteria</li>
+              <li>Track time saved weekly</li>
+            </ul>
+          </div>
+          <div class="action-metric">Target: Delegation score 75+ within 4 weeks</div>
+        </div>
+
+        <div class="action-card">
+          <div class="action-priority">Priority 2</div>
+          <h3>Build Your Execution Playbook</h3>
+          <p class="action-why"><strong>Why:</strong> Vision (83) outpaces execution (67) by 16 points. Teams need repeatable systems to deliver on your clarity.</p>
+          <div class="action-how">
+            <strong>How:</strong>
+            <ul>
+              <li>Document top 5 recurring processes (hiring, launches, planning)</li>
+              <li>Create simple checklists (not overbuilt SOPs)</li>
+              <li>Test with team for 2 weeks, iterate</li>
+            </ul>
+          </div>
+          <div class="action-metric">Target: Execution score 75+ within 6 weeks</div>
+        </div>
+
+        <div class="action-card">
+          <div class="action-priority">Priority 3</div>
+          <h3>Institute Recovery Rituals</h3>
+          <p class="action-why"><strong>Why:</strong> Energy (88) + Renewal (72) spread = 16 points. High output without recovery predicts burnout in 6 months.</p>
+          <div class="action-how">
+            <strong>How:</strong>
+            <ul>
+              <li>Block 1 hour daily: no meetings, no Slack (non-negotiable)</li>
+              <li>Weekend shutdown ritual: Friday 5pm laptop closes until Monday 9am</li>
+              <li>Monthly off-grid day: no devices, just thinking/recharging</li>
+            </ul>
+          </div>
+          <div class="action-metric">Target: Renewal score 80+ within 8 weeks</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>Konstantin Method™ Assessment • Confidential Results • Generated February 4, 2026</p>
+      <p class="footer-small">This assessment measures leadership capacity across 18 sub-dimensions and 100 questions. Results are calibrated against 2,847 peer CEOs.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
