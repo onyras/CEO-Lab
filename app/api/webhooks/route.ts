@@ -48,20 +48,44 @@ export async function POST(request: Request) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session
 
+        console.log('Checkout session completed:', {
+          sessionId: session.id,
+          customer: session.customer,
+          subscription: session.subscription,
+          metadata: session.metadata
+        })
+
         // Get user_id from metadata
         const userId = session.metadata?.user_id
 
-        if (userId && session.customer) {
-          // Update user profile with subscription info
-          await supabase
-            .from('user_profiles')
-            .update({
-              subscription_status: 'active',
-              stripe_customer_id: session.customer as string,
-              stripe_subscription_id: session.subscription as string,
-            })
-            .eq('id', userId)
+        if (!userId) {
+          console.error('No user_id in metadata!')
+          break
         }
+
+        if (!session.customer) {
+          console.error('No customer in session!')
+          break
+        }
+
+        console.log('Updating user profile for user:', userId)
+
+        // Update user profile with subscription info
+        const { data, error } = await supabase
+          .from('user_profiles')
+          .update({
+            subscription_status: 'active',
+            stripe_customer_id: session.customer as string,
+            stripe_subscription_id: session.subscription as string,
+          })
+          .eq('id', userId)
+
+        if (error) {
+          console.error('Database update error:', error)
+        } else {
+          console.log('Successfully updated user profile:', data)
+        }
+
         break
       }
 
