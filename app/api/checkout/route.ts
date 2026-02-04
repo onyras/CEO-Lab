@@ -53,6 +53,7 @@ export async function POST(request: Request) {
         },
       ],
       mode: 'subscription',
+      allow_promotion_codes: true,
       success_url: `${request.headers.get('origin')}/dashboard?success=true`,
       cancel_url: `${request.headers.get('origin')}/dashboard?canceled=true`,
       metadata: {

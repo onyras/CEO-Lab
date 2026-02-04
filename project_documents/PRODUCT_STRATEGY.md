@@ -1,6 +1,6 @@
 # CEO Lab - Project Master Document
 
-**Last Updated:** 2026-02-02
+**Last Updated:** 2026-02-04
 
 This is the living document for CEO Lab. Everything about the project lives here: strategy, positioning, roadmap, timeline, decisions, and open questions. Update this after every major conversation or decision.
 
@@ -55,6 +55,7 @@ Premium subscription (~€100/month) targeting 3000 newsletter subscribers for l
 - ✅ Weekly check-in system designed (WhatsApp, quarterly focus)
 - ✅ Dashboard visualization designed
 - ✅ Framework prescription logic defined
+- ✅ Coupon code system implemented (Stripe promotion codes for free access & discounts)
 - ⏳ Pending: Niko review and approval
 - ⏳ Pending: Technical implementation
 
@@ -864,6 +865,21 @@ But you can't adapt if you don't have measurement.
 - €80-100/month range (stay premium)
 - Free assessment → paid tracking/reports
 **Next Step:** Finalize exact pricing tier before launch
+
+### 2026-02-04: Coupon Code System Implemented
+**Decision:** Use Stripe Promotion Codes for all discounts and free access
+**Rationale:**
+- Fastest implementation (one line of code change)
+- Built-in tracking and analytics in Stripe Dashboard
+- No custom database tables or API routes needed
+- Supports both 100% off (free access) and percentage/fixed discounts
+- Professional invoicing and billing automation
+**Use Cases:**
+- Beta testers: 100% off forever (e.g., BETA100)
+- Launch promotions: 50% off for 3 months (e.g., LAUNCH50)
+- Referrals: 25% off forever (e.g., FRIEND25)
+**Tracking:** All usage analytics available in Stripe Dashboard (redemptions, revenue impact, active subscriptions per code)
+**Implementation:** See COUPON_CODES_SETUP.md for complete guide
 
 ### 2026-02-02: Complete Assessment Architecture Finalized
 **Decision:** 100-question baseline staged across 3 sessions with 60% milestone

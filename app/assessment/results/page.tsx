@@ -31,75 +31,84 @@ function ResultsContent() {
   const biggestGap = sortedByScore[2].name
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#F7F3ED]">
       {/* Header */}
-      <header className="border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold text-gray-900">CEO Lab</h1>
+      <header className="border-b border-black/10 bg-white">
+        <div className="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-black tracking-tight">CEO Lab</h1>
+          <a
+            href="/dashboard"
+            className="text-sm font-medium text-black/60 hover:text-black transition-colors"
+          >
+            Back to Dashboard
+          </a>
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-12">
+      <main className="max-w-6xl mx-auto px-8 py-12">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-gray-900">Your Leadership Snapshot</h1>
-          <p className="text-xl text-gray-600">Here's where you stand across 3 territories of leadership</p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-3 text-black leading-tight tracking-tight">Your Leadership Snapshot</h1>
+          <p className="text-lg text-black/60">Here's where you stand across 3 territories of leadership</p>
         </div>
 
         {/* Score Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <div className="border-2 border-gray-200 rounded-lg p-6 text-center">
-            <div className="text-sm text-gray-500 uppercase tracking-wide mb-2">Leading Yourself</div>
-            <div className="text-5xl font-bold mb-2 text-gray-900">{scoreYourself}</div>
-            <div className="text-gray-600">out of {maxPerTerritory} ({yourselfPercent}%)</div>
+          <div className="bg-white rounded-lg p-8 shadow-sm border border-black/5 text-center">
+            <div className="w-12 h-1 bg-[#7FABC8] rounded-full mx-auto mb-4"></div>
+            <div className="text-sm text-black/50 uppercase tracking-wide mb-2 font-semibold">Leading Yourself</div>
+            <div className="text-5xl font-bold mb-2 text-black">{scoreYourself}</div>
+            <div className="text-black/60">out of {maxPerTerritory} ({yourselfPercent}%)</div>
           </div>
 
-          <div className="border-2 border-gray-200 rounded-lg p-6 text-center">
-            <div className="text-sm text-gray-500 uppercase tracking-wide mb-2">Leading Teams</div>
-            <div className="text-5xl font-bold mb-2 text-gray-900">{scoreTeams}</div>
-            <div className="text-gray-600">out of {maxPerTerritory} ({teamsPercent}%)</div>
+          <div className="bg-white rounded-lg p-8 shadow-sm border border-black/5 text-center">
+            <div className="w-12 h-1 bg-[#A6BEA4] rounded-full mx-auto mb-4"></div>
+            <div className="text-sm text-black/50 uppercase tracking-wide mb-2 font-semibold">Leading Teams</div>
+            <div className="text-5xl font-bold mb-2 text-black">{scoreTeams}</div>
+            <div className="text-black/60">out of {maxPerTerritory} ({teamsPercent}%)</div>
           </div>
 
-          <div className="border-2 border-gray-200 rounded-lg p-6 text-center">
-            <div className="text-sm text-gray-500 uppercase tracking-wide mb-2">Leading Organizations</div>
-            <div className="text-5xl font-bold mb-2 text-gray-900">{scoreOrganizations}</div>
-            <div className="text-gray-600">out of {maxPerTerritory} ({organizationsPercent}%)</div>
+          <div className="bg-white rounded-lg p-8 shadow-sm border border-black/5 text-center">
+            <div className="w-12 h-1 bg-[#E08F6A] rounded-full mx-auto mb-4"></div>
+            <div className="text-sm text-black/50 uppercase tracking-wide mb-2 font-semibold">Leading Organizations</div>
+            <div className="text-5xl font-bold mb-2 text-black">{scoreOrganizations}</div>
+            <div className="text-black/60">out of {maxPerTerritory} ({organizationsPercent}%)</div>
           </div>
         </div>
 
         {/* Insights */}
-        <div className="border-2 border-gray-200 rounded-lg p-8 mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-gray-900">Key Insights</h2>
+        <div className="bg-white rounded-lg p-8 shadow-sm border border-black/5 mb-12">
+          <h2 className="text-2xl font-bold mb-8 text-black">Key Insights</h2>
 
           <div className="space-y-6">
             <div>
-              <h3 className="text-sm text-gray-500 uppercase tracking-wide mb-2">Overall Score</h3>
-              <p className="text-xl font-semibold text-gray-900">{totalScore} out of {maxTotal} points ({totalPercent}%)</p>
+              <h3 className="text-sm text-black/50 uppercase tracking-wide mb-2 font-semibold">Overall Score</h3>
+              <p className="text-xl font-semibold text-black">{totalScore} out of {maxTotal} points ({totalPercent}%)</p>
             </div>
 
             <div>
-              <h3 className="text-sm text-gray-500 uppercase tracking-wide mb-2">Your Top Strength</h3>
-              <p className="text-xl font-semibold text-gray-900">{topStrength}</p>
+              <h3 className="text-sm text-black/50 uppercase tracking-wide mb-2 font-semibold">Your Top Strength</h3>
+              <p className="text-xl font-semibold text-black">{topStrength}</p>
             </div>
 
             <div>
-              <h3 className="text-sm text-gray-500 uppercase tracking-wide mb-2">Your Biggest Blind Spot</h3>
-              <p className="text-xl font-semibold text-gray-900">{biggestGap}</p>
+              <h3 className="text-sm text-black/50 uppercase tracking-wide mb-2 font-semibold">Your Biggest Blind Spot</h3>
+              <p className="text-xl font-semibold text-black">{biggestGap}</p>
             </div>
           </div>
         </div>
 
         {/* CTA */}
-        <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-12 text-center">
-          <h2 className="text-3xl font-bold mb-4 text-gray-900">This is Your Snapshot.</h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+        <div className="bg-white rounded-lg p-12 shadow-sm border border-black/5 text-center">
+          <h2 className="text-3xl font-bold mb-4 text-black">This is Your Snapshot.</h2>
+          <p className="text-lg text-black/60 mb-8 max-w-2xl mx-auto leading-relaxed">
             Get your full CEO Profile with 100 questions across 18 dimensions.
             Track your progress with weekly check-ins and see measurable growth over time.
           </p>
-          <button className="px-8 py-4 bg-black text-white text-lg rounded-md hover:bg-gray-800 mb-4">
+          <button className="px-8 py-4 bg-black text-white text-lg font-semibold rounded-lg hover:bg-black/90 transition-colors mb-4">
             Get Your Full Profile - €100/month
           </button>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-black/50">
             Join 3,000+ newsletter subscribers. Cancel anytime.
           </p>
         </div>

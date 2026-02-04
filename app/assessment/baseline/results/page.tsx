@@ -55,16 +55,26 @@ function BaselineResultsContent() {
   const orgsTerritory = scores.territories.find(t => t.territory === 'organizations')
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#F7F3ED]">
       {/* Header */}
-      <header className="border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold text-gray-900">Your CEO Profile</h1>
-          <p className="text-gray-600 mt-2">
-            {stage === 1 && 'Stage 1 Complete (30%) - Foundation Baseline'}
-            {stage === 2 && 'Stage 2 Complete (60%) - Depth Profile'}
-            {stage === 3 && 'Stage 3 Complete (100%) - Comprehensive Assessment'}
-          </p>
+      <header className="border-b border-black/10 bg-white">
+        <div className="max-w-7xl mx-auto px-8 py-6">
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="text-3xl font-bold text-black tracking-tight">Your CEO Profile</h1>
+              <p className="text-black/60 mt-2">
+                {stage === 1 && 'Stage 1 Complete (30%) - Foundation Baseline'}
+                {stage === 2 && 'Stage 2 Complete (60%) - Depth Profile'}
+                {stage === 3 && 'Stage 3 Complete (100%) - Comprehensive Assessment'}
+              </p>
+            </div>
+            <a
+              href="/dashboard"
+              className="text-sm font-medium text-black/60 hover:text-black transition-colors"
+            >
+              Back to Dashboard
+            </a>
+          </div>
         </div>
       </header>
 
