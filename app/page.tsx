@@ -1,52 +1,15 @@
 import Link from 'next/link'
+import NovaNav from '@/components/NovaNav'
+import HeroSection from '@/components/HeroSection'
 
 export default function Home() {
   return (
     <div className="min-h-screen" style={{ background: '#F7F3ED' }}>
       {/* Header */}
-      <header className="bg-white border-b border-black/10 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-8 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <span className="text-xl font-bold text-black">nk</span>
-              <span className="text-xl font-bold text-black">CEO Lab</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <Link href="/auth" className="text-black/70 hover:text-black transition-colors px-4 py-2">Sign In</Link>
-              <Link href="/assessment/hook" className="bg-black text-white px-6 py-3 rounded-lg font-medium hover:bg-black/90 transition-colors">
-                Start Free Assessment
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <NovaNav />
 
-      {/* Hero Section */}
-      <section className="max-w-6xl mx-auto px-8 py-20 text-center">
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black mb-6">
-          Are you getting better as a leader?
-        </h1>
-        <p className="text-xl text-black/60 mb-8 max-w-3xl mx-auto">
-          Most CEOs don't know. CEO Lab measures your leadership across 18 dimensions so you can lead with data, not anxiety.
-        </p>
-        <Link href="/assessment/hook" className="inline-block bg-black text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-black/90 transition-colors mb-4">
-          Take the Free Leadership Snapshot
-        </Link>
-        <p className="text-sm text-black/50 mb-16">
-          5 minutes. See what matters most in your leadership.
-        </p>
-
-        {/* Dashboard Preview */}
-        <div className="mt-16 perspective-1000">
-          <div className="transform transition-transform hover:scale-105 duration-300">
-            <img
-              src="/dashboard-preview.svg"
-              alt="CEO Lab Dashboard Preview"
-              className="w-full max-w-4xl mx-auto rounded-lg shadow-2xl"
-            />
-          </div>
-        </div>
-      </section>
+      {/* Hero Section - Nova Style */}
+      <HeroSection />
 
       {/* Problem Section */}
       <section className="bg-white py-20">
