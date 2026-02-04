@@ -1,0 +1,101 @@
+<svg width="1280" height="800" viewBox="0 0 1280 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1280" height="800" fill="#0a0a0a"/>
+
+  <!-- Header -->
+  <rect width="1280" height="80" fill="#1a1a1a"/>
+  <text x="40" y="50" font-family="DM Sans, sans-serif" font-size="24" font-weight="600" fill="#ffffff">CEO Lab Dashboard</text>
+  <text x="1140" y="50" font-family="DM Sans, sans-serif" font-size="16" fill="rgba(255,255,255,0.6)">Week 12</text>
+
+  <!-- Welcome Section -->
+  <text x="40" y="140" font-family="DM Sans, sans-serif" font-size="32" font-weight="600" fill="#ffffff">Your Growth This Quarter</text>
+  <text x="40" y="175" font-family="DM Sans, sans-serif" font-size="18" fill="rgba(255,255,255,0.6)">Tracking 6 key leadership dimensions</text>
+
+  <!-- Main Chart Card -->
+  <rect x="40" y="200" width="800" height="360" rx="16" fill="#1a1a1a"/>
+  <text x="60" y="235" font-family="DM Sans, sans-serif" font-size="16" font-weight="600" fill="#ffffff">Leadership Growth Trajectory</text>
+
+  <!-- Chart Grid Lines -->
+  <line x1="60" y1="280" x2="820" y2="280" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <line x1="60" y1="360" x2="820" y2="360" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <line x1="60" y1="440" x2="820" y2="440" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <line x1="60" y1="520" x2="820" y2="520" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+  <!-- Growth Line -->
+  <path d="M 60 480 L 180 460 L 300 420 L 420 400 L 540 360 L 660 340 L 780 300 L 820 280"
+        stroke="#7FABC8" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+  <!-- Data Points -->
+  <circle cx="60" cy="480" r="6" fill="#7FABC8"/>
+  <circle cx="180" cy="460" r="6" fill="#7FABC8"/>
+  <circle cx="300" cy="420" r="6" fill="#7FABC8"/>
+  <circle cx="420" cy="400" r="6" fill="#7FABC8"/>
+  <circle cx="540" cy="360" r="6" fill="#7FABC8"/>
+  <circle cx="660" cy="340" r="6" fill="#7FABC8"/>
+  <circle cx="780" cy="300" r="6" fill="#7FABC8"/>
+  <circle cx="820" cy="280" r="6" fill="#7FABC8"/>
+
+  <!-- Month Labels -->
+  <text x="50" y="550" font-family="DM Sans, sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">Jan</text>
+  <text x="290" y="550" font-family="DM Sans, sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">Feb</text>
+  <text x="530" y="550" font-family="DM Sans, sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">Mar</text>
+  <text x="770" y="550" font-family="DM Sans, sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">Apr</text>
+
+  <!-- Score Labels -->
+  <text x="25" y="285" font-family="DM Sans, sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">10</text>
+  <text x="30" y="365" font-family="DM Sans, sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">7</text>
+  <text x="30" y="445" font-family="DM Sans, sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">5</text>
+  <text x="30" y="525" font-family="DM Sans, sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">3</text>
+
+  <!-- Pillar Cards -->
+  <!-- Card 1: Strategic Vision -->
+  <rect x="880" y="200" width="360" height="120" rx="12" fill="#1a1a1a"/>
+  <text x="900" y="235" font-family="DM Sans, sans-serif" font-size="14" fill="rgba(255,255,255,0.6)">Strategic Vision</text>
+  <text x="900" y="270" font-family="DM Sans, sans-serif" font-size="36" font-weight="600" fill="#7FABC8">8.5</text>
+  <text x="970" y="270" font-family="DM Sans, sans-serif" font-size="18" fill="rgba(255,255,255,0.4)">/10</text>
+  <text x="900" y="300" font-family="DM Sans, sans-serif" font-size="12" fill="#A6BEA4">↑ +1.2 this month</text>
+
+  <!-- Card 2: Team Building -->
+  <rect x="880" y="340" width="360" height="120" rx="12" fill="#1a1a1a"/>
+  <text x="900" y="375" font-family="DM Sans, sans-serif" font-size="14" fill="rgba(255,255,255,0.6)">Team Building</text>
+  <text x="900" y="410" font-family="DM Sans, sans-serif" font-size="36" font-weight="600" fill="#A6BEA4">7.8</text>
+  <text x="970" y="410" font-family="DM Sans, sans-serif" font-size="18" fill="rgba(255,255,255,0.4)">/10</text>
+  <text x="900" y="440" font-family="DM Sans, sans-serif" font-size="12" fill="#A6BEA4">↑ +0.8 this month</text>
+
+  <!-- Card 3: Decision Making -->
+  <rect x="880" y="480" width="360" height="120" rx="12" fill="#1a1a1a"/>
+  <text x="900" y="515" font-family="DM Sans, sans-serif" font-size="14" fill="rgba(255,255,255,0.6)">Decision Making</text>
+  <text x="900" y="550" font-family="DM Sans, sans-serif" font-size="36" font-weight="600" fill="#E08F6A">9.2</text>
+  <text x="970" y="550" font-family="DM Sans, sans-serif" font-size="18" fill="rgba(255,255,255,0.4)">/10</text>
+  <text x="900" y="580" font-family="DM Sans, sans-serif" font-size="12" fill="#A6BEA4">↑ +1.5 this month</text>
+
+  <!-- Bottom Stats Bar -->
+  <rect x="40" y="620" width="1200" height="140" rx="16" fill="#1a1a1a"/>
+
+  <!-- Stat 1 -->
+  <text x="80" y="660" font-family="DM Sans, sans-serif" font-size="14" fill="rgba(255,255,255,0.6)">Assessments Completed</text>
+  <text x="80" y="700" font-family="DM Sans, sans-serif" font-size="32" font-weight="600" fill="#ffffff">12</text>
+  <text x="130" y="700" font-family="DM Sans, sans-serif" font-size="16" fill="rgba(255,255,255,0.4)">/ 24</text>
+
+  <!-- Stat 2 -->
+  <text x="360" y="660" font-family="DM Sans, sans-serif" font-size="14" fill="rgba(255,255,255,0.6)">Current Streak</text>
+  <text x="360" y="700" font-family="DM Sans, sans-serif" font-size="32" font-weight="600" fill="#7FABC8">8 weeks</text>
+
+  <!-- Stat 3 -->
+  <text x="640" y="660" font-family="DM Sans, sans-serif" font-size="14" fill="rgba(255,255,255,0.6)">Frameworks Used</text>
+  <text x="640" y="700" font-family="DM Sans, sans-serif" font-size="32" font-weight="600" fill="#A6BEA4">23</text>
+
+  <!-- Stat 4 -->
+  <text x="920" y="660" font-family="DM Sans, sans-serif" font-size="14" fill="rgba(255,255,255,0.6)">Overall Growth</text>
+  <text x="920" y="700" font-family="DM Sans, sans-serif" font-size="32" font-weight="600" fill="#E08F6A">+24%</text>
+
+  <!-- Decorative Gradient Overlay -->
+  <defs>
+    <linearGradient id="fadeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#7FABC8;stop-opacity:0.05" />
+      <stop offset="100%" style="stop-color:#7FABC8;stop-opacity:0" />
+    </linearGradient>
+  </defs>
+  <path d="M 60 480 L 180 460 L 300 420 L 420 400 L 540 360 L 660 340 L 780 300 L 820 280 L 820 520 L 60 520 Z"
+        fill="url(#fadeGradient)"/>
+</svg>

@@ -32,9 +32,20 @@ export default function Home() {
         <Link href="/assessment/hook" className="inline-block bg-black text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-black/90 transition-colors mb-4">
           Take the Free Leadership Snapshot
         </Link>
-        <p className="text-sm text-black/50">
+        <p className="text-sm text-black/50 mb-16">
           5 minutes. See what matters most in your leadership.
         </p>
+
+        {/* Dashboard Preview */}
+        <div className="mt-16 perspective-1000">
+          <div className="transform transition-transform hover:scale-105 duration-300">
+            <img
+              src="/dashboard-preview.svg"
+              alt="CEO Lab Dashboard Preview"
+              className="w-full max-w-4xl mx-auto rounded-lg shadow-2xl"
+            />
+          </div>
+        </div>
       </section>
 
       {/* Problem Section */}

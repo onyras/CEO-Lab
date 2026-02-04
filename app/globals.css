@@ -47,3 +47,8 @@ small {
   font-weight: 400;
   line-height: 1.5;
 }
+
+/* 3D Perspective for Dashboard Preview */
+.perspective-1000 {
+  perspective: 1000px;
+}
