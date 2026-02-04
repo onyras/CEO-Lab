@@ -1,0 +1,237 @@
+{
+  "user": {
+    "id": "user_001",
+    "name": "Sarah Chen",
+    "email": "sarah@techco.com",
+    "role": "CEO",
+    "company": {
+      "name": "TechCo",
+      "stage": "Series A",
+      "team_size": 22,
+      "industry": "SaaS"
+    },
+    "completed_at": "2026-02-04T10:30:00Z",
+    "confidence_score": 94
+  },
+  "current_assessment": {
+    "id": "assessment_008",
+    "date": "2026-02-04",
+    "overall_score": 76,
+    "percentile": 84,
+    "delta_30d": 4,
+    "territories": {
+      "self": {
+        "score": 81,
+        "subdimensions": {
+          "energy": 88,
+          "resilience": 82,
+          "strategy": 79,
+          "time": 84,
+          "focus": 85,
+          "renewal": 72
+        }
+      },
+      "teams": {
+        "score": 74,
+        "subdimensions": {
+          "hiring": 76,
+          "delegation": 68,
+          "feedback": 71,
+          "meetings": 80,
+          "culture": 75,
+          "motivation": 74
+        }
+      },
+      "organizations": {
+        "score": 73,
+        "subdimensions": {
+          "vision": 83,
+          "execution": 67,
+          "systems": 70,
+          "decisions": 77,
+          "communication": 75,
+          "scaling": 71
+        }
+      }
+    },
+    "readiness": 82,
+    "strain": 34,
+    "consistency": 78,
+    "archetype": {
+      "name": "The Focused Operator",
+      "description": "You excel at personal discipline and driving clarity, but can over-index on doing vs. delegating. Strong vision paired with execution gaps suggests you're ready to scale through others."
+    },
+    "blind_spot": {
+      "name": "Delegation Reluctance",
+      "description": "Your high energy and focus make you effective at execution, but delegation scores reveal a 16-point gap. This is costing you ~12 hours/week that could be spent on strategic work.",
+      "impact_hours": 12,
+      "impact_cost": 48000
+    },
+    "growth_edge": {
+      "name": "Systems Builder",
+      "description": "Your vision clarity (83) + decision speed (77) position you perfectly to build repeatable systems. Focus here unlocks organizational scale without personal burnout."
+    }
+  },
+  "historical_assessments": [
+    {
+      "id": "assessment_001",
+      "date": "2025-11-12",
+      "overall_score": 72,
+      "territories": { "self": 77, "teams": 71, "organizations": 69 }
+    },
+    {
+      "id": "assessment_002",
+      "date": "2025-11-19",
+      "overall_score": 73,
+      "territories": { "self": 78, "teams": 71, "organizations": 70 }
+    },
+    {
+      "id": "assessment_003",
+      "date": "2025-11-26",
+      "overall_score": 73,
+      "territories": { "self": 78, "teams": 72, "organizations": 70 }
+    },
+    {
+      "id": "assessment_004",
+      "date": "2025-12-03",
+      "overall_score": 74,
+      "territories": { "self": 79, "teams": 72, "organizations": 71 }
+    },
+    {
+      "id": "assessment_005",
+      "date": "2025-12-10",
+      "overall_score": 74,
+      "territories": { "self": 79, "teams": 72, "organizations": 71 }
+    },
+    {
+      "id": "assessment_006",
+      "date": "2025-12-17",
+      "overall_score": 75,
+      "territories": { "self": 80, "teams": 73, "organizations": 72 }
+    },
+    {
+      "id": "assessment_007",
+      "date": "2026-01-07",
+      "overall_score": 75,
+      "territories": { "self": 80, "teams": 73, "organizations": 72 }
+    },
+    {
+      "id": "assessment_008",
+      "date": "2026-02-04",
+      "overall_score": 76,
+      "territories": { "self": 81, "teams": 74, "organizations": 73 }
+    }
+  ],
+  "trendlines": {
+    "readiness": [75, 76, 78, 79, 80, 79, 81, 80, 82, 83, 82, 82],
+    "strain": [42, 40, 38, 35, 36, 34, 33, 35, 34, 32, 33, 34],
+    "consistency": [70, 72, 73, 74, 75, 76, 75, 77, 78, 77, 78, 78],
+    "weeks": ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10", "W11", "W12"]
+  },
+  "question_drivers": [
+    {
+      "rank": 1,
+      "title": "Deep work hours per week",
+      "cluster": "Energy + Focus cluster (8 questions)",
+      "score": 88,
+      "leverage": "High leverage: Maintain 15+ hours/week to sustain 85+ scores",
+      "questions": [
+        { "id": 12, "text": "How many hours of uninterrupted deep work do you achieve weekly?", "answer": 5, "weight": 1.2 },
+        { "id": 13, "text": "Do you block time for strategic thinking?", "answer": 5, "weight": 1.0 }
+      ]
+    },
+    {
+      "rank": 2,
+      "title": "Strategic clarity and communication",
+      "cluster": "Vision + Communication cluster (12 questions)",
+      "score": 83,
+      "leverage": "High leverage: Monthly all-hands increases this 8-10 points",
+      "questions": [
+        { "id": 67, "text": "Is your company vision clear and documented?", "answer": 5, "weight": 1.3 },
+        { "id": 68, "text": "Can every team member articulate the vision?", "answer": 4, "weight": 1.1 }
+      ]
+    },
+    {
+      "rank": 3,
+      "title": "Delegation and ownership clarity",
+      "cluster": "Delegation cluster (9 questions)",
+      "score": 68,
+      "leverage": "Critical leverage: Biggest bottleneck—fixing adds 12 hrs/week",
+      "questions": [
+        { "id": 34, "text": "Do you delegate strategic work, not just tactical tasks?", "answer": 2, "weight": 1.4 },
+        { "id": 35, "text": "Do you have clear ownership documentation?", "answer": 3, "weight": 1.2 },
+        { "id": 36, "text": "How often do you review what could be delegated?", "answer": 2, "weight": 1.1 }
+      ]
+    }
+  ],
+  "benchmark": {
+    "mean": 68,
+    "median": 71,
+    "std_dev": 9.2,
+    "p10": 55,
+    "p25": 63,
+    "p50": 71,
+    "p75": 78,
+    "p90": 82,
+    "p95": 86,
+    "sample_size": 2847,
+    "filters": {
+      "role": "CEO",
+      "stage": ["Seed", "Series A", "Series B"],
+      "team_size": "10-50"
+    }
+  },
+  "peer_comparison": {
+    "overall": {
+      "you": 76,
+      "peer_median": 71,
+      "peer_top10": 82,
+      "your_percentile": 84
+    },
+    "territories": {
+      "self": { "you": 81, "peer": 74, "diff": 7 },
+      "teams": { "you": 74, "peer": 72, "diff": 2 },
+      "organizations": { "you": 73, "peer": 69, "diff": 4 }
+    }
+  },
+  "ai_insights": [
+    {
+      "id": "insight_001",
+      "title": "Your meetings are structured, but your delegation isn't",
+      "description": "Meeting discipline (80) is 12 points higher than delegation (68). You've systematized how you gather input but not how you distribute work. This asymmetry creates bottlenecks.",
+      "confidence": 0.92,
+      "impact": "high",
+      "action": "Create a delegation review ritual (like your meeting cadence)"
+    },
+    {
+      "id": "insight_002",
+      "title": "Vision clarity without execution rigor is creating team confusion",
+      "description": "Your vision score (83) outpaces execution systems (67) by 16 points—the largest gap in your profile. Teams know where to go but not how to get there reliably.",
+      "confidence": 0.89,
+      "impact": "high",
+      "action": "Document your top 5 processes as simple checklists"
+    },
+    {
+      "id": "insight_003",
+      "title": "You're a 'high output, low recovery' leader",
+      "description": "Energy (88) and Focus (85) are peak, but Renewal (72) lags. This 16-point spread predicts burnout risk within 6-9 months without intervention.",
+      "confidence": 0.87,
+      "impact": "critical",
+      "action": "Block 1 hour daily for recovery (non-negotiable)"
+    }
+  ],
+  "leverage_matrix": [
+    { "dimension": "Energy", "impact": 90, "control": 85, "territory": "self" },
+    { "dimension": "Focus", "impact": 85, "control": 90, "territory": "self" },
+    { "dimension": "Time", "impact": 75, "control": 80, "territory": "self" },
+    { "dimension": "Renewal", "impact": 70, "control": 75, "territory": "self" },
+    { "dimension": "Delegation", "impact": 85, "control": 60, "territory": "teams" },
+    { "dimension": "Feedback", "impact": 75, "control": 70, "territory": "teams" },
+    { "dimension": "Hiring", "impact": 70, "control": 75, "territory": "teams" },
+    { "dimension": "Motivation", "impact": 65, "control": 65, "territory": "teams" },
+    { "dimension": "Execution", "impact": 90, "control": 50, "territory": "organizations" },
+    { "dimension": "Systems", "impact": 85, "control": 55, "territory": "organizations" },
+    { "dimension": "Vision", "impact": 80, "control": 80, "territory": "organizations" },
+    { "dimension": "Communication", "impact": 70, "control": 60, "territory": "organizations" }
+  ]
+}

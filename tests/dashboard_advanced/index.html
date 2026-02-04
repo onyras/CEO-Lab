@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konstantin Method Results - Advanced Interactive Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Loading State -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-spinner"></div>
+    <p>Loading your leadership profile...</p>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">Assessment Complete</div>
+      <h1 class="hero-title">Your Leadership Profile</h1>
+      <p class="hero-subtitle">Konstantin Method™ Comprehensive Assessment</p>
+      <div class="hero-meta">
+        <div class="meta-item">
+          <span class="meta-label">Participant</span>
+          <span class="meta-value" id="userName">Loading...</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Completed</span>
+          <span class="meta-value" id="completionDate">Loading...</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Confidence Score</span>
+          <span class="meta-value" id="confidenceScore">Loading...</span>
+        </div>
+      </div>
+
+      <!-- NEW: Historical Comparison Toggle -->
+      <div class="comparison-toggle">
+        <label class="toggle-label">
+          <input type="checkbox" id="historicalToggle">
+          <span class="toggle-slider"></span>
+          <span class="toggle-text">Compare with Previous (12 weeks ago)</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Overall Leadership Score with Peer Comparison -->
+  <section class="section">
+    <div class="container">
+      <div class="score-card interactive" onclick="openScoreBreakdown()">
+        <div class="score-card-header">
+          <h2>Overall Leadership Score</h2>
+          <p>Composite index across all 18 sub-dimensions • <span class="link-text">Click to see breakdown</span></p>
+        </div>
+        <div class="score-card-body">
+          <div class="score-main">
+            <div class="score-number" id="overallScore">76</div>
+            <div class="score-context">
+              <div class="percentile" id="percentile">84th Percentile</div>
+              <div class="delta positive" id="delta30d">+4 pts last 30 days</div>
+
+              <!-- NEW: Peer Comparison Bar -->
+              <div class="peer-comparison-mini">
+                <div class="peer-bar">
+                  <div class="peer-marker peer-you" style="left: 76%;" title="You: 76"></div>
+                  <div class="peer-marker peer-median" style="left: 71%;" title="Peer Median: 71"></div>
+                  <div class="peer-marker peer-top10" style="left: 82%;" title="Top 10%: 82"></div>
+                </div>
+                <div class="peer-labels">
+                  <span>50</span>
+                  <span>You (76)</span>
+                  <span>100</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three Rings with Hover Info -->
+  <section class="section">
+    <div class="container">
+      <div class="rings-grid">
+        <div class="ring-card interactive" data-metric="readiness">
+          <h3>Readiness</h3>
+          <canvas id="readinessRing" width="200" height="200"></canvas>
+          <div class="ring-score">82</div>
+          <p class="ring-label">High capacity to lead</p>
+          <div class="ring-hover-info">
+            <div class="info-row">
+              <span>Current:</span>
+              <strong>82</strong>
+            </div>
+            <div class="info-row">
+              <span>12 weeks ago:</span>
+              <strong>75</strong>
+            </div>
+            <div class="info-row">
+              <span>Change:</span>
+              <strong class="positive">+7</strong>
+            </div>
+          </div>
+        </div>
+        <div class="ring-card interactive" data-metric="strain">
+          <h3>Strain</h3>
+          <canvas id="strainRing" width="200" height="200"></canvas>
+          <div class="ring-score">34</div>
+          <p class="ring-label">Well-managed load</p>
+          <div class="ring-hover-info">
+            <div class="info-row">
+              <span>Current:</span>
+              <strong>34</strong>
+            </div>
+            <div class="info-row">
+              <span>12 weeks ago:</span>
+              <strong>42</strong>
+            </div>
+            <div class="info-row">
+              <span>Change:</span>
+              <strong class="positive">-8 (improved)</strong>
+            </div>
+          </div>
+        </div>
+        <div class="ring-card interactive" data-metric="consistency">
+          <h3>Consistency</h3>
+          <canvas id="consistencyRing" width="200" height="200"></canvas>
+          <div class="ring-score">78</div>
+          <p class="ring-label">Reliable patterns</p>
+          <div class="ring-hover-info">
+            <div class="info-row">
+              <span>Current:</span>
+              <strong>78</strong>
+            </div>
+            <div class="info-row">
+              <span>12 weeks ago:</span>
+              <strong>70</strong>
+            </div>
+            <div class="info-row">
+              <span>Change:</span>
+              <strong class="positive">+8</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Territory Scores with What-If Scenarios -->
+  <section class="section bg-white">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Territory Scores</h2>
+        <button class="btn-secondary" onclick="toggleWhatIfMode()">
+          <span id="whatIfToggleText">Try What-If Scenarios</span>
+        </button>
+      </div>
+
+      <div id="territoryCards" class="territory-cards">
+        <!-- Will be populated by JavaScript -->
+      </div>
+
+      <!-- What-If Scenario Panel -->
+      <div id="whatIfPanel" class="what-if-panel hidden">
+        <h3>What-If Scenario Builder</h3>
+        <p class="what-if-intro">Adjust any score to see the impact on your overall leadership profile</p>
+
+        <div class="scenario-controls">
+          <div class="scenario-item">
+            <label>
+              <span class="scenario-label">Delegation: <strong id="delegationValue">68</strong></span>
+              <input type="range" id="delegationSlider" min="50" max="95" value="68" class="scenario-slider">
+            </label>
+            <div class="scenario-impact" id="delegationImpact"></div>
+          </div>
+
+          <div class="scenario-item">
+            <label>
+              <span class="scenario-label">Execution: <strong id="executionValue">67</strong></span>
+              <input type="range" id="executionSlider" min="50" max="95" value="67" class="scenario-slider">
+            </label>
+            <div class="scenario-impact" id="executionImpact"></div>
+          </div>
+
+          <div class="scenario-item">
+            <label>
+              <span class="scenario-label">Renewal: <strong id="renewalValue">72</strong></span>
+              <input type="range" id="renewalSlider" min="50" max="95" value="72" class="scenario-slider">
+            </label>
+            <div class="scenario-impact" id="renewalImpact"></div>
+          </div>
+        </div>
+
+        <div class="scenario-results">
+          <h4>Projected Changes</h4>
+          <div class="projection-grid">
+            <div class="projection-item">
+              <span class="projection-label">New Overall Score</span>
+              <span class="projection-value" id="projectedScore">76</span>
+              <span class="projection-delta" id="projectedDelta">—</span>
+            </div>
+            <div class="projection-item">
+              <span class="projection-label">Time Reclaimed</span>
+              <span class="projection-value" id="projectedTime">0 hrs</span>
+            </div>
+            <div class="projection-item">
+              <span class="projection-label">Readiness Change</span>
+              <span class="projection-value" id="projectedReadiness">82</span>
+              <span class="projection-delta" id="projectedReadinessDelta">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Heatmap -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Sub-Dimension Heatmap</h2>
+      <p class="section-intro">18 core competencies measured across 100 questions • Click any cell for details</p>
+      <div id="heatmapContainer" class="heatmap">
+        <!-- Will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Leadership Signature (Radar) with Peer Overlay -->
+  <section class="section bg-white">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Leadership Signature</h2>
+        <label class="toggle-label-inline">
+          <input type="checkbox" id="peerOverlayToggle">
+          <span>Show peer median overlay</span>
+        </label>
+      </div>
+      <p class="section-intro">Your unique balance across the three territories</p>
+      <div class="radar-container">
+        <canvas id="radarChart" width="500" height="500"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Insights with Confidence Scores -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">AI-Powered Insights</h2>
+      <p class="section-intro">Patterns detected through cross-dimensional analysis</p>
+      <div id="aiInsights" class="insights-grid">
+        <!-- Will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Question Drivers -->
+  <section class="section bg-white">
+    <div class="container">
+      <h2 class="section-title">Question Drivers</h2>
+      <p class="section-intro">Top question clusters driving your overall score • Click to see individual questions</p>
+      <div id="driversContainer" class="drivers-list">
+        <!-- Will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Trendlines -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">12-Week Trends</h2>
+      <div class="trends-controls">
+        <label><input type="checkbox" checked data-line="readiness"> Readiness</label>
+        <label><input type="checkbox" checked data-line="strain"> Strain</label>
+        <label><input type="checkbox" checked data-line="consistency"> Consistency</label>
+      </div>
+      <div class="trends-container">
+        <canvas id="trendsChart" width="1000" height="400"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leverage Matrix (Interactive) -->
+  <section class="section bg-white">
+    <div class="container">
+      <h2 class="section-title">Leverage Matrix</h2>
+      <p class="section-intro">Impact vs. Control: Where to focus your energy • Hover for details</p>
+      <div class="matrix-container">
+        <canvas id="leverageMatrix" width="600" height="600"></canvas>
+      </div>
+      <div class="matrix-legend" id="matrixLegend">
+        <!-- Will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal for Deep-Dive -->
+  <div id="modalOverlay" class="modal-overlay hidden" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <div id="modalBody">
+        <!-- Content loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>Konstantin Method™ Assessment • Confidential Results • Generated <span id="footerDate">February 4, 2026</span></p>
+      <p class="footer-small">This interactive dashboard loads real data and supports drill-down exploration. Assessment calibrated against <span id="sampleSize">2,847</span> peer CEOs.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
