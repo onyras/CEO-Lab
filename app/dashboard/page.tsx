@@ -22,6 +22,15 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<'assessments' | 'results' | 'payment'>('assessments')
 
   useEffect(() => {
+    // Check URL params for tab
+    const params = new URLSearchParams(window.location.search)
+    const tab = params.get('tab')
+    if (tab === 'payment') {
+      setActiveTab('payment')
+    }
+  }, [])
+
+  useEffect(() => {
     const supabase = createClient()
 
     // Get initial session
@@ -158,16 +167,12 @@ export default function Dashboard() {
           >
             Assessments
           </button>
-          <button
-            onClick={() => setActiveTab('results')}
-            className={`pb-4 px-4 font-semibold text-sm transition-colors ${
-              activeTab === 'results'
-                ? 'text-black border-b-2 border-black'
-                : 'text-black/40 hover:text-black/60'
-            }`}
+          <a
+            href="/results"
+            className="pb-4 px-4 font-semibold text-sm transition-colors text-black/40 hover:text-black/60"
           >
-            Results
-          </button>
+            Results Dashboard
+          </a>
           <button
             onClick={() => setActiveTab('payment')}
             className={`pb-4 px-4 font-semibold text-sm transition-colors ${
