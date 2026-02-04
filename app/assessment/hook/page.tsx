@@ -1,16 +1,46 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { hookQuestions } from '@/lib/hook-questions'
 import { HookAnswer } from '@/types/assessment'
 import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase-browser'
 
 export default function Assessment() {
   const router = useRouter()
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState<HookAnswer[]>([])
   const [selectedValue, setSelectedValue] = useState<number | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [alreadyCompleted, setAlreadyCompleted] = useState(false)
+  const [userId, setUserId] = useState<string | null>(null)
+
+  useEffect(() => {
+    const checkCompletion = async () => {
+      const supabase = createClient()
+      const { data: { session } } = await supabase.auth.getSession()
+
+      if (session?.user) {
+        setUserId(session.user.id)
+
+        // Check if user has completed this assessment
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('hook_completed')
+          .eq('id', session.user.id)
+          .single()
+
+        if (profile?.hook_completed) {
+          setAlreadyCompleted(true)
+        }
+      }
+
+      setLoading(false)
+    }
+
+    checkCompletion()
+  }, [])
 
   const question = hookQuestions[currentQuestion]
   const isLastQuestion = currentQuestion === hookQuestions.length - 1
@@ -52,6 +82,23 @@ export default function Assessment() {
     setSelectedValue(existingAnswer?.value ?? null)
   }
 
+  const handleRestart = async () => {
+    if (!userId) return
+
+    const supabase = createClient()
+
+    // Update user profile to mark as not completed
+    await supabase
+      .from('user_profiles')
+      .update({ hook_completed: false })
+      .eq('id', userId)
+
+    setAlreadyCompleted(false)
+    setCurrentQuestion(0)
+    setAnswers([])
+    setSelectedValue(null)
+  }
+
   const handleSubmit = async (finalAnswers: HookAnswer[]) => {
     // Calculate scores
     const scoreYourself = finalAnswers
@@ -70,10 +117,12 @@ export default function Assessment() {
 
     // Save to Supabase
     try {
+      const supabase = createClient()
+
       const { data: assessment, error: assessmentError } = await supabase
         .from('hook_assessments')
         .insert({
-          user_id: null, // Anonymous for now
+          user_id: userId,
           score_yourself: scoreYourself,
           score_teams: scoreTeams,
           score_organizations: scoreOrganizations,
@@ -98,6 +147,12 @@ export default function Assessment() {
 
       if (responsesError) throw responsesError
 
+      // Mark assessment as completed in user profile
+      await supabase
+        .from('user_profiles')
+        .update({ hook_completed: true })
+        .eq('id', userId)
+
       // Navigate to results with scores
       const params = new URLSearchParams({
         yourself: scoreYourself.toString(),
@@ -118,6 +173,61 @@ export default function Assessment() {
       })
       router.push(`/assessment/results?${params.toString()}`)
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-gray-600">Loading...</div>
+      </div>
+    )
+  }
+
+  if (alreadyCompleted) {
+    return (
+      <div className="min-h-screen bg-white">
+        <header className="border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 py-4">
+            <h1 className="text-2xl font-bold text-gray-900">CEO Lab</h1>
+          </div>
+        </header>
+
+        <main className="max-w-4xl mx-auto px-4 py-12">
+          <div className="text-center">
+            <div className="mb-6">
+              <span className="inline-flex items-center px-4 py-2 bg-green-100 text-green-800 rounded-lg font-semibold">
+                ✓ Assessment Completed
+              </span>
+            </div>
+            <h1 className="text-4xl font-bold mb-4 text-gray-900">You've Already Completed This Assessment</h1>
+            <p className="text-xl text-gray-600 mb-12">
+              You can view your results or restart the assessment to update your answers.
+            </p>
+
+            <div className="flex gap-4 justify-center">
+              <a
+                href="/assessment/results"
+                className="px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors"
+              >
+                View Results
+              </a>
+              <button
+                onClick={handleRestart}
+                className="px-6 py-3 border-2 border-black/20 text-black rounded-lg font-semibold hover:border-black transition-colors"
+              >
+                Restart Test
+              </button>
+              <a
+                href="/dashboard"
+                className="px-6 py-3 border-2 border-black/20 text-black rounded-lg font-semibold hover:border-black transition-colors"
+              >
+                Back to Dashboard
+              </a>
+            </div>
+          </div>
+        </main>
+      </div>
+    )
   }
 
   return (

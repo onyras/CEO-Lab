@@ -9,6 +9,8 @@ export default function BaselineAssessment() {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [hasAccess, setHasAccess] = useState(false)
+  const [alreadyCompleted, setAlreadyCompleted] = useState(false)
+  const [userId, setUserId] = useState<string | null>(null)
   const [currentStage, setCurrentStage] = useState<1 | 2 | 3>(1)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [responses, setResponses] = useState<Record<number, number>>({})
@@ -40,10 +42,12 @@ export default function BaselineAssessment() {
       return
     }
 
-    // Check subscription status
+    setUserId(user.id)
+
+    // Check subscription status and completion
     const { data: profile } = await supabase
       .from('user_profiles')
-      .select('subscription_status')
+      .select('subscription_status, baseline_completed')
       .eq('id', user.id)
       .single()
 
@@ -53,7 +57,28 @@ export default function BaselineAssessment() {
       setHasAccess(false)
     }
 
+    if (profile?.baseline_completed) {
+      setAlreadyCompleted(true)
+    }
+
     setLoading(false)
+  }
+
+  const handleRestart = async () => {
+    if (!userId) return
+
+    const supabase = createClient()
+
+    // Update user profile to mark as not completed
+    await supabase
+      .from('user_profiles')
+      .update({ baseline_completed: false })
+      .eq('id', userId)
+
+    setAlreadyCompleted(false)
+    setCurrentStage(1)
+    setCurrentQuestionIndex(0)
+    setResponses({})
   }
 
   const handleAnswer = (questionId: number, value: number) => {
@@ -102,6 +127,53 @@ export default function BaselineAssessment() {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-gray-600">Loading...</div>
+      </div>
+    )
+  }
+
+  if (alreadyCompleted) {
+    return (
+      <div className="min-h-screen bg-white">
+        <header className="border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 py-4">
+            <h1 className="text-2xl font-bold text-gray-900">CEO Lab</h1>
+          </div>
+        </header>
+
+        <main className="max-w-4xl mx-auto px-4 py-12">
+          <div className="text-center">
+            <div className="mb-6">
+              <span className="inline-flex items-center px-4 py-2 bg-green-100 text-green-800 rounded-lg font-semibold">
+                ✓ Assessment Completed
+              </span>
+            </div>
+            <h1 className="text-4xl font-bold mb-4 text-gray-900">You've Already Completed the Full Baseline</h1>
+            <p className="text-xl text-gray-600 mb-12">
+              You can view your results or restart the assessment to update your answers.
+            </p>
+
+            <div className="flex gap-4 justify-center">
+              <a
+                href="/assessment/baseline/results"
+                className="px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors"
+              >
+                View Results
+              </a>
+              <button
+                onClick={handleRestart}
+                className="px-6 py-3 border-2 border-black/20 text-black rounded-lg font-semibold hover:border-black transition-colors"
+              >
+                Restart Test
+              </button>
+              <a
+                href="/dashboard"
+                className="px-6 py-3 border-2 border-black/20 text-black rounded-lg font-semibold hover:border-black transition-colors"
+              >
+                Back to Dashboard
+              </a>
+            </div>
+          </div>
+        </main>
       </div>
     )
   }

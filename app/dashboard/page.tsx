@@ -288,9 +288,9 @@ export default function Dashboard() {
               </div>
             )}
 
-            {/* Assessment Results Placeholder */}
+            {/* Assessment Results */}
             <div className="bg-white rounded-lg p-8 shadow-sm border border-black/5">
-              <h3 className="text-2xl font-bold text-black mb-4">Your Assessment Results</h3>
+              <h3 className="text-2xl font-bold text-black mb-6">Your Assessment Results</h3>
               {!profile?.hook_completed && !profile?.baseline_completed ? (
                 <p className="text-black/60">
                   Complete an assessment to see your results here.
@@ -298,15 +298,31 @@ export default function Dashboard() {
               ) : (
                 <div className="space-y-4">
                   {profile?.hook_completed && (
-                    <div className="p-4 bg-[#F7F3ED] rounded-lg">
-                      <h4 className="font-semibold text-black mb-2">Free Assessment</h4>
-                      <p className="text-sm text-black/60">Results available</p>
+                    <div className="p-6 bg-[#F7F3ED] rounded-lg flex items-center justify-between">
+                      <div>
+                        <h4 className="font-semibold text-black mb-1">Free Assessment</h4>
+                        <p className="text-sm text-black/60">12-question leadership snapshot</p>
+                      </div>
+                      <a
+                        href="/assessment/results"
+                        className="px-4 py-2 bg-black text-white rounded-lg text-sm font-semibold hover:bg-black/90 transition-colors"
+                      >
+                        View Results
+                      </a>
                     </div>
                   )}
                   {profile?.baseline_completed && (
-                    <div className="p-4 bg-[#F7F3ED] rounded-lg">
-                      <h4 className="font-semibold text-black mb-2">Full Baseline</h4>
-                      <p className="text-sm text-black/60">Results available</p>
+                    <div className="p-6 bg-[#F7F3ED] rounded-lg flex items-center justify-between">
+                      <div>
+                        <h4 className="font-semibold text-black mb-1">Full Baseline</h4>
+                        <p className="text-sm text-black/60">Complete 100-question profile</p>
+                      </div>
+                      <a
+                        href="/assessment/baseline/results"
+                        className="px-4 py-2 bg-black text-white rounded-lg text-sm font-semibold hover:bg-black/90 transition-colors"
+                      >
+                        View Results
+                      </a>
                     </div>
                   )}
                 </div>
