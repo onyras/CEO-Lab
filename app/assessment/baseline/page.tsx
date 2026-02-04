@@ -61,6 +61,49 @@ export default function BaselineAssessment() {
       setAlreadyCompleted(true)
     }
 
+    // Load existing assessment progress
+    const { data: assessment } = await supabase
+      .from('baseline_assessments')
+      .select('id, stage_completed')
+      .eq('user_id', user.id)
+      .single()
+
+    if (assessment) {
+      // Load all responses for this assessment
+      const { data: responseRows } = await supabase
+        .from('baseline_responses')
+        .select('question_id, answer_value')
+        .eq('assessment_id', assessment.id)
+
+      if (responseRows && responseRows.length > 0) {
+        // Convert array of responses to Record<number, number>
+        const savedResponses: Record<number, number> = {}
+        responseRows.forEach(row => {
+          savedResponses[row.question_id] = row.answer_value
+        })
+        setResponses(savedResponses)
+
+        // Determine which stage to start based on stage_completed
+        const stageCompleted = assessment.stage_completed || 0
+
+        if (stageCompleted === 1) {
+          // Stage 1 complete, start Stage 2 from question 31
+          setCurrentStage(2)
+          setCurrentQuestionIndex(30)
+        } else if (stageCompleted === 2) {
+          // Stage 2 complete, start Stage 3 from question 61
+          setCurrentStage(3)
+          setCurrentQuestionIndex(60)
+        } else {
+          // In progress, resume from last answered question
+          const answerCount = Object.keys(savedResponses).length
+          if (answerCount > 0 && answerCount < 30) {
+            setCurrentQuestionIndex(answerCount)
+          }
+        }
+      }
+    }
+
     setLoading(false)
   }
 

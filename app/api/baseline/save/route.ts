@@ -72,6 +72,14 @@ export async function POST(request: Request) {
       )
     }
 
+    // If Stage 3 complete, mark user profile as baseline_completed
+    if (stage === 3) {
+      await supabase
+        .from('user_profiles')
+        .update({ baseline_completed: true })
+        .eq('id', user.id)
+    }
+
     // Calculate sub-dimension scores
     // TODO: Implement scoring logic based on question mapping
 
