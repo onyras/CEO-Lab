@@ -38,17 +38,7 @@ export async function POST(request: Request) {
       customer_email: user.email,
       line_items: [
         {
-          price_data: {
-            currency: 'eur',
-            product_data: {
-              name: 'CEO Lab Premium',
-              description: 'Full access to CEO Lab: 100-question baseline, weekly tracking, and prescribed frameworks',
-            },
-            recurring: {
-              interval: 'month',
-            },
-            unit_amount: 10000, // €100.00
-          },
+          price: 'price_1Sx73QC6OuHgfoYHw5V6L6af', // CEO Lab Premium - €100/month
           quantity: 1,
         },
       ],

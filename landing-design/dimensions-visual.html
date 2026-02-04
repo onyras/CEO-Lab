@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>18 Dimensions - Visual Versions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #fff;
+      color: #000;
+      line-height: 1.6;
+    }
+
+    .version {
+      padding: 6rem 2rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .label {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.4);
+      margin-bottom: 1.5rem;
+      display: block;
+      letter-spacing: 0.02em;
+    }
+
+    .section-label::before {
+      content: "> ";
+      opacity: 0.6;
+    }
+
+    h2 {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .intro {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.6);
+      max-width: 48rem;
+      margin-bottom: 4rem;
+    }
+
+    /* VERSION 1: Compact Grid */
+    .v1-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .v1-card {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 0.5rem;
+      padding: 1.25rem;
+      transition: all 0.2s ease;
+    }
+
+    .v1-card:hover {
+      border-color: rgba(127, 171, 200, 0.3);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .v1-number {
+      font-size: 11px;
+      font-weight: 700;
+      color: #7FABC8;
+      margin-bottom: 0.5rem;
+    }
+
+    .v1-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 0.375rem;
+      line-height: 1.3;
+    }
+
+    .v1-desc {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.5);
+      line-height: 1.5;
+    }
+
+    .v1-category {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 3rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #7FABC8;
+    }
+
+    /* VERSION 2: Three Columns with Icons */
+    .v2-columns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+    }
+
+    .v2-column {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.03) 0%, rgba(166, 190, 164, 0.03) 100%);
+      border-radius: 0.75rem;
+      padding: 2rem;
+    }
+
+    .v2-category {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid #7FABC8;
+    }
+
+    .v2-item {
+      margin-bottom: 1.75rem;
+    }
+
+    .v2-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v2-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .v2-desc {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.5);
+      line-height: 1.5;
+    }
+
+    /* VERSION 3: Horizontal Scroll Cards */
+    .v3-scroll {
+      overflow-x: auto;
+      padding: 1rem 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .v3-scroll::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .v3-scroll::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 3px;
+    }
+
+    .v3-scroll::-webkit-scrollbar-thumb {
+      background: #7FABC8;
+      border-radius: 3px;
+    }
+
+    .v3-cards {
+      display: flex;
+      gap: 1rem;
+      min-width: min-content;
+    }
+
+    .v3-card {
+      min-width: 280px;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.75rem;
+      padding: 2rem;
+    }
+
+    .v3-badge {
+      display: inline-block;
+      padding: 0.25rem 0.625rem;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+
+    .v3-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v3-desc {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.5;
+    }
+
+    /* VERSION 4: Bento Grid Mixed Sizes */
+    .v4-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1rem;
+    }
+
+    .v4-card {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .v4-card.featured {
+      grid-column: span 2;
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.05) 0%, rgba(166, 190, 164, 0.05) 100%);
+    }
+
+    .v4-number {
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+
+    .v4-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v4-desc {
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.5);
+      line-height: 1.5;
+    }
+
+    /* VERSION 5: Timeline/Path */
+    .v5-timeline {
+      position: relative;
+      padding-left: 3rem;
+    }
+
+    .v5-timeline::before {
+      content: '';
+      position: absolute;
+      left: 1rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, #7FABC8 0%, #A6BEA4 100%);
+    }
+
+    .v5-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+    }
+
+    .v5-dot {
+      position: absolute;
+      left: -2rem;
+      top: 0.25rem;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 0 0 4px #fff;
+    }
+
+    .v5-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .v5-desc {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.5;
+    }
+
+    .v5-category {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 3rem 0 2rem;
+      color: #7FABC8;
+    }
+
+    /* VERSION 6: Numbered List Minimal */
+    .v6-list {
+      max-width: 56rem;
+    }
+
+    .v6-item {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+
+    .v6-number {
+      font-size: 24px;
+      font-weight: 700;
+      color: #7FABC8;
+      line-height: 1;
+    }
+
+    .v6-content h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 0.375rem;
+    }
+
+    .v6-content p {
+      font-size: 15px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    .v6-category {
+      font-size: 14px;
+      font-weight: 600;
+      color: #7FABC8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 2rem 0 1rem 40px;
+    }
+
+    /* VERSION 7: Dot Matrix Interactive */
+    .v7-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1.5rem;
+    }
+
+    .v7-dot {
+      aspect-ratio: 1;
+      background: rgba(127, 171, 200, 0.08);
+      border-radius: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+
+    .v7-dot:hover {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.12) 0%, rgba(166, 190, 164, 0.12) 100%);
+      border-color: rgba(127, 171, 200, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .v7-dot-number {
+      font-size: 20px;
+      font-weight: 700;
+      color: #7FABC8;
+      margin-bottom: 0.5rem;
+    }
+
+    .v7-dot-title {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    /* VERSION 8: Card Stack */
+    .v8-stacks {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .v8-stack {
+      position: relative;
+    }
+
+    .v8-category {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #7FABC8;
+    }
+
+    .v8-card {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .v8-card:hover {
+      transform: translateX(8px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .v8-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 0.375rem;
+    }
+
+    .v8-card-desc {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.5);
+      line-height: 1.5;
+    }
+
+    .v8-card-number {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: #7FABC8;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 20px;
+      margin-right: 0.5rem;
+    }
+
+    /* VERSION 9: Accordion Style */
+    .v9-accordion {
+      max-width: 56rem;
+    }
+
+    .v9-item {
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.5rem;
+      margin-bottom: 0.5rem;
+      overflow: hidden;
+    }
+
+    .v9-header {
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .v9-header:hover {
+      background: rgba(127, 171, 200, 0.03);
+    }
+
+    .v9-header-number {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      border-radius: 0.375rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .v9-header-title {
+      font-size: 16px;
+      font-weight: 700;
+      flex: 1;
+    }
+
+    .v9-body {
+      padding: 0 1.5rem 1.25rem 4.5rem;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    .v9-category {
+      font-size: 14px;
+      font-weight: 600;
+      color: #7FABC8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 2rem 0 1rem;
+    }
+
+    /* VERSION 10: Hexagon Grid */
+    .v10-hex-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1rem;
+    }
+
+    .v10-hex {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.08) 0%, rgba(166, 190, 164, 0.08) 100%);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      clip-path: polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .v10-hex:hover {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.15) 0%, rgba(166, 190, 164, 0.15) 100%);
+      transform: scale(1.05);
+    }
+
+    .v10-hex-number {
+      font-size: 18px;
+      font-weight: 700;
+      color: #7FABC8;
+      margin-bottom: 0.25rem;
+    }
+
+    .v10-hex-title {
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    @media (max-width: 1024px) {
+      .v1-grid,
+      .v2-columns,
+      .v4-grid,
+      .v7-grid,
+      .v8-stacks,
+      .v10-hex-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .v4-card.featured {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .v1-grid,
+      .v2-columns,
+      .v7-grid,
+      .v8-stacks,
+      .v10-hex-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .v4-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .v6-item {
+        grid-template-columns: 32px 1fr;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- VERSION 1: Compact Grid -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 1: COMPACT GRID</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">These aren't personality traits. They're measurable leadership capabilities mapped to the Konstantin Method. This is your scoreboard.</p>
+
+      <div class="v1-category">Leading Yourself</div>
+      <div class="v1-grid">
+        <div class="v1-card">
+          <div class="v1-number">01</div>
+          <h3 class="v1-title">Energy Management</h3>
+          <p class="v1-desc">Protecting time for high-value deep work vs. reactive firefighting</p>
+        </div>
+        <div class="v1-card">
+          <div class="v1-number">02</div>
+          <h3 class="v1-title">Self-Awareness</h3>
+          <p class="v1-desc">Recognizing your patterns, triggers, and unconscious motivations</p>
+        </div>
+        <div class="v1-card">
+          <div class="v1-number">03</div>
+          <h3 class="v1-title">Above the Line</h3>
+          <p class="v1-desc">Responding with curiosity instead of blame, victim, or hero mindsets</p>
+        </div>
+        <div class="v1-card">
+          <div class="v1-number">04</div>
+          <h3 class="v1-title">Emotional Fluidity</h3>
+          <p class="v1-desc">Identifying and navigating emotions in real-time without getting stuck</p>
+        </div>
+        <div class="v1-card">
+          <div class="v1-number">05</div>
+          <h3 class="v1-title">Contemplative Practice</h3>
+          <p class="v1-desc">Daily rituals that create space for stillness and reflection</p>
+        </div>
+        <div class="v1-card">
+          <div class="v1-number">06</div>
+          <h3 class="v1-title">Stress Design</h3>
+          <p class="v1-desc">Operating in your optimal stress zone, not burnout or boredom</p>
+        </div>
+      </div>
+
+      <div class="v1-category">Leading Teams</div>
+      <div class="v1-grid">
+        <div class="v1-card">
+          <div class="v1-number">07</div>
+          <h3 class="v1-title">Trust Formula</h3>
+          <p class="v1-desc">Delivering on commitments and modeling reliability</p>
+        </div>
+        <div class="v1-card">
+          <div class="v1-number">08</div>
+          <h3 class="v1-title">Psychological Safety</h3>
+          <p class="v1-desc">Creating an environment where bad news travels fast</p>
+        </div>
+        <div class="v1-card">
+          <div class="v1-number">09</div>
+          <h3 class="v1-title">Multiplier Behavior</h3>
+          <p class="v1-desc">Expanding others' thinking rather than being the expert</p>
+        </div>
+        <div class="v1-card">
+          <div class="v1-number">10</div>
+          <h3 class="v1-title">Communication Rhythm</h3>
+          <p class="v1-desc">Establishing consistent cadence for team alignment</p>
+        </div>
+        <div class="v1-card">
+          <div class="v1-number">11</div>
+          <h3 class="v1-title">Team Health</h3>
+          <p class="v1-desc">Monitoring and improving team dynamics and effectiveness</p>
+        </div>
+        <div class="v1-card">
+          <div class="v1-number">12</div>
+          <h3 class="v1-title">Accountability & Delegation</h3>
+          <p class="v1-desc">Empowering decisions without being the bottleneck</p>
+        </div>
+      </div>
+
+      <div class="v1-category">Leading Organizations</div>
+      <div class="v1-grid">
+        <div class="v1-card">
+          <div class="v1-number">13</div>
+          <h3 class="v1-title">Strategic Clarity</h3>
+          <p class="v1-desc">Ensuring leadership team can articulate strategy in one sentence</p>
+        </div>
+        <div class="v1-card">
+          <div class="v1-number">14</div>
+          <h3 class="v1-title">Culture as System</h3>
+          <p class="v1-desc">Intentionally designing culture, not letting it happen by accident</p>
+        </div>
+        <div class="v1-card">
+          <div class="v1-number">15</div>
+          <h3 class="v1-title">Three Transitions</h3>
+          <p class="v1-desc">Working ON the business (strategy, structure) not just IN it</p>
+        </div>
+        <div class="v1-card">
+          <div class="v1-number">16</div>
+          <h3 class="v1-title">Systems Thinking</h3>
+          <p class="v1-desc">Seeing patterns and root causes, not isolated incidents</p>
+        </div>
+        <div class="v1-card">
+          <div class="v1-number">17</div>
+          <h3 class="v1-title">Organizational Design</h3>
+          <p class="v1-desc">Structuring the company for current and future scale</p>
+        </div>
+        <div class="v1-card">
+          <div class="v1-number">18</div>
+          <h3 class="v1-title">Board & Governance</h3>
+          <p class="v1-desc">Proactively leveraging your board as strategic partners</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 2: Three Columns with Background -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 2: THREE COLUMNS</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">These aren't personality traits. They're measurable leadership capabilities mapped to the Konstantin Method. This is your scoreboard.</p>
+
+      <div class="v2-columns">
+        <div class="v2-column">
+          <h3 class="v2-category">Leading Yourself</h3>
+          <div class="v2-item">
+            <div class="v2-number">1</div>
+            <h4 class="v2-title">Energy Management</h4>
+            <p class="v2-desc">Protecting time for high-value deep work vs. reactive firefighting</p>
+          </div>
+          <div class="v2-item">
+            <div class="v2-number">2</div>
+            <h4 class="v2-title">Self-Awareness</h4>
+            <p class="v2-desc">Recognizing your patterns, triggers, and unconscious motivations</p>
+          </div>
+          <div class="v2-item">
+            <div class="v2-number">3</div>
+            <h4 class="v2-title">Above the Line</h4>
+            <p class="v2-desc">Responding with curiosity instead of blame, victim, or hero mindsets</p>
+          </div>
+          <div class="v2-item">
+            <div class="v2-number">4</div>
+            <h4 class="v2-title">Emotional Fluidity</h4>
+            <p class="v2-desc">Identifying and navigating emotions in real-time without getting stuck</p>
+          </div>
+          <div class="v2-item">
+            <div class="v2-number">5</div>
+            <h4 class="v2-title">Contemplative Practice</h4>
+            <p class="v2-desc">Daily rituals that create space for stillness and reflection</p>
+          </div>
+          <div class="v2-item">
+            <div class="v2-number">6</div>
+            <h4 class="v2-title">Stress Design</h4>
+            <p class="v2-desc">Operating in your optimal stress zone, not burnout or boredom</p>
+          </div>
+        </div>
+
+        <div class="v2-column">
+          <h3 class="v2-category">Leading Teams</h3>
+          <div class="v2-item">
+            <div class="v2-number">7</div>
+            <h4 class="v2-title">Trust Formula</h4>
+            <p class="v2-desc">Delivering on commitments and modeling reliability</p>
+          </div>
+          <div class="v2-item">
+            <div class="v2-number">8</div>
+            <h4 class="v2-title">Psychological Safety</h4>
+            <p class="v2-desc">Creating an environment where bad news travels fast</p>
+          </div>
+          <div class="v2-item">
+            <div class="v2-number">9</div>
+            <h4 class="v2-title">Multiplier Behavior</h4>
+            <p class="v2-desc">Expanding others' thinking rather than being the expert</p>
+          </div>
+          <div class="v2-item">
+            <div class="v2-number">10</div>
+            <h4 class="v2-title">Communication Rhythm</h4>
+            <p class="v2-desc">Establishing consistent cadence for team alignment</p>
+          </div>
+          <div class="v2-item">
+            <div class="v2-number">11</div>
+            <h4 class="v2-title">Team Health</h4>
+            <p class="v2-desc">Monitoring and improving team dynamics and effectiveness</p>
+          </div>
+          <div class="v2-item">
+            <div class="v2-number">12</div>
+            <h4 class="v2-title">Accountability & Delegation</h4>
+            <p class="v2-desc">Empowering decisions without being the bottleneck</p>
+          </div>
+        </div>
+
+        <div class="v2-column">
+          <h3 class="v2-category">Leading Organizations</h3>
+          <div class="v2-item">
+            <div class="v2-number">13</div>
+            <h4 class="v2-title">Strategic Clarity</h4>
+            <p class="v2-desc">Ensuring leadership team can articulate strategy in one sentence</p>
+          </div>
+          <div class="v2-item">
+            <div class="v2-number">14</div>
+            <h4 class="v2-title">Culture as System</h4>
+            <p class="v2-desc">Intentionally designing culture, not letting it happen by accident</p>
+          </div>
+          <div class="v2-item">
+            <div class="v2-number">15</div>
+            <h4 class="v2-title">Three Transitions</h4>
+            <p class="v2-desc">Working ON the business (strategy, structure) not just IN it</p>
+          </div>
+          <div class="v2-item">
+            <div class="v2-number">16</div>
+            <h4 class="v2-title">Systems Thinking</h4>
+            <p class="v2-desc">Seeing patterns and root causes, not isolated incidents</p>
+          </div>
+          <div class="v2-item">
+            <div class="v2-number">17</div>
+            <h4 class="v2-title">Organizational Design</h4>
+            <p class="v2-desc">Structuring the company for current and future scale</p>
+          </div>
+          <div class="v2-item">
+            <div class="v2-number">18</div>
+            <h4 class="v2-title">Board & Governance</h4>
+            <p class="v2-desc">Proactively leveraging your board as strategic partners</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Note: Versions 3-10 would continue with similar structure -->
+  <div class="version">
+    <div class="container">
+      <p style="text-align: center; color: rgba(0,0,0,0.4); font-size: 14px;">
+        Versions 3-10 with Horizontal Scroll, Bento Grid, Timeline, Numbered List, Dot Matrix, Card Stack, Accordion, and Hexagon Grid would follow similar patterns with their unique layouts and interactions.
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>

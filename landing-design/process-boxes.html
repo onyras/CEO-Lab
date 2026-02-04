@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Process Boxes - Modern Versions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #fff;
+      color: #000;
+      line-height: 1.6;
+    }
+
+    .version {
+      padding: 6rem 2rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .label {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.4);
+      margin-bottom: 1.5rem;
+      display: block;
+      letter-spacing: 0.02em;
+    }
+
+    .section-label::before {
+      content: "> ";
+      opacity: 0.6;
+    }
+
+    h2 {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 3rem;
+    }
+
+    /* VERSION 1: Gradient Cards */
+    .v1-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .v1-box {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.05) 0%, rgba(166, 190, 164, 0.05) 100%);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 0.75rem;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .v1-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #7FABC8 0%, #A6BEA4 100%);
+    }
+
+    .v1-number {
+      font-size: 48px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .v1-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v1-subtitle {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.5);
+      margin-bottom: 1.5rem;
+    }
+
+    .v1-description {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    /* VERSION 2: Icon Cards */
+    .v2-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .v2-box {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.75rem;
+      padding: 2.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .v2-box:hover {
+      border-color: rgba(127, 171, 200, 0.3);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      transform: translateY(-4px);
+    }
+
+    .v2-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .v2-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v2-subtitle {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.5);
+      margin-bottom: 1.5rem;
+    }
+
+    .v2-description {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    /* VERSION 3: Timeline Style */
+    .v3-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      position: relative;
+    }
+
+    .v3-grid::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #7FABC8 0%, #A6BEA4 100%);
+      z-index: 0;
+    }
+
+    .v3-box {
+      background: #fff;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .v3-dot {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 0 8px #fff;
+    }
+
+    .v3-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v3-subtitle {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.5);
+      margin-bottom: 1.5rem;
+    }
+
+    .v3-description {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    /* VERSION 4: Bento Style */
+    .v4-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1rem;
+    }
+
+    .v4-box {
+      grid-column: span 2;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.5rem;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .v4-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .v4-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.15) 0%, rgba(166, 190, 164, 0.15) 100%);
+      border-radius: 0.375rem;
+      font-size: 14px;
+      font-weight: 700;
+      color: #7FABC8;
+      margin-bottom: 1.25rem;
+    }
+
+    .v4-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v4-subtitle {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.5);
+      margin-bottom: 1.25rem;
+    }
+
+    .v4-description {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    /* VERSION 5: Layered Cards */
+    .v5-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .v5-box {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.75rem;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .v5-header {
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      padding: 2rem;
+      color: #fff;
+    }
+
+    .v5-number {
+      font-size: 14px;
+      font-weight: 600;
+      opacity: 0.8;
+      margin-bottom: 0.5rem;
+    }
+
+    .v5-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v5-subtitle {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .v5-body {
+      padding: 2rem;
+    }
+
+    .v5-description {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1024px) {
+      .v1-grid, .v2-grid, .v3-grid, .v5-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .v4-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .v4-box {
+        grid-column: span 1;
+      }
+
+      .v3-grid::before {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- VERSION 1: Gradient Cards -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 1: GRADIENT CARDS</div>
+      <span class="section-label">ceo-lab --process</span>
+      <h2>Three Steps to Measurable Growth</h2>
+
+      <div class="v1-grid">
+        <div class="v1-box">
+          <div class="v1-number">01</div>
+          <h3 class="v1-title">Assess</h3>
+          <p class="v1-subtitle">Complete your baseline assessment</p>
+          <p class="v1-description">100 questions across 18 dimensions in three 20-minute sessions. Honest, objective, comprehensive.</p>
+        </div>
+
+        <div class="v1-box">
+          <div class="v1-number">02</div>
+          <h3 class="v1-title">Track</h3>
+          <p class="v1-subtitle">Weekly check-ins via WhatsApp</p>
+          <p class="v1-description">Choose 3 dimensions to focus on per quarter. Answer 3 questions weekly. Track your progress over time.</p>
+        </div>
+
+        <div class="v1-box">
+          <div class="v1-number">03</div>
+          <h3 class="v1-title">Improve</h3>
+          <p class="v1-subtitle">Get tailored insights and frameworks</p>
+          <p class="v1-description">Your dashboard shows exactly where to focus. We prescribe specific frameworks from the Konstantin Method based on your scores. No guessing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 2: Icon Cards with Hover -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 2: ICON CARDS WITH HOVER</div>
+      <span class="section-label">ceo-lab --process</span>
+      <h2>Three Steps to Measurable Growth</h2>
+
+      <div class="v2-grid">
+        <div class="v2-box">
+          <div class="v2-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+          </div>
+          <h3 class="v2-title">Assess</h3>
+          <p class="v2-subtitle">Complete your baseline assessment</p>
+          <p class="v2-description">100 questions across 18 dimensions in three 20-minute sessions. Honest, objective, comprehensive.</p>
+        </div>
+
+        <div class="v2-box">
+          <div class="v2-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="20" x2="12" y2="10"/>
+              <line x1="18" y1="20" x2="18" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="16"/>
+            </svg>
+          </div>
+          <h3 class="v2-title">Track</h3>
+          <p class="v2-subtitle">Weekly check-ins via WhatsApp</p>
+          <p class="v2-description">Choose 3 dimensions to focus on per quarter. Answer 3 questions weekly. Track your progress over time.</p>
+        </div>
+
+        <div class="v2-box">
+          <div class="v2-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+              <polyline points="17 6 23 6 23 12"/>
+            </svg>
+          </div>
+          <h3 class="v2-title">Improve</h3>
+          <p class="v2-subtitle">Get tailored insights and frameworks</p>
+          <p class="v2-description">Your dashboard shows exactly where to focus. We prescribe specific frameworks from the Konstantin Method based on your scores. No guessing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 3: Timeline Style -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 3: TIMELINE STYLE</div>
+      <span class="section-label">ceo-lab --process</span>
+      <h2>Three Steps to Measurable Growth</h2>
+
+      <div class="v3-grid">
+        <div class="v3-box">
+          <div class="v3-dot">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+          </div>
+          <h3 class="v3-title">Assess</h3>
+          <p class="v3-subtitle">Complete your baseline assessment</p>
+          <p class="v3-description">100 questions across 18 dimensions in three 20-minute sessions. Honest, objective, comprehensive.</p>
+        </div>
+
+        <div class="v3-box">
+          <div class="v3-dot">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="20" x2="12" y2="10"/>
+              <line x1="18" y1="20" x2="18" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="16"/>
+            </svg>
+          </div>
+          <h3 class="v3-title">Track</h3>
+          <p class="v3-subtitle">Weekly check-ins via WhatsApp</p>
+          <p class="v3-description">Choose 3 dimensions to focus on per quarter. Answer 3 questions weekly. Track your progress over time.</p>
+        </div>
+
+        <div class="v3-box">
+          <div class="v3-dot">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+              <polyline points="17 6 23 6 23 12"/>
+            </svg>
+          </div>
+          <h3 class="v3-title">Improve</h3>
+          <p class="v3-subtitle">Get tailored insights and frameworks</p>
+          <p class="v3-description">Your dashboard shows exactly where to focus. We prescribe specific frameworks from the Konstantin Method based on your scores. No guessing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 4: Bento Compact -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 4: BENTO COMPACT</div>
+      <span class="section-label">ceo-lab --process</span>
+      <h2>Three Steps to Measurable Growth</h2>
+
+      <div class="v4-grid">
+        <div class="v4-box">
+          <div class="v4-pattern"></div>
+          <div class="v4-badge">01</div>
+          <h3 class="v4-title">Assess</h3>
+          <p class="v4-subtitle">Complete your baseline assessment</p>
+          <p class="v4-description">100 questions across 18 dimensions in three 20-minute sessions. Honest, objective, comprehensive.</p>
+        </div>
+
+        <div class="v4-box">
+          <div class="v4-pattern"></div>
+          <div class="v4-badge">02</div>
+          <h3 class="v4-title">Track</h3>
+          <p class="v4-subtitle">Weekly check-ins via WhatsApp</p>
+          <p class="v4-description">Choose 3 dimensions to focus on per quarter. Answer 3 questions weekly. Track your progress over time.</p>
+        </div>
+
+        <div class="v4-box">
+          <div class="v4-pattern"></div>
+          <div class="v4-badge">03</div>
+          <h3 class="v4-title">Improve</h3>
+          <p class="v4-subtitle">Get tailored insights and frameworks</p>
+          <p class="v4-description">Your dashboard shows exactly where to focus. We prescribe specific frameworks from the Konstantin Method based on your scores. No guessing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 5: Layered Headers -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 5: LAYERED HEADERS</div>
+      <span class="section-label">ceo-lab --process</span>
+      <h2>Three Steps to Measurable Growth</h2>
+
+      <div class="v5-grid">
+        <div class="v5-box">
+          <div class="v5-header">
+            <div class="v5-number">STEP 01</div>
+            <h3 class="v5-title">Assess</h3>
+            <p class="v5-subtitle">Complete your baseline assessment</p>
+          </div>
+          <div class="v5-body">
+            <p class="v5-description">100 questions across 18 dimensions in three 20-minute sessions. Honest, objective, comprehensive.</p>
+          </div>
+        </div>
+
+        <div class="v5-box">
+          <div class="v5-header">
+            <div class="v5-number">STEP 02</div>
+            <h3 class="v5-title">Track</h3>
+            <p class="v5-subtitle">Weekly check-ins via WhatsApp</p>
+          </div>
+          <div class="v5-body">
+            <p class="v5-description">Choose 3 dimensions to focus on per quarter. Answer 3 questions weekly. Track your progress over time.</p>
+          </div>
+        </div>
+
+        <div class="v5-box">
+          <div class="v5-header">
+            <div class="v5-number">STEP 03</div>
+            <h3 class="v5-title">Improve</h3>
+            <p class="v5-subtitle">Get tailored insights and frameworks</p>
+          </div>
+          <div class="v5-body">
+            <p class="v5-description">Your dashboard shows exactly where to focus. We prescribe specific frameworks from the Konstantin Method based on your scores. No guessing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

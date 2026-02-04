@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEO Lab - Leadership Measurement</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #fff;
+      color: #000;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    /* Typography System */
+    h1, h2, h3, h4, h5, h6 { margin: 0; padding: 0; font-weight: 700; }
+
+    /* H1 - Main Hero Headline */
+    h1 {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    /* H2 - Section Headlines */
+    h2 {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    /* Section Label (small accent text above titles) */
+    .section-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #7FABC8;
+      margin-bottom: 1rem;
+      display: block;
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+
+    .section-label::before {
+      content: "> ";
+      opacity: 0.6;
+    }
+
+    /* H3 - Subsection/Card Titles */
+    h3 {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 1rem;
+    }
+
+    /* H4 - Small Headings */
+    h4 {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Section Titles - Center Aligned */
+    section h2 {
+      text-align: center;
+    }
+
+    /* Body Text */
+    p {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    /* Lead Text (larger intro paragraphs) */
+    .lead {
+      font-size: 18px;
+      line-height: 1.7;
+      color: rgba(0, 0, 0, 0.7);
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Small Text (labels, supporting text) */
+    small, .small-text {
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Extra Small Text (tiny labels) */
+    .xs-text {
+      font-size: 12px;
+      line-height: 1.4;
+      color: rgba(0, 0, 0, 0.4);
+      letter-spacing: 0.05em;
+    }
+
+    /* Comparison Cards */
+    .comparison-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      max-width: 56rem;
+    }
+
+    .comparison-card {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.75rem;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .accent-bar.blue {
+      background: linear-gradient(90deg, #7FABC8 0%, #9BC4D6 100%);
+    }
+
+    .accent-bar.gray {
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    .card-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      margin-top: 0.5rem;
+    }
+
+    .card-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .card-list li {
+      font-size: 16px;
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .comparison-card.active .card-list li {
+      color: rgba(0, 0, 0, 0.8);
+    }
+
+    .comparison-card.active .card-list li::before {
+      content: "✓";
+      font-weight: 700;
+      color: #7FABC8;
+      flex-shrink: 0;
+    }
+
+    .comparison-card.inactive .card-list li {
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    .comparison-card.inactive .card-list li::before {
+      content: "—";
+      color: rgba(0, 0, 0, 0.2);
+      flex-shrink: 0;
+    }
+
+    .cost-icon {
+      font-size: 72px;
+      margin-bottom: 1rem;
+      opacity: 0.15;
+    }
+
+    .truth-bomb {
+      background: #fff;
+      padding: 4rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    /* Modern Bento Grid for Scoreboard */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 0.75rem;
+    }
+
+    .bento-card {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .bento-card:hover {
+      border-color: rgba(127, 171, 200, 0.3);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.15) 0%, rgba(166, 190, 164, 0.15) 100%);
+      border-radius: 0.375rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .span-2 { grid-column: span 2; }
+    .span-3 { grid-column: span 3; }
+    .span-5 { grid-column: span 5; }
+
+    .visual {
+      margin-top: auto;
+      padding-top: 1.25rem;
+    }
+
+    .assessment-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.375rem;
+    }
+
+    .dimension-dot {
+      aspect-ratio: 1;
+      background: rgba(0, 0, 0, 0.03);
+      border-radius: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dimension-dot.filled {
+      background: linear-gradient(135deg, #7FABC8 0%, #9BC4D6 100%);
+      color: #fff;
+    }
+
+    .dimension-dot.filled::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.2) 100%);
+    }
+
+    .progress-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+    }
+
+    .progress-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.7);
+      min-width: 60px;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 6px;
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #7FABC8 0%, #A6BEA4 100%);
+      border-radius: 999px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+    }
+
+    .progress-percent {
+      font-size: 11px;
+      font-weight: 700;
+      color: #7FABC8;
+      min-width: 28px;
+      text-align: right;
+    }
+
+    .streak-display {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.5rem 0;
+    }
+
+    .streak-number {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .streak-label {
+      font-size: 11px;
+      color: rgba(0, 0, 0, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .streak-boxes {
+      display: flex;
+      gap: 0.375rem;
+      margin-left: auto;
+    }
+
+    .streak-box {
+      width: 24px;
+      height: 24px;
+      background: rgba(127, 171, 200, 0.08);
+      border-radius: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+
+    .streak-box.active {
+      background: linear-gradient(135deg, #7FABC8 0%, #9BC4D6 100%);
+      color: #fff;
+    }
+
+    .framework-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 0.375rem;
+    }
+
+    .framework-item {
+      aspect-ratio: 1;
+      background: rgba(127, 171, 200, 0.06);
+      border-radius: 0.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .framework-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 0%, rgba(127, 171, 200, 0.1) 100%);
+    }
+
+    .insight-card {
+      background: linear-gradient(135deg, #F7F3ED 0%, #F9F6F0 100%);
+      border-radius: 0.375rem;
+      padding: 1rem;
+      border-left: 2px solid #7FABC8;
+    }
+
+    .insight-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 9px;
+      font-weight: 700;
+      color: #7FABC8;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.625rem;
+    }
+
+    .insight-text {
+      font-size: 12px;
+      line-height: 1.5;
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.25rem 0.625rem;
+      background: rgba(127, 171, 200, 0.1);
+      color: #7FABC8;
+      font-size: 10px;
+      font-weight: 600;
+      border-radius: 999px;
+      margin-top: 1rem;
+    }
+
+    .pattern-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+      background-size: 16px 16px;
+      pointer-events: none;
+    }
+
+    @media (max-width: 1024px) {
+      .bento-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .span-2, .span-3, .span-5 {
+        grid-column: span 4;
+      }
+    }
+
+    /* Bento Box - Highlighted container */
+    .bento-box {
+      background: #fff;
+      padding: 3rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive Typography */
+    @media (min-width: 768px) {
+      h1 { font-size: 52px; }
+      h2 { font-size: 42px; }
+      h3 { font-size: 24px; }
+      p { font-size: 16px; }
+      .lead { font-size: 18px; }
+    }
+
+    @media (min-width: 1024px) {
+      h1 { font-size: 56px; }
+      h2 { font-size: 42px; }
+      h3 { font-size: 28px; }
+      .lead { font-size: 20px; }
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .nav-container {
+      max-width: 1100px; margin: 0 auto; padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo { display: flex; gap: 0.5rem; font-size: 1.25rem; text-decoration: none; color: #000; }
+    .logo-bold { font-weight: 700; }
+    .logo-light { font-weight: 300; }
+    .nav-actions { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-link { font-size: 0.875rem; font-weight: 500; color: rgba(0, 0, 0, 0.7); text-decoration: none; }
+    .nav-link:hover { color: #000; }
+
+    /* Buttons */
+    .btn {
+      padding: 0.625rem 1.5rem; border-radius: 0.5rem; font-size: 0.875rem;
+      font-weight: 600; text-decoration: none; transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 0.5rem; border: none;
+    }
+    .btn-primary { background: #000; color: #fff; }
+    .btn-primary:hover { background: rgba(0, 0, 0, 0.9); }
+    .btn-secondary { background: transparent; color: #000; border: 2px solid rgba(0, 0, 0, 0.1); }
+    .btn-secondary:hover { background: rgba(0, 0, 0, 0.05); }
+    .btn-white { background: #fff; color: #000; }
+    .btn-white:hover { background: rgba(255, 255, 255, 0.9); }
+    .btn-outline-white { background: transparent; color: #fff; border: 2px solid #fff; }
+    .btn-outline-white:hover { background: rgba(255, 255, 255, 0.1); }
+    .btn-lg { padding: 1rem 2rem; font-size: 1.125rem; }
+
+    /* Hero */
+    .hero {
+      position: relative; background: #fff; overflow: hidden;
+    }
+    .hero-scroll-container {
+      min-height: 60rem; display: flex; align-items: flex-start;
+      justify-content: center; position: relative;
+      padding: 12rem 1rem 1rem; width: 100%;
+    }
+    .hero-perspective-wrapper {
+      padding: 0; width: 100%; max-width: 1280px;
+      margin: 0 auto; position: relative; perspective: 1000px;
+    }
+    .hero-header {
+      position: relative; width: 100%; margin: 0 auto;
+      text-align: center; will-change: transform;
+      transition: transform 0.3s ease-out;
+    }
+    /* Hero Highlight Background - Grid + Dots */
+    .hero-bg {
+      position: absolute; inset: 0; overflow: hidden;
+      background-color: #fafafa;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px),
+        radial-gradient(circle, rgba(0,0,0,0.05) 1px, transparent 1px);
+      background-size: 50px 50px, 50px 50px, 20px 20px;
+      background-position: 0 0, 0 0, 10px 10px;
+    }
+    .hero-subtitle {
+      font-size: 16px; color: rgba(0, 0, 0, 0.6); line-height: 1.6;
+      max-width: 42rem; margin: 0 auto 2.5rem;
+    }
+    .cta-group {
+      display: flex; gap: 1rem; justify-content: center;
+      margin-bottom: 1.5rem; flex-wrap: wrap;
+    }
+    .hero-note { font-size: 0.875rem; color: rgba(0, 0, 0, 0.4); margin-bottom: 4rem; }
+    .hero-note strong { color: rgba(0, 0, 0, 0.6); font-weight: 500; }
+    /* 3D Dashboard Card */
+    .hero-3d-card {
+      width: 100%; max-width: 1280px; margin: 0.5rem auto 0;
+      height: 30rem; position: relative;
+      will-change: transform; transform-style: preserve-3d;
+      transition: transform 0.3s ease-out;
+    }
+    .hero-3d-card-inner {
+      height: 100%; width: 100%;
+      border: 4px solid #6C6C6C; padding: 0;
+      background: #222222; border-radius: 30px;
+      box-shadow:
+        0 0 #0000004d, 0 9px 20px #0000004a,
+        0 37px 37px #00000042, 0 84px 50px #00000026,
+        0 149px 60px #0000000a, 0 233px 65px #00000003;
+      overflow: hidden; display: flex;
+      align-items: center; justify-content: center;
+    }
+    .hero-3d-card-inner img {
+      width: 100%; height: 100%;
+      object-fit: cover; border-radius: 26px;
+    }
+    @media (min-width: 769px) {
+      .hero-scroll-container {
+        min-height: 80rem; padding: 12rem 2rem 5rem;
+      }
+      .hero-3d-card {
+        height: 40rem; margin-top: 0.5rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .hero-scroll-container {
+        min-height: 50rem; padding: 3rem 1rem 1rem;
+      }
+      .hero-3d-card {
+        height: 25rem; margin-top: 0.5rem;
+      }
+    }
+
+    /* Sections */
+    section { padding: 4rem 2rem; }
+    .section-container { max-width: 1000px; margin: 0 auto; }
+    .section-narrow { max-width: 56rem; }
+    .bg-white { background: #fff; }
+    .bg-beige { background: #F7F3ED; }
+    .bg-black { background: #000; color: #fff; }
+
+    /* Quote */
+    .quote-box {
+      margin-top: 3rem; padding: 2rem; background: #F7F3ED;
+      border-left: 4px solid #7FABC8; border-radius: 0.5rem;
+    }
+    .quote-text {
+      font-size: 24px; font-weight: 600; font-style: italic;
+      color: #000; margin: 0;
+    }
+
+    /* Feature Grid */
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .feature-card { background: #fff; padding: 2rem; border-radius: 0.5rem; }
+    .feature-card h3 { font-size: 24px; margin-bottom: 0.75rem; }
+    .feature-card p { color: rgba(0, 0, 0, 0.6); margin: 0; }
+    .feature-wide { grid-column: 1 / -1; }
+
+    /* Dimensions Grid */
+    .dimensions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; }
+    .dimension-column h3 {
+      font-size: 24px; margin-bottom: 2rem; padding-bottom: 0.75rem;
+      border-bottom: 2px solid;
+    }
+    .blue-border { border-color: #7FABC8; }
+    .green-border { border-color: #A6BEA4; }
+    .orange-border { border-color: #E08F6A; }
+    .dimension-item { margin-bottom: 1.5rem; }
+    .dimension-item h4 { font-size: 16px; font-weight: 700; margin-bottom: 0.5rem; }
+    .dimension-item p { font-size: 14px; color: rgba(0, 0, 0, 0.6); margin: 0; }
+
+    /* Steps - Features Card Style */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .step {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .step-decorator {
+      position: relative;
+      width: 144px;
+      height: 144px;
+      margin: 0 auto 1rem;
+      -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 70%, transparent 100%);
+      mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 70%, transparent 100%);
+    }
+    .step-decorator-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, black 1px, transparent 1px),
+        linear-gradient(to bottom, black 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: 0.1;
+    }
+    .step-decorator-icon {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      border-left: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .step-number {
+      width: 64px; height: 64px; background: #000; color: #fff;
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 32px; font-weight: 700;
+      margin: 0 auto 1rem;
+    }
+    .step h3 {
+      font-size: 28px;
+      margin-bottom: 0.75rem;
+    }
+    .step .subtitle {
+      font-size: 16px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.7);
+      margin-bottom: 1.5rem;
+    }
+    .step-description {
+      color: rgba(0, 0, 0, 0.7);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* Testimonial Carousel */
+    .testimonial-carousel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+      padding: 4rem 0;
+    }
+    .quote-container {
+      position: relative;
+      padding: 0 2rem;
+    }
+    .quote-mark {
+      position: absolute;
+      font-size: 7rem;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 700;
+      color: rgba(0, 0, 0, 0.06);
+      user-select: none;
+      pointer-events: none;
+      line-height: 1;
+    }
+    .quote-mark-open {
+      left: -0.5rem;
+      top: -3rem;
+    }
+    .quote-mark-close {
+      right: -0.5rem;
+      bottom: -4rem;
+    }
+    .testimonial-quote {
+      font-size: 1.5rem;
+      font-weight: 400;
+      text-align: center;
+      max-width: 32rem;
+      line-height: 1.6;
+      color: #000;
+      margin: 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .testimonial-quote.animating {
+      opacity: 0;
+      filter: blur(4px);
+      transform: scale(0.98);
+    }
+    .testimonial-footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: 0.5rem;
+    }
+    .testimonial-role {
+      font-size: 0.75rem;
+      color: rgba(0, 0, 0, 0.5);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin: 0;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .testimonial-role.animating {
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+    .testimonial-avatars {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .avatar-button {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0.125rem;
+      background: transparent;
+      border: none;
+      overflow: hidden;
+    }
+    .avatar-button:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    .avatar-button.active {
+      background: #000;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      padding: 0.5rem 1rem 0.5rem 0.5rem;
+    }
+    .avatar-button.show-name {
+      padding: 0.5rem 1rem 0.5rem 0.5rem;
+    }
+    .avatar-ring {
+      position: relative;
+      flex-shrink: 0;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 9999px;
+      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .avatar-button.active .avatar-ring {
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+    }
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .avatar-button:not(.active):hover .avatar-img {
+      transform: scale(1.05);
+    }
+    .avatar-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+      white-space: nowrap;
+      max-width: 0;
+      overflow: hidden;
+      opacity: 0;
+      margin-left: 0;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      color: #000;
+    }
+    .avatar-button.active .avatar-name,
+    .avatar-button.show-name .avatar-name {
+      max-width: 10rem;
+      opacity: 1;
+      margin-left: 0.5rem;
+    }
+    .avatar-button.active .avatar-name {
+      color: #fff;
+    }
+    @media (max-width: 768px) {
+      .testimonial-quote {
+        font-size: 1.25rem;
+      }
+      .quote-mark {
+        font-size: 5rem;
+      }
+    }
+
+    /* Pricing - Horizontal Rhythm */
+    .pricing-horizontal {
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .pricing-horizontal h2 {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .pricing-horizontal .pricing-features {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.8;
+      max-width: 800px;
+      margin: 0 auto 3rem;
+    }
+
+    .pricing-cta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .pricing-note {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Footer */
+    footer {
+      background: #fff; border-top: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .footer-links {
+      display: flex; justify-content: center; gap: 2rem;
+      margin-bottom: 1rem; flex-wrap: wrap;
+    }
+    .footer-link {
+      color: rgba(0, 0, 0, 0.6); text-decoration: none;
+      font-size: 14px;
+    }
+    .footer-link:hover { color: #000; }
+    .footer-note { text-align: center; font-size: 14px; color: rgba(0, 0, 0, 0.5); }
+
+    /* Component-specific Responsive */
+    @media (min-width: 768px) {
+      .hero-subtitle { font-size: 18px; }
+    }
+
+    /* Dimensions Accordion */
+    .dimensions-accordion {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .dimensions-section {
+      margin-bottom: 1.5rem;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      position: relative;
+    }
+
+    .dimensions-section::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: linear-gradient(180deg, #7FABC8 0%, #A6BEA4 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .dimensions-section.active::before {
+      opacity: 1;
+    }
+
+    .dimensions-header {
+      padding: 2rem 2rem 2rem 2.5rem;
+      cursor: pointer;
+      background: #fff;
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dimensions-header:hover {
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .dimensions-header-content {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .dimensions-number {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.1) 0%, rgba(166, 190, 164, 0.1) 100%);
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: #7FABC8;
+    }
+
+    .dimensions-header-text h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .dimensions-header-text p {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .dimensions-toggle {
+      font-size: 20px;
+      color: rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .dimensions-section.active .dimensions-toggle {
+      transform: rotate(180deg);
+      color: #7FABC8;
+    }
+
+    .dimensions-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .dimensions-section.active .dimensions-content {
+      max-height: 2000px;
+    }
+
+    .dimensions-list {
+      padding: 0 2rem 2rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .dimensions-list-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 0.5rem;
+    }
+
+    .dimensions-list-number {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      border-radius: 0.375rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .dimensions-list-content h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .dimensions-list-content p {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    @media (max-width: 768px) {
+      .dimensions-accordion {
+        max-width: 100%;
+      }
+    }
+
+    /* Final CTA Comparison */
+    .final-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .final-card {
+      padding: 3rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .final-card.problem {
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .final-card.solution {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.08) 0%, rgba(166, 190, 164, 0.08) 100%);
+      border: 2px solid #7FABC8;
+    }
+
+    .final-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    .final-card.solution .final-label {
+      color: #7FABC8;
+    }
+
+    .final-card h3 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .final-card p {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .final-cta-footer {
+      text-align: center;
+    }
+
+    .final-cta-footer h2 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .final-comparison {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .faq-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #7FABC8;
+      text-align: center;
+      margin-bottom: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .faq-title {
+      font-size: 48px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 4rem;
+      line-height: 1.1;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .faq-item {
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 0.75rem;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .faq-question {
+      padding: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .faq-question:hover {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .faq-question-text {
+      font-size: 18px;
+      font-weight: 500;
+      margin: 0;
+      line-height: 1.5;
+      flex: 1;
+      padding-right: 2rem;
+      color: rgba(0, 0, 0, 0.9);
+    }
+
+    .faq-toggle {
+      width: 32px;
+      height: 32px;
+      background: #7FABC8;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 600;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item.active .faq-toggle {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+    }
+
+    .faq-answer-content {
+      padding: 0 2rem 2rem 2rem;
+      font-size: 16px;
+      line-height: 1.6;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    @media (max-width: 768px) {
+      .faq-title {
+        font-size: 36px;
+      }
+
+      .faq-question {
+        padding: 1.5rem;
+      }
+
+      .faq-question h3 {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <span class="logo-bold">nk</span>
+        <span class="logo-light">CEO Lab</span>
+      </a>
+      <div class="nav-actions">
+        <a href="#" class="nav-link">Sign In</a>
+        <a href="#" class="btn btn-primary">Start Free Assessment</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-scroll-container">
+      <div class="hero-perspective-wrapper">
+        <div class="hero-header">
+          <h1>A measurement system for your<br>leadership development</h1>
+          <p class="hero-subtitle">
+            CEO Lab tracks your growth across 18 leadership dimensions.
+            No preconception, just space for your development to take shape.
+          </p>
+          <div class="cta-group">
+            <a href="#" class="btn btn-primary">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                <path d="M10 4v12m-6-6h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Start Free Assessment
+            </a>
+            <a href="#" class="btn btn-secondary">Learn more</a>
+          </div>
+          <p class="hero-note">
+            Also available for <strong>Teams</strong> & <strong>Organizations</strong>
+          </p>
+        </div>
+
+        <!-- Company Logos -->
+        <div style="max-width: 1100px; margin: 3rem auto 4rem; padding: 0 2rem;">
+          <p class="xs-text" style="text-align: center; margin-bottom: 1.5rem;">
+            These companies use CEO Lab
+          </p>
+          <div style="display: flex; justify-content: center; align-items: center; gap: 3rem; flex-wrap: wrap; opacity: 0.4; filter: grayscale(100%);">
+            <img src="logos/company1.svg" alt="Company 1" style="height: 32px;" />
+            <img src="logos/company2.svg" alt="Company 2" style="height: 32px;" />
+            <img src="logos/company3.svg" alt="Company 3" style="height: 32px;" />
+            <img src="logos/company4.svg" alt="Company 4" style="height: 32px;" />
+            <img src="logos/company5.svg" alt="Company 5" style="height: 32px;" />
+          </div>
+        </div>
+
+        <div class="hero-3d-card">
+          <div class="hero-3d-card-inner">
+            <img src="dashboard-preview.svg" alt="CEO Lab Dashboard">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="bg-white" style="padding: 10rem 2rem 8rem;">
+    <div style="max-width: 1100px; margin: 0 auto;">
+
+      <!-- Opening Contrast -->
+      <div style="margin-bottom: 6rem;">
+        <span class="section-label">ceo-lab --problem</span>
+        <h2 style="font-size: 42px; font-weight: 700; line-height: 1.1; margin: 0 auto 3rem; max-width: 900px;">
+          Athletes Have Post-Game Analysis.<br>What Do CEOs Have?
+        </h2>
+
+        <div class="comparison-cards" style="margin-left: auto; margin-right: auto;">
+          <!-- Athletes Card -->
+          <div class="comparison-card active">
+            <div class="accent-bar blue"></div>
+            <h3 class="card-title">Athletes</h3>
+            <ul class="card-list">
+              <li>Game footage review</li>
+              <li>Performance metrics tracked</li>
+              <li>Progress measured weekly</li>
+              <li>Blind spots identified</li>
+              <li>Improvement plan created</li>
+            </ul>
+          </div>
+
+          <!-- CEOs Card -->
+          <div class="comparison-card inactive">
+            <div class="accent-bar gray"></div>
+            <h3 class="card-title">CEOs</h3>
+            <ul class="card-list">
+              <li>Read books</li>
+              <li>Listen to podcasts</li>
+              <li>Maybe have a coach</li>
+              <li>Hope they're improving</li>
+              <li>No systematic tracking</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- The Questions -->
+      <div style="margin-bottom: 6rem; padding: 3rem; background: linear-gradient(135deg, rgba(127, 171, 200, 0.08) 0%, rgba(166, 190, 164, 0.08) 100%); border-radius: 0.75rem; text-align: center; max-width: 56rem; margin-left: auto; margin-right: auto;">
+        <h2 style="font-size: 32px; font-weight: 700; line-height: 1.2; margin-bottom: 1.5rem;">
+          When was the last time you objectively measured your own leadership?
+        </h2>
+        <p style="font-size: 18px; color: rgba(0, 0, 0, 0.6); line-height: 1.6; margin: 0;">
+          Not your company's performance. Not your team's output.<br>
+          <strong style="color: #000; font-weight: 600;">Your leadership.</strong>
+        </p>
+      </div>
+
+      <!-- The Cost - Visual Grid -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 6rem;">
+        <div style="text-align: center; padding: 3rem 2rem;">
+          <div class="cost-icon">❓</div>
+          <h4>No Data</h4>
+          <p class="small-text" style="margin: 0;">
+            Every decision based on gut feeling, not evidence
+          </p>
+        </div>
+        <div style="text-align: center; padding: 3rem 2rem;">
+          <div class="cost-icon">⚠️</div>
+          <h4>Anxiety Fills the Gap</h4>
+          <p class="small-text" style="margin: 0;">
+            "Am I really the right person to lead this?"
+          </p>
+        </div>
+        <div style="text-align: center; padding: 3rem 2rem;">
+          <div class="cost-icon">📉</div>
+          <h4>Invisible Decline</h4>
+          <p class="small-text" style="margin: 0;">
+            Competitors who measure are improving faster
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SOLUTION -->
+  <section style="background: #fafafa; position: relative; overflow: hidden;">
+    <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px); background-size: 50px 50px; opacity: 0.5; pointer-events: none;"></div>
+    <div class="section-container" style="position: relative;">
+      <span class="section-label">ceo-lab --solution</span>
+      <h2>Your Leadership Scoreboard</h2>
+
+      <p style="max-width: 48rem; font-size: 16px; line-height: 1.6; color: rgba(0, 0, 0, 0.6); margin: 0 auto 3rem; text-align: center;">
+        CEO Lab is a leadership measurement platform built on the Konstantin Method - 60+ frameworks synthesized from 15 years of work with Series A-C founders.<br><br>
+        We give you what athletes have: a baseline, systematic tracking, and objective feedback on whether you're improving.<br><br>
+        Not another content library. Not more frameworks to browse. A scoreboard that shows you - with data - where you stand and where to focus next.
+      </p>
+
+      <div class="bento-grid">
+        <!-- Baseline Assessment -->
+        <div class="bento-card span-3">
+          <div class="pattern-bg"></div>
+          <div class="card-header">
+            <div class="card-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FABC8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="card-title">Baseline Assessment</h3>
+              <p class="card-description">100 questions across 18 dimensions</p>
+            </div>
+          </div>
+          <div class="visual">
+            <div class="assessment-grid">
+              <div class="dimension-dot filled">1</div>
+              <div class="dimension-dot filled">2</div>
+              <div class="dimension-dot filled">3</div>
+              <div class="dimension-dot filled">4</div>
+              <div class="dimension-dot filled">5</div>
+              <div class="dimension-dot filled">6</div>
+              <div class="dimension-dot">7</div>
+              <div class="dimension-dot">8</div>
+              <div class="dimension-dot">9</div>
+              <div class="dimension-dot">10</div>
+              <div class="dimension-dot">11</div>
+              <div class="dimension-dot">12</div>
+              <div class="dimension-dot">13</div>
+              <div class="dimension-dot">14</div>
+              <div class="dimension-dot">15</div>
+              <div class="dimension-dot">16</div>
+              <div class="dimension-dot">17</div>
+              <div class="dimension-dot">18</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weekly Tracking -->
+        <div class="bento-card span-3">
+          <div class="pattern-bg"></div>
+          <div class="card-header">
+            <div class="card-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FABC8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="card-title">Weekly Tracking</h3>
+              <p class="card-description">Three questions via WhatsApp</p>
+            </div>
+          </div>
+          <div class="visual">
+            <div class="streak-display">
+              <div>
+                <div class="streak-number">8</div>
+                <div class="streak-label">Weeks</div>
+              </div>
+              <div class="streak-boxes">
+                <div class="streak-box active">✓</div>
+                <div class="streak-box active">✓</div>
+                <div class="streak-box active">✓</div>
+                <div class="streak-box">○</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="bento-card span-2">
+          <div class="pattern-bg"></div>
+          <div class="card-header">
+            <div class="card-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FABC8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"/>
+                <line x1="12" y1="20" x2="12" y2="4"/>
+                <line x1="6" y1="20" x2="6" y2="14"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="card-title">Dashboard</h3>
+              <p class="card-description">Track progress</p>
+            </div>
+          </div>
+          <div class="visual">
+            <div class="progress-stack">
+              <div class="progress-row">
+                <span class="progress-name">Trust</span>
+                <div class="progress-track"><div class="progress-bar" style="width: 85%"></div></div>
+                <span class="progress-percent">85</span>
+              </div>
+              <div class="progress-row">
+                <span class="progress-name">Energy</span>
+                <div class="progress-track"><div class="progress-bar" style="width: 68%"></div></div>
+                <span class="progress-percent">68</span>
+              </div>
+              <div class="progress-row">
+                <span class="progress-name">Strategy</span>
+                <div class="progress-track"><div class="progress-bar" style="width: 42%"></div></div>
+                <span class="progress-percent">42</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Frameworks -->
+        <div class="bento-card span-5">
+          <div class="pattern-bg"></div>
+          <div class="card-header">
+            <div class="card-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FABC8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="card-title">Prescribed Frameworks</h3>
+              <p class="card-description">Exactly what to focus on based on your scores</p>
+            </div>
+          </div>
+          <div class="visual">
+            <div class="framework-grid">
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+              <div class="framework-item"></div>
+            </div>
+            <div class="tag">60+ Proven Frameworks</div>
+          </div>
+        </div>
+
+        <!-- AI Insights -->
+        <div class="bento-card span-3">
+          <div class="pattern-bg"></div>
+          <div class="card-header">
+            <div class="card-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7FABC8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="card-title">AI Insights</h3>
+              <p class="card-description">Monthly pattern analysis</p>
+            </div>
+          </div>
+          <div class="visual">
+            <div class="insight-card">
+              <div class="insight-badge">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="#7FABC8">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+                AI INSIGHT
+              </div>
+              <p class="insight-text">Trust scores high but delegation low. Focus on Multiplier framework.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18 DIMENSIONS -->
+  <section class="bg-white">
+    <div class="section-container">
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="lead" style="color: rgba(0, 0, 0, 0.6); max-width: 48rem; margin-bottom: 4rem;">
+        Click to explore each category of leadership
+      </p>
+
+      <div class="dimensions-accordion">
+        <div class="dimensions-section">
+          <div class="dimensions-header">
+            <div class="dimensions-header-content">
+              <div class="dimensions-number">1</div>
+              <div class="dimensions-header-text">
+                <h3>Leading Yourself</h3>
+                <p>6 dimensions focused on personal mastery</p>
+              </div>
+            </div>
+            <div class="dimensions-toggle">▼</div>
+          </div>
+          <div class="dimensions-content">
+            <div class="dimensions-list">
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">1</div>
+                <div class="dimensions-list-content">
+                  <h4>Energy Management</h4>
+                  <p>Protecting time for high-value deep work vs. reactive firefighting</p>
+                </div>
+              </div>
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">2</div>
+                <div class="dimensions-list-content">
+                  <h4>Self-Awareness</h4>
+                  <p>Recognizing your patterns, triggers, and unconscious motivations</p>
+                </div>
+              </div>
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">3</div>
+                <div class="dimensions-list-content">
+                  <h4>Above the Line</h4>
+                  <p>Responding with curiosity instead of blame, victim, or hero mindsets</p>
+                </div>
+              </div>
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">4</div>
+                <div class="dimensions-list-content">
+                  <h4>Emotional Fluidity</h4>
+                  <p>Identifying and navigating emotions in real-time without getting stuck</p>
+                </div>
+              </div>
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">5</div>
+                <div class="dimensions-list-content">
+                  <h4>Contemplative Practice</h4>
+                  <p>Daily rituals that create space for stillness and reflection</p>
+                </div>
+              </div>
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">6</div>
+                <div class="dimensions-list-content">
+                  <h4>Stress Design</h4>
+                  <p>Operating in your optimal stress zone, not burnout or boredom</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dimensions-section">
+          <div class="dimensions-header">
+            <div class="dimensions-header-content">
+              <div class="dimensions-number">2</div>
+              <div class="dimensions-header-text">
+                <h3>Leading Teams</h3>
+                <p>6 dimensions focused on people leadership</p>
+              </div>
+            </div>
+            <div class="dimensions-toggle">▼</div>
+          </div>
+          <div class="dimensions-content">
+            <div class="dimensions-list">
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">7</div>
+                <div class="dimensions-list-content">
+                  <h4>Trust Formula</h4>
+                  <p>Delivering on commitments and modeling reliability</p>
+                </div>
+              </div>
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">8</div>
+                <div class="dimensions-list-content">
+                  <h4>Psychological Safety</h4>
+                  <p>Creating an environment where bad news travels fast</p>
+                </div>
+              </div>
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">9</div>
+                <div class="dimensions-list-content">
+                  <h4>Multiplier Behavior</h4>
+                  <p>Expanding others' thinking rather than being the expert</p>
+                </div>
+              </div>
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">10</div>
+                <div class="dimensions-list-content">
+                  <h4>Communication Rhythm</h4>
+                  <p>Establishing consistent cadence for team alignment</p>
+                </div>
+              </div>
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">11</div>
+                <div class="dimensions-list-content">
+                  <h4>Team Health</h4>
+                  <p>Monitoring and improving team dynamics and effectiveness</p>
+                </div>
+              </div>
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">12</div>
+                <div class="dimensions-list-content">
+                  <h4>Accountability & Delegation</h4>
+                  <p>Empowering decisions without being the bottleneck</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dimensions-section">
+          <div class="dimensions-header">
+            <div class="dimensions-header-content">
+              <div class="dimensions-number">3</div>
+              <div class="dimensions-header-text">
+                <h3>Leading Organizations</h3>
+                <p>6 dimensions focused on organizational impact</p>
+              </div>
+            </div>
+            <div class="dimensions-toggle">▼</div>
+          </div>
+          <div class="dimensions-content">
+            <div class="dimensions-list">
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">13</div>
+                <div class="dimensions-list-content">
+                  <h4>Strategic Clarity</h4>
+                  <p>Ensuring leadership team can articulate strategy in one sentence</p>
+                </div>
+              </div>
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">14</div>
+                <div class="dimensions-list-content">
+                  <h4>Culture as System</h4>
+                  <p>Intentionally designing culture, not letting it happen by accident</p>
+                </div>
+              </div>
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">15</div>
+                <div class="dimensions-list-content">
+                  <h4>Three Transitions</h4>
+                  <p>Working ON the business (strategy, structure) not just IN it</p>
+                </div>
+              </div>
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">16</div>
+                <div class="dimensions-list-content">
+                  <h4>Systems Thinking</h4>
+                  <p>Seeing patterns and root causes, not isolated incidents</p>
+                </div>
+              </div>
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">17</div>
+                <div class="dimensions-list-content">
+                  <h4>Organizational Design</h4>
+                  <p>Structuring the company for current and future scale</p>
+                </div>
+              </div>
+              <div class="dimensions-list-item">
+                <div class="dimensions-list-number">18</div>
+                <div class="dimensions-list-content">
+                  <h4>Board & Governance</h4>
+                  <p>Proactively leveraging your board as strategic partners</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="bg-white">
+    <div class="section-container">
+      <span class="section-label">ceo-lab --process</span>
+      <h2>Three Steps to Measurable Growth</h2>
+      <div class="steps-grid">
+        <!-- Step 1: Assess -->
+        <div class="step">
+          <div class="step-decorator">
+            <div class="step-decorator-bg"></div>
+            <div class="step-decorator-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+            </div>
+          </div>
+          <h3>Assess</h3>
+          <p class="subtitle">Complete your baseline assessment</p>
+          <p class="step-description">100 questions across 18 dimensions in three 20-minute sessions. Honest, objective, comprehensive.</p>
+        </div>
+
+        <!-- Step 2: Track -->
+        <div class="step">
+          <div class="step-decorator">
+            <div class="step-decorator-bg"></div>
+            <div class="step-decorator-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="20" x2="12" y2="10"/>
+                <line x1="18" y1="20" x2="18" y2="4"/>
+                <line x1="6" y1="20" x2="6" y2="16"/>
+              </svg>
+            </div>
+          </div>
+          <h3>Track</h3>
+          <p class="subtitle">Weekly check-ins via WhatsApp</p>
+          <p class="step-description">Choose 3 dimensions to focus on per quarter. Answer 3 questions weekly. Track your progress over time.</p>
+        </div>
+
+        <!-- Step 3: Improve -->
+        <div class="step">
+          <div class="step-decorator">
+            <div class="step-decorator-bg"></div>
+            <div class="step-decorator-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                <polyline points="17 6 23 6 23 12"/>
+              </svg>
+            </div>
+          </div>
+          <h3>Improve</h3>
+          <p class="subtitle">Get tailored insights and frameworks</p>
+          <p class="step-description">Your dashboard shows exactly where to focus. We prescribe specific frameworks from the Konstantin Method based on your scores. No guessing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section class="bg-white">
+    <div class="section-container section-narrow">
+      <div id="testimonial-carousel" class="testimonial-carousel">
+        <!-- Quote Container -->
+        <div class="quote-container">
+          <span class="quote-mark quote-mark-open">"</span>
+          <p id="testimonial-quote" class="testimonial-quote">
+            Before CEO Lab, I was making decisions based on anxiety, not data. I'd wake up at 3am wondering if I was actually growing as a leader or just getting lucky. The assessment showed me my blind spots in black and white - my delegation score was 32%. That was the wake-up call. Now, 90 days later, I'm at 68% and my team is making decisions without me. The anxiety is gone. I know exactly where I stand and where to focus next. That clarity alone is worth 10x the price.
+          </p>
+          <span class="quote-mark quote-mark-close">"</span>
+        </div>
+
+        <!-- Role and Avatars -->
+        <div class="testimonial-footer">
+          <p id="testimonial-role" class="testimonial-role">Founder & CEO, Series A SaaS (40-person team)</p>
+
+          <div class="testimonial-avatars">
+            <button class="avatar-button active" data-index="0">
+              <div class="avatar-ring">
+                <img src="https://images.unsplash.com/photo-1701615004837-40d8573b6652?q=80&w=1480&auto=format&fit=crop" alt="Sarah Chen" class="avatar-img" />
+              </div>
+              <span class="avatar-name">Sarah Chen</span>
+            </button>
+            <button class="avatar-button" data-index="1">
+              <div class="avatar-ring">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1287&auto=format&fit=crop" alt="Marcus Johnson" class="avatar-img" />
+              </div>
+              <span class="avatar-name">Marcus Johnson</span>
+            </button>
+            <button class="avatar-button" data-index="2">
+              <div class="avatar-ring">
+                <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=2670&auto=format&fit=crop" alt="Elena Rodriguez" class="avatar-img" />
+              </div>
+              <span class="avatar-name">Elena Rodriguez</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="bg-white">
+    <div class="section-container">
+      <span class="section-label">ceo-lab --pricing</span>
+      <div class="pricing-horizontal">
+        <h2>€100/Month for Complete Leadership Tracking</h2>
+        <p class="pricing-features">
+          Baseline assessment, weekly accountability, progress dashboard, prescribed frameworks, AI insights, and priority support.
+        </p>
+        <div class="pricing-cta">
+          <a href="#" class="btn btn-primary btn-lg">Start Your Free Assessment</a>
+          <a href="#" class="btn btn-secondary btn-lg">Book a Demo Call</a>
+        </div>
+        <p class="pricing-note">
+          No credit card required · Cancel anytime
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="bg-white">
+    <div class="section-container">
+      <div class="faq-section">
+        <div class="faq-label">Questions</div>
+        <h2 class="faq-title">Frequently Asked</h2>
+
+        <div class="faq-list">
+          <div class="faq-item">
+            <div class="faq-question">
+              <p class="faq-question-text">What is CEO Lab?</p>
+              <div class="faq-toggle">+</div>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-content">
+                CEO Lab is a leadership measurement platform that tracks your development across 18 dimensions. We give you what athletes have: a baseline, systematic tracking, and objective feedback on whether you're improving.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <p class="faq-question-text">How is this different from other leadership assessments?</p>
+              <div class="faq-toggle">+</div>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-content">
+                Most assessments give you a one-time snapshot. CEO Lab tracks you over time with weekly check-ins, shows you your trends, and prescribes specific frameworks based on your scores. It's systematic measurement, not a one-off quiz.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <p class="faq-question-text">What's included in the membership?</p>
+              <div class="faq-toggle">+</div>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-content">
+                Full 18-dimension assessment, weekly WhatsApp check-ins, personal dashboard with progress tracking, prescribed frameworks from the Konstantin Method, AI-generated insights, and priority support.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <p class="faq-question-text">How much time does this take?</p>
+              <div class="faq-toggle">+</div>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-content">
+                Initial assessment: three 20-minute sessions. Weekly check-ins: 5 minutes via WhatsApp. Dashboard review: whenever you want. It's designed to be systematic without being time-consuming.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <p class="faq-question-text">Can I share my results with my team?</p>
+              <div class="faq-toggle">+</div>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-content">
+                Your results are private by default. You control what you share. We also offer team and organization packages where you can compare scores and track collective progress.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="bg-white">
+    <div class="section-container">
+      <div class="final-comparison">
+        <div class="final-card problem">
+          <div class="final-label">Without Measurement</div>
+          <h3>Invisible Decline</h3>
+          <p>
+            Your team sees what you can't. Every week without data is a week of guessing. Competitors who measure are improving systematically while you operate blind.
+          </p>
+        </div>
+        <div class="final-card solution">
+          <div class="final-label">With CEO Lab</div>
+          <h3>Systematic Improvement</h3>
+          <p>
+            Athletes don't guess. They measure. They analyze. They improve. You deserve the same systematic approach to leadership development.
+          </p>
+        </div>
+      </div>
+      <div class="final-cta-footer">
+        <h2>Ready to Measure What Matters?</h2>
+        <div class="cta-group">
+          <a href="#" class="btn btn-primary btn-lg">Measure Your Leadership (Free)</a>
+          <a href="#" class="btn btn-secondary btn-lg">Book a Demo Call</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="#" class="footer-link">Terms of Service</a>
+      <a href="#" class="footer-link">Privacy Policy</a>
+      <a href="#" class="footer-link">Refund Policy</a>
+    </div>
+    <p class="footer-note">CEO Lab · Built on the Konstantin Method</p>
+  </footer>
+
+  <!-- Hero 3D Scroll Animation -->
+  <script>
+    class HeroScrollAnimation {
+      constructor() {
+        this.container = document.querySelector('.hero-scroll-container');
+        this.header = document.querySelector('.hero-header');
+        this.card = document.querySelector('.hero-3d-card');
+
+        if (!this.container || !this.header || !this.card) return;
+
+        this.isMobile = window.innerWidth <= 768;
+        this.init();
+      }
+
+      init() {
+        window.addEventListener('resize', () => {
+          this.isMobile = window.innerWidth <= 768;
+        });
+        window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
+        this.handleScroll();
+      }
+
+      handleScroll() {
+        const rect = this.container.getBoundingClientRect();
+        const containerTop = rect.top;
+        const windowHeight = window.innerHeight;
+
+        // Start animation when container reaches middle of viewport
+        // Progress goes from 0 (start) to 1 (fully scrolled)
+        const startPoint = windowHeight * 0.8; // Start when 80% down viewport
+        const endPoint = -200; // End when scrolled up 200px past top
+
+        let scrollProgress;
+        if (containerTop >= startPoint) {
+          scrollProgress = 0;
+        } else if (containerTop <= endPoint) {
+          scrollProgress = 1;
+        } else {
+          scrollProgress = (startPoint - containerTop) / (startPoint - endPoint);
+        }
+
+        this.animateHeader(scrollProgress);
+        this.animateCard(scrollProgress);
+      }
+
+      animateHeader(progress) {
+        // Header stays in place - no animation
+        // const translateY = -progress * 100;
+        // this.header.style.transform = `translateY(${translateY}px)`;
+      }
+
+      animateCard(progress) {
+        const rotateX = 45 - (progress * 45);
+        let scale;
+        if (this.isMobile) {
+          scale = 0.7 + (progress * 0.2);
+        } else {
+          scale = 1.05 - (progress * 0.05);
+        }
+        this.card.style.transform = `perspective(800px) rotateX(${rotateX}deg) scale(${scale})`;
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => new HeroScrollAnimation());
+    } else {
+      new HeroScrollAnimation();
+    }
+  </script>
+
+  <!-- Dimensions Accordion -->
+  <script>
+    document.querySelectorAll('.dimensions-header').forEach(header => {
+      header.addEventListener('click', function() {
+        const section = this.closest('.dimensions-section');
+        section.classList.toggle('active');
+      });
+    });
+  </script>
+
+  <!-- FAQ Accordion -->
+  <script>
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', function() {
+        const item = this.closest('.faq-item');
+        const wasActive = item.classList.contains('active');
+
+        // Close all FAQ items
+        document.querySelectorAll('.faq-item').forEach(faq => {
+          faq.classList.remove('active');
+        });
+
+        // If this item wasn't active, open it
+        if (!wasActive) {
+          item.classList.add('active');
+        }
+      });
+    });
+  </script>
+
+  <!-- Testimonial Carousel -->
+  <script>
+    class TestimonialCarousel {
+      constructor() {
+        this.testimonials = [
+          {
+            quote: "Before CEO Lab, I was making decisions based on anxiety, not data. I'd wake up at 3am wondering if I was actually growing as a leader or just getting lucky. The assessment showed me my blind spots in black and white - my delegation score was 32%. That was the wake-up call. Now, 90 days later, I'm at 68% and my team is making decisions without me. The anxiety is gone. I know exactly where I stand and where to focus next. That clarity alone is worth 10x the price.",
+            author: "Sarah Chen",
+            role: "Founder & CEO, Series A SaaS (40-person team)",
+          },
+          {
+            quote: "The 18 dimensions framework finally gave me a language to talk about leadership with my team. Before, it was all fuzzy concepts. Now we measure, track, and improve systematically. Our investor asked how we scaled culture so well - it's because we stopped guessing and started measuring.",
+            author: "Marcus Johnson",
+            role: "Co-Founder & CEO, Series B Fintech (120-person team)",
+          },
+          {
+            quote: "I hired three executive coaches over two years and never knew if I was actually getting better. CEO Lab gave me the dashboard I needed. Seeing my 'Above the Line' score go from 45% to 82% over six months wasn't just satisfying—it was proof that the work was working. That's powerful.",
+            author: "Elena Rodriguez",
+            role: "Founder & CEO, Series A EdTech (55-person team)",
+          },
+        ];
+
+        this.activeIndex = 0;
+        this.isAnimating = false;
+        this.hoveredIndex = null;
+
+        this.quoteEl = document.getElementById('testimonial-quote');
+        this.roleEl = document.getElementById('testimonial-role');
+        this.buttons = document.querySelectorAll('.avatar-button');
+
+        this.init();
+      }
+
+      init() {
+        this.buttons.forEach((button, index) => {
+          button.addEventListener('click', () => this.handleSelect(index));
+          button.addEventListener('mouseenter', () => this.handleHover(index));
+          button.addEventListener('mouseleave', () => this.handleLeave());
+        });
+      }
+
+      handleSelect(index) {
+        if (index === this.activeIndex || this.isAnimating) return;
+
+        this.isAnimating = true;
+
+        // Animate out
+        this.quoteEl.classList.add('animating');
+        this.roleEl.classList.add('animating');
+
+        setTimeout(() => {
+          // Update content
+          this.quoteEl.textContent = this.testimonials[index].quote;
+          this.roleEl.textContent = this.testimonials[index].role;
+
+          // Update active button
+          this.buttons[this.activeIndex].classList.remove('active');
+          this.buttons[index].classList.add('active');
+          this.activeIndex = index;
+
+          // Animate in
+          setTimeout(() => {
+            this.quoteEl.classList.remove('animating');
+            this.roleEl.classList.remove('animating');
+            setTimeout(() => {
+              this.isAnimating = false;
+            }, 400);
+          }, 50);
+        }, 200);
+      }
+
+      handleHover(index) {
+        if (index !== this.activeIndex) {
+          this.hoveredIndex = index;
+          this.buttons[index].classList.add('show-name');
+        }
+      }
+
+      handleLeave() {
+        if (this.hoveredIndex !== null && this.hoveredIndex !== this.activeIndex) {
+          this.buttons[this.hoveredIndex].classList.remove('show-name');
+        }
+        this.hoveredIndex = null;
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => new TestimonialCarousel());
+    } else {
+      new TestimonialCarousel();
+    }
+  </script>
+
+</body>
+</html>

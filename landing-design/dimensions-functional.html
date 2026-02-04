@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>18 Dimensions - Functional & Informational</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #fff;
+      color: #000;
+      line-height: 1.6;
+    }
+
+    .version {
+      min-height: 100vh;
+      padding: 4rem 2rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .label {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.4);
+      margin-bottom: 1rem;
+      display: block;
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+
+    .section-label::before {
+      content: "> ";
+      opacity: 0.6;
+    }
+
+    h2 {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .intro {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.6);
+      max-width: 48rem;
+      margin: 0 auto 4rem;
+      text-align: center;
+    }
+
+    /* VERSION 1: Interactive Hover Cards */
+    .v1-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .v1-card {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.75rem;
+      padding: 2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .v1-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #7FABC8 0%, #A6BEA4 100%);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .v1-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+      border-color: rgba(127, 171, 200, 0.3);
+    }
+
+    .v1-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .v1-number {
+      font-size: 14px;
+      font-weight: 700;
+      color: #7FABC8;
+      margin-bottom: 0.5rem;
+    }
+
+    .v1-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: #000;
+    }
+
+    .v1-description {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.5;
+      opacity: 0;
+      max-height: 0;
+      transition: all 0.3s ease;
+    }
+
+    .v1-card:hover .v1-description {
+      opacity: 1;
+      max-height: 100px;
+    }
+
+    .v1-category {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.75rem;
+    }
+
+    /* VERSION 2: Expandable Accordion */
+    .v2-accordion {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .v2-section {
+      margin-bottom: 1rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.75rem;
+      overflow: hidden;
+    }
+
+    .v2-header {
+      padding: 2rem;
+      cursor: pointer;
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.05) 0%, rgba(166, 190, 164, 0.05) 100%);
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .v2-header:hover {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.1) 0%, rgba(166, 190, 164, 0.1) 100%);
+    }
+
+    .v2-header-content h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v2-header-content p {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .v2-toggle {
+      font-size: 24px;
+      color: #7FABC8;
+      transition: transform 0.3s ease;
+    }
+
+    .v2-section.active .v2-toggle {
+      transform: rotate(180deg);
+    }
+
+    .v2-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .v2-section.active .v2-content {
+      max-height: 2000px;
+    }
+
+    .v2-dimensions {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      background: #fff;
+    }
+
+    .v2-dimension {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 0.5rem;
+    }
+
+    .v2-dimension-number {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      border-radius: 0.375rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .v2-dimension-info h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .v2-dimension-info p {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* VERSION 3: Dashboard Bento Grid */
+    .v3-bento {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .v3-card {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.05) 0%, rgba(166, 190, 164, 0.05) 100%);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .v3-card:hover {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.1) 0%, rgba(166, 190, 164, 0.1) 100%);
+      transform: translateY(-2px);
+    }
+
+    .v3-card.span-2 {
+      grid-column: span 2;
+    }
+
+    .v3-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .v3-card-number {
+      font-size: 12px;
+      font-weight: 700;
+      color: #7FABC8;
+    }
+
+    .v3-card-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .v3-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .v3-card-desc {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.5;
+    }
+
+    .v3-card-category {
+      position: absolute;
+      bottom: 1rem;
+      right: 1.5rem;
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* VERSION 4: Split View Navigator */
+    .v4-container {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      min-height: 600px;
+    }
+
+    .v4-nav {
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+    }
+
+    .v4-nav-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.5rem;
+    }
+
+    .v4-nav-item {
+      padding: 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 0.5rem;
+      border-left: 3px solid transparent;
+    }
+
+    .v4-nav-item:hover {
+      background: rgba(127, 171, 200, 0.1);
+    }
+
+    .v4-nav-item.active {
+      background: rgba(127, 171, 200, 0.15);
+      border-left-color: #7FABC8;
+    }
+
+    .v4-nav-item-number {
+      font-size: 12px;
+      font-weight: 700;
+      color: #7FABC8;
+      margin-bottom: 0.25rem;
+    }
+
+    .v4-nav-item-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    .v4-content {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.75rem;
+      padding: 3rem;
+    }
+
+    .v4-content-number {
+      font-size: 14px;
+      font-weight: 700;
+      color: #7FABC8;
+      margin-bottom: 0.5rem;
+    }
+
+    .v4-content-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .v4-content-desc {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .v4-content-category {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.1) 0%, rgba(166, 190, 164, 0.1) 100%);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #7FABC8;
+    }
+
+    /* VERSION 5: Modal Gallery */
+    .v5-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .v5-tile {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      border-radius: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .v5-tile::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.2) 100%);
+    }
+
+    .v5-tile:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(127, 171, 200, 0.3);
+    }
+
+    .v5-tile-number {
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.25rem;
+      z-index: 1;
+    }
+
+    .v5-tile-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+      text-align: center;
+      z-index: 1;
+    }
+
+    .v5-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .v5-modal.active {
+      display: flex;
+    }
+
+    .v5-modal-content {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 3rem;
+      max-width: 600px;
+      width: 100%;
+      position: relative;
+    }
+
+    .v5-modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      font-size: 24px;
+      cursor: pointer;
+      color: rgba(0, 0, 0, 0.4);
+      transition: color 0.2s ease;
+    }
+
+    .v5-modal-close:hover {
+      color: #000;
+    }
+
+    .v5-modal-number {
+      font-size: 14px;
+      font-weight: 700;
+      color: #7FABC8;
+      margin-bottom: 0.5rem;
+    }
+
+    .v5-modal-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .v5-modal-desc {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .v5-modal-category {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.1) 0%, rgba(166, 190, 164, 0.1) 100%);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #7FABC8;
+    }
+
+    @media (max-width: 768px) {
+      .v1-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .v3-bento {
+        grid-template-columns: 1fr;
+      }
+
+      .v3-card.span-2 {
+        grid-column: span 1;
+      }
+
+      .v4-container {
+        grid-template-columns: 1fr;
+      }
+
+      .v5-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- VERSION 1: Interactive Hover Cards -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 1: HOVER REVEAL CARDS</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">Hover over each card to reveal more information</p>
+
+      <div class="v1-grid">
+        <div class="v1-card">
+          <div class="v1-number">01</div>
+          <div class="v1-title">Self-Awareness</div>
+          <div class="v1-description">Understanding your strengths, weaknesses, and impact on others.</div>
+          <div class="v1-category">Leading Yourself</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">02</div>
+          <div class="v1-title">Emotional Intelligence</div>
+          <div class="v1-description">Managing emotions and reading emotional cues in yourself and others.</div>
+          <div class="v1-category">Leading Yourself</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">03</div>
+          <div class="v1-title">Decision Making</div>
+          <div class="v1-description">Making sound decisions under pressure with incomplete information.</div>
+          <div class="v1-category">Leading Yourself</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">04</div>
+          <div class="v1-title">Resilience</div>
+          <div class="v1-description">Bouncing back from setbacks and maintaining focus through adversity.</div>
+          <div class="v1-category">Leading Yourself</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">05</div>
+          <div class="v1-title">Strategic Thinking</div>
+          <div class="v1-description">Seeing the big picture and planning for long-term success.</div>
+          <div class="v1-category">Leading Yourself</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">06</div>
+          <div class="v1-title">Time Management</div>
+          <div class="v1-description">Prioritizing effectively and managing your energy and focus.</div>
+          <div class="v1-category">Leading Yourself</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">07</div>
+          <div class="v1-title">Communication</div>
+          <div class="v1-description">Clearly articulating vision, expectations, and feedback to your team.</div>
+          <div class="v1-category">Leading Teams</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">08</div>
+          <div class="v1-title">Delegation</div>
+          <div class="v1-description">Empowering others by distributing work and responsibility effectively.</div>
+          <div class="v1-category">Leading Teams</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">09</div>
+          <div class="v1-title">Conflict Resolution</div>
+          <div class="v1-description">Navigating disagreements and turning tension into productive outcomes.</div>
+          <div class="v1-category">Leading Teams</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">10</div>
+          <div class="v1-title">Team Building</div>
+          <div class="v1-description">Creating cohesive, high-performing teams with shared purpose.</div>
+          <div class="v1-category">Leading Teams</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">11</div>
+          <div class="v1-title">Coaching & Development</div>
+          <div class="v1-description">Growing your team's capabilities and helping individuals reach potential.</div>
+          <div class="v1-category">Leading Teams</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">12</div>
+          <div class="v1-title">Accountability</div>
+          <div class="v1-description">Holding yourself and others responsible for results and commitments.</div>
+          <div class="v1-category">Leading Teams</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">13</div>
+          <div class="v1-title">Vision & Purpose</div>
+          <div class="v1-description">Defining and communicating where the organization is going and why.</div>
+          <div class="v1-category">Leading Organizations</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">14</div>
+          <div class="v1-title">Culture Building</div>
+          <div class="v1-description">Shaping values, behaviors, and norms that drive organizational success.</div>
+          <div class="v1-category">Leading Organizations</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">15</div>
+          <div class="v1-title">Change Management</div>
+          <div class="v1-description">Leading transformation and helping organizations adapt to new realities.</div>
+          <div class="v1-category">Leading Organizations</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">16</div>
+          <div class="v1-title">Resource Allocation</div>
+          <div class="v1-description">Deploying capital, talent, and time to maximize organizational impact.</div>
+          <div class="v1-category">Leading Organizations</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">17</div>
+          <div class="v1-title">Stakeholder Management</div>
+          <div class="v1-description">Building relationships with board, investors, partners, and customers.</div>
+          <div class="v1-category">Leading Organizations</div>
+        </div>
+
+        <div class="v1-card">
+          <div class="v1-number">18</div>
+          <div class="v1-title">Systems Thinking</div>
+          <div class="v1-description">Understanding how parts of the organization interconnect and affect each other.</div>
+          <div class="v1-category">Leading Organizations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 2: Expandable Accordion -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 2: EXPANDABLE CATEGORIES</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">Click to explore each category of leadership</p>
+
+      <div class="v2-accordion">
+        <div class="v2-section">
+          <div class="v2-header">
+            <div class="v2-header-content">
+              <h3>Leading Yourself</h3>
+              <p>6 dimensions focused on personal mastery</p>
+            </div>
+            <div class="v2-toggle">▼</div>
+          </div>
+          <div class="v2-content">
+            <div class="v2-dimensions">
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">1</div>
+                <div class="v2-dimension-info">
+                  <h4>Self-Awareness</h4>
+                  <p>Understanding your strengths and weaknesses</p>
+                </div>
+              </div>
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">2</div>
+                <div class="v2-dimension-info">
+                  <h4>Emotional Intelligence</h4>
+                  <p>Managing emotions effectively</p>
+                </div>
+              </div>
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">3</div>
+                <div class="v2-dimension-info">
+                  <h4>Decision Making</h4>
+                  <p>Making sound choices under pressure</p>
+                </div>
+              </div>
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">4</div>
+                <div class="v2-dimension-info">
+                  <h4>Resilience</h4>
+                  <p>Bouncing back from setbacks</p>
+                </div>
+              </div>
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">5</div>
+                <div class="v2-dimension-info">
+                  <h4>Strategic Thinking</h4>
+                  <p>Seeing the big picture</p>
+                </div>
+              </div>
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">6</div>
+                <div class="v2-dimension-info">
+                  <h4>Time Management</h4>
+                  <p>Prioritizing effectively</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v2-section">
+          <div class="v2-header">
+            <div class="v2-header-content">
+              <h3>Leading Teams</h3>
+              <p>6 dimensions focused on people leadership</p>
+            </div>
+            <div class="v2-toggle">▼</div>
+          </div>
+          <div class="v2-content">
+            <div class="v2-dimensions">
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">7</div>
+                <div class="v2-dimension-info">
+                  <h4>Communication</h4>
+                  <p>Articulating vision clearly</p>
+                </div>
+              </div>
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">8</div>
+                <div class="v2-dimension-info">
+                  <h4>Delegation</h4>
+                  <p>Empowering others effectively</p>
+                </div>
+              </div>
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">9</div>
+                <div class="v2-dimension-info">
+                  <h4>Conflict Resolution</h4>
+                  <p>Navigating disagreements</p>
+                </div>
+              </div>
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">10</div>
+                <div class="v2-dimension-info">
+                  <h4>Team Building</h4>
+                  <p>Creating cohesive teams</p>
+                </div>
+              </div>
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">11</div>
+                <div class="v2-dimension-info">
+                  <h4>Coaching & Development</h4>
+                  <p>Growing team capabilities</p>
+                </div>
+              </div>
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">12</div>
+                <div class="v2-dimension-info">
+                  <h4>Accountability</h4>
+                  <p>Holding people responsible</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v2-section">
+          <div class="v2-header">
+            <div class="v2-header-content">
+              <h3>Leading Organizations</h3>
+              <p>6 dimensions focused on organizational impact</p>
+            </div>
+            <div class="v2-toggle">▼</div>
+          </div>
+          <div class="v2-content">
+            <div class="v2-dimensions">
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">13</div>
+                <div class="v2-dimension-info">
+                  <h4>Vision & Purpose</h4>
+                  <p>Defining organizational direction</p>
+                </div>
+              </div>
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">14</div>
+                <div class="v2-dimension-info">
+                  <h4>Culture Building</h4>
+                  <p>Shaping values and behaviors</p>
+                </div>
+              </div>
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">15</div>
+                <div class="v2-dimension-info">
+                  <h4>Change Management</h4>
+                  <p>Leading transformation</p>
+                </div>
+              </div>
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">16</div>
+                <div class="v2-dimension-info">
+                  <h4>Resource Allocation</h4>
+                  <p>Deploying capital and talent</p>
+                </div>
+              </div>
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">17</div>
+                <div class="v2-dimension-info">
+                  <h4>Stakeholder Management</h4>
+                  <p>Building key relationships</p>
+                </div>
+              </div>
+              <div class="v2-dimension">
+                <div class="v2-dimension-number">18</div>
+                <div class="v2-dimension-info">
+                  <h4>Systems Thinking</h4>
+                  <p>Understanding interconnections</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 3: Dashboard Bento Grid -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 3: DASHBOARD GRID</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">Organized dashboard view of all dimensions</p>
+
+      <div class="v3-bento">
+        <div class="v3-card">
+          <div class="v3-card-header">
+            <div class="v3-card-number">01</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Self-Awareness</div>
+          <div class="v3-card-desc">Know your impact</div>
+          <div class="v3-card-category">Self</div>
+        </div>
+
+        <div class="v3-card">
+          <div class="v3-card-header">
+            <div class="v3-card-number">02</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Emotional Intelligence</div>
+          <div class="v3-card-desc">Manage emotions</div>
+          <div class="v3-card-category">Self</div>
+        </div>
+
+        <div class="v3-card">
+          <div class="v3-card-header">
+            <div class="v3-card-number">03</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Decision Making</div>
+          <div class="v3-card-desc">Choose wisely</div>
+          <div class="v3-card-category">Self</div>
+        </div>
+
+        <div class="v3-card">
+          <div class="v3-card-header">
+            <div class="v3-card-number">04</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Resilience</div>
+          <div class="v3-card-desc">Bounce back</div>
+          <div class="v3-card-category">Self</div>
+        </div>
+
+        <div class="v3-card span-2">
+          <div class="v3-card-header">
+            <div class="v3-card-number">05</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Strategic Thinking</div>
+          <div class="v3-card-desc">See the big picture and plan for long-term success</div>
+          <div class="v3-card-category">Self</div>
+        </div>
+
+        <div class="v3-card span-2">
+          <div class="v3-card-header">
+            <div class="v3-card-number">06</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Time Management</div>
+          <div class="v3-card-desc">Prioritize effectively and manage your energy</div>
+          <div class="v3-card-category">Self</div>
+        </div>
+
+        <div class="v3-card">
+          <div class="v3-card-header">
+            <div class="v3-card-number">07</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Communication</div>
+          <div class="v3-card-desc">Articulate clearly</div>
+          <div class="v3-card-category">Teams</div>
+        </div>
+
+        <div class="v3-card">
+          <div class="v3-card-header">
+            <div class="v3-card-number">08</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Delegation</div>
+          <div class="v3-card-desc">Empower others</div>
+          <div class="v3-card-category">Teams</div>
+        </div>
+
+        <div class="v3-card">
+          <div class="v3-card-header">
+            <div class="v3-card-number">09</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Conflict Resolution</div>
+          <div class="v3-card-desc">Navigate tension</div>
+          <div class="v3-card-category">Teams</div>
+        </div>
+
+        <div class="v3-card">
+          <div class="v3-card-header">
+            <div class="v3-card-number">10</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Team Building</div>
+          <div class="v3-card-desc">Create cohesion</div>
+          <div class="v3-card-category">Teams</div>
+        </div>
+
+        <div class="v3-card">
+          <div class="v3-card-header">
+            <div class="v3-card-number">11</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Coaching</div>
+          <div class="v3-card-desc">Grow capabilities</div>
+          <div class="v3-card-category">Teams</div>
+        </div>
+
+        <div class="v3-card">
+          <div class="v3-card-header">
+            <div class="v3-card-number">12</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Accountability</div>
+          <div class="v3-card-desc">Hold responsible</div>
+          <div class="v3-card-category">Teams</div>
+        </div>
+
+        <div class="v3-card span-2">
+          <div class="v3-card-header">
+            <div class="v3-card-number">13</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Vision & Purpose</div>
+          <div class="v3-card-desc">Define organizational direction and why it matters</div>
+          <div class="v3-card-category">Organizations</div>
+        </div>
+
+        <div class="v3-card span-2">
+          <div class="v3-card-header">
+            <div class="v3-card-number">14</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Culture Building</div>
+          <div class="v3-card-desc">Shape values and behaviors that drive success</div>
+          <div class="v3-card-category">Organizations</div>
+        </div>
+
+        <div class="v3-card">
+          <div class="v3-card-header">
+            <div class="v3-card-number">15</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Change</div>
+          <div class="v3-card-desc">Lead transformation</div>
+          <div class="v3-card-category">Organizations</div>
+        </div>
+
+        <div class="v3-card">
+          <div class="v3-card-header">
+            <div class="v3-card-number">16</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Resources</div>
+          <div class="v3-card-desc">Deploy wisely</div>
+          <div class="v3-card-category">Organizations</div>
+        </div>
+
+        <div class="v3-card">
+          <div class="v3-card-header">
+            <div class="v3-card-number">17</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Stakeholders</div>
+          <div class="v3-card-desc">Build relationships</div>
+          <div class="v3-card-category">Organizations</div>
+        </div>
+
+        <div class="v3-card">
+          <div class="v3-card-header">
+            <div class="v3-card-number">18</div>
+            <div class="v3-card-icon">●</div>
+          </div>
+          <div class="v3-card-title">Systems</div>
+          <div class="v3-card-desc">See connections</div>
+          <div class="v3-card-category">Organizations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 4: Split View Navigator -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 4: NAVIGATION + DETAIL</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">Click any dimension to explore in detail</p>
+
+      <div class="v4-container">
+        <div class="v4-nav">
+          <div class="v4-nav-title">All Dimensions</div>
+          <div class="v4-nav-item active">
+            <div class="v4-nav-item-number">01</div>
+            <div class="v4-nav-item-title">Self-Awareness</div>
+          </div>
+          <div class="v4-nav-item">
+            <div class="v4-nav-item-number">02</div>
+            <div class="v4-nav-item-title">Emotional Intelligence</div>
+          </div>
+          <div class="v4-nav-item">
+            <div class="v4-nav-item-number">03</div>
+            <div class="v4-nav-item-title">Decision Making</div>
+          </div>
+          <div class="v4-nav-item">
+            <div class="v4-nav-item-number">04</div>
+            <div class="v4-nav-item-title">Resilience</div>
+          </div>
+          <div class="v4-nav-item">
+            <div class="v4-nav-item-number">05</div>
+            <div class="v4-nav-item-title">Strategic Thinking</div>
+          </div>
+          <div class="v4-nav-item">
+            <div class="v4-nav-item-number">06</div>
+            <div class="v4-nav-item-title">Time Management</div>
+          </div>
+          <div class="v4-nav-item">
+            <div class="v4-nav-item-number">07</div>
+            <div class="v4-nav-item-title">Communication</div>
+          </div>
+          <div class="v4-nav-item">
+            <div class="v4-nav-item-number">08</div>
+            <div class="v4-nav-item-title">Delegation</div>
+          </div>
+        </div>
+
+        <div class="v4-content">
+          <div class="v4-content-number">Dimension 01</div>
+          <h3 class="v4-content-title">Self-Awareness</h3>
+          <p class="v4-content-desc">
+            Self-awareness is the foundation of effective leadership. It's about understanding your strengths, weaknesses, values, and how your behavior impacts others. Leaders with high self-awareness can identify their blind spots, recognize their emotional triggers, and make conscious choices about how they show up.
+          </p>
+          <p class="v4-content-desc">
+            This dimension includes understanding your leadership style, being open to feedback, and continuously reflecting on your actions and decisions.
+          </p>
+          <div class="v4-content-category">Leading Yourself</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 5: Modal Gallery -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 5: CLICK TO EXPLORE</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">Click any tile to learn more about that dimension</p>
+
+      <div class="v5-grid">
+        <div class="v5-tile" data-dimension="1">
+          <div class="v5-tile-number">1</div>
+          <div class="v5-tile-name">Self-Awareness</div>
+        </div>
+        <div class="v5-tile" data-dimension="2">
+          <div class="v5-tile-number">2</div>
+          <div class="v5-tile-name">Emotional Intel</div>
+        </div>
+        <div class="v5-tile" data-dimension="3">
+          <div class="v5-tile-number">3</div>
+          <div class="v5-tile-name">Decision Making</div>
+        </div>
+        <div class="v5-tile" data-dimension="4">
+          <div class="v5-tile-number">4</div>
+          <div class="v5-tile-name">Resilience</div>
+        </div>
+        <div class="v5-tile" data-dimension="5">
+          <div class="v5-tile-number">5</div>
+          <div class="v5-tile-name">Strategic</div>
+        </div>
+        <div class="v5-tile" data-dimension="6">
+          <div class="v5-tile-number">6</div>
+          <div class="v5-tile-name">Time Mgmt</div>
+        </div>
+        <div class="v5-tile" data-dimension="7">
+          <div class="v5-tile-number">7</div>
+          <div class="v5-tile-name">Communication</div>
+        </div>
+        <div class="v5-tile" data-dimension="8">
+          <div class="v5-tile-number">8</div>
+          <div class="v5-tile-name">Delegation</div>
+        </div>
+        <div class="v5-tile" data-dimension="9">
+          <div class="v5-tile-number">9</div>
+          <div class="v5-tile-name">Conflict</div>
+        </div>
+        <div class="v5-tile" data-dimension="10">
+          <div class="v5-tile-number">10</div>
+          <div class="v5-tile-name">Team Building</div>
+        </div>
+        <div class="v5-tile" data-dimension="11">
+          <div class="v5-tile-number">11</div>
+          <div class="v5-tile-name">Coaching</div>
+        </div>
+        <div class="v5-tile" data-dimension="12">
+          <div class="v5-tile-number">12</div>
+          <div class="v5-tile-name">Accountability</div>
+        </div>
+        <div class="v5-tile" data-dimension="13">
+          <div class="v5-tile-number">13</div>
+          <div class="v5-tile-name">Vision</div>
+        </div>
+        <div class="v5-tile" data-dimension="14">
+          <div class="v5-tile-number">14</div>
+          <div class="v5-tile-name">Culture</div>
+        </div>
+        <div class="v5-tile" data-dimension="15">
+          <div class="v5-tile-number">15</div>
+          <div class="v5-tile-name">Change Mgmt</div>
+        </div>
+        <div class="v5-tile" data-dimension="16">
+          <div class="v5-tile-number">16</div>
+          <div class="v5-tile-name">Resources</div>
+        </div>
+        <div class="v5-tile" data-dimension="17">
+          <div class="v5-tile-number">17</div>
+          <div class="v5-tile-name">Stakeholders</div>
+        </div>
+        <div class="v5-tile" data-dimension="18">
+          <div class="v5-tile-number">18</div>
+          <div class="v5-tile-name">Systems</div>
+        </div>
+      </div>
+
+      <div class="v5-modal" id="dimensionModal">
+        <div class="v5-modal-content">
+          <div class="v5-modal-close" id="closeModal">×</div>
+          <div class="v5-modal-number">Dimension 01</div>
+          <h3 class="v5-modal-title">Self-Awareness</h3>
+          <p class="v5-modal-desc">
+            Self-awareness is the foundation of effective leadership. It's about understanding your strengths, weaknesses, values, and how your behavior impacts others. Leaders with high self-awareness can identify their blind spots and make conscious choices about how they show up.
+          </p>
+          <div class="v5-modal-category">Leading Yourself</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // VERSION 2: Accordion functionality
+    document.querySelectorAll('.v2-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const section = header.parentElement;
+        section.classList.toggle('active');
+      });
+    });
+
+    // VERSION 5: Modal functionality
+    const modal = document.getElementById('dimensionModal');
+    const closeModal = document.getElementById('closeModal');
+
+    document.querySelectorAll('.v5-tile').forEach(tile => {
+      tile.addEventListener('click', () => {
+        modal.classList.add('active');
+      });
+    });
+
+    closeModal.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+      }
+    });
+  </script>
+
+</body>
+</html>

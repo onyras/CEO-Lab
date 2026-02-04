@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEO Lab - Scoreboard Versions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #F7F3ED; }
+    .version-container { padding: 8rem 2rem; border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+    .version-label {
+      text-align: center; font-size: 12px; color: rgba(0, 0, 0, 0.4);
+      margin-bottom: 4rem; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+
+    /* Brand Typography */
+    .h1 { font-size: 48px; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; }
+    .h2 { font-size: 36px; font-weight: 700; line-height: 1.2; }
+    .h3 { font-size: 24px; font-weight: 700; line-height: 1.3; }
+    .h4 { font-size: 18px; font-weight: 600; line-height: 1.4; }
+    .body { font-size: 16px; font-weight: 400; line-height: 1.6; opacity: 0.7; }
+    .lead { font-size: 18px; font-weight: 400; line-height: 1.6; }
+    .small-text { font-size: 14px; opacity: 0.5; }
+    .xs-text { font-size: 12px; opacity: 0.4; text-transform: uppercase; letter-spacing: 0.1em; }
+
+    @media (min-width: 768px) {
+      .h1 { font-size: 52px; }
+      .h2 { font-size: 42px; }
+      .h3 { font-size: 28px; }
+      .lead { font-size: 20px; }
+    }
+    @media (min-width: 1024px) {
+      .h1 { font-size: 56px; }
+      .h2 { font-size: 48px; }
+      .h3 { font-size: 30px; }
+      .lead { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- VERSION 1: MODERN GLASSMORPHISM -->
+<section class="version-container" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+  <p class="version-label">Version 1 · Glassmorphism</p>
+  <div style="max-width: 1200px; margin: 0 auto;">
+
+    <h1 class="h1" style="color: #000; margin: 0 0 1rem 0; text-align: center;">
+      Athletes have scoreboards.
+    </h1>
+    <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0 0 4rem 0; text-align: center;">
+      What do CEOs have?
+    </p>
+
+    <!-- Scoreboard Container -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 4rem;">
+
+      <!-- Athlete -->
+      <div style="background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(127, 171, 200, 0.2); border-radius: 24px; padding: 3rem; box-shadow: 0 20px 60px rgba(127, 171, 200, 0.15);">
+        <p class="xs-text" style="color: #7FABC8; margin-bottom: 2.5rem;">Athlete</p>
+
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 1rem; border-bottom: 1px solid rgba(0, 0, 0, 0.05);">
+            <span class="small-text" style="color: #000;">Shooting %</span>
+            <span class="h2" style="color: #000;">87%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 1rem; border-bottom: 1px solid rgba(0, 0, 0, 0.05);">
+            <span class="small-text" style="color: #000;">Rebounds</span>
+            <span class="h2" style="color: #000;">12</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 1rem; border-bottom: 1px solid rgba(0, 0, 0, 0.05);">
+            <span class="small-text" style="color: #000;">Assists</span>
+            <span class="h2" style="color: #000;">8</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span class="small-text" style="color: #000;">Improvement</span>
+            <span class="h2" style="color: #7FABC8;">+15%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CEO -->
+      <div style="background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(20px); border: 1px solid rgba(0, 0, 0, 0.05); border-radius: 24px; padding: 3rem; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);">
+        <p class="xs-text" style="color: rgba(0, 0, 0, 0.4); margin-bottom: 2.5rem;">CEO</p>
+
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 1rem; border-bottom: 1px solid rgba(0, 0, 0, 0.03);">
+            <span class="small-text" style="color: rgba(0, 0, 0, 0.5);">Delegation</span>
+            <span class="h2" style="color: rgba(0, 0, 0, 0.15);">???</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 1rem; border-bottom: 1px solid rgba(0, 0, 0, 0.03);">
+            <span class="small-text" style="color: rgba(0, 0, 0, 0.5);">Communication</span>
+            <span class="h2" style="color: rgba(0, 0, 0, 0.15);">???</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 1rem; border-bottom: 1px solid rgba(0, 0, 0, 0.03);">
+            <span class="small-text" style="color: rgba(0, 0, 0, 0.5);">Team Trust</span>
+            <span class="h2" style="color: rgba(0, 0, 0, 0.15);">???</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span class="small-text" style="color: rgba(0, 0, 0, 0.5);">Improvement</span>
+            <span class="h2" style="color: rgba(0, 0, 0, 0.15);">???</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Message -->
+    <div style="text-align: center;">
+      <p class="h2" style="color: #000; margin: 0 0 1rem 0;">
+        You can't improve what you don't measure.
+      </p>
+      <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0;">
+        And right now, you're not measuring.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- VERSION 2: BOLD CONTRAST -->
+<section class="version-container" style="background: #fff;">
+  <p class="version-label">Version 2 · Bold Contrast</p>
+  <div style="max-width: 1200px; margin: 0 auto;">
+
+    <h1 class="h1" style="color: #000; margin: 0 0 1rem 0; text-align: center;">
+      Athletes have scoreboards.
+    </h1>
+    <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0 0 4rem 0; text-align: center;">
+      What do CEOs have?
+    </p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-bottom: 4rem; overflow: hidden; border-radius: 16px; box-shadow: 0 30px 90px rgba(0, 0, 0, 0.12);">
+
+      <!-- Athlete - Left Side -->
+      <div style="background: #000; padding: 4rem; color: #fff;">
+        <p class="xs-text" style="color: #7FABC8; margin-bottom: 3rem;">Athlete</p>
+
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+          <div>
+            <p class="small-text" style="color: rgba(255, 255, 255, 0.5); margin-bottom: 0.5rem; opacity: 1;">Shooting %</p>
+            <p class="h1" style="color: #fff; line-height: 1;">87%</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(255, 255, 255, 0.5); margin-bottom: 0.5rem; opacity: 1;">Rebounds</p>
+            <p class="h1" style="color: #fff; line-height: 1;">12</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(255, 255, 255, 0.5); margin-bottom: 0.5rem; opacity: 1;">Assists</p>
+            <p class="h1" style="color: #fff; line-height: 1;">8</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(255, 255, 255, 0.5); margin-bottom: 0.5rem; opacity: 1;">Improvement</p>
+            <p class="h1" style="color: #7FABC8; line-height: 1;">+15%</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CEO - Right Side -->
+      <div style="background: #F7F3ED; padding: 4rem;">
+        <p class="xs-text" style="color: rgba(0, 0, 0, 0.4); margin-bottom: 3rem;">CEO</p>
+
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+          <div>
+            <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.5rem; opacity: 1;">Delegation</p>
+            <p class="h1" style="color: rgba(0, 0, 0, 0.1); line-height: 1;">???</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.5rem; opacity: 1;">Communication</p>
+            <p class="h1" style="color: rgba(0, 0, 0, 0.1); line-height: 1;">???</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.5rem; opacity: 1;">Team Trust</p>
+            <p class="h1" style="color: rgba(0, 0, 0, 0.1); line-height: 1;">???</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.5rem; opacity: 1;">Improvement</p>
+            <p class="h1" style="color: rgba(0, 0, 0, 0.1); line-height: 1;">???</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align: center;">
+      <p class="h2" style="color: #000; margin: 0 0 1rem 0;">
+        You can't improve what you don't measure.
+      </p>
+      <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0;">
+        And right now, you're not measuring.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- VERSION 3: MINIMAL LINES -->
+<section class="version-container" style="background: #fff;">
+  <p class="version-label">Version 3 · Minimal Lines</p>
+  <div style="max-width: 1100px; margin: 0 auto;">
+
+    <h1 class="h1" style="color: #000; margin: 0 0 1rem 0; text-align: center;">
+      Athletes have scoreboards.
+    </h1>
+    <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0 0 5rem 0; text-align: center;">
+      What do CEOs have?
+    </p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-bottom: 5rem;">
+
+      <!-- Athlete -->
+      <div>
+        <div style="border-bottom: 3px solid #7FABC8; padding-bottom: 1rem; margin-bottom: 3rem;">
+          <p class="xs-text" style="color: #7FABC8;">Athlete</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span class="body" style="color: #000;">Shooting %</span>
+            <span class="h2" style="color: #000;">87%</span>
+          </div>
+          <div style="height: 1px; background: rgba(0, 0, 0, 0.06);"></div>
+
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span class="body" style="color: #000;">Rebounds</span>
+            <span class="h2" style="color: #000;">12</span>
+          </div>
+          <div style="height: 1px; background: rgba(0, 0, 0, 0.06);"></div>
+
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span class="body" style="color: #000;">Assists</span>
+            <span class="h2" style="color: #000;">8</span>
+          </div>
+          <div style="height: 1px; background: rgba(0, 0, 0, 0.06);"></div>
+
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span class="body" style="color: #000;">Improvement</span>
+            <span class="h2" style="color: #7FABC8;">+15%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CEO -->
+      <div>
+        <div style="border-bottom: 3px solid rgba(0, 0, 0, 0.08); padding-bottom: 1rem; margin-bottom: 3rem;">
+          <p class="xs-text" style="color: rgba(0, 0, 0, 0.4);">CEO</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span class="body" style="color: rgba(0, 0, 0, 0.5);">Delegation</span>
+            <span class="h2" style="color: rgba(0, 0, 0, 0.12);">???</span>
+          </div>
+          <div style="height: 1px; background: rgba(0, 0, 0, 0.03);"></div>
+
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span class="body" style="color: rgba(0, 0, 0, 0.5);">Communication</span>
+            <span class="h2" style="color: rgba(0, 0, 0, 0.12);">???</span>
+          </div>
+          <div style="height: 1px; background: rgba(0, 0, 0, 0.03);"></div>
+
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span class="body" style="color: rgba(0, 0, 0, 0.5);">Team Trust</span>
+            <span class="h2" style="color: rgba(0, 0, 0, 0.12);">???</span>
+          </div>
+          <div style="height: 1px; background: rgba(0, 0, 0, 0.03);"></div>
+
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <span class="body" style="color: rgba(0, 0, 0, 0.5);">Improvement</span>
+            <span class="h2" style="color: rgba(0, 0, 0, 0.12);">???</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align: center; padding-top: 3rem; border-top: 2px solid #000;">
+      <p class="h2" style="color: #000; margin: 0 0 1rem 0;">
+        You can't improve what you don't measure.
+      </p>
+      <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0;">
+        And right now, you're not measuring.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- VERSION 4: MONOSPACE TECH -->
+<section class="version-container" style="background: #0a0a0a;">
+  <p class="version-label" style="color: rgba(255, 255, 255, 0.4);">Version 4 · Monospace Tech</p>
+  <div style="max-width: 1100px; margin: 0 auto;">
+
+    <h1 class="h1" style="color: #fff; margin: 0 0 1rem 0; text-align: center;">
+      Athletes have scoreboards.
+    </h1>
+    <p class="lead" style="color: rgba(255, 255, 255, 0.6); margin: 0 0 4rem 0; text-align: center;">
+      What do CEOs have?
+    </p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 4rem; font-family: 'Courier New', monospace;">
+
+      <!-- Athlete -->
+      <div style="background: #1a1a1a; border: 1px solid #7FABC8; border-radius: 8px; padding: 2.5rem;">
+        <p class="xs-text" style="color: #7FABC8; margin-bottom: 2rem;">&gt; athlete_stats</p>
+
+        <div style="color: #fff; font-size: 16px; line-height: 2;">
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid rgba(127, 171, 200, 0.15);">
+            <span class="body" style="color: rgba(255, 255, 255, 0.7); opacity: 1;">shooting_percent:</span>
+            <span class="h3" style="color: #7FABC8;">87%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid rgba(127, 171, 200, 0.15);">
+            <span class="body" style="color: rgba(255, 255, 255, 0.7); opacity: 1;">rebounds:</span>
+            <span class="h3" style="color: #7FABC8;">12</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid rgba(127, 171, 200, 0.15);">
+            <span class="body" style="color: rgba(255, 255, 255, 0.7); opacity: 1;">assists:</span>
+            <span class="h3" style="color: #7FABC8;">8</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0;">
+            <span class="body" style="color: rgba(255, 255, 255, 0.7); opacity: 1;">improvement:</span>
+            <span class="h3" style="color: #7FABC8;">+15%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CEO -->
+      <div style="background: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 2.5rem;">
+        <p class="xs-text" style="color: rgba(255, 255, 255, 0.4); margin-bottom: 2rem;">&gt; ceo_stats</p>
+
+        <div style="color: rgba(255, 255, 255, 0.3); font-size: 16px; line-height: 2;">
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+            <span class="body" style="opacity: 1;">delegation:</span>
+            <span class="h3" style="opacity: 0.5;">???</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+            <span class="body" style="opacity: 1;">communication:</span>
+            <span class="h3" style="opacity: 0.5;">???</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+            <span class="body" style="opacity: 1;">team_trust:</span>
+            <span class="h3" style="opacity: 0.5;">???</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 0.75rem 0;">
+            <span class="body" style="opacity: 1;">improvement:</span>
+            <span class="h3" style="opacity: 0.5;">???</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align: center;">
+      <p class="h2" style="color: #fff; margin: 0 0 1rem 0;">
+        You can't improve what you don't measure.
+      </p>
+      <p class="lead" style="color: rgba(255, 255, 255, 0.6); margin: 0;">
+        And right now, you're not measuring.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- VERSION 5: GRADIENT CARDS -->
+<section class="version-container" style="background: #fff;">
+  <p class="version-label">Version 5 · Gradient Cards</p>
+  <div style="max-width: 1200px; margin: 0 auto;">
+
+    <h1 class="h1" style="color: #000; margin: 0 0 1rem 0; text-align: center;">
+      Athletes have scoreboards.
+    </h1>
+    <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0 0 4rem 0; text-align: center;">
+      What do CEOs have?
+    </p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-bottom: 4rem;">
+
+      <!-- Athlete -->
+      <div style="background: linear-gradient(135deg, #7FABC8 0%, #5a91b3 100%); border-radius: 20px; padding: 3.5rem; box-shadow: 0 25px 70px rgba(127, 171, 200, 0.3);">
+        <p class="xs-text" style="color: rgba(255, 255, 255, 0.9); margin-bottom: 3rem; opacity: 1;">Athlete</p>
+
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+          <div>
+            <p class="small-text" style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem; opacity: 1;">Shooting %</p>
+            <p class="h1" style="color: #fff; line-height: 1;">87%</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem; opacity: 1;">Rebounds</p>
+            <p class="h1" style="color: #fff; line-height: 1;">12</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem; opacity: 1;">Assists</p>
+            <p class="h1" style="color: #fff; line-height: 1;">8</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem; opacity: 1;">Improvement</p>
+            <p class="h1" style="color: #fff; line-height: 1;">+15%</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CEO -->
+      <div style="background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%); border-radius: 20px; padding: 3.5rem; box-shadow: 0 25px 70px rgba(0, 0, 0, 0.08);">
+        <p class="xs-text" style="color: rgba(0, 0, 0, 0.4); margin-bottom: 3rem; opacity: 1;">CEO</p>
+
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+          <div>
+            <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.5rem; opacity: 1;">Delegation</p>
+            <p class="h1" style="color: rgba(0, 0, 0, 0.15); line-height: 1;">???</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.5rem; opacity: 1;">Communication</p>
+            <p class="h1" style="color: rgba(0, 0, 0, 0.15); line-height: 1;">???</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.5rem; opacity: 1;">Team Trust</p>
+            <p class="h1" style="color: rgba(0, 0, 0, 0.15); line-height: 1;">???</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.5rem; opacity: 1;">Improvement</p>
+            <p class="h1" style="color: rgba(0, 0, 0, 0.15); line-height: 1;">???</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align: center;">
+      <p class="h2" style="color: #000; margin: 0 0 1rem 0;">
+        You can't improve what you don't measure.
+      </p>
+      <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0;">
+        And right now, you're not measuring.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- VERSION 6: SPLIT SCREEN DRAMATIC -->
+<section class="version-container" style="background: #fff; padding: 0;">
+  <div style="min-height: 100vh; display: flex; flex-direction: column;">
+
+    <!-- Top Text -->
+    <div style="padding: 6rem 2rem 4rem; text-align: center;">
+      <p class="version-label" style="margin-bottom: 3rem;">Version 6 · Split Screen</p>
+      <h1 class="h1" style="color: #000; margin: 0 0 1rem 0;">
+        Athletes have scoreboards.
+      </h1>
+      <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0;">
+        What do CEOs have?
+      </p>
+    </div>
+
+    <!-- Split Content -->
+    <div style="flex: 1; display: grid; grid-template-columns: 1fr 1fr; min-height: 600px;">
+
+      <!-- Athlete Side - Full Height -->
+      <div style="background: #7FABC8; padding: 4rem; display: flex; flex-direction: column; justify-content: center;">
+        <p class="xs-text" style="color: rgba(255, 255, 255, 0.9); margin-bottom: 4rem; opacity: 1;">Athlete</p>
+
+        <div style="display: flex; flex-direction: column; gap: 3rem;">
+          <div>
+            <p class="small-text" style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.75rem; opacity: 1;">Shooting %</p>
+            <p class="h1" style="color: #fff; line-height: 1; font-size: 64px;">87%</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.75rem; opacity: 1;">Rebounds</p>
+            <p class="h1" style="color: #fff; line-height: 1; font-size: 64px;">12</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.75rem; opacity: 1;">Assists</p>
+            <p class="h1" style="color: #fff; line-height: 1; font-size: 64px;">8</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.75rem; opacity: 1;">Improvement</p>
+            <p class="h1" style="color: #fff; line-height: 1; font-size: 64px;">+15%</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CEO Side - Full Height -->
+      <div style="background: #F7F3ED; padding: 4rem; display: flex; flex-direction: column; justify-content: center;">
+        <p class="xs-text" style="color: rgba(0, 0, 0, 0.4); margin-bottom: 4rem; opacity: 1;">CEO</p>
+
+        <div style="display: flex; flex-direction: column; gap: 3rem;">
+          <div>
+            <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.75rem; opacity: 1;">Delegation</p>
+            <p class="h1" style="color: rgba(0, 0, 0, 0.12); line-height: 1; font-size: 64px;">???</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.75rem; opacity: 1;">Communication</p>
+            <p class="h1" style="color: rgba(0, 0, 0, 0.12); line-height: 1; font-size: 64px;">???</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.75rem; opacity: 1;">Team Trust</p>
+            <p class="h1" style="color: rgba(0, 0, 0, 0.12); line-height: 1; font-size: 64px;">???</p>
+          </div>
+          <div>
+            <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.75rem; opacity: 1;">Improvement</p>
+            <p class="h1" style="color: rgba(0, 0, 0, 0.12); line-height: 1; font-size: 64px;">???</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Message -->
+    <div style="padding: 4rem 2rem 6rem; text-align: center; background: #fff;">
+      <p class="h2" style="color: #000; margin: 0 0 1rem 0;">
+        You can't improve what you don't measure.
+      </p>
+      <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0;">
+        And right now, you're not measuring.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- VERSION 7: LAYERED DEPTH -->
+<section class="version-container" style="background: #fafafa;">
+  <p class="version-label">Version 7 · Layered Depth</p>
+  <div style="max-width: 1100px; margin: 0 auto;">
+
+    <h1 class="h1" style="color: #000; margin: 0 0 1rem 0; text-align: center;">
+      Athletes have scoreboards.
+    </h1>
+    <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0 0 4rem 0; text-align: center;">
+      What do CEOs have?
+    </p>
+
+    <div style="position: relative; margin-bottom: 4rem;">
+
+      <!-- Athlete - Front Layer -->
+      <div style="position: relative; z-index: 2; background: #fff; border-radius: 16px; padding: 3rem; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15); max-width: 550px;">
+        <p class="xs-text" style="color: #7FABC8; margin-bottom: 2.5rem;">Athlete</p>
+
+        <div style="display: flex; flex-direction: column; gap: 1.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+            <span class="body" style="color: #000;">Shooting %</span>
+            <span class="h2" style="color: #000;">87%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+            <span class="body" style="color: #000;">Rebounds</span>
+            <span class="h2" style="color: #000;">12</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+            <span class="body" style="color: #000;">Assists</span>
+            <span class="h2" style="color: #000;">8</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: rgba(127, 171, 200, 0.1); border-radius: 8px;">
+            <span class="body" style="color: #000;">Improvement</span>
+            <span class="h2" style="color: #7FABC8;">+15%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CEO - Back Layer -->
+      <div style="position: absolute; top: 60px; right: 0; z-index: 1; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); border-radius: 16px; padding: 3rem; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1); max-width: 550px;">
+        <p class="xs-text" style="color: rgba(0, 0, 0, 0.4); margin-bottom: 2.5rem; opacity: 1;">CEO</p>
+
+        <div style="display: flex; flex-direction: column; gap: 1.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: rgba(0, 0, 0, 0.02); border-radius: 8px;">
+            <span class="body" style="color: rgba(0, 0, 0, 0.5);">Delegation</span>
+            <span class="h2" style="color: rgba(0, 0, 0, 0.15);">???</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: rgba(0, 0, 0, 0.02); border-radius: 8px;">
+            <span class="body" style="color: rgba(0, 0, 0, 0.5);">Communication</span>
+            <span class="h2" style="color: rgba(0, 0, 0, 0.15);">???</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: rgba(0, 0, 0, 0.02); border-radius: 8px;">
+            <span class="body" style="color: rgba(0, 0, 0, 0.5);">Team Trust</span>
+            <span class="h2" style="color: rgba(0, 0, 0, 0.15);">???</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: rgba(0, 0, 0, 0.02); border-radius: 8px;">
+            <span class="body" style="color: rgba(0, 0, 0, 0.5);">Improvement</span>
+            <span class="h2" style="color: rgba(0, 0, 0, 0.15);">???</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align: center; margin-top: 8rem;">
+      <p class="h2" style="color: #000; margin: 0 0 1rem 0;">
+        You can't improve what you don't measure.
+      </p>
+      <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0;">
+        And right now, you're not measuring.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- VERSION 8: VERTICAL STACK -->
+<section class="version-container" style="background: #fff;">
+  <p class="version-label">Version 8 · Vertical Stack</p>
+  <div style="max-width: 700px; margin: 0 auto;">
+
+    <h1 class="h1" style="color: #000; margin: 0 0 1rem 0; text-align: center;">
+      Athletes have<br>scoreboards.
+    </h1>
+    <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0 0 4rem 0; text-align: center;">
+      What do CEOs have?
+    </p>
+
+    <!-- Athlete Box -->
+    <div style="background: #7FABC8; border-radius: 16px; padding: 3rem; margin-bottom: 2rem;">
+      <p class="xs-text" style="color: rgba(255, 255, 255, 0.9); margin-bottom: 2.5rem; opacity: 1;">Athlete</p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div>
+          <p class="small-text" style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem; opacity: 1;">Shooting %</p>
+          <p class="h1" style="color: #fff; line-height: 1;">87%</p>
+        </div>
+        <div>
+          <p class="small-text" style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem; opacity: 1;">Rebounds</p>
+          <p class="h1" style="color: #fff; line-height: 1;">12</p>
+        </div>
+        <div>
+          <p class="small-text" style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem; opacity: 1;">Assists</p>
+          <p class="h1" style="color: #fff; line-height: 1;">8</p>
+        </div>
+        <div>
+          <p class="small-text" style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem; opacity: 1;">Improvement</p>
+          <p class="h1" style="color: #fff; line-height: 1;">+15%</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div style="text-align: center; margin: 3rem 0;">
+      <div style="height: 2px; background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.1), transparent);"></div>
+      <p class="lead" style="color: rgba(0, 0, 0, 0.3); margin: 2rem 0;">vs</p>
+      <div style="height: 2px; background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.1), transparent);"></div>
+    </div>
+
+    <!-- CEO Box -->
+    <div style="background: #F7F3ED; border-radius: 16px; padding: 3rem; margin-bottom: 4rem;">
+      <p class="xs-text" style="color: rgba(0, 0, 0, 0.4); margin-bottom: 2.5rem; opacity: 1;">CEO</p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div>
+          <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.5rem; opacity: 1;">Delegation</p>
+          <p class="h1" style="color: rgba(0, 0, 0, 0.15); line-height: 1;">???</p>
+        </div>
+        <div>
+          <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.5rem; opacity: 1;">Communication</p>
+          <p class="h1" style="color: rgba(0, 0, 0, 0.15); line-height: 1;">???</p>
+        </div>
+        <div>
+          <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.5rem; opacity: 1;">Team Trust</p>
+          <p class="h1" style="color: rgba(0, 0, 0, 0.15); line-height: 1;">???</p>
+        </div>
+        <div>
+          <p class="small-text" style="color: rgba(0, 0, 0, 0.5); margin-bottom: 0.5rem; opacity: 1;">Improvement</p>
+          <p class="h1" style="color: rgba(0, 0, 0, 0.15); line-height: 1;">???</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center;">
+      <p class="h2" style="color: #000; margin: 0 0 1rem 0;">
+        You can't improve<br>what you don't measure.
+      </p>
+      <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0;">
+        And right now, you're not measuring.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- VERSION 9: TABLE STYLE -->
+<section class="version-container" style="background: #fff;">
+  <p class="version-label">Version 9 · Table Style</p>
+  <div style="max-width: 900px; margin: 0 auto;">
+
+    <h1 class="h1" style="color: #000; margin: 0 0 1rem 0; text-align: center;">
+      Athletes have scoreboards.
+    </h1>
+    <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0 0 4rem 0; text-align: center;">
+      What do CEOs have?
+    </p>
+
+    <!-- Table -->
+    <div style="border: 2px solid #000; border-radius: 12px; overflow: hidden; margin-bottom: 4rem;">
+
+      <!-- Header -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; background: #000; color: #fff;">
+        <div style="padding: 1.5rem;" class="small-text" style="opacity: 1; text-transform: uppercase; letter-spacing: 0.1em;">Metric</div>
+        <div style="padding: 1.5rem; border-left: 1px solid rgba(255, 255, 255, 0.2);" class="small-text" style="color: #7FABC8; opacity: 1; text-transform: uppercase; letter-spacing: 0.1em;">Athlete</div>
+        <div style="padding: 1.5rem; border-left: 1px solid rgba(255, 255, 255, 0.2);" class="small-text" style="color: rgba(255, 255, 255, 0.4); opacity: 1; text-transform: uppercase; letter-spacing: 0.1em;">CEO</div>
+      </div>
+
+      <!-- Row 1 -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; background: #fff; border-top: 1px solid rgba(0, 0, 0, 0.1);">
+        <div style="padding: 1.75rem;" class="body" style="color: #000;">Shooting % / Delegation</div>
+        <div style="padding: 1.75rem; border-left: 1px solid rgba(0, 0, 0, 0.1);" class="h3">87%</div>
+        <div style="padding: 1.75rem; border-left: 1px solid rgba(0, 0, 0, 0.1);" class="h3" style="color: rgba(0, 0, 0, 0.12);">???</div>
+      </div>
+
+      <!-- Row 2 -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; background: #fafafa; border-top: 1px solid rgba(0, 0, 0, 0.1);">
+        <div style="padding: 1.75rem;" class="body" style="color: #000;">Rebounds / Communication</div>
+        <div style="padding: 1.75rem; border-left: 1px solid rgba(0, 0, 0, 0.1);" class="h3">12</div>
+        <div style="padding: 1.75rem; border-left: 1px solid rgba(0, 0, 0, 0.1);" class="h3" style="color: rgba(0, 0, 0, 0.12);">???</div>
+      </div>
+
+      <!-- Row 3 -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; background: #fff; border-top: 1px solid rgba(0, 0, 0, 0.1);">
+        <div style="padding: 1.75rem;" class="body" style="color: #000;">Assists / Team Trust</div>
+        <div style="padding: 1.75rem; border-left: 1px solid rgba(0, 0, 0, 0.1);" class="h3">8</div>
+        <div style="padding: 1.75rem; border-left: 1px solid rgba(0, 0, 0, 0.1);" class="h3" style="color: rgba(0, 0, 0, 0.12);">???</div>
+      </div>
+
+      <!-- Row 4 -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; background: #fafafa; border-top: 1px solid rgba(0, 0, 0, 0.1);">
+        <div style="padding: 1.75rem;" class="body" style="color: #000;">Improvement</div>
+        <div style="padding: 1.75rem; border-left: 1px solid rgba(0, 0, 0, 0.1);" class="h3" style="color: #7FABC8;">+15%</div>
+        <div style="padding: 1.75rem; border-left: 1px solid rgba(0, 0, 0, 0.1);" class="h3" style="color: rgba(0, 0, 0, 0.12);">???</div>
+      </div>
+
+    </div>
+
+    <div style="text-align: center;">
+      <p class="h2" style="color: #000; margin: 0 0 1rem 0;">
+        You can't improve what you don't measure.
+      </p>
+      <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0;">
+        And right now, you're not measuring.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- VERSION 10: SUPER MINIMAL -->
+<section class="version-container" style="background: #fff;">
+  <p class="version-label">Version 10 · Super Minimal</p>
+  <div style="max-width: 800px; margin: 0 auto;">
+
+    <h1 class="h1" style="color: #000; margin: 0 0 6rem 0; text-align: center;">
+      Athletes have scoreboards.<br>What do CEOs have?
+    </h1>
+
+    <div style="margin-bottom: 6rem;">
+
+      <!-- Athlete -->
+      <div style="margin-bottom: 5rem;">
+        <div style="width: 120px; height: 6px; background: #7FABC8; margin-bottom: 3rem;"></div>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem;">
+          <div>
+            <p style="font-size: 72px; font-weight: 700; color: #000; line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.03em;">87%</p>
+            <p class="body" style="color: rgba(0, 0, 0, 0.5);">Shooting %</p>
+          </div>
+          <div>
+            <p style="font-size: 72px; font-weight: 700; color: #000; line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.03em;">12</p>
+            <p class="body" style="color: rgba(0, 0, 0, 0.5);">Rebounds</p>
+          </div>
+          <div>
+            <p style="font-size: 72px; font-weight: 700; color: #000; line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.03em;">8</p>
+            <p class="body" style="color: rgba(0, 0, 0, 0.5);">Assists</p>
+          </div>
+          <div>
+            <p style="font-size: 72px; font-weight: 700; color: #7FABC8; line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.03em;">+15%</p>
+            <p class="body" style="color: rgba(0, 0, 0, 0.5);">Improvement</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CEO -->
+      <div>
+        <div style="width: 120px; height: 6px; background: rgba(0, 0, 0, 0.08); margin-bottom: 3rem;"></div>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem;">
+          <div>
+            <p style="font-size: 72px; font-weight: 700; color: rgba(0, 0, 0, 0.08); line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.03em;">???</p>
+            <p class="body" style="color: rgba(0, 0, 0, 0.3);">Delegation</p>
+          </div>
+          <div>
+            <p style="font-size: 72px; font-weight: 700; color: rgba(0, 0, 0, 0.08); line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.03em;">???</p>
+            <p class="body" style="color: rgba(0, 0, 0, 0.3);">Communication</p>
+          </div>
+          <div>
+            <p style="font-size: 72px; font-weight: 700; color: rgba(0, 0, 0, 0.08); line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.03em;">???</p>
+            <p class="body" style="color: rgba(0, 0, 0, 0.3);">Team Trust</p>
+          </div>
+          <div>
+            <p style="font-size: 72px; font-weight: 700; color: rgba(0, 0, 0, 0.08); line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.03em;">???</p>
+            <p class="body" style="color: rgba(0, 0, 0, 0.3);">Improvement</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align: center;">
+      <p class="h2" style="color: #000; margin: 0 0 1.5rem 0;">
+        You can't improve<br>what you don't measure.
+      </p>
+      <p class="lead" style="color: rgba(0, 0, 0, 0.6); margin: 0;">
+        And right now, you're not measuring.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>

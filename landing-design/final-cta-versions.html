@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final CTA - 10 Versions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #fff;
+      color: #000;
+      line-height: 1.6;
+    }
+
+    .version {
+      min-height: 100vh;
+      padding: 4rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .label {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: #000;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #000;
+      border: 2px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-white {
+      background: #fff;
+      color: #000;
+    }
+
+    .btn-white:hover {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .btn-outline-white {
+      background: transparent;
+      color: #fff;
+      border: 2px solid #fff;
+    }
+
+    .btn-outline-white:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* VERSION 1: Hero Style with Grid Pattern */
+    .v1 {
+      position: relative;
+      background: #fafafa;
+      overflow: hidden;
+    }
+
+    .v1-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px),
+        radial-gradient(circle, rgba(0,0,0,0.05) 1px, transparent 1px);
+      background-size: 50px 50px, 50px 50px, 20px 20px;
+      background-position: 0 0, 0 0, 10px 10px;
+    }
+
+    .v1-content {
+      position: relative;
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .v1 h1 {
+      font-size: 56px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .v1 .subtitle {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      max-width: 42rem;
+      margin: 0 auto 2.5rem;
+      line-height: 1.6;
+    }
+
+    .v1 .cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .v1 .note {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    /* VERSION 2: Split Screen */
+    .v2 {
+      padding: 0;
+    }
+
+    .v2 .split-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    .v2-left {
+      background: #000;
+      color: #fff;
+      padding: 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .v2-left h2 {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .v2-left p {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .v2-left p:last-of-type {
+      margin-bottom: 2.5rem;
+    }
+
+    .v2-right {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.1) 0%, rgba(166, 190, 164, 0.1) 100%);
+      padding: 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .v2-right h3 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+
+    .v2-right .cta-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    /* VERSION 3: Minimal Center */
+    .v3 {
+      background: #fff;
+    }
+
+    .v3-content {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .v3 h2 {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .v3 .subtitle {
+      font-size: 20px;
+      color: rgba(0, 0, 0, 0.6);
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    }
+
+    .v3 .cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .v3 .divider {
+      width: 48px;
+      height: 4px;
+      background: linear-gradient(90deg, #7FABC8 0%, #A6BEA4 100%);
+      margin: 3rem auto;
+      border-radius: 999px;
+    }
+
+    /* VERSION 4: Gradient Box */
+    .v4 {
+      background: #fff;
+    }
+
+    .v4-box {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.08) 0%, rgba(166, 190, 164, 0.08) 100%);
+      padding: 4rem;
+      border-radius: 1rem;
+      text-align: center;
+    }
+
+    .v4 h2 {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .v4 .subtitle {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      max-width: 32rem;
+      margin: 0 auto 2.5rem;
+      line-height: 1.6;
+    }
+
+    .v4 .cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* VERSION 5: Card Stack */
+    .v5 {
+      background: #fafafa;
+    }
+
+    .v5-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .v5-card {
+      background: #fff;
+      padding: 3rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .v5-card.primary {
+      background: #000;
+      color: #fff;
+    }
+
+    .v5 h2 {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .v5 p {
+      font-size: 16px;
+      opacity: 0.7;
+      margin-bottom: 2rem;
+    }
+
+    .v5 .cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* VERSION 6: Bento Grid */
+    .v6 {
+      background: #fff;
+    }
+
+    .v6-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .v6-main {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.05) 0%, rgba(166, 190, 164, 0.05) 100%);
+      padding: 4rem;
+      border-radius: 0.75rem;
+    }
+
+    .v6-main h2 {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .v6-main p {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    }
+
+    .v6-side {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .v6-stat {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .v6-stat-number {
+      font-size: 48px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .v6-stat-label {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* VERSION 7: Quote Style */
+    .v7 {
+      background: #fff;
+    }
+
+    .v7-content {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .v7-quote {
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .v7-quote::before {
+      content: '"';
+      position: absolute;
+      left: -2rem;
+      top: -1rem;
+      font-size: 72px;
+      color: rgba(127, 171, 200, 0.15);
+      font-weight: 700;
+    }
+
+    .v7 .attribution {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.6);
+      margin-bottom: 3rem;
+    }
+
+    .v7 .cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* VERSION 8: Timeline */
+    .v8 {
+      background: #fff;
+    }
+
+    .v8-timeline {
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .v8-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, #7FABC8 0%, #A6BEA4 100%);
+    }
+
+    .v8-item {
+      padding-left: 3rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .v8-item::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 0.5rem;
+      width: 14px;
+      height: 14px;
+      background: #7FABC8;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px rgba(127, 171, 200, 0.3);
+    }
+
+    .v8-item.large::before {
+      width: 20px;
+      height: 20px;
+      left: -9px;
+    }
+
+    .v8 h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v8 p {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+
+    .v8 .cta-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    /* VERSION 9: Full Width Image Background */
+    .v9 {
+      position: relative;
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.95) 0%, rgba(166, 190, 164, 0.95) 100%);
+      color: #fff;
+    }
+
+    .v9::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .v9-content {
+      position: relative;
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .v9 h2 {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .v9 .subtitle {
+      font-size: 20px;
+      opacity: 0.95;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    }
+
+    .v9 .cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* VERSION 10: Comparison Side by Side */
+    .v10 {
+      background: #fff;
+    }
+
+    .v10-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .v10-card {
+      padding: 3rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .v10-card.problem {
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .v10-card.solution {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.08) 0%, rgba(166, 190, 164, 0.08) 100%);
+      border: 2px solid #7FABC8;
+    }
+
+    .v10-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    .v10-card.solution .v10-label {
+      color: #7FABC8;
+    }
+
+    .v10 h3 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .v10 p {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    .v10 .cta-footer {
+      text-align: center;
+    }
+
+    .v10 .cta-footer h2 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+
+    .v10 .cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .v1 h1 { font-size: 36px; }
+      .v2 .split-container { grid-template-columns: 1fr; }
+      .v6-grid { grid-template-columns: 1fr; }
+      .v10-comparison { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- VERSION 1: Hero Style with Grid Pattern -->
+  <div class="version v1">
+    <div class="v1-bg"></div>
+    <div class="container">
+      <div class="label">VERSION 1: HERO STYLE</div>
+      <div class="v1-content">
+        <h1>Your Team Already Sees<br>What You Can't</h1>
+        <p class="subtitle">
+          Every week without measurement is a week of invisible decline while competitors systematically improve.
+        </p>
+        <div class="cta-group">
+          <a href="#" class="btn btn-primary">Measure Your Leadership (Free)</a>
+          <a href="#" class="btn btn-secondary">Book a Demo Call</a>
+        </div>
+        <p class="note">Athletes don't guess. They measure. They analyze. They improve.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 2: Split Screen -->
+  <div class="version v2">
+    <div class="container" style="max-width: 100%; padding: 0;">
+      <div class="label" style="position: absolute; top: 2rem; left: 50%; transform: translateX(-50%); z-index: 10;">VERSION 2: SPLIT SCREEN</div>
+      <div class="split-container">
+        <div class="v2-left">
+          <h2>Your Team Already Sees What You Can't</h2>
+          <p>Every week without measurement is a week of invisible decline while competitors systematically improve.</p>
+          <p>Athletes don't guess. They measure. They analyze. They improve.</p>
+          <p style="color: #fff; font-weight: 600; margin-bottom: 2.5rem;">You deserve the same.</p>
+          <div class="cta-group" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href="#" class="btn btn-white">Measure Your Leadership (Free)</a>
+            <a href="#" class="btn btn-outline-white">Book a Demo Call</a>
+          </div>
+        </div>
+        <div class="v2-right">
+          <h3>Start measuring your leadership today</h3>
+          <div class="cta-group">
+            <a href="#" class="btn btn-primary" style="width: 100%;">Get Free Assessment</a>
+            <a href="#" class="btn btn-secondary" style="width: 100%;">Schedule a Call</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 3: Minimal Center -->
+  <div class="version v3">
+    <div class="container">
+      <div class="label">VERSION 3: MINIMAL CENTER</div>
+      <div class="v3-content">
+        <h2>Your Team Already Sees What You Can't</h2>
+        <p class="subtitle">
+          Athletes don't guess. They measure. They analyze. They improve. You deserve the same.
+        </p>
+        <div class="cta-group">
+          <a href="#" class="btn btn-primary">Measure Your Leadership (Free)</a>
+          <a href="#" class="btn btn-secondary">Book a Demo Call</a>
+        </div>
+        <div class="divider"></div>
+        <p style="font-size: 14px; color: rgba(0, 0, 0, 0.4);">
+          Every week without measurement is a week of invisible decline
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 4: Gradient Box -->
+  <div class="version v4">
+    <div class="container">
+      <div class="label">VERSION 4: GRADIENT BOX</div>
+      <div class="v4-box">
+        <h2>Stop Guessing.<br>Start Measuring.</h2>
+        <p class="subtitle">
+          Your team already sees what you can't. Athletes don't guess—they measure, analyze, and improve systematically. You deserve the same clarity.
+        </p>
+        <div class="cta-group">
+          <a href="#" class="btn btn-primary">Measure Your Leadership (Free)</a>
+          <a href="#" class="btn btn-secondary">Book a Demo Call</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 5: Card Stack -->
+  <div class="version v5">
+    <div class="container">
+      <div class="label">VERSION 5: CARD STACK</div>
+      <div class="v5-stack">
+        <div class="v5-card">
+          <h2>Your Team Already Sees What You Can't</h2>
+          <p>Every week without measurement is invisible decline</p>
+        </div>
+        <div class="v5-card primary">
+          <h2>Athletes Don't Guess</h2>
+          <p>They measure. They analyze. They improve. You deserve the same.</p>
+          <div class="cta-group">
+            <a href="#" class="btn btn-white">Measure Your Leadership (Free)</a>
+            <a href="#" class="btn btn-outline-white">Book a Demo Call</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 6: Bento Grid -->
+  <div class="version v6">
+    <div class="container">
+      <div class="label">VERSION 6: BENTO GRID</div>
+      <div class="v6-grid">
+        <div class="v6-main">
+          <h2>Your Team Already Sees What You Can't</h2>
+          <p>
+            Every week without measurement is a week of invisible decline while competitors systematically improve.
+          </p>
+          <p style="margin-bottom: 2.5rem;">
+            Athletes don't guess. They measure. They analyze. They improve. You deserve the same.
+          </p>
+          <div class="cta-group" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href="#" class="btn btn-primary">Measure Your Leadership (Free)</a>
+            <a href="#" class="btn btn-secondary">Book a Demo Call</a>
+          </div>
+        </div>
+        <div class="v6-side">
+          <div class="v6-stat">
+            <div class="v6-stat-number">18</div>
+            <div class="v6-stat-label">Leadership Dimensions</div>
+          </div>
+          <div class="v6-stat">
+            <div class="v6-stat-number">100</div>
+            <div class="v6-stat-label">Questions</div>
+          </div>
+          <div class="v6-stat">
+            <div class="v6-stat-number">€100</div>
+            <div class="v6-stat-label">Per Month</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 7: Quote Style -->
+  <div class="version v7">
+    <div class="container">
+      <div class="label">VERSION 7: QUOTE STYLE</div>
+      <div class="v7-content">
+        <div class="v7-quote">
+          Your team already sees what you can't. Every week without measurement is a week of invisible decline.
+        </div>
+        <p class="attribution">
+          Athletes don't guess. They measure. They analyze. They improve.
+        </p>
+        <p style="font-size: 20px; font-weight: 600; margin-bottom: 2.5rem;">
+          You deserve the same.
+        </p>
+        <div class="cta-group">
+          <a href="#" class="btn btn-primary">Measure Your Leadership (Free)</a>
+          <a href="#" class="btn btn-secondary">Book a Demo Call</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 8: Timeline -->
+  <div class="version v8">
+    <div class="container">
+      <div class="label">VERSION 8: TIMELINE</div>
+      <div class="v8-timeline">
+        <div class="v8-item">
+          <h3>The Problem</h3>
+          <p>Your team already sees what you can't</p>
+        </div>
+        <div class="v8-item">
+          <h3>The Cost</h3>
+          <p>Every week without measurement is a week of invisible decline</p>
+        </div>
+        <div class="v8-item">
+          <h3>The Standard</h3>
+          <p>Athletes don't guess. They measure. They analyze. They improve.</p>
+        </div>
+        <div class="v8-item large">
+          <h3>You Deserve the Same</h3>
+          <div class="cta-group">
+            <a href="#" class="btn btn-primary">Measure Your Leadership (Free)</a>
+            <a href="#" class="btn btn-secondary">Book a Demo Call</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 9: Full Width Gradient -->
+  <div class="version v9">
+    <div class="container">
+      <div class="label" style="color: rgba(255, 255, 255, 0.5);">VERSION 9: GRADIENT OVERLAY</div>
+      <div class="v9-content">
+        <h2>Your Team Already Sees What You Can't</h2>
+        <p class="subtitle">
+          Athletes don't guess. They measure. They analyze. They improve. Every week without measurement is a week of invisible decline. You deserve the same clarity they have.
+        </p>
+        <div class="cta-group">
+          <a href="#" class="btn btn-white">Measure Your Leadership (Free)</a>
+          <a href="#" class="btn btn-outline-white">Book a Demo Call</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 10: Comparison Side by Side -->
+  <div class="version v10">
+    <div class="container">
+      <div class="label">VERSION 10: COMPARISON</div>
+      <div class="v10-comparison">
+        <div class="v10-card problem">
+          <div class="v10-label">Without Measurement</div>
+          <h3>Invisible Decline</h3>
+          <p>
+            Your team sees what you can't. Every week without data is a week of guessing. Competitors who measure are improving systematically while you operate blind.
+          </p>
+        </div>
+        <div class="v10-card solution">
+          <div class="v10-label">With CEO Lab</div>
+          <h3>Systematic Improvement</h3>
+          <p>
+            Athletes don't guess. They measure. They analyze. They improve. You deserve the same systematic approach to leadership development.
+          </p>
+        </div>
+      </div>
+      <div class="v10 cta-footer">
+        <h2>Ready to Measure What Matters?</h2>
+        <div class="cta-group">
+          <a href="#" class="btn btn-primary">Measure Your Leadership (Free)</a>
+          <a href="#" class="btn btn-secondary">Book a Demo Call</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

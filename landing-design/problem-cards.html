@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEO Lab - Problem Cards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #fff;
+      color: #000;
+      line-height: 1.6;
+      padding: 4rem 2rem;
+    }
+
+    .section-container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.4);
+      margin-bottom: 1.5rem;
+      display: block;
+      letter-spacing: 0.02em;
+    }
+
+    .section-label::before {
+      content: "> ";
+      opacity: 0.6;
+    }
+
+    h2 {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 4rem;
+    }
+
+    /* Comparison Cards */
+    .comparison-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      max-width: 56rem;
+    }
+
+    .comparison-card {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.75rem;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Accent Bar */
+    .accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .accent-bar.blue {
+      background: linear-gradient(90deg, #7FABC8 0%, #9BC4D6 100%);
+    }
+
+    .accent-bar.gray {
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    .card-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      margin-top: 0.5rem;
+    }
+
+    .card-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .card-list li {
+      font-size: 16px;
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    /* Athletes - Active State */
+    .comparison-card.active .card-list li {
+      color: rgba(0, 0, 0, 0.8);
+    }
+
+    .comparison-card.active .card-list li::before {
+      content: "✓";
+      font-weight: 700;
+      color: #7FABC8;
+      flex-shrink: 0;
+    }
+
+    /* CEOs - Inactive State */
+    .comparison-card.inactive .card-list li {
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    .comparison-card.inactive .card-list li::before {
+      content: "—";
+      color: rgba(0, 0, 0, 0.2);
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .comparison-cards {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      h2 {
+        font-size: 32px;
+        margin-bottom: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section>
+    <div class="section-container">
+      <span class="section-label">ceo-lab --problem</span>
+      <h2>Athletes Have Post-Game Analysis.<br>What Do CEOs Have?</h2>
+
+      <div class="comparison-cards">
+        <!-- Athletes Card -->
+        <div class="comparison-card active">
+          <div class="accent-bar blue"></div>
+          <h3 class="card-title">Athletes</h3>
+          <ul class="card-list">
+            <li>Game footage review</li>
+            <li>Performance metrics tracked</li>
+            <li>Progress measured weekly</li>
+            <li>Blind spots identified</li>
+            <li>Improvement plan created</li>
+          </ul>
+        </div>
+
+        <!-- CEOs Card -->
+        <div class="comparison-card inactive">
+          <div class="accent-bar gray"></div>
+          <h3 class="card-title">CEOs</h3>
+          <ul class="card-list">
+            <li>Read books</li>
+            <li>Listen to podcasts</li>
+            <li>Maybe have a coach</li>
+            <li>Hope they're improving</li>
+            <li>No systematic tracking</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

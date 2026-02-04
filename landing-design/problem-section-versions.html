@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEO Lab - Problem Section Versions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #fff;
+      color: #000;
+      line-height: 1.6;
+    }
+
+    .version-container {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 8rem 2rem;
+    }
+
+    .version-label {
+      max-width: 1000px;
+      margin: 0 auto 3rem;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .version-content {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #7FABC8;
+      margin-bottom: 1.5rem;
+      display: block;
+      letter-spacing: 0.02em;
+    }
+
+    .section-label::before {
+      content: "> ";
+      opacity: 0.6;
+    }
+
+    h2 {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 3rem;
+      max-width: 48rem;
+    }
+
+    .lead {
+      font-size: 18px;
+      line-height: 1.7;
+      color: rgba(0, 0, 0, 0.7);
+      max-width: 48rem;
+      margin-bottom: 3rem;
+    }
+
+    @media (max-width: 768px) {
+      h2 {
+        font-size: 32px;
+      }
+
+      .version-container {
+        padding: 4rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- VERSION 1: Clean + Direct -->
+  <div class="version-container">
+    <div class="version-label">VERSION 1: CLEAN + DIRECT</div>
+    <div class="version-content">
+      <span class="section-label">ceo-lab --problem</span>
+      <h2>Athletes Have Post-Game Analysis.<br>What Do CEOs Have?</h2>
+      <p class="lead">
+        Every professional athlete reviews game footage. Every musician records practice sessions. Every surgeon analyzes outcomes.<br><br>
+        CEOs read books and hope they're improving.
+      </p>
+    </div>
+  </div>
+
+  <!-- VERSION 2: AI + Human -->
+  <div class="version-container">
+    <div class="version-label">VERSION 2: AI + HUMAN</div>
+    <div class="version-content">
+      <span class="section-label">THE LEADERSHIP GAP</span>
+      <h1 class="headline-mixed">
+        AI can analyze, strategize, and execute faster than any human.
+        <span class="emphasis">What remains irreplaceable is how you show up.</span>
+      </h1>
+
+      <div class="numbered-list">
+        <div class="numbered-item">
+          <span class="number">01</span>
+          <p>The cost of leading from reactivity: burned teams, lost talent, decisions you regret</p>
+        </div>
+        <div class="numbered-item">
+          <span class="number">02</span>
+          <p>The exhaustion of performing calm while your nervous system screams</p>
+        </div>
+        <div class="numbered-item">
+          <span class="number">03</span>
+          <p>The pattern of achieving more while feeling less present, less connected, less alive</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 3: Athletes Comparison (current) -->
+  <div class="version-container">
+    <div class="version-label">VERSION 3: ATHLETES COMPARISON (CURRENT)</div>
+    <div class="version-content">
+      <span class="section-label">ceo-lab --problem</span>
+      <h2>Professional athletes know exactly where they stand.</h2>
+
+      <div class="comparison-grid">
+        <div>
+          <div class="accent-bar blue"></div>
+          <h3>Athletes</h3>
+          <ul class="comparison-list active">
+            <li>✓ Game footage review</li>
+            <li>✓ Performance metrics tracked</li>
+            <li>✓ Progress measured weekly</li>
+            <li>✓ Blind spots identified</li>
+            <li>✓ Improvement plan created</li>
+          </ul>
+        </div>
+        <div>
+          <div class="accent-bar gray"></div>
+          <h3>CEOs</h3>
+          <ul class="comparison-list inactive">
+            <li>Read books</li>
+            <li>Listen to podcasts</li>
+            <li>Maybe have a coach</li>
+            <li>Hope they're improving</li>
+            <li>No systematic tracking</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 4: The Cost -->
+  <div class="version-container">
+    <div class="version-label">VERSION 4: THE COST</div>
+    <div class="version-content">
+      <span class="section-label">ceo-lab --problem</span>
+      <h2>Leading without measurement is like flying blind.</h2>
+
+      <div class="cost-grid">
+        <div class="cost-card">
+          <div class="cost-icon">❓</div>
+          <h4>No Data</h4>
+          <p>Every decision based on gut feeling, not evidence</p>
+        </div>
+        <div class="cost-card">
+          <div class="cost-icon">⚠️</div>
+          <h4>Anxiety Fills the Gap</h4>
+          <p>"Am I really the right person to lead this?"</p>
+        </div>
+        <div class="cost-card">
+          <div class="cost-icon">📉</div>
+          <h4>Invisible Decline</h4>
+          <p>Competitors who measure are improving faster</p>
+        </div>
+      </div>
+
+      <div class="truth-bomb">
+        <h2>You can't improve what you don't measure.</h2>
+        <p>
+          And in 2026, with AI disrupting every industry and the pace of change accelerating—guessing isn't good enough anymore. <strong style="color: #000;">Every week without measurement is a week your competitors are getting ahead.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 5: Stats-Driven -->
+  <div class="version-container">
+    <div class="version-label">VERSION 5: STATS-DRIVEN</div>
+    <div class="version-content">
+      <span class="section-label">ceo-lab --problem</span>
+      <h2>87% of CEOs can't objectively measure their leadership growth.</h2>
+
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-number">87%</div>
+          <p class="stat-label">Have no systematic tracking of their leadership development</p>
+        </div>
+        <div class="stat">
+          <div class="stat-number">3am</div>
+          <p class="stat-label">Average time founders wake up wondering if they're actually improving</p>
+        </div>
+        <div class="stat">
+          <div class="stat-number">0</div>
+          <p class="stat-label">Data-driven frameworks for measuring CEO leadership in 2020</p>
+        </div>
+      </div>
+
+      <div class="numbered-list">
+        <div class="numbered-item">
+          <span class="number">01</span>
+          <p>Without data, every leadership decision is a guess. Your team feels it.</p>
+        </div>
+        <div class="numbered-item">
+          <span class="number">02</span>
+          <p>Anxiety fills the gap where metrics should be. Imposter syndrome becomes your compass.</p>
+        </div>
+        <div class="numbered-item">
+          <span class="number">03</span>
+          <p>While you hope you're improving, competitors who measure are accelerating past you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 6: Direct Question -->
+  <div class="version-container">
+    <div class="version-label">VERSION 6: DIRECT QUESTION</div>
+    <div class="version-content">
+      <span class="section-label">ceo-lab --problem</span>
+      <h2>When was the last time you objectively measured your own leadership?</h2>
+      <p style="font-size: 20px; color: rgba(0, 0, 0, 0.5); margin-bottom: 3rem; line-height: 1.6;">
+        Not your company's performance. Not your team's output.<br>
+        <strong style="color: rgba(0, 0, 0, 0.8);">Your leadership.</strong>
+      </p>
+
+      <div class="numbered-list">
+        <div class="numbered-item">
+          <span class="number">01</span>
+          <p>You read leadership books. Listen to podcasts. Maybe work with a coach. But do you actually know if you're improving?</p>
+        </div>
+        <div class="numbered-item">
+          <span class="number">02</span>
+          <p>Athletes watch game footage. Musicians record practice sessions. Surgeons review outcomes. CEOs... hope?</p>
+        </div>
+        <div class="numbered-item">
+          <span class="number">03</span>
+          <p>Every week without measurement is a week of invisible decline while competitors systematically improve.</p>
+        </div>
+      </div>
+
+      <div class="truth-bomb">
+        <h2>You can't improve what you don't measure.</h2>
+        <p>
+          Professional development without data is just expensive hope. CEO Lab gives you what athletes have had for decades: a scoreboard that shows you—objectively—where you stand and where to focus next.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 7: Post-Game Breakdown -->
+  <div class="version-container">
+    <div class="version-label">VERSION 7: POST-GAME BREAKDOWN</div>
+    <div class="version-content">
+      <span class="section-label">ceo-lab --problem</span>
+      <h2>Athletes Have Post-Game Analysis.<br>What Do CEOs Have?</h2>
+
+      <div class="comparison-grid">
+        <div>
+          <div class="accent-bar blue"></div>
+          <h3>Athletes Review</h3>
+          <ul class="comparison-list active">
+            <li>✓ Game footage from every angle</li>
+            <li>✓ Performance metrics tracked</li>
+            <li>✓ Coach feedback sessions</li>
+            <li>✓ Weekly progress reports</li>
+            <li>✓ Data-driven improvement plans</li>
+          </ul>
+        </div>
+        <div>
+          <div class="accent-bar gray"></div>
+          <h3>CEOs Have</h3>
+          <ul class="comparison-list inactive">
+            <li>Board meetings (quarterly)</li>
+            <li>Revenue dashboards</li>
+            <li>Leadership books</li>
+            <li>Anxiety at 3am</li>
+            <li>Hope</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="truth-bomb">
+        <h2>Your team's performance is measured. Why isn't yours?</h2>
+        <p>
+          Every professional athlete has a scoreboard. Every sales team has metrics. Every product has analytics. But CEO leadership? That's measured by... vibes? CEO Lab gives you what every high performer needs: objective data on your actual leadership capability.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 8: The Scoreboard -->
+  <div class="version-container">
+    <div class="version-label">VERSION 8: THE SCOREBOARD</div>
+    <div class="version-content">
+      <span class="section-label">ceo-lab --problem</span>
+      <h2>Athletes Have Post-Game Analysis.<br>What Do CEOs Have?</h2>
+      <p style="font-size: 20px; color: rgba(0, 0, 0, 0.6); margin-bottom: 3rem; line-height: 1.6;">
+        Every athlete watches film. Every musician records practice. Every surgeon reviews outcomes.
+      </p>
+
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-number">100%</div>
+          <p class="stat-label">Professional athletes who review their performance systematically</p>
+        </div>
+        <div class="stat">
+          <div class="stat-number">&lt;5%</div>
+          <p class="stat-label">CEOs who objectively measure their leadership development</p>
+        </div>
+        <div class="stat">
+          <div class="stat-number">$0</div>
+          <p class="stat-label">Value of leadership development you can't measure</p>
+        </div>
+      </div>
+
+      <div class="truth-bomb">
+        <h2>You manage what you measure.</h2>
+        <p>
+          Your company tracks CAC, LTV, burn rate, engagement, retention. But your leadership? Unmeasured. Untracked. Unmanaged. <strong style="color: #000;">CEO Lab is the scoreboard you've been missing.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 9: The Gap -->
+  <div class="version-container">
+    <div class="version-label">VERSION 9: THE GAP</div>
+    <div class="version-content">
+      <span class="section-label">ceo-lab --problem</span>
+      <h2>Athletes Have Post-Game Analysis.<br>What Do CEOs Have?</h2>
+
+      <div class="cost-grid">
+        <div class="cost-card">
+          <div class="cost-icon">📊</div>
+          <h4>No Baseline</h4>
+          <p>You don't know where you started, so you can't measure progress</p>
+        </div>
+        <div class="cost-card">
+          <div class="cost-icon">🎯</div>
+          <h4>No Focus</h4>
+          <p>18 dimensions to improve, zero data on which matters most right now</p>
+        </div>
+        <div class="cost-card">
+          <div class="cost-icon">📈</div>
+          <h4>No Proof</h4>
+          <p>Coaching, books, podcasts—but zero evidence you're actually improving</p>
+        </div>
+      </div>
+
+      <div class="numbered-list">
+        <div class="numbered-item">
+          <span class="number">01</span>
+          <p>Athletes watch game footage after every match. You wing it and hope for the best.</p>
+        </div>
+        <div class="numbered-item">
+          <span class="number">02</span>
+          <p>Without data, you're operating on instinct in situations where instinct isn't enough.</p>
+        </div>
+        <div class="numbered-item">
+          <span class="number">03</span>
+          <p>Your competitors who measure systematically are compounding gains while you guess.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 10: Film Room -->
+  <div class="version-container">
+    <div class="version-label">VERSION 10: FILM ROOM</div>
+    <div class="version-content">
+      <span class="section-label">ceo-lab --problem</span>
+      <h2>Athletes Have Post-Game Analysis.<br>What Do CEOs Have?</h2>
+      <p style="font-size: 20px; color: rgba(0, 0, 0, 0.6); margin-bottom: 3rem; line-height: 1.6;">
+        Every Monday morning, professional athletes sit in the film room. They review every play. They measure every metric. They identify every mistake.<br><br>
+        <strong style="color: #000;">When's the last time you reviewed your leadership like that?</strong>
+      </p>
+
+      <div class="numbered-list">
+        <div class="numbered-item">
+          <span class="number">01</span>
+          <p>Tom Brady watches game film for 15+ hours per week. You read a leadership book once a quarter and call it development.</p>
+        </div>
+        <div class="numbered-item">
+          <span class="number">02</span>
+          <p>Athletes know their stats: shooting percentage, completion rate, reaction time. You know your... feelings about how meetings went?</p>
+        </div>
+        <div class="numbered-item">
+          <span class="number">03</span>
+          <p>Every athlete has a coach analyzing their performance with data. You have a board that sees you four times a year.</p>
+        </div>
+      </div>
+
+      <div class="truth-bomb">
+        <h2>The film room is where champions are made.</h2>
+        <p>
+          CEO Lab is your leadership film room. Weekly check-ins. 18 dimensions tracked. Systematic measurement of what actually matters. <strong style="color: #000;">Stop guessing. Start measuring.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

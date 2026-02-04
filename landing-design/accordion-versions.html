@@ -1,0 +1,3036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accordion Versions - 18 Dimensions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #fff;
+      color: #000;
+      line-height: 1.6;
+    }
+
+    .version {
+      min-height: 100vh;
+      padding: 4rem 2rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .label {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.4);
+      margin-bottom: 1rem;
+      display: block;
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+
+    .section-label::before {
+      content: "> ";
+      opacity: 0.6;
+    }
+
+    h2 {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .intro {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.6);
+      max-width: 48rem;
+      margin: 0 auto 4rem;
+      text-align: center;
+    }
+
+    /* VERSION 1: Classic Accordion with Gradient */
+    .v1-accordion {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .v1-section {
+      margin-bottom: 1rem;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .v1-header {
+      padding: 2rem;
+      cursor: pointer;
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.05) 0%, rgba(166, 190, 164, 0.05) 100%);
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .v1-section.active .v1-header {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.15) 0%, rgba(166, 190, 164, 0.15) 100%);
+    }
+
+    .v1-header-left h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v1-header-left p {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .v1-toggle {
+      font-size: 24px;
+      color: #7FABC8;
+      transition: transform 0.3s ease;
+    }
+
+    .v1-section.active .v1-toggle {
+      transform: rotate(180deg);
+    }
+
+    .v1-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .v1-section.active .v1-content {
+      max-height: 2000px;
+    }
+
+    .v1-grid {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .v1-item {
+      padding: 1.5rem;
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 0.5rem;
+      border-left: 3px solid #7FABC8;
+    }
+
+    .v1-item-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .v1-item-number {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      border-radius: 0.375rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .v1-item-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .v1-item-desc {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.5;
+    }
+
+    /* VERSION 2: Side Accent Bar */
+    .v2-accordion {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .v2-section {
+      margin-bottom: 1.5rem;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      position: relative;
+    }
+
+    .v2-section::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: linear-gradient(180deg, #7FABC8 0%, #A6BEA4 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .v2-section.active::before {
+      opacity: 1;
+    }
+
+    .v2-header {
+      padding: 2rem 2rem 2rem 2.5rem;
+      cursor: pointer;
+      background: #fff;
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .v2-header:hover {
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .v2-header-content {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .v2-number {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.1) 0%, rgba(166, 190, 164, 0.1) 100%);
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: #7FABC8;
+    }
+
+    .v2-header-text h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .v2-header-text p {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .v2-toggle {
+      font-size: 20px;
+      color: rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .v2-section.active .v2-toggle {
+      transform: rotate(180deg);
+      color: #7FABC8;
+    }
+
+    .v2-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .v2-section.active .v2-content {
+      max-height: 2000px;
+    }
+
+    .v2-list {
+      padding: 0 2rem 2rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .v2-list-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 0.5rem;
+    }
+
+    .v2-list-number {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      border-radius: 0.375rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .v2-list-content h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .v2-list-content p {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* VERSION 3: Minimal Lines */
+    .v3-accordion {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .v3-section {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 2rem 0;
+    }
+
+    .v3-section:first-child {
+      padding-top: 0;
+    }
+
+    .v3-header {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1.5rem;
+    }
+
+    .v3-header-content h3 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: all 0.3s ease;
+    }
+
+    .v3-section.active .v3-header-content h3 {
+      -webkit-text-fill-color: inherit;
+      background: none;
+      color: #000;
+    }
+
+    .v3-header-content p {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .v3-toggle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .v3-section.active .v3-toggle {
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      transform: rotate(180deg);
+    }
+
+    .v3-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .v3-section.active .v3-content {
+      max-height: 2000px;
+    }
+
+    .v3-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      padding-top: 1.5rem;
+    }
+
+    .v3-card {
+      text-align: center;
+    }
+
+    .v3-card-number {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 1rem;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .v3-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .v3-card-desc {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.5;
+    }
+
+    /* VERSION 4: Card Stack */
+    .v4-accordion {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .v4-section {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      transition: all 0.3s ease;
+    }
+
+    .v4-section.active {
+      box-shadow: 0 8px 24px rgba(127, 171, 200, 0.15);
+    }
+
+    .v4-header {
+      padding: 2rem;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .v4-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .v4-header-text h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v4-header-text p {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .v4-toggle {
+      width: 40px;
+      height: 40px;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .v4-section.active .v4-toggle {
+      background: rgba(127, 171, 200, 0.15);
+      color: #7FABC8;
+      transform: rotate(180deg);
+    }
+
+    .v4-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .v4-section.active .v4-content {
+      max-height: 2000px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .v4-dimensions {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .v4-item {
+      padding: 1.25rem;
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 0.5rem;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .v4-item-number {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .v4-item-text h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .v4-item-text p {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.4;
+    }
+
+    /* VERSION 5: Horizontal Tabs */
+    .v5-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .v5-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .v5-tab {
+      padding: 1.5rem 2rem;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.4);
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.3s ease;
+    }
+
+    .v5-tab:hover {
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .v5-tab.active {
+      color: #7FABC8;
+      border-bottom-color: #7FABC8;
+    }
+
+    .v5-content {
+      display: none;
+    }
+
+    .v5-content.active {
+      display: block;
+    }
+
+    .v5-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .v5-card {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .v5-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .v5-card-number {
+      font-size: 14px;
+      font-weight: 700;
+      color: #7FABC8;
+      margin-bottom: 0.75rem;
+    }
+
+    .v5-card-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .v5-card-desc {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.5;
+    }
+
+    /* VERSION 6: Numbered Sections */
+    .v6-accordion {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .v6-section {
+      margin-bottom: 2rem;
+    }
+
+    .v6-header {
+      cursor: pointer;
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      padding: 2rem;
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.03) 0%, rgba(166, 190, 164, 0.03) 100%);
+      border-radius: 0.75rem;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .v6-section.active .v6-header {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.1) 0%, rgba(166, 190, 164, 0.1) 100%);
+      border-color: rgba(127, 171, 200, 0.3);
+    }
+
+    .v6-big-number {
+      font-size: 72px;
+      font-weight: 700;
+      line-height: 1;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      flex-shrink: 0;
+    }
+
+    .v6-header-content {
+      flex: 1;
+      padding-top: 0.5rem;
+    }
+
+    .v6-header-content h3 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v6-header-content p {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .v6-toggle {
+      font-size: 24px;
+      color: #7FABC8;
+      padding-top: 0.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .v6-section.active .v6-toggle {
+      transform: rotate(180deg);
+    }
+
+    .v6-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .v6-section.active .v6-content {
+      max-height: 2000px;
+    }
+
+    .v6-list {
+      margin-top: 1.5rem;
+      padding-left: 7rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .v6-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1.25rem;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.5rem;
+    }
+
+    .v6-item-number {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      border-radius: 0.375rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .v6-item-text h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .v6-item-text p {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* VERSION 7: Bold Color Blocks */
+    .v7-accordion {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .v7-section {
+      border-radius: 0.75rem;
+      overflow: hidden;
+    }
+
+    .v7-section:nth-child(1) .v7-header {
+      background: linear-gradient(135deg, #7FABC8 0%, #9BC4D6 100%);
+    }
+
+    .v7-section:nth-child(2) .v7-header {
+      background: linear-gradient(135deg, #A6BEA4 0%, #B8CDB6 100%);
+    }
+
+    .v7-section:nth-child(3) .v7-header {
+      background: linear-gradient(135deg, #E08F6A 0%, #E9A582 100%);
+    }
+
+    .v7-header {
+      padding: 2.5rem;
+      cursor: pointer;
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .v7-header:hover {
+      opacity: 0.9;
+    }
+
+    .v7-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .v7-category {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.9;
+    }
+
+    .v7-toggle {
+      font-size: 24px;
+      transition: transform 0.3s ease;
+    }
+
+    .v7-section.active .v7-toggle {
+      transform: rotate(180deg);
+    }
+
+    .v7-header h3 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v7-header p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    .v7-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      background: #fff;
+    }
+
+    .v7-section.active .v7-content {
+      max-height: 2000px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .v7-grid {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .v7-item {
+      padding: 1.25rem;
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 0.5rem;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .v7-item-number {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      border-radius: 0.375rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .v7-item-text h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .v7-item-text p {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* VERSION 8: Progress Bar Style */
+    .v8-accordion {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .v8-section {
+      margin-bottom: 1.5rem;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.75rem;
+      overflow: hidden;
+    }
+
+    .v8-header {
+      padding: 2rem;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .v8-header::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #7FABC8 0%, #A6BEA4 100%);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .v8-section.active .v8-header::before {
+      transform: scaleX(1);
+    }
+
+    .v8-header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .v8-header-left {
+      flex: 1;
+    }
+
+    .v8-header-left h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v8-header-left p {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .v8-count {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-right: 2rem;
+    }
+
+    .v8-count-circle {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.1) 0%, rgba(166, 190, 164, 0.1) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: #7FABC8;
+    }
+
+    .v8-toggle {
+      font-size: 20px;
+      color: rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .v8-section.active .v8-toggle {
+      transform: rotate(180deg);
+      color: #7FABC8;
+    }
+
+    .v8-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .v8-section.active .v8-content {
+      max-height: 2000px;
+    }
+
+    .v8-list {
+      padding: 0 2rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .v8-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 0.5rem;
+    }
+
+    .v8-item-number {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      border-radius: 0.375rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .v8-item-text h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .v8-item-text p {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* VERSION 9: Timeline Style */
+    .v9-accordion {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      padding-left: 3rem;
+    }
+
+    .v9-accordion::before {
+      content: '';
+      position: absolute;
+      left: 40px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, #7FABC8 0%, #A6BEA4 50%, #E08F6A 100%);
+    }
+
+    .v9-section {
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .v9-dot {
+      position: absolute;
+      left: -2.75rem;
+      top: 1.5rem;
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      border-radius: 50%;
+      border: 4px solid #fff;
+      box-shadow: 0 0 0 2px rgba(127, 171, 200, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .v9-section.active .v9-dot {
+      width: 28px;
+      height: 28px;
+      top: 1.25rem;
+      left: -3.15rem;
+    }
+
+    .v9-header {
+      cursor: pointer;
+      padding: 1.5rem;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.75rem;
+      transition: all 0.3s ease;
+    }
+
+    .v9-header:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .v9-section.active .v9-header {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.05) 0%, rgba(166, 190, 164, 0.05) 100%);
+    }
+
+    .v9-header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .v9-header-text h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v9-header-text p {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .v9-toggle {
+      font-size: 20px;
+      color: rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .v9-section.active .v9-toggle {
+      transform: rotate(180deg);
+      color: #7FABC8;
+    }
+
+    .v9-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .v9-section.active .v9-content {
+      max-height: 2000px;
+    }
+
+    .v9-grid {
+      margin-top: 1rem;
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 0.5rem;
+    }
+
+    .v9-item {
+      display: flex;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 0.375rem;
+    }
+
+    .v9-item-number {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      border-radius: 0.375rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .v9-item-text h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .v9-item-text p {
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* VERSION 10: Split Panel */
+    .v10-accordion {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .v10-section {
+      margin-bottom: 1rem;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 0.75rem;
+      overflow: hidden;
+    }
+
+    .v10-header {
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      transition: all 0.3s ease;
+    }
+
+    .v10-header-left {
+      padding: 2rem;
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.05) 0%, rgba(166, 190, 164, 0.05) 100%);
+    }
+
+    .v10-section.active .v10-header-left {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.15) 0%, rgba(166, 190, 164, 0.15) 100%);
+    }
+
+    .v10-header-left h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .v10-header-left p {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .v10-header-right {
+      width: 80px;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .v10-toggle {
+      font-size: 28px;
+      color: #fff;
+      transition: transform 0.3s ease;
+    }
+
+    .v10-section.active .v10-toggle {
+      transform: rotate(180deg);
+    }
+
+    .v10-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .v10-section.active .v10-content {
+      max-height: 2000px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .v10-grid {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .v10-card {
+      padding: 1.25rem;
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 0.5rem;
+      text-align: center;
+    }
+
+    .v10-card-number {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 0.75rem;
+      background: linear-gradient(135deg, #7FABC8 0%, #A6BEA4 100%);
+      color: #fff;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .v10-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .v10-card-desc {
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      .v1-grid,
+      .v2-list,
+      .v4-dimensions,
+      .v7-grid,
+      .v8-list,
+      .v9-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .v3-grid,
+      .v5-grid,
+      .v10-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .v5-tabs {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- VERSION 1: Classic Accordion with Gradient -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 1: CLASSIC GRADIENT</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">Click each section to expand and explore</p>
+
+      <div class="v1-accordion">
+        <div class="v1-section">
+          <div class="v1-header">
+            <div class="v1-header-left">
+              <h3>Leading Yourself</h3>
+              <p>6 dimensions focused on personal mastery</p>
+            </div>
+            <div class="v1-toggle">▼</div>
+          </div>
+          <div class="v1-content">
+            <div class="v1-grid">
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">1</div>
+                  <div class="v1-item-title">Self-Awareness</div>
+                </div>
+                <div class="v1-item-desc">Understanding your strengths and weaknesses</div>
+              </div>
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">2</div>
+                  <div class="v1-item-title">Emotional Intelligence</div>
+                </div>
+                <div class="v1-item-desc">Managing emotions effectively</div>
+              </div>
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">3</div>
+                  <div class="v1-item-title">Decision Making</div>
+                </div>
+                <div class="v1-item-desc">Making sound choices under pressure</div>
+              </div>
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">4</div>
+                  <div class="v1-item-title">Resilience</div>
+                </div>
+                <div class="v1-item-desc">Bouncing back from setbacks</div>
+              </div>
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">5</div>
+                  <div class="v1-item-title">Strategic Thinking</div>
+                </div>
+                <div class="v1-item-desc">Seeing the big picture</div>
+              </div>
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">6</div>
+                  <div class="v1-item-title">Time Management</div>
+                </div>
+                <div class="v1-item-desc">Prioritizing effectively</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v1-section">
+          <div class="v1-header">
+            <div class="v1-header-left">
+              <h3>Leading Teams</h3>
+              <p>6 dimensions focused on people leadership</p>
+            </div>
+            <div class="v1-toggle">▼</div>
+          </div>
+          <div class="v1-content">
+            <div class="v1-grid">
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">7</div>
+                  <div class="v1-item-title">Communication</div>
+                </div>
+                <div class="v1-item-desc">Articulating vision clearly</div>
+              </div>
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">8</div>
+                  <div class="v1-item-title">Delegation</div>
+                </div>
+                <div class="v1-item-desc">Empowering others effectively</div>
+              </div>
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">9</div>
+                  <div class="v1-item-title">Conflict Resolution</div>
+                </div>
+                <div class="v1-item-desc">Navigating disagreements</div>
+              </div>
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">10</div>
+                  <div class="v1-item-title">Team Building</div>
+                </div>
+                <div class="v1-item-desc">Creating cohesive teams</div>
+              </div>
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">11</div>
+                  <div class="v1-item-title">Coaching & Development</div>
+                </div>
+                <div class="v1-item-desc">Growing team capabilities</div>
+              </div>
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">12</div>
+                  <div class="v1-item-title">Accountability</div>
+                </div>
+                <div class="v1-item-desc">Holding people responsible</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v1-section">
+          <div class="v1-header">
+            <div class="v1-header-left">
+              <h3>Leading Organizations</h3>
+              <p>6 dimensions focused on organizational impact</p>
+            </div>
+            <div class="v1-toggle">▼</div>
+          </div>
+          <div class="v1-content">
+            <div class="v1-grid">
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">13</div>
+                  <div class="v1-item-title">Vision & Purpose</div>
+                </div>
+                <div class="v1-item-desc">Defining organizational direction</div>
+              </div>
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">14</div>
+                  <div class="v1-item-title">Culture Building</div>
+                </div>
+                <div class="v1-item-desc">Shaping values and behaviors</div>
+              </div>
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">15</div>
+                  <div class="v1-item-title">Change Management</div>
+                </div>
+                <div class="v1-item-desc">Leading transformation</div>
+              </div>
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">16</div>
+                  <div class="v1-item-title">Resource Allocation</div>
+                </div>
+                <div class="v1-item-desc">Deploying capital and talent</div>
+              </div>
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">17</div>
+                  <div class="v1-item-title">Stakeholder Management</div>
+                </div>
+                <div class="v1-item-desc">Building key relationships</div>
+              </div>
+              <div class="v1-item">
+                <div class="v1-item-header">
+                  <div class="v1-item-number">18</div>
+                  <div class="v1-item-title">Systems Thinking</div>
+                </div>
+                <div class="v1-item-desc">Understanding interconnections</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 2: Side Accent Bar -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 2: SIDE ACCENT BAR</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">Gradient accent appears when expanded</p>
+
+      <div class="v2-accordion">
+        <div class="v2-section">
+          <div class="v2-header">
+            <div class="v2-header-content">
+              <div class="v2-number">1</div>
+              <div class="v2-header-text">
+                <h3>Leading Yourself</h3>
+                <p>6 dimensions focused on personal mastery</p>
+              </div>
+            </div>
+            <div class="v2-toggle">▼</div>
+          </div>
+          <div class="v2-content">
+            <div class="v2-list">
+              <div class="v2-list-item">
+                <div class="v2-list-number">1</div>
+                <div class="v2-list-content">
+                  <h4>Self-Awareness</h4>
+                  <p>Understanding your strengths and weaknesses</p>
+                </div>
+              </div>
+              <div class="v2-list-item">
+                <div class="v2-list-number">2</div>
+                <div class="v2-list-content">
+                  <h4>Emotional Intelligence</h4>
+                  <p>Managing emotions effectively</p>
+                </div>
+              </div>
+              <div class="v2-list-item">
+                <div class="v2-list-number">3</div>
+                <div class="v2-list-content">
+                  <h4>Decision Making</h4>
+                  <p>Making sound choices under pressure</p>
+                </div>
+              </div>
+              <div class="v2-list-item">
+                <div class="v2-list-number">4</div>
+                <div class="v2-list-content">
+                  <h4>Resilience</h4>
+                  <p>Bouncing back from setbacks</p>
+                </div>
+              </div>
+              <div class="v2-list-item">
+                <div class="v2-list-number">5</div>
+                <div class="v2-list-content">
+                  <h4>Strategic Thinking</h4>
+                  <p>Seeing the big picture</p>
+                </div>
+              </div>
+              <div class="v2-list-item">
+                <div class="v2-list-number">6</div>
+                <div class="v2-list-content">
+                  <h4>Time Management</h4>
+                  <p>Prioritizing effectively</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v2-section">
+          <div class="v2-header">
+            <div class="v2-header-content">
+              <div class="v2-number">2</div>
+              <div class="v2-header-text">
+                <h3>Leading Teams</h3>
+                <p>6 dimensions focused on people leadership</p>
+              </div>
+            </div>
+            <div class="v2-toggle">▼</div>
+          </div>
+          <div class="v2-content">
+            <div class="v2-list">
+              <div class="v2-list-item">
+                <div class="v2-list-number">7</div>
+                <div class="v2-list-content">
+                  <h4>Communication</h4>
+                  <p>Articulating vision clearly</p>
+                </div>
+              </div>
+              <div class="v2-list-item">
+                <div class="v2-list-number">8</div>
+                <div class="v2-list-content">
+                  <h4>Delegation</h4>
+                  <p>Empowering others effectively</p>
+                </div>
+              </div>
+              <div class="v2-list-item">
+                <div class="v2-list-number">9</div>
+                <div class="v2-list-content">
+                  <h4>Conflict Resolution</h4>
+                  <p>Navigating disagreements</p>
+                </div>
+              </div>
+              <div class="v2-list-item">
+                <div class="v2-list-number">10</div>
+                <div class="v2-list-content">
+                  <h4>Team Building</h4>
+                  <p>Creating cohesive teams</p>
+                </div>
+              </div>
+              <div class="v2-list-item">
+                <div class="v2-list-number">11</div>
+                <div class="v2-list-content">
+                  <h4>Coaching & Development</h4>
+                  <p>Growing team capabilities</p>
+                </div>
+              </div>
+              <div class="v2-list-item">
+                <div class="v2-list-number">12</div>
+                <div class="v2-list-content">
+                  <h4>Accountability</h4>
+                  <p>Holding people responsible</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v2-section">
+          <div class="v2-header">
+            <div class="v2-header-content">
+              <div class="v2-number">3</div>
+              <div class="v2-header-text">
+                <h3>Leading Organizations</h3>
+                <p>6 dimensions focused on organizational impact</p>
+              </div>
+            </div>
+            <div class="v2-toggle">▼</div>
+          </div>
+          <div class="v2-content">
+            <div class="v2-list">
+              <div class="v2-list-item">
+                <div class="v2-list-number">13</div>
+                <div class="v2-list-content">
+                  <h4>Vision & Purpose</h4>
+                  <p>Defining organizational direction</p>
+                </div>
+              </div>
+              <div class="v2-list-item">
+                <div class="v2-list-number">14</div>
+                <div class="v2-list-content">
+                  <h4>Culture Building</h4>
+                  <p>Shaping values and behaviors</p>
+                </div>
+              </div>
+              <div class="v2-list-item">
+                <div class="v2-list-number">15</div>
+                <div class="v2-list-content">
+                  <h4>Change Management</h4>
+                  <p>Leading transformation</p>
+                </div>
+              </div>
+              <div class="v2-list-item">
+                <div class="v2-list-number">16</div>
+                <div class="v2-list-content">
+                  <h4>Resource Allocation</h4>
+                  <p>Deploying capital and talent</p>
+                </div>
+              </div>
+              <div class="v2-list-item">
+                <div class="v2-list-number">17</div>
+                <div class="v2-list-content">
+                  <h4>Stakeholder Management</h4>
+                  <p>Building key relationships</p>
+                </div>
+              </div>
+              <div class="v2-list-item">
+                <div class="v2-list-number">18</div>
+                <div class="v2-list-content">
+                  <h4>Systems Thinking</h4>
+                  <p>Understanding interconnections</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 3: Minimal Lines -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 3: MINIMAL LINES</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">Clean dividers with gradient text effect</p>
+
+      <div class="v3-accordion">
+        <div class="v3-section">
+          <div class="v3-header">
+            <div class="v3-header-content">
+              <h3>Leading Yourself</h3>
+              <p>6 dimensions focused on personal mastery</p>
+            </div>
+            <div class="v3-toggle">▼</div>
+          </div>
+          <div class="v3-content">
+            <div class="v3-grid">
+              <div class="v3-card">
+                <div class="v3-card-number">1</div>
+                <div class="v3-card-title">Self-Awareness</div>
+                <div class="v3-card-desc">Understanding your strengths</div>
+              </div>
+              <div class="v3-card">
+                <div class="v3-card-number">2</div>
+                <div class="v3-card-title">Emotional Intelligence</div>
+                <div class="v3-card-desc">Managing emotions</div>
+              </div>
+              <div class="v3-card">
+                <div class="v3-card-number">3</div>
+                <div class="v3-card-title">Decision Making</div>
+                <div class="v3-card-desc">Making sound choices</div>
+              </div>
+              <div class="v3-card">
+                <div class="v3-card-number">4</div>
+                <div class="v3-card-title">Resilience</div>
+                <div class="v3-card-desc">Bouncing back</div>
+              </div>
+              <div class="v3-card">
+                <div class="v3-card-number">5</div>
+                <div class="v3-card-title">Strategic Thinking</div>
+                <div class="v3-card-desc">Seeing big picture</div>
+              </div>
+              <div class="v3-card">
+                <div class="v3-card-number">6</div>
+                <div class="v3-card-title">Time Management</div>
+                <div class="v3-card-desc">Prioritizing effectively</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v3-section">
+          <div class="v3-header">
+            <div class="v3-header-content">
+              <h3>Leading Teams</h3>
+              <p>6 dimensions focused on people leadership</p>
+            </div>
+            <div class="v3-toggle">▼</div>
+          </div>
+          <div class="v3-content">
+            <div class="v3-grid">
+              <div class="v3-card">
+                <div class="v3-card-number">7</div>
+                <div class="v3-card-title">Communication</div>
+                <div class="v3-card-desc">Articulating clearly</div>
+              </div>
+              <div class="v3-card">
+                <div class="v3-card-number">8</div>
+                <div class="v3-card-title">Delegation</div>
+                <div class="v3-card-desc">Empowering others</div>
+              </div>
+              <div class="v3-card">
+                <div class="v3-card-number">9</div>
+                <div class="v3-card-title">Conflict Resolution</div>
+                <div class="v3-card-desc">Navigating tension</div>
+              </div>
+              <div class="v3-card">
+                <div class="v3-card-number">10</div>
+                <div class="v3-card-title">Team Building</div>
+                <div class="v3-card-desc">Creating cohesion</div>
+              </div>
+              <div class="v3-card">
+                <div class="v3-card-number">11</div>
+                <div class="v3-card-title">Coaching</div>
+                <div class="v3-card-desc">Growing capabilities</div>
+              </div>
+              <div class="v3-card">
+                <div class="v3-card-number">12</div>
+                <div class="v3-card-title">Accountability</div>
+                <div class="v3-card-desc">Holding responsible</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v3-section">
+          <div class="v3-header">
+            <div class="v3-header-content">
+              <h3>Leading Organizations</h3>
+              <p>6 dimensions focused on organizational impact</p>
+            </div>
+            <div class="v3-toggle">▼</div>
+          </div>
+          <div class="v3-content">
+            <div class="v3-grid">
+              <div class="v3-card">
+                <div class="v3-card-number">13</div>
+                <div class="v3-card-title">Vision & Purpose</div>
+                <div class="v3-card-desc">Defining direction</div>
+              </div>
+              <div class="v3-card">
+                <div class="v3-card-number">14</div>
+                <div class="v3-card-title">Culture Building</div>
+                <div class="v3-card-desc">Shaping values</div>
+              </div>
+              <div class="v3-card">
+                <div class="v3-card-number">15</div>
+                <div class="v3-card-title">Change Management</div>
+                <div class="v3-card-desc">Leading transformation</div>
+              </div>
+              <div class="v3-card">
+                <div class="v3-card-number">16</div>
+                <div class="v3-card-title">Resource Allocation</div>
+                <div class="v3-card-desc">Deploying capital</div>
+              </div>
+              <div class="v3-card">
+                <div class="v3-card-number">17</div>
+                <div class="v3-card-title">Stakeholders</div>
+                <div class="v3-card-desc">Building relationships</div>
+              </div>
+              <div class="v3-card">
+                <div class="v3-card-number">18</div>
+                <div class="v3-card-title">Systems Thinking</div>
+                <div class="v3-card-desc">Seeing connections</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 4: Card Stack -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 4: CARD STACK</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">Elevated cards with large icons</p>
+
+      <div class="v4-accordion">
+        <div class="v4-section">
+          <div class="v4-header">
+            <div class="v4-icon">1</div>
+            <div class="v4-header-text">
+              <h3>Leading Yourself</h3>
+              <p>6 dimensions focused on personal mastery</p>
+            </div>
+            <div class="v4-toggle">▼</div>
+          </div>
+          <div class="v4-content">
+            <div class="v4-dimensions">
+              <div class="v4-item">
+                <div class="v4-item-number">1</div>
+                <div class="v4-item-text">
+                  <h4>Self-Awareness</h4>
+                  <p>Understanding your strengths and weaknesses</p>
+                </div>
+              </div>
+              <div class="v4-item">
+                <div class="v4-item-number">2</div>
+                <div class="v4-item-text">
+                  <h4>Emotional Intelligence</h4>
+                  <p>Managing emotions effectively</p>
+                </div>
+              </div>
+              <div class="v4-item">
+                <div class="v4-item-number">3</div>
+                <div class="v4-item-text">
+                  <h4>Decision Making</h4>
+                  <p>Making sound choices under pressure</p>
+                </div>
+              </div>
+              <div class="v4-item">
+                <div class="v4-item-number">4</div>
+                <div class="v4-item-text">
+                  <h4>Resilience</h4>
+                  <p>Bouncing back from setbacks</p>
+                </div>
+              </div>
+              <div class="v4-item">
+                <div class="v4-item-number">5</div>
+                <div class="v4-item-text">
+                  <h4>Strategic Thinking</h4>
+                  <p>Seeing the big picture</p>
+                </div>
+              </div>
+              <div class="v4-item">
+                <div class="v4-item-number">6</div>
+                <div class="v4-item-text">
+                  <h4>Time Management</h4>
+                  <p>Prioritizing effectively</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v4-section">
+          <div class="v4-header">
+            <div class="v4-icon">2</div>
+            <div class="v4-header-text">
+              <h3>Leading Teams</h3>
+              <p>6 dimensions focused on people leadership</p>
+            </div>
+            <div class="v4-toggle">▼</div>
+          </div>
+          <div class="v4-content">
+            <div class="v4-dimensions">
+              <div class="v4-item">
+                <div class="v4-item-number">7</div>
+                <div class="v4-item-text">
+                  <h4>Communication</h4>
+                  <p>Articulating vision clearly</p>
+                </div>
+              </div>
+              <div class="v4-item">
+                <div class="v4-item-number">8</div>
+                <div class="v4-item-text">
+                  <h4>Delegation</h4>
+                  <p>Empowering others effectively</p>
+                </div>
+              </div>
+              <div class="v4-item">
+                <div class="v4-item-number">9</div>
+                <div class="v4-item-text">
+                  <h4>Conflict Resolution</h4>
+                  <p>Navigating disagreements</p>
+                </div>
+              </div>
+              <div class="v4-item">
+                <div class="v4-item-number">10</div>
+                <div class="v4-item-text">
+                  <h4>Team Building</h4>
+                  <p>Creating cohesive teams</p>
+                </div>
+              </div>
+              <div class="v4-item">
+                <div class="v4-item-number">11</div>
+                <div class="v4-item-text">
+                  <h4>Coaching & Development</h4>
+                  <p>Growing team capabilities</p>
+                </div>
+              </div>
+              <div class="v4-item">
+                <div class="v4-item-number">12</div>
+                <div class="v4-item-text">
+                  <h4>Accountability</h4>
+                  <p>Holding people responsible</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v4-section">
+          <div class="v4-header">
+            <div class="v4-icon">3</div>
+            <div class="v4-header-text">
+              <h3>Leading Organizations</h3>
+              <p>6 dimensions focused on organizational impact</p>
+            </div>
+            <div class="v4-toggle">▼</div>
+          </div>
+          <div class="v4-content">
+            <div class="v4-dimensions">
+              <div class="v4-item">
+                <div class="v4-item-number">13</div>
+                <div class="v4-item-text">
+                  <h4>Vision & Purpose</h4>
+                  <p>Defining organizational direction</p>
+                </div>
+              </div>
+              <div class="v4-item">
+                <div class="v4-item-number">14</div>
+                <div class="v4-item-text">
+                  <h4>Culture Building</h4>
+                  <p>Shaping values and behaviors</p>
+                </div>
+              </div>
+              <div class="v4-item">
+                <div class="v4-item-number">15</div>
+                <div class="v4-item-text">
+                  <h4>Change Management</h4>
+                  <p>Leading transformation</p>
+                </div>
+              </div>
+              <div class="v4-item">
+                <div class="v4-item-number">16</div>
+                <div class="v4-item-text">
+                  <h4>Resource Allocation</h4>
+                  <p>Deploying capital and talent</p>
+                </div>
+              </div>
+              <div class="v4-item">
+                <div class="v4-item-number">17</div>
+                <div class="v4-item-text">
+                  <h4>Stakeholder Management</h4>
+                  <p>Building key relationships</p>
+                </div>
+              </div>
+              <div class="v4-item">
+                <div class="v4-item-number">18</div>
+                <div class="v4-item-text">
+                  <h4>Systems Thinking</h4>
+                  <p>Understanding interconnections</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 5: Horizontal Tabs -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 5: HORIZONTAL TABS</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">Switch between categories with tabs</p>
+
+      <div class="v5-container">
+        <div class="v5-tabs">
+          <div class="v5-tab active" data-tab="self">Leading Yourself</div>
+          <div class="v5-tab" data-tab="teams">Leading Teams</div>
+          <div class="v5-tab" data-tab="orgs">Leading Organizations</div>
+        </div>
+
+        <div class="v5-content active" data-content="self">
+          <div class="v5-grid">
+            <div class="v5-card">
+              <div class="v5-card-number">01</div>
+              <div class="v5-card-title">Self-Awareness</div>
+              <div class="v5-card-desc">Understanding your strengths and weaknesses</div>
+            </div>
+            <div class="v5-card">
+              <div class="v5-card-number">02</div>
+              <div class="v5-card-title">Emotional Intelligence</div>
+              <div class="v5-card-desc">Managing emotions effectively</div>
+            </div>
+            <div class="v5-card">
+              <div class="v5-card-number">03</div>
+              <div class="v5-card-title">Decision Making</div>
+              <div class="v5-card-desc">Making sound choices under pressure</div>
+            </div>
+            <div class="v5-card">
+              <div class="v5-card-number">04</div>
+              <div class="v5-card-title">Resilience</div>
+              <div class="v5-card-desc">Bouncing back from setbacks</div>
+            </div>
+            <div class="v5-card">
+              <div class="v5-card-number">05</div>
+              <div class="v5-card-title">Strategic Thinking</div>
+              <div class="v5-card-desc">Seeing the big picture</div>
+            </div>
+            <div class="v5-card">
+              <div class="v5-card-number">06</div>
+              <div class="v5-card-title">Time Management</div>
+              <div class="v5-card-desc">Prioritizing effectively</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v5-content" data-content="teams">
+          <div class="v5-grid">
+            <div class="v5-card">
+              <div class="v5-card-number">07</div>
+              <div class="v5-card-title">Communication</div>
+              <div class="v5-card-desc">Articulating vision clearly</div>
+            </div>
+            <div class="v5-card">
+              <div class="v5-card-number">08</div>
+              <div class="v5-card-title">Delegation</div>
+              <div class="v5-card-desc">Empowering others effectively</div>
+            </div>
+            <div class="v5-card">
+              <div class="v5-card-number">09</div>
+              <div class="v5-card-title">Conflict Resolution</div>
+              <div class="v5-card-desc">Navigating disagreements</div>
+            </div>
+            <div class="v5-card">
+              <div class="v5-card-number">10</div>
+              <div class="v5-card-title">Team Building</div>
+              <div class="v5-card-desc">Creating cohesive teams</div>
+            </div>
+            <div class="v5-card">
+              <div class="v5-card-number">11</div>
+              <div class="v5-card-title">Coaching & Development</div>
+              <div class="v5-card-desc">Growing team capabilities</div>
+            </div>
+            <div class="v5-card">
+              <div class="v5-card-number">12</div>
+              <div class="v5-card-title">Accountability</div>
+              <div class="v5-card-desc">Holding people responsible</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v5-content" data-content="orgs">
+          <div class="v5-grid">
+            <div class="v5-card">
+              <div class="v5-card-number">13</div>
+              <div class="v5-card-title">Vision & Purpose</div>
+              <div class="v5-card-desc">Defining organizational direction</div>
+            </div>
+            <div class="v5-card">
+              <div class="v5-card-number">14</div>
+              <div class="v5-card-title">Culture Building</div>
+              <div class="v5-card-desc">Shaping values and behaviors</div>
+            </div>
+            <div class="v5-card">
+              <div class="v5-card-number">15</div>
+              <div class="v5-card-title">Change Management</div>
+              <div class="v5-card-desc">Leading transformation</div>
+            </div>
+            <div class="v5-card">
+              <div class="v5-card-number">16</div>
+              <div class="v5-card-title">Resource Allocation</div>
+              <div class="v5-card-desc">Deploying capital and talent</div>
+            </div>
+            <div class="v5-card">
+              <div class="v5-card-number">17</div>
+              <div class="v5-card-title">Stakeholder Management</div>
+              <div class="v5-card-desc">Building key relationships</div>
+            </div>
+            <div class="v5-card">
+              <div class="v5-card-number">18</div>
+              <div class="v5-card-title">Systems Thinking</div>
+              <div class="v5-card-desc">Understanding interconnections</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 6: Numbered Sections -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 6: BIG NUMBERS</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">Large gradient numbers for visual hierarchy</p>
+
+      <div class="v6-accordion">
+        <div class="v6-section">
+          <div class="v6-header">
+            <div class="v6-big-number">1</div>
+            <div class="v6-header-content">
+              <h3>Leading Yourself</h3>
+              <p>6 dimensions focused on personal mastery</p>
+            </div>
+            <div class="v6-toggle">▼</div>
+          </div>
+          <div class="v6-content">
+            <div class="v6-list">
+              <div class="v6-item">
+                <div class="v6-item-number">1</div>
+                <div class="v6-item-text">
+                  <h4>Self-Awareness</h4>
+                  <p>Understanding your strengths and weaknesses</p>
+                </div>
+              </div>
+              <div class="v6-item">
+                <div class="v6-item-number">2</div>
+                <div class="v6-item-text">
+                  <h4>Emotional Intelligence</h4>
+                  <p>Managing emotions effectively</p>
+                </div>
+              </div>
+              <div class="v6-item">
+                <div class="v6-item-number">3</div>
+                <div class="v6-item-text">
+                  <h4>Decision Making</h4>
+                  <p>Making sound choices under pressure</p>
+                </div>
+              </div>
+              <div class="v6-item">
+                <div class="v6-item-number">4</div>
+                <div class="v6-item-text">
+                  <h4>Resilience</h4>
+                  <p>Bouncing back from setbacks</p>
+                </div>
+              </div>
+              <div class="v6-item">
+                <div class="v6-item-number">5</div>
+                <div class="v6-item-text">
+                  <h4>Strategic Thinking</h4>
+                  <p>Seeing the big picture</p>
+                </div>
+              </div>
+              <div class="v6-item">
+                <div class="v6-item-number">6</div>
+                <div class="v6-item-text">
+                  <h4>Time Management</h4>
+                  <p>Prioritizing effectively</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v6-section">
+          <div class="v6-header">
+            <div class="v6-big-number">2</div>
+            <div class="v6-header-content">
+              <h3>Leading Teams</h3>
+              <p>6 dimensions focused on people leadership</p>
+            </div>
+            <div class="v6-toggle">▼</div>
+          </div>
+          <div class="v6-content">
+            <div class="v6-list">
+              <div class="v6-item">
+                <div class="v6-item-number">7</div>
+                <div class="v6-item-text">
+                  <h4>Communication</h4>
+                  <p>Articulating vision clearly</p>
+                </div>
+              </div>
+              <div class="v6-item">
+                <div class="v6-item-number">8</div>
+                <div class="v6-item-text">
+                  <h4>Delegation</h4>
+                  <p>Empowering others effectively</p>
+                </div>
+              </div>
+              <div class="v6-item">
+                <div class="v6-item-number">9</div>
+                <div class="v6-item-text">
+                  <h4>Conflict Resolution</h4>
+                  <p>Navigating disagreements</p>
+                </div>
+              </div>
+              <div class="v6-item">
+                <div class="v6-item-number">10</div>
+                <div class="v6-item-text">
+                  <h4>Team Building</h4>
+                  <p>Creating cohesive teams</p>
+                </div>
+              </div>
+              <div class="v6-item">
+                <div class="v6-item-number">11</div>
+                <div class="v6-item-text">
+                  <h4>Coaching & Development</h4>
+                  <p>Growing team capabilities</p>
+                </div>
+              </div>
+              <div class="v6-item">
+                <div class="v6-item-number">12</div>
+                <div class="v6-item-text">
+                  <h4>Accountability</h4>
+                  <p>Holding people responsible</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v6-section">
+          <div class="v6-header">
+            <div class="v6-big-number">3</div>
+            <div class="v6-header-content">
+              <h3>Leading Organizations</h3>
+              <p>6 dimensions focused on organizational impact</p>
+            </div>
+            <div class="v6-toggle">▼</div>
+          </div>
+          <div class="v6-content">
+            <div class="v6-list">
+              <div class="v6-item">
+                <div class="v6-item-number">13</div>
+                <div class="v6-item-text">
+                  <h4>Vision & Purpose</h4>
+                  <p>Defining organizational direction</p>
+                </div>
+              </div>
+              <div class="v6-item">
+                <div class="v6-item-number">14</div>
+                <div class="v6-item-text">
+                  <h4>Culture Building</h4>
+                  <p>Shaping values and behaviors</p>
+                </div>
+              </div>
+              <div class="v6-item">
+                <div class="v6-item-number">15</div>
+                <div class="v6-item-text">
+                  <h4>Change Management</h4>
+                  <p>Leading transformation</p>
+                </div>
+              </div>
+              <div class="v6-item">
+                <div class="v6-item-number">16</div>
+                <div class="v6-item-text">
+                  <h4>Resource Allocation</h4>
+                  <p>Deploying capital and talent</p>
+                </div>
+              </div>
+              <div class="v6-item">
+                <div class="v6-item-number">17</div>
+                <div class="v6-item-text">
+                  <h4>Stakeholder Management</h4>
+                  <p>Building key relationships</p>
+                </div>
+              </div>
+              <div class="v6-item">
+                <div class="v6-item-number">18</div>
+                <div class="v6-item-text">
+                  <h4>Systems Thinking</h4>
+                  <p>Understanding interconnections</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 7: Bold Color Blocks -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 7: COLOR BLOCKS</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">Each category has its own color gradient</p>
+
+      <div class="v7-accordion">
+        <div class="v7-section">
+          <div class="v7-header">
+            <div class="v7-header-top">
+              <div class="v7-category">Category 1</div>
+              <div class="v7-toggle">▼</div>
+            </div>
+            <h3>Leading Yourself</h3>
+            <p>6 dimensions focused on personal mastery</p>
+          </div>
+          <div class="v7-content">
+            <div class="v7-grid">
+              <div class="v7-item">
+                <div class="v7-item-number">1</div>
+                <div class="v7-item-text">
+                  <h4>Self-Awareness</h4>
+                  <p>Understanding your strengths</p>
+                </div>
+              </div>
+              <div class="v7-item">
+                <div class="v7-item-number">2</div>
+                <div class="v7-item-text">
+                  <h4>Emotional Intelligence</h4>
+                  <p>Managing emotions</p>
+                </div>
+              </div>
+              <div class="v7-item">
+                <div class="v7-item-number">3</div>
+                <div class="v7-item-text">
+                  <h4>Decision Making</h4>
+                  <p>Making sound choices</p>
+                </div>
+              </div>
+              <div class="v7-item">
+                <div class="v7-item-number">4</div>
+                <div class="v7-item-text">
+                  <h4>Resilience</h4>
+                  <p>Bouncing back</p>
+                </div>
+              </div>
+              <div class="v7-item">
+                <div class="v7-item-number">5</div>
+                <div class="v7-item-text">
+                  <h4>Strategic Thinking</h4>
+                  <p>Seeing big picture</p>
+                </div>
+              </div>
+              <div class="v7-item">
+                <div class="v7-item-number">6</div>
+                <div class="v7-item-text">
+                  <h4>Time Management</h4>
+                  <p>Prioritizing effectively</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v7-section">
+          <div class="v7-header">
+            <div class="v7-header-top">
+              <div class="v7-category">Category 2</div>
+              <div class="v7-toggle">▼</div>
+            </div>
+            <h3>Leading Teams</h3>
+            <p>6 dimensions focused on people leadership</p>
+          </div>
+          <div class="v7-content">
+            <div class="v7-grid">
+              <div class="v7-item">
+                <div class="v7-item-number">7</div>
+                <div class="v7-item-text">
+                  <h4>Communication</h4>
+                  <p>Articulating clearly</p>
+                </div>
+              </div>
+              <div class="v7-item">
+                <div class="v7-item-number">8</div>
+                <div class="v7-item-text">
+                  <h4>Delegation</h4>
+                  <p>Empowering others</p>
+                </div>
+              </div>
+              <div class="v7-item">
+                <div class="v7-item-number">9</div>
+                <div class="v7-item-text">
+                  <h4>Conflict Resolution</h4>
+                  <p>Navigating tension</p>
+                </div>
+              </div>
+              <div class="v7-item">
+                <div class="v7-item-number">10</div>
+                <div class="v7-item-text">
+                  <h4>Team Building</h4>
+                  <p>Creating cohesion</p>
+                </div>
+              </div>
+              <div class="v7-item">
+                <div class="v7-item-number">11</div>
+                <div class="v7-item-text">
+                  <h4>Coaching & Development</h4>
+                  <p>Growing capabilities</p>
+                </div>
+              </div>
+              <div class="v7-item">
+                <div class="v7-item-number">12</div>
+                <div class="v7-item-text">
+                  <h4>Accountability</h4>
+                  <p>Holding responsible</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v7-section">
+          <div class="v7-header">
+            <div class="v7-header-top">
+              <div class="v7-category">Category 3</div>
+              <div class="v7-toggle">▼</div>
+            </div>
+            <h3>Leading Organizations</h3>
+            <p>6 dimensions focused on organizational impact</p>
+          </div>
+          <div class="v7-content">
+            <div class="v7-grid">
+              <div class="v7-item">
+                <div class="v7-item-number">13</div>
+                <div class="v7-item-text">
+                  <h4>Vision & Purpose</h4>
+                  <p>Defining direction</p>
+                </div>
+              </div>
+              <div class="v7-item">
+                <div class="v7-item-number">14</div>
+                <div class="v7-item-text">
+                  <h4>Culture Building</h4>
+                  <p>Shaping values</p>
+                </div>
+              </div>
+              <div class="v7-item">
+                <div class="v7-item-number">15</div>
+                <div class="v7-item-text">
+                  <h4>Change Management</h4>
+                  <p>Leading transformation</p>
+                </div>
+              </div>
+              <div class="v7-item">
+                <div class="v7-item-number">16</div>
+                <div class="v7-item-text">
+                  <h4>Resource Allocation</h4>
+                  <p>Deploying capital</p>
+                </div>
+              </div>
+              <div class="v7-item">
+                <div class="v7-item-number">17</div>
+                <div class="v7-item-text">
+                  <h4>Stakeholder Management</h4>
+                  <p>Building relationships</p>
+                </div>
+              </div>
+              <div class="v7-item">
+                <div class="v7-item-number">18</div>
+                <div class="v7-item-text">
+                  <h4>Systems Thinking</h4>
+                  <p>Seeing connections</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 8: Progress Bar Style -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 8: PROGRESS INDICATOR</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">Animated progress bar appears when expanded</p>
+
+      <div class="v8-accordion">
+        <div class="v8-section">
+          <div class="v8-header">
+            <div class="v8-header-content">
+              <div class="v8-header-left">
+                <h3>Leading Yourself</h3>
+                <p>6 dimensions focused on personal mastery</p>
+              </div>
+              <div class="v8-count">
+                <div class="v8-count-circle">6</div>
+                <div class="v8-toggle">▼</div>
+              </div>
+            </div>
+          </div>
+          <div class="v8-content">
+            <div class="v8-list">
+              <div class="v8-item">
+                <div class="v8-item-number">1</div>
+                <div class="v8-item-text">
+                  <h4>Self-Awareness</h4>
+                  <p>Understanding your strengths and weaknesses</p>
+                </div>
+              </div>
+              <div class="v8-item">
+                <div class="v8-item-number">2</div>
+                <div class="v8-item-text">
+                  <h4>Emotional Intelligence</h4>
+                  <p>Managing emotions effectively</p>
+                </div>
+              </div>
+              <div class="v8-item">
+                <div class="v8-item-number">3</div>
+                <div class="v8-item-text">
+                  <h4>Decision Making</h4>
+                  <p>Making sound choices under pressure</p>
+                </div>
+              </div>
+              <div class="v8-item">
+                <div class="v8-item-number">4</div>
+                <div class="v8-item-text">
+                  <h4>Resilience</h4>
+                  <p>Bouncing back from setbacks</p>
+                </div>
+              </div>
+              <div class="v8-item">
+                <div class="v8-item-number">5</div>
+                <div class="v8-item-text">
+                  <h4>Strategic Thinking</h4>
+                  <p>Seeing the big picture</p>
+                </div>
+              </div>
+              <div class="v8-item">
+                <div class="v8-item-number">6</div>
+                <div class="v8-item-text">
+                  <h4>Time Management</h4>
+                  <p>Prioritizing effectively</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v8-section">
+          <div class="v8-header">
+            <div class="v8-header-content">
+              <div class="v8-header-left">
+                <h3>Leading Teams</h3>
+                <p>6 dimensions focused on people leadership</p>
+              </div>
+              <div class="v8-count">
+                <div class="v8-count-circle">6</div>
+                <div class="v8-toggle">▼</div>
+              </div>
+            </div>
+          </div>
+          <div class="v8-content">
+            <div class="v8-list">
+              <div class="v8-item">
+                <div class="v8-item-number">7</div>
+                <div class="v8-item-text">
+                  <h4>Communication</h4>
+                  <p>Articulating vision clearly</p>
+                </div>
+              </div>
+              <div class="v8-item">
+                <div class="v8-item-number">8</div>
+                <div class="v8-item-text">
+                  <h4>Delegation</h4>
+                  <p>Empowering others effectively</p>
+                </div>
+              </div>
+              <div class="v8-item">
+                <div class="v8-item-number">9</div>
+                <div class="v8-item-text">
+                  <h4>Conflict Resolution</h4>
+                  <p>Navigating disagreements</p>
+                </div>
+              </div>
+              <div class="v8-item">
+                <div class="v8-item-number">10</div>
+                <div class="v8-item-text">
+                  <h4>Team Building</h4>
+                  <p>Creating cohesive teams</p>
+                </div>
+              </div>
+              <div class="v8-item">
+                <div class="v8-item-number">11</div>
+                <div class="v8-item-text">
+                  <h4>Coaching & Development</h4>
+                  <p>Growing team capabilities</p>
+                </div>
+              </div>
+              <div class="v8-item">
+                <div class="v8-item-number">12</div>
+                <div class="v8-item-text">
+                  <h4>Accountability</h4>
+                  <p>Holding people responsible</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v8-section">
+          <div class="v8-header">
+            <div class="v8-header-content">
+              <div class="v8-header-left">
+                <h3>Leading Organizations</h3>
+                <p>6 dimensions focused on organizational impact</p>
+              </div>
+              <div class="v8-count">
+                <div class="v8-count-circle">6</div>
+                <div class="v8-toggle">▼</div>
+              </div>
+            </div>
+          </div>
+          <div class="v8-content">
+            <div class="v8-list">
+              <div class="v8-item">
+                <div class="v8-item-number">13</div>
+                <div class="v8-item-text">
+                  <h4>Vision & Purpose</h4>
+                  <p>Defining organizational direction</p>
+                </div>
+              </div>
+              <div class="v8-item">
+                <div class="v8-item-number">14</div>
+                <div class="v8-item-text">
+                  <h4>Culture Building</h4>
+                  <p>Shaping values and behaviors</p>
+                </div>
+              </div>
+              <div class="v8-item">
+                <div class="v8-item-number">15</div>
+                <div class="v8-item-text">
+                  <h4>Change Management</h4>
+                  <p>Leading transformation</p>
+                </div>
+              </div>
+              <div class="v8-item">
+                <div class="v8-item-number">16</div>
+                <div class="v8-item-text">
+                  <h4>Resource Allocation</h4>
+                  <p>Deploying capital and talent</p>
+                </div>
+              </div>
+              <div class="v8-item">
+                <div class="v8-item-number">17</div>
+                <div class="v8-item-text">
+                  <h4>Stakeholder Management</h4>
+                  <p>Building key relationships</p>
+                </div>
+              </div>
+              <div class="v8-item">
+                <div class="v8-item-number">18</div>
+                <div class="v8-item-text">
+                  <h4>Systems Thinking</h4>
+                  <p>Understanding interconnections</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 9: Timeline Style -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 9: TIMELINE FLOW</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">Vertical timeline with gradient connection</p>
+
+      <div class="v9-accordion">
+        <div class="v9-section">
+          <div class="v9-dot"></div>
+          <div class="v9-header">
+            <div class="v9-header-content">
+              <div class="v9-header-text">
+                <h3>Leading Yourself</h3>
+                <p>6 dimensions focused on personal mastery</p>
+              </div>
+              <div class="v9-toggle">▼</div>
+            </div>
+          </div>
+          <div class="v9-content">
+            <div class="v9-grid">
+              <div class="v9-item">
+                <div class="v9-item-number">1</div>
+                <div class="v9-item-text">
+                  <h4>Self-Awareness</h4>
+                  <p>Understanding strengths</p>
+                </div>
+              </div>
+              <div class="v9-item">
+                <div class="v9-item-number">2</div>
+                <div class="v9-item-text">
+                  <h4>Emotional Intelligence</h4>
+                  <p>Managing emotions</p>
+                </div>
+              </div>
+              <div class="v9-item">
+                <div class="v9-item-number">3</div>
+                <div class="v9-item-text">
+                  <h4>Decision Making</h4>
+                  <p>Making choices</p>
+                </div>
+              </div>
+              <div class="v9-item">
+                <div class="v9-item-number">4</div>
+                <div class="v9-item-text">
+                  <h4>Resilience</h4>
+                  <p>Bouncing back</p>
+                </div>
+              </div>
+              <div class="v9-item">
+                <div class="v9-item-number">5</div>
+                <div class="v9-item-text">
+                  <h4>Strategic Thinking</h4>
+                  <p>Big picture view</p>
+                </div>
+              </div>
+              <div class="v9-item">
+                <div class="v9-item-number">6</div>
+                <div class="v9-item-text">
+                  <h4>Time Management</h4>
+                  <p>Prioritizing work</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v9-section">
+          <div class="v9-dot"></div>
+          <div class="v9-header">
+            <div class="v9-header-content">
+              <div class="v9-header-text">
+                <h3>Leading Teams</h3>
+                <p>6 dimensions focused on people leadership</p>
+              </div>
+              <div class="v9-toggle">▼</div>
+            </div>
+          </div>
+          <div class="v9-content">
+            <div class="v9-grid">
+              <div class="v9-item">
+                <div class="v9-item-number">7</div>
+                <div class="v9-item-text">
+                  <h4>Communication</h4>
+                  <p>Articulating vision</p>
+                </div>
+              </div>
+              <div class="v9-item">
+                <div class="v9-item-number">8</div>
+                <div class="v9-item-text">
+                  <h4>Delegation</h4>
+                  <p>Empowering others</p>
+                </div>
+              </div>
+              <div class="v9-item">
+                <div class="v9-item-number">9</div>
+                <div class="v9-item-text">
+                  <h4>Conflict Resolution</h4>
+                  <p>Navigating tension</p>
+                </div>
+              </div>
+              <div class="v9-item">
+                <div class="v9-item-number">10</div>
+                <div class="v9-item-text">
+                  <h4>Team Building</h4>
+                  <p>Creating cohesion</p>
+                </div>
+              </div>
+              <div class="v9-item">
+                <div class="v9-item-number">11</div>
+                <div class="v9-item-text">
+                  <h4>Coaching</h4>
+                  <p>Growing people</p>
+                </div>
+              </div>
+              <div class="v9-item">
+                <div class="v9-item-number">12</div>
+                <div class="v9-item-text">
+                  <h4>Accountability</h4>
+                  <p>Holding responsible</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v9-section">
+          <div class="v9-dot"></div>
+          <div class="v9-header">
+            <div class="v9-header-content">
+              <div class="v9-header-text">
+                <h3>Leading Organizations</h3>
+                <p>6 dimensions focused on organizational impact</p>
+              </div>
+              <div class="v9-toggle">▼</div>
+            </div>
+          </div>
+          <div class="v9-content">
+            <div class="v9-grid">
+              <div class="v9-item">
+                <div class="v9-item-number">13</div>
+                <div class="v9-item-text">
+                  <h4>Vision & Purpose</h4>
+                  <p>Defining direction</p>
+                </div>
+              </div>
+              <div class="v9-item">
+                <div class="v9-item-number">14</div>
+                <div class="v9-item-text">
+                  <h4>Culture Building</h4>
+                  <p>Shaping values</p>
+                </div>
+              </div>
+              <div class="v9-item">
+                <div class="v9-item-number">15</div>
+                <div class="v9-item-text">
+                  <h4>Change Management</h4>
+                  <p>Leading transformation</p>
+                </div>
+              </div>
+              <div class="v9-item">
+                <div class="v9-item-number">16</div>
+                <div class="v9-item-text">
+                  <h4>Resource Allocation</h4>
+                  <p>Deploying capital</p>
+                </div>
+              </div>
+              <div class="v9-item">
+                <div class="v9-item-number">17</div>
+                <div class="v9-item-text">
+                  <h4>Stakeholders</h4>
+                  <p>Building relationships</p>
+                </div>
+              </div>
+              <div class="v9-item">
+                <div class="v9-item-number">18</div>
+                <div class="v9-item-text">
+                  <h4>Systems Thinking</h4>
+                  <p>Seeing connections</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 10: Split Panel -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 10: SPLIT PANEL</div>
+      <span class="section-label">ceo-lab --dimensions</span>
+      <h2>18 Leadership Dimensions</h2>
+      <p class="intro">Gradient panel with centered content grid</p>
+
+      <div class="v10-accordion">
+        <div class="v10-section">
+          <div class="v10-header">
+            <div class="v10-header-left">
+              <h3>Leading Yourself</h3>
+              <p>6 dimensions focused on personal mastery</p>
+            </div>
+            <div class="v10-header-right">
+              <div class="v10-toggle">▼</div>
+            </div>
+          </div>
+          <div class="v10-content">
+            <div class="v10-grid">
+              <div class="v10-card">
+                <div class="v10-card-number">1</div>
+                <div class="v10-card-title">Self-Awareness</div>
+                <div class="v10-card-desc">Understanding strengths</div>
+              </div>
+              <div class="v10-card">
+                <div class="v10-card-number">2</div>
+                <div class="v10-card-title">Emotional Intel</div>
+                <div class="v10-card-desc">Managing emotions</div>
+              </div>
+              <div class="v10-card">
+                <div class="v10-card-number">3</div>
+                <div class="v10-card-title">Decision Making</div>
+                <div class="v10-card-desc">Making choices</div>
+              </div>
+              <div class="v10-card">
+                <div class="v10-card-number">4</div>
+                <div class="v10-card-title">Resilience</div>
+                <div class="v10-card-desc">Bouncing back</div>
+              </div>
+              <div class="v10-card">
+                <div class="v10-card-number">5</div>
+                <div class="v10-card-title">Strategic</div>
+                <div class="v10-card-desc">Big picture</div>
+              </div>
+              <div class="v10-card">
+                <div class="v10-card-number">6</div>
+                <div class="v10-card-title">Time Mgmt</div>
+                <div class="v10-card-desc">Prioritizing</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v10-section">
+          <div class="v10-header">
+            <div class="v10-header-left">
+              <h3>Leading Teams</h3>
+              <p>6 dimensions focused on people leadership</p>
+            </div>
+            <div class="v10-header-right">
+              <div class="v10-toggle">▼</div>
+            </div>
+          </div>
+          <div class="v10-content">
+            <div class="v10-grid">
+              <div class="v10-card">
+                <div class="v10-card-number">7</div>
+                <div class="v10-card-title">Communication</div>
+                <div class="v10-card-desc">Articulating vision</div>
+              </div>
+              <div class="v10-card">
+                <div class="v10-card-number">8</div>
+                <div class="v10-card-title">Delegation</div>
+                <div class="v10-card-desc">Empowering others</div>
+              </div>
+              <div class="v10-card">
+                <div class="v10-card-number">9</div>
+                <div class="v10-card-title">Conflict</div>
+                <div class="v10-card-desc">Navigating tension</div>
+              </div>
+              <div class="v10-card">
+                <div class="v10-card-number">10</div>
+                <div class="v10-card-title">Team Building</div>
+                <div class="v10-card-desc">Creating cohesion</div>
+              </div>
+              <div class="v10-card">
+                <div class="v10-card-number">11</div>
+                <div class="v10-card-title">Coaching</div>
+                <div class="v10-card-desc">Growing people</div>
+              </div>
+              <div class="v10-card">
+                <div class="v10-card-number">12</div>
+                <div class="v10-card-title">Accountability</div>
+                <div class="v10-card-desc">Holding responsible</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="v10-section">
+          <div class="v10-header">
+            <div class="v10-header-left">
+              <h3>Leading Organizations</h3>
+              <p>6 dimensions focused on organizational impact</p>
+            </div>
+            <div class="v10-header-right">
+              <div class="v10-toggle">▼</div>
+            </div>
+          </div>
+          <div class="v10-content">
+            <div class="v10-grid">
+              <div class="v10-card">
+                <div class="v10-card-number">13</div>
+                <div class="v10-card-title">Vision</div>
+                <div class="v10-card-desc">Defining direction</div>
+              </div>
+              <div class="v10-card">
+                <div class="v10-card-number">14</div>
+                <div class="v10-card-title">Culture</div>
+                <div class="v10-card-desc">Shaping values</div>
+              </div>
+              <div class="v10-card">
+                <div class="v10-card-number">15</div>
+                <div class="v10-card-title">Change</div>
+                <div class="v10-card-desc">Leading transformation</div>
+              </div>
+              <div class="v10-card">
+                <div class="v10-card-number">16</div>
+                <div class="v10-card-title">Resources</div>
+                <div class="v10-card-desc">Deploying capital</div>
+              </div>
+              <div class="v10-card">
+                <div class="v10-card-number">17</div>
+                <div class="v10-card-title">Stakeholders</div>
+                <div class="v10-card-desc">Building relationships</div>
+              </div>
+              <div class="v10-card">
+                <div class="v10-card-number">18</div>
+                <div class="v10-card-title">Systems</div>
+                <div class="v10-card-desc">Seeing connections</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Accordion functionality for all versions
+    document.querySelectorAll('[class*="-header"]').forEach(header => {
+      header.addEventListener('click', function(e) {
+        // Don't close if clicking on a tab
+        if (e.target.classList.contains('v5-tab')) return;
+
+        const section = this.closest('[class*="-section"]');
+        if (section) {
+          section.classList.toggle('active');
+        }
+      });
+    });
+
+    // Tab functionality for VERSION 5
+    document.querySelectorAll('.v5-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        const tabName = this.getAttribute('data-tab');
+        const container = this.closest('.v5-container');
+
+        // Remove active from all tabs and contents
+        container.querySelectorAll('.v5-tab').forEach(t => t.classList.remove('active'));
+        container.querySelectorAll('.v5-content').forEach(c => c.classList.remove('active'));
+
+        // Add active to clicked tab and corresponding content
+        this.classList.add('active');
+        container.querySelector(`.v5-content[data-content="${tabName}"]`).classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>

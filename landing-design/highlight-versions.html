@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Highlight Versions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #fff;
+      color: #000;
+      line-height: 1.6;
+    }
+
+    .version {
+      padding: 6rem 2rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .label {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+    }
+
+    /* VERSION 1: Left Accent Bar */
+    .v1-box {
+      border-left: 4px solid #7FABC8;
+      padding-left: 2rem;
+    }
+
+    .v1-box h2 {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .v1-box p {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    .v1-box strong {
+      color: #000;
+      font-weight: 600;
+    }
+
+    /* VERSION 2: Background Box */
+    .v2-box {
+      background: #F7F3ED;
+      padding: 3rem;
+      border-radius: 0.75rem;
+    }
+
+    .v2-box h2 {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .v2-box p {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    .v2-box strong {
+      color: #000;
+      font-weight: 600;
+    }
+
+    /* VERSION 3: Centered with Top Border */
+    .v3-box {
+      text-align: center;
+      padding: 3rem 0;
+      border-top: 2px solid #7FABC8;
+      border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .v3-box h2 {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      max-width: 42rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .v3-box p {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+      max-width: 36rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .v3-box strong {
+      color: #000;
+      font-weight: 600;
+    }
+
+    /* VERSION 4: Gradient Background */
+    .v4-box {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.08) 0%, rgba(166, 190, 164, 0.08) 100%);
+      padding: 3rem;
+      border-radius: 0.75rem;
+    }
+
+    .v4-box h2 {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .v4-box p {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    .v4-box strong {
+      color: #000;
+      font-weight: 600;
+    }
+
+    /* VERSION 5: Minimal with Color Highlight */
+    .v5-box h2 {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .v5-box h2 span {
+      color: #7FABC8;
+    }
+
+    .v5-box p {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    .v5-box strong {
+      color: #000;
+      font-weight: 600;
+    }
+
+    /* VERSION 6: Card with Shadow */
+    .v6-box {
+      background: #fff;
+      padding: 3rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .v6-box h2 {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .v6-box p {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    .v6-box strong {
+      color: #000;
+      font-weight: 600;
+    }
+
+    /* VERSION 7: Callout Box */
+    .v7-box {
+      position: relative;
+      padding-left: 3rem;
+    }
+
+    .v7-box::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, #7FABC8 0%, #A6BEA4 100%);
+      border-radius: 999px;
+    }
+
+    .v7-box h2 {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .v7-box p {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    .v7-box strong {
+      color: #000;
+      font-weight: 600;
+    }
+
+    /* VERSION 8: Bracket Style */
+    .v8-box {
+      padding: 2rem 0 2rem 2rem;
+      border-left: 3px solid #7FABC8;
+      border-top: 3px solid #7FABC8;
+      border-bottom: 3px solid #7FABC8;
+      border-radius: 0.5rem 0 0 0.5rem;
+    }
+
+    .v8-box h2 {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .v8-box p {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    .v8-box strong {
+      color: #000;
+      font-weight: 600;
+    }
+
+    /* VERSION 9: Quote Style */
+    .v9-box {
+      position: relative;
+      padding: 2rem 0;
+    }
+
+    .v9-box::before {
+      content: '"';
+      position: absolute;
+      left: -1.5rem;
+      top: 0;
+      font-size: 80px;
+      font-weight: 700;
+      color: rgba(127, 171, 200, 0.15);
+      line-height: 1;
+    }
+
+    .v9-box h2 {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .v9-box p {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    .v9-box strong {
+      color: #000;
+      font-weight: 600;
+    }
+
+    /* VERSION 10: Split Color */
+    .v10-box {
+      background: linear-gradient(90deg, #F7F3ED 0%, #F7F3ED 50%, transparent 50%, transparent 100%);
+      padding: 3rem;
+      border-radius: 0.75rem;
+    }
+
+    .v10-box h2 {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .v10-box p {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.6;
+    }
+
+    .v10-box strong {
+      color: #000;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .version {
+        padding: 4rem 1.5rem;
+      }
+
+      .v1-box h2, .v2-box h2, .v3-box h2, .v4-box h2, .v5-box h2,
+      .v6-box h2, .v7-box h2, .v8-box h2, .v9-box h2, .v10-box h2 {
+        font-size: 24px;
+      }
+
+      .v1-box p, .v2-box p, .v3-box p, .v4-box p, .v5-box p,
+      .v6-box p, .v7-box p, .v8-box p, .v9-box p, .v10-box p {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- VERSION 1: Left Accent Bar -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 1: LEFT ACCENT BAR</div>
+      <div class="v1-box">
+        <h2>When was the last time you objectively measured your own leadership?</h2>
+        <p>
+          Not your company's performance. Not your team's output.<br>
+          <strong>Your leadership.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 2: Background Box -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 2: BACKGROUND BOX</div>
+      <div class="v2-box">
+        <h2>When was the last time you objectively measured your own leadership?</h2>
+        <p>
+          Not your company's performance. Not your team's output.<br>
+          <strong>Your leadership.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 3: Centered with Top Border -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 3: CENTERED WITH TOP BORDER</div>
+      <div class="v3-box">
+        <h2>When was the last time you objectively measured your own leadership?</h2>
+        <p>
+          Not your company's performance. Not your team's output.<br>
+          <strong>Your leadership.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 4: Gradient Background -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 4: GRADIENT BACKGROUND</div>
+      <div class="v4-box">
+        <h2>When was the last time you objectively measured your own leadership?</h2>
+        <p>
+          Not your company's performance. Not your team's output.<br>
+          <strong>Your leadership.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 5: Minimal with Color Highlight -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 5: COLOR HIGHLIGHT</div>
+      <div class="v5-box">
+        <h2>When was the last time you <span>objectively measured</span> your own leadership?</h2>
+        <p>
+          Not your company's performance. Not your team's output.<br>
+          <strong>Your leadership.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 6: Card with Shadow -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 6: CARD WITH SHADOW</div>
+      <div class="v6-box">
+        <h2>When was the last time you objectively measured your own leadership?</h2>
+        <p>
+          Not your company's performance. Not your team's output.<br>
+          <strong>Your leadership.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 7: Callout Box -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 7: GRADIENT SIDE BAR</div>
+      <div class="v7-box">
+        <h2>When was the last time you objectively measured your own leadership?</h2>
+        <p>
+          Not your company's performance. Not your team's output.<br>
+          <strong>Your leadership.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 8: Bracket Style -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 8: BRACKET STYLE</div>
+      <div class="v8-box">
+        <h2>When was the last time you objectively measured your own leadership?</h2>
+        <p>
+          Not your company's performance. Not your team's output.<br>
+          <strong>Your leadership.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 9: Quote Style -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 9: QUOTE MARK</div>
+      <div class="v9-box">
+        <h2>When was the last time you objectively measured your own leadership?</h2>
+        <p>
+          Not your company's performance. Not your team's output.<br>
+          <strong>Your leadership.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION 10: Split Color -->
+  <div class="version">
+    <div class="container">
+      <div class="label">VERSION 10: SPLIT BACKGROUND</div>
+      <div class="v10-box">
+        <h2>When was the last time you objectively measured your own leadership?</h2>
+        <p>
+          Not your company's performance. Not your team's output.<br>
+          <strong>Your leadership.</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
