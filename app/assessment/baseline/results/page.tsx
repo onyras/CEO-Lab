@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function BaselineResults() {
+function ResultsContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -17,5 +17,17 @@ export default function BaselineResults() {
     <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center">
       <div className="text-black/60">Loading your comprehensive dashboard...</div>
     </div>
+  )
+}
+
+export default function BaselineResults() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center">
+        <div className="text-black/60">Loading...</div>
+      </div>
+    }>
+      <ResultsContent />
+    </Suspense>
   )
 }
