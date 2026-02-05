@@ -137,7 +137,8 @@ export default function BaselineAssessment() {
       const result = await saveProgress()
 
       if (!result || !result.success) {
-        alert('Failed to save your progress. Please check your connection and try again.')
+        const errorMsg = result?.error || 'Unknown error occurred'
+        alert(`Failed to save your progress.\n\nError: ${errorMsg}\n\nPlease screenshot this message and send to support.`)
         setSaving(false)
         return
       }
