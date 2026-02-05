@@ -54,7 +54,8 @@ export default function ResultsDashboard() {
         }
 
         // Load sub-dimension scores if any baseline stage is completed
-        if (profileData?.baseline_completed || profileData?.baseline_stage >= 1) {
+        const baselineStage = profileData?.baseline_stage ?? 0
+        if (profileData?.baseline_completed || baselineStage >= 1) {
           // First try to load from sub_dimension_scores table
           const { data: scores } = await supabase
             .from('sub_dimension_scores')
@@ -215,16 +216,30 @@ export default function ResultsDashboard() {
 
         <main className="max-w-7xl mx-auto px-8 py-12">
           <div className="bg-white rounded-lg p-12 text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold text-black mb-4">Complete Your Baseline First</h2>
+            <h2 className="text-3xl font-bold text-black mb-4">
+              {!hasBaseline ? 'Complete Your Baseline First' : 'Loading Your Results...'}
+            </h2>
             <p className="text-lg text-black/60 mb-8">
-              Take the 100-question baseline assessment to unlock your comprehensive leadership dashboard.
+              {!hasBaseline
+                ? 'Take the 100-question baseline assessment to unlock your comprehensive leadership dashboard.'
+                : 'Your assessment is being processed. This should only take a moment. If this persists, please refresh the page.'
+              }
             </p>
-            <a
-              href="/assessment/baseline"
-              className="inline-block px-8 py-3 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors"
-            >
-              Start Baseline Assessment
-            </a>
+            {!hasBaseline ? (
+              <a
+                href="/assessment/baseline"
+                className="inline-block px-8 py-3 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors"
+              >
+                Start Baseline Assessment
+              </a>
+            ) : (
+              <button
+                onClick={() => window.location.reload()}
+                className="inline-block px-8 py-3 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors"
+              >
+                Refresh Page
+              </button>
+            )}
           </div>
         </main>
       </div>

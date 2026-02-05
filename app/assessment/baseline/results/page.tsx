@@ -1,15 +1,17 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 export default function BaselineResults() {
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   useEffect(() => {
-    // Redirect to the new comprehensive dashboard
-    router.replace('/results')
-  }, [router])
+    const stage = searchParams.get('stage')
+    // Preserve stage parameter during redirect
+    router.replace(`/results${stage ? `?stage=${stage}` : ''}`)
+  }, [router, searchParams])
 
   return (
     <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center">

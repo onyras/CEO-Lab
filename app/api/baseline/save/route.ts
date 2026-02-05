@@ -162,7 +162,11 @@ export async function POST(request: Request) {
 
     if (scoresError) {
       console.error('Scores error:', scoresError)
-      // Don't fail the entire request if scores don't save
+      // CRITICAL: Return error instead of silent failure
+      return NextResponse.json(
+        { error: 'Failed to save scores: ' + scoresError.message },
+        { status: 500 }
+      )
     }
 
     // If Stage 1 complete, update user profile baseline_stage
