@@ -35,6 +35,9 @@ export default function ResultsDashboard() {
   const [overallScore, setOverallScore] = useState(0)
   const [modalOpen, setModalOpen] = useState(false)
   const [modalData, setModalData] = useState<{ dimension: string; score: number } | null>(null)
+  const [hasMultipleBaselines, setHasMultipleBaselines] = useState(false)
+  const [baselineScores, setBaselineScores] = useState<SubDimensionScore[]>([])
+  const [showComparison, setShowComparison] = useState(false)
 
   const loadFromResponses = async (supabase: any, userId: string) => {
     // Fallback: Calculate from baseline_responses (NEVER DELETE USER DATA)
@@ -88,17 +91,47 @@ export default function ResultsDashboard() {
         // Load sub-dimension scores if any baseline stage is completed
         const baselineStage = profileData?.baseline_stage ?? 0
         if (profileData?.baseline_completed || baselineStage >= 1) {
-          // Get latest assessment
-          const { data: latestAssessment } = await supabase
+          // Get all completed assessments (for comparison feature)
+          const { data: allAssessments } = await supabase
             .from('baseline_assessments')
-            .select('id')
+            .select('id, completed_at')
             .eq('user_id', session.user.id)
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .single()
+            .not('completed_at', 'is', null)
+            .order('completed_at', { ascending: true })
 
-          if (latestAssessment) {
-            // Get scores for latest assessment only
+          if (allAssessments && allAssessments.length >= 2) {
+            // Multiple baselines exist - enable comparison
+            setHasMultipleBaselines(true)
+            const firstAssessment = allAssessments[0]
+            const latestAssessment = allAssessments[allAssessments.length - 1]
+
+            // Load baseline (first) scores
+            const { data: baselineScoresData } = await supabase
+              .from('sub_dimension_scores')
+              .select('sub_dimension, territory, percentage')
+              .eq('user_id', session.user.id)
+              .eq('assessment_id', firstAssessment.id)
+
+            if (baselineScoresData && baselineScoresData.length > 0) {
+              setBaselineScores(baselineScoresData)
+            }
+
+            // Load latest scores
+            const { data: latestScoresData } = await supabase
+              .from('sub_dimension_scores')
+              .select('sub_dimension, territory, percentage')
+              .eq('user_id', session.user.id)
+              .eq('assessment_id', latestAssessment.id)
+
+            if (latestScoresData && latestScoresData.length > 0) {
+              setSubDimensionScores(latestScoresData)
+              calculateTerritoryScores(latestScoresData)
+            } else {
+              await loadFromResponses(supabase, session.user.id)
+            }
+          } else if (allAssessments && allAssessments.length === 1) {
+            // Single baseline - show just that
+            const latestAssessment = allAssessments[0]
             const { data: scores } = await supabase
               .from('sub_dimension_scores')
               .select('sub_dimension, territory, percentage')
@@ -106,11 +139,9 @@ export default function ResultsDashboard() {
               .eq('assessment_id', latestAssessment.id)
 
             if (scores && scores.length > 0) {
-              // Use pre-calculated scores from latest assessment
               setSubDimensionScores(scores)
               calculateTerritoryScores(scores)
             } else {
-              // Fallback: Calculate from responses
               await loadFromResponses(supabase, session.user.id)
             }
           } else {
@@ -145,7 +176,6 @@ export default function ResultsDashboard() {
           // Try fallback for edge cases
           await loadFromResponses(supabase, session.user.id)
         }
-      }
       } else {
         router.push('/auth')
       }
@@ -441,6 +471,52 @@ export default function ResultsDashboard() {
             ))}
           </div>
         </section>
+
+        {/* 3.5. Baseline vs Latest Comparison (if multiple baselines exist) */}
+        {hasMultipleBaselines && (
+          <section className="section section--alt">
+            <div className="section__header">
+              <h2>Baseline vs Latest Comparison</h2>
+              <p>Track your growth across quarterly baselines. Positive changes in green.</p>
+              <button
+                onClick={() => setShowComparison(!showComparison)}
+                className="px-4 py-2 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors mt-4"
+              >
+                {showComparison ? 'Hide Comparison' : 'Show Comparison'}
+              </button>
+            </div>
+            {showComparison && baselineScores.length > 0 && (
+              <div className="metrics-grid">
+                {subDimensionScores
+                  .sort((a, b) => a.sub_dimension.localeCompare(b.sub_dimension))
+                  .map((latestDim) => {
+                    const baselineDim = baselineScores.find(b => b.sub_dimension === latestDim.sub_dimension)
+                    const change = baselineDim ? Math.round(latestDim.percentage - baselineDim.percentage) : 0
+                    const hasImproved = change > 0
+
+                    return (
+                      <div key={latestDim.sub_dimension} className="metric" style={{ border: hasImproved ? '2px solid #22c55e' : '2px solid #e5e7eb' }}>
+                        <div className="metric__label" style={{ marginBottom: '8px' }}>{latestDim.sub_dimension}</div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <div>
+                            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Baseline</div>
+                            <div className="metric__value" style={{ fontSize: '24px' }}>{baselineDim ? Math.round(baselineDim.percentage) : '—'}</div>
+                          </div>
+                          <div style={{ fontSize: '20px', color: hasImproved ? '#22c55e' : change < 0 ? '#ef4444' : '#6b7280' }}>
+                            {change > 0 ? `+${change}` : change}
+                          </div>
+                          <div>
+                            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Latest</div>
+                            <div className="metric__value" style={{ fontSize: '24px' }}>{Math.round(latestDim.percentage)}</div>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+              </div>
+            )}
+          </section>
+        )}
 
         {/* 4. Sub-Dimension Heatmap */}
         <section className="section section--alt">
