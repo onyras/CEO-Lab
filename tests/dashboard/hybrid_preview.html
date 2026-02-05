@@ -1,0 +1,1269 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CEO Lab — Hybrid Dashboard Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-primary: #f7f3ed;
+      --bg-white: #ffffff;
+      --bg-alt: #faf8f5;
+      --text-primary: #000000;
+      --text-secondary: rgba(0, 0, 0, 0.7);
+      --text-muted: rgba(0, 0, 0, 0.55);
+      --border-color: rgba(0, 0, 0, 0.1);
+      --nk-blue: #7fabc8;
+      --nk-green: #a6bea4;
+      --nk-orange: #e08f6a;
+      --red: #e74c3c;
+      --yellow: #f39c12;
+      --green: #27ae60;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: clamp(36px, 4vw, 56px);
+      line-height: 1.1;
+    }
+
+    h2 {
+      font-size: clamp(26px, 3vw, 36px);
+      line-height: 1.2;
+    }
+
+    h3 {
+      font-size: 20px;
+      line-height: 1.3;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    /* Hero Section */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 32px;
+      align-items: start;
+      padding: 32px;
+      background: var(--bg-white);
+      border-radius: 24px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 32px;
+    }
+
+    .pill {
+      display: inline-flex;
+      padding: 6px 12px;
+      background: var(--bg-primary);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 16px;
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+
+    .hero__meta {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .meta__label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .meta__value {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .score-card {
+      background: linear-gradient(135deg, #7fabc8 0%, #a6bea4 100%);
+      padding: 24px;
+      border-radius: 16px;
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .score-card__label {
+      font-size: 13px;
+      opacity: 0.9;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .score-card__value {
+      font-size: 64px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .score-card__sub {
+      font-size: 14px;
+      opacity: 0.95;
+      margin-bottom: 12px;
+    }
+
+    .score-card__trend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .trend {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .trend.up::before {
+      content: "↑ ";
+    }
+
+    .ring-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .ring {
+      background: var(--bg-white);
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .ring__svg {
+      width: 100%;
+      height: auto;
+      margin-bottom: 8px;
+    }
+
+    .ring__svg circle {
+      fill: none;
+      stroke-width: 8;
+      stroke-linecap: round;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+
+    .ring__bg {
+      stroke: rgba(0, 0, 0, 0.08);
+    }
+
+    .ring__fg {
+      stroke: var(--nk-blue);
+      transition: stroke-dashoffset 1s ease;
+    }
+
+    .ring__label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    /* Section Styles */
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section--alt {
+      background: var(--bg-white);
+      padding: 32px;
+      border-radius: 24px;
+      border: 1px solid var(--border-color);
+    }
+
+    .section__header {
+      margin-bottom: 24px;
+    }
+
+    .section__header p {
+      color: var(--text-secondary);
+      margin-top: 8px;
+    }
+
+    /* Domain Grid */
+    .domain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .domain-card {
+      background: var(--bg-white);
+      padding: 24px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+    }
+
+    .domain-card__label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .domain-card h3 {
+      margin-bottom: 12px;
+    }
+
+    .domain-card p {
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .domain-card__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .domain-card__list li {
+      padding: 8px 0;
+      color: var(--text-secondary);
+      font-size: 14px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .domain-card__list li:last-child {
+      border-bottom: none;
+    }
+
+    /* Territory Cards */
+    .territory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .territory-card {
+      background: var(--bg-white);
+      padding: 24px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+    }
+
+    .territory-card__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 16px;
+    }
+
+    .territory-card__label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .territory-card__score {
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .badge {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge.blue {
+      background: rgba(127, 171, 200, 0.15);
+      color: var(--nk-blue);
+    }
+
+    .badge.green {
+      background: rgba(166, 190, 164, 0.15);
+      color: var(--nk-green);
+    }
+
+    .badge.orange {
+      background: rgba(224, 143, 106, 0.15);
+      color: var(--nk-orange);
+    }
+
+    .bar {
+      height: 8px;
+      background: rgba(0, 0, 0, 0.06);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .bar__fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--nk-blue), var(--nk-green));
+      border-radius: 4px;
+      transition: width 1s ease;
+    }
+
+    .territory-card__insight {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Heatmap */
+    .heatmap {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .heatmap-tile {
+      background: var(--bg-white);
+      padding: 20px;
+      border-radius: 12px;
+      border: 2px solid var(--border-color);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .heatmap-tile:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .heatmap-tile__score {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .heatmap-tile__label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      line-height: 1.3;
+    }
+
+    /* Colors based on score */
+    .heatmap-tile[data-score-range="low"] {
+      border-color: var(--red);
+      background: rgba(231, 76, 60, 0.05);
+    }
+
+    .heatmap-tile[data-score-range="medium"] {
+      border-color: var(--yellow);
+      background: rgba(243, 156, 18, 0.05);
+    }
+
+    .heatmap-tile[data-score-range="good"] {
+      border-color: var(--green);
+      background: rgba(39, 174, 96, 0.05);
+    }
+
+    .heatmap-tile[data-score-range="excellent"] {
+      border-color: var(--nk-blue);
+      background: rgba(127, 171, 200, 0.05);
+    }
+
+    /* Insight Grid */
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .insight-card {
+      background: linear-gradient(135deg, rgba(127, 171, 200, 0.08), rgba(166, 190, 164, 0.08));
+      padding: 24px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+    }
+
+    .insight-card__title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .insight-card p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* What-If Engine */
+    .whatif {
+      background: var(--bg-white);
+      padding: 32px;
+      border-radius: 16px;
+      border: 2px solid var(--nk-blue);
+    }
+
+    .whatif__header {
+      margin-bottom: 24px;
+    }
+
+    .slider-group {
+      margin-bottom: 32px;
+    }
+
+    .slider-group__label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .slider-group__name {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .slider-group__value {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--nk-blue);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.08);
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--nk-blue);
+      cursor: pointer;
+    }
+
+    .projection-box {
+      background: rgba(127, 171, 200, 0.1);
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+
+    .projection-box h4 {
+      margin-bottom: 12px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .projection-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 15px;
+    }
+
+    .projection-item__delta {
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal__content {
+      background: var(--bg-white);
+      padding: 32px;
+      border-radius: 24px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal__close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    .modal__close:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 16px;
+    }
+
+    .metric {
+      text-align: center;
+      padding: 20px;
+      background: var(--bg-white);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .metric__value {
+      font-size: 36px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .metric__label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.3;
+    }
+
+    /* Action Grid */
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .action-card {
+      background: var(--bg-white);
+      padding: 24px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+    }
+
+    .action-card__title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .action-card p {
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .action-card__meta {
+      font-size: 13px;
+      color: var(--nk-blue);
+      font-weight: 600;
+    }
+
+    .action-card__button {
+      display: inline-block;
+      padding: 10px 16px;
+      background: var(--text-primary);
+      color: white;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      margin-top: 12px;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+    }
+
+    .action-card__button:hover {
+      background: rgba(0, 0, 0, 0.85);
+    }
+
+    /* Wrapped Cards */
+    .wrapped-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .wrapped-card {
+      background: linear-gradient(135deg, var(--nk-blue), var(--nk-green));
+      padding: 24px;
+      border-radius: 16px;
+      color: white;
+      text-align: center;
+    }
+
+    .wrapped-card__label {
+      font-size: 12px;
+      opacity: 0.9;
+      margin-bottom: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .wrapped-card__value {
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .wrapped-card__meta {
+      font-size: 14px;
+      opacity: 0.95;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 64px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .footer__small {
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero__meta {
+        grid-template-columns: 1fr;
+      }
+
+      .ring-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- 1. Hero / Leadership Scoreboard -->
+    <header class="hero">
+      <div class="hero__left">
+        <p class="pill">Konstantin Method • 100Q Baseline</p>
+        <h1>Leadership Scoreboard</h1>
+        <p class="subtitle">A comprehensive system for reducing leadership blind spots across three domains. This dashboard transforms 100 standardized questions into your personalized leadership map.</p>
+        <div class="hero__meta">
+          <div>
+            <div class="meta__label">Participant</div>
+            <div class="meta__value">Niko Konstantin</div>
+          </div>
+          <div>
+            <div class="meta__label">Completed</div>
+            <div class="meta__value">February 4, 2026</div>
+          </div>
+          <div>
+            <div class="meta__label">Confidence</div>
+            <div class="meta__value">High • 100/100</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero__right">
+        <div class="score-card">
+          <div class="score-card__label">Overall Leadership Score</div>
+          <div class="score-card__value">78</div>
+          <div class="score-card__sub">Top 18% of CEOs in your cohort</div>
+          <div class="score-card__trend">
+            <span class="trend up">+6</span>
+            <span class="trend__label">last 30 days</span>
+          </div>
+        </div>
+        <div class="ring-grid">
+          <div class="ring">
+            <svg viewBox="0 0 120 120" class="ring__svg">
+              <circle class="ring__bg" cx="60" cy="60" r="50" />
+              <circle class="ring__fg" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="50" />
+            </svg>
+            <div class="ring__label">Readiness 84</div>
+          </div>
+          <div class="ring">
+            <svg viewBox="0 0 120 120" class="ring__svg">
+              <circle class="ring__bg" cx="60" cy="60" r="50" />
+              <circle class="ring__fg" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="122" style="stroke: var(--nk-orange);" />
+            </svg>
+            <div class="ring__label">Strain 61</div>
+          </div>
+          <div class="ring">
+            <svg viewBox="0 0 120 120" class="ring__svg">
+              <circle class="ring__bg" cx="60" cy="60" r="50" />
+              <circle class="ring__fg" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="88" style="stroke: var(--nk-green);" />
+            </svg>
+            <div class="ring__label">Consistency 72</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. The Konstantin Method Map -->
+    <section class="section">
+      <div class="section__header">
+        <h2>The Konstantin Method Map</h2>
+        <p>The 100 questions are anchored to 18 sub-dimensions across three domains. Each domain compounds the next.</p>
+      </div>
+      <div class="domain-grid">
+        <div class="domain-card">
+          <div class="domain-card__label">Leading Yourself</div>
+          <h3>Clarity before Influence</h3>
+          <p>Drivers, reactivity, energy, and self-awareness that shape every decision you make.</p>
+          <ul class="domain-card__list">
+            <li>5 Drivers</li>
+            <li>Leading Above the Line</li>
+            <li>Purpose & Direction</li>
+            <li>4 Ways of Listening</li>
+          </ul>
+        </div>
+        <div class="domain-card">
+          <div class="domain-card__label">Leading Teams</div>
+          <h3>Trust before Performance</h3>
+          <p>Psychological safety, accountability, and communication rhythm define your team's ceiling.</p>
+          <ul class="domain-card__list">
+            <li>Trust Formula</li>
+            <li>Drama Triangle</li>
+            <li>5 Dysfunctions</li>
+            <li>Nonviolent Communication</li>
+          </ul>
+        </div>
+        <div class="domain-card">
+          <div class="domain-card__label">Leading Organizations</div>
+          <h3>System before Scale</h3>
+          <p>Strategy, culture, and structure that must cohere as complexity increases.</p>
+          <ul class="domain-card__list">
+            <li>CEO Test</li>
+            <li>Strategy Traps</li>
+            <li>Culture Diagnostics</li>
+            <li>Org Quadrants</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Territory Scores -->
+    <section class="section">
+      <div class="section__header">
+        <h2>Territory Scores</h2>
+        <p>Scores across the three domains, normalized to 100.</p>
+      </div>
+      <div class="territory-grid">
+        <div class="territory-card">
+          <div class="territory-card__top">
+            <div>
+              <div class="territory-card__label">Leading Yourself</div>
+              <div class="territory-card__score">74</div>
+            </div>
+            <div class="badge blue">Self Leadership</div>
+          </div>
+          <div class="bar">
+            <div class="bar__fill" style="width: 74%;"></div>
+          </div>
+          <p class="territory-card__insight">Strong self-awareness and grounded presence. Primary limiter is energy zone consistency.</p>
+        </div>
+        <div class="territory-card">
+          <div class="territory-card__top">
+            <div>
+              <div class="territory-card__label">Leading Teams</div>
+              <div class="territory-card__score">81</div>
+            </div>
+            <div class="badge green">Team Leadership</div>
+          </div>
+          <div class="bar">
+            <div class="bar__fill" style="width: 81%;"></div>
+          </div>
+          <p class="territory-card__insight">High trust and multiplier behavior. Communication rhythm is lagging relative to delegation.</p>
+        </div>
+        <div class="territory-card">
+          <div class="territory-card__top">
+            <div>
+              <div class="territory-card__label">Leading Organizations</div>
+              <div class="territory-card__score">79</div>
+            </div>
+            <div class="badge orange">Org Leadership</div>
+          </div>
+          <div class="bar">
+            <div class="bar__fill" style="width: 79%;"></div>
+          </div>
+          <p class="territory-card__insight">Strategic clarity and systems thinking are strong. Board & governance structure is the main gap.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Sub-Dimension Heatmap -->
+    <section class="section section--alt">
+      <div class="section__header">
+        <h2>Sub-Dimension Heatmap</h2>
+        <p>18 sub-dimensions scored from 0–100. Click a tile for evidence.</p>
+      </div>
+      <div class="heatmap" id="heatmap">
+        <div class="heatmap-tile" data-score-range="good" onclick="openModal('Energy Management', 74)">
+          <div class="heatmap-tile__score">74</div>
+          <div class="heatmap-tile__label">Energy Management</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="good" onclick="openModal('Purpose & Direction', 70)">
+          <div class="heatmap-tile__score">70</div>
+          <div class="heatmap-tile__label">Purpose & Direction</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="good" onclick="openModal('Self-Awareness', 73)">
+          <div class="heatmap-tile__score">73</div>
+          <div class="heatmap-tile__label">Self-Awareness</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="good" onclick="openModal('Leading Above the Line', 71)">
+          <div class="heatmap-tile__score">71</div>
+          <div class="heatmap-tile__label">Leading Above the Line</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="excellent" onclick="openModal('Emotional Intelligence', 80)">
+          <div class="heatmap-tile__score">80</div>
+          <div class="heatmap-tile__label">Emotional Intelligence</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="good" onclick="openModal('Grounded Presence', 76)">
+          <div class="heatmap-tile__score">76</div>
+          <div class="heatmap-tile__label">Grounded Presence</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="excellent" onclick="openModal('Trust Formula', 84)">
+          <div class="heatmap-tile__score">84</div>
+          <div class="heatmap-tile__label">Trust Formula</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="good" onclick="openModal('Psychological Safety', 79)">
+          <div class="heatmap-tile__score">79</div>
+          <div class="heatmap-tile__label">Psychological Safety</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="excellent" onclick="openModal('Multiplier Behavior', 81)">
+          <div class="heatmap-tile__score">81</div>
+          <div class="heatmap-tile__label">Multiplier Behavior</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="medium" onclick="openModal('Communication Rhythm', 69)">
+          <div class="heatmap-tile__score">69</div>
+          <div class="heatmap-tile__label">Communication Rhythm</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="good" onclick="openModal('Team Health', 71)">
+          <div class="heatmap-tile__score">71</div>
+          <div class="heatmap-tile__label">Team Health</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="excellent" onclick="openModal('Accountability & Delegation', 83)">
+          <div class="heatmap-tile__score">83</div>
+          <div class="heatmap-tile__label">Accountability & Delegation</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="excellent" onclick="openModal('Strategic Clarity', 88)">
+          <div class="heatmap-tile__score">88</div>
+          <div class="heatmap-tile__label">Strategic Clarity</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="good" onclick="openModal('Culture as System', 77)">
+          <div class="heatmap-tile__score">77</div>
+          <div class="heatmap-tile__label">Culture as System</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="good" onclick="openModal('Systems Thinking', 79)">
+          <div class="heatmap-tile__score">79</div>
+          <div class="heatmap-tile__label">Systems Thinking</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="good" onclick="openModal('Founder Mode Balance', 72)">
+          <div class="heatmap-tile__score">72</div>
+          <div class="heatmap-tile__label">Founder Mode Balance</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="medium" onclick="openModal('Board & Governance', 58)">
+          <div class="heatmap-tile__score">58</div>
+          <div class="heatmap-tile__label">Board & Governance</div>
+        </div>
+        <div class="heatmap-tile" data-score-range="good" onclick="openModal('Organizational Health', 75)">
+          <div class="heatmap-tile__score">75</div>
+          <div class="heatmap-tile__label">Organizational Health</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Insights You Didn't Know -->
+    <section class="section">
+      <div class="section__header">
+        <h2>Insights You Didn't Know</h2>
+        <p>Personalized interpretations derived from score interplay.</p>
+      </div>
+      <div class="insight-grid">
+        <div class="insight-card">
+          <div class="insight-card__title">Your clarity doesn't cascade fast enough</div>
+          <p>Strategic clarity (88) is elite, but communication rhythm (69) lags. This creates a perception gap: the org feels less aligned than your exec team does.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-card__title">Delegation is ahead of feedback loops</div>
+          <p>Accountability & delegation (83) is strong, but team health (71) is lower. You're delegating, but the social infrastructure isn't as strong as the systems.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-card__title">Your growth speed depends on energy zone control</div>
+          <p>Energy management (74) is stable, but stress zone control is inconsistent. Locking a weekly reset ritual would raise readiness ~7 points.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. What-If Scenario Engine -->
+    <section class="section">
+      <div class="section__header">
+        <h2>What-If Scenario Engine</h2>
+        <p>Adjust sliders to model projected changes in your overall score.</p>
+      </div>
+      <div class="whatif">
+        <div class="whatif__header">
+          <h3>Model Your Growth</h3>
+          <p style="color: var(--text-secondary); margin-top: 8px;">See how improving specific dimensions would impact your overall leadership score and readiness.</p>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-group__label">
+            <span class="slider-group__name">Communication Rhythm</span>
+            <span class="slider-group__value" id="commValue">69</span>
+          </div>
+          <input type="range" min="0" max="100" value="69" id="commSlider" oninput="updateProjections()">
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-group__label">
+            <span class="slider-group__name">Board & Governance</span>
+            <span class="slider-group__value" id="govValue">58</span>
+          </div>
+          <input type="range" min="0" max="100" value="58" id="govSlider" oninput="updateProjections()">
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-group__label">
+            <span class="slider-group__name">Energy Management</span>
+            <span class="slider-group__value" id="energyValue">74</span>
+          </div>
+          <input type="range" min="0" max="100" value="74" id="energySlider" oninput="updateProjections()">
+        </div>
+
+        <div class="projection-box">
+          <h4>Projected Changes</h4>
+          <div class="projection-item">
+            <span>Overall Score:</span>
+            <span><strong id="projOverall">78</strong> <span class="projection-item__delta" id="overallDelta">(+0)</span></span>
+          </div>
+          <div class="projection-item">
+            <span>Readiness:</span>
+            <span><strong id="projReadiness">84</strong> <span class="projection-item__delta" id="readinessDelta">(+0)</span></span>
+          </div>
+          <div class="projection-item">
+            <span>Time Reclaimed:</span>
+            <span><strong id="projTime">0 hrs/week</strong></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Leadership Wrapped -->
+    <section class="section section--alt">
+      <div class="section__header">
+        <h2>Leadership Wrapped</h2>
+        <p>Year-over-year and quarterly highlights.</p>
+      </div>
+      <div class="wrapped-grid">
+        <div class="wrapped-card">
+          <div class="wrapped-card__label">Biggest Growth</div>
+          <div class="wrapped-card__value">+14</div>
+          <div class="wrapped-card__meta">Multiplier Behavior</div>
+        </div>
+        <div class="wrapped-card">
+          <div class="wrapped-card__label">Most Consistent</div>
+          <div class="wrapped-card__value">91%</div>
+          <div class="wrapped-card__meta">Trust Formula</div>
+        </div>
+        <div class="wrapped-card">
+          <div class="wrapped-card__label">Largest Drop</div>
+          <div class="wrapped-card__value">-9</div>
+          <div class="wrapped-card__meta">Purpose & Direction</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Metrics Library -->
+    <section class="section">
+      <div class="section__header">
+        <h2>Metrics Library</h2>
+        <p>All 18 dimensions at a glance.</p>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric">
+          <div class="metric__value">88</div>
+          <div class="metric__label">Strategic Clarity</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">84</div>
+          <div class="metric__label">Trust Formula</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">83</div>
+          <div class="metric__label">Delegation</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">81</div>
+          <div class="metric__label">Multiplier</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">80</div>
+          <div class="metric__label">EQ</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">79</div>
+          <div class="metric__label">Systems</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">79</div>
+          <div class="metric__label">Psych Safety</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">77</div>
+          <div class="metric__label">Culture</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">76</div>
+          <div class="metric__label">Presence</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">75</div>
+          <div class="metric__label">Org Health</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">74</div>
+          <div class="metric__label">Energy</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">73</div>
+          <div class="metric__label">Self-Aware</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">72</div>
+          <div class="metric__label">Founder Mode</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">71</div>
+          <div class="metric__label">Above Line</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">71</div>
+          <div class="metric__label">Team Health</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">70</div>
+          <div class="metric__label">Purpose</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">69</div>
+          <div class="metric__label">Comm Rhythm</div>
+        </div>
+        <div class="metric">
+          <div class="metric__value">58</div>
+          <div class="metric__label">Governance</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Next 30 Days -->
+    <section class="section section--alt">
+      <div class="section__header">
+        <h2>Next 30 Days</h2>
+        <p>Personalized action plan based on the lowest leverage points.</p>
+      </div>
+      <div class="action-grid">
+        <div class="action-card">
+          <div class="action-card__title">Fix Governance Gravity</div>
+          <p>Install a monthly board cadence and define decision rights for the top 5 strategic decisions.</p>
+          <div class="action-card__meta">Target: +8 to Board & Governance</div>
+          <button class="action-card__button">Add to Action Plan</button>
+        </div>
+        <div class="action-card">
+          <div class="action-card__title">Stabilize Energy Zone</div>
+          <p>Define your optimal stress zone and install a weekly reset ritual.</p>
+          <div class="action-card__meta">Target: +7 to Energy Management</div>
+          <button class="action-card__button">Add to Action Plan</button>
+        </div>
+        <div class="action-card">
+          <div class="action-card__title">Improve Communication Rhythm</div>
+          <p>Introduce a 15-minute weekly executive narrative update to cascade strategy.</p>
+          <div class="action-card__meta">Target: +6 to Communication Rhythm</div>
+          <button class="action-card__button">Add to Action Plan</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>Konstantin Method — Leadership is measurable.</div>
+      <div class="footer__small">Generated from 100-question baseline assessment • CEO Lab</div>
+    </footer>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal__content">
+      <button class="modal__close" onclick="closeModal()">Close</button>
+      <h3 id="modalTitle">Sub-Dimension Detail</h3>
+      <p id="modalBody" style="margin-top: 16px; color: var(--text-secondary);"></p>
+      <div id="modalList" style="margin-top: 24px;"></div>
+    </div>
+  </div>
+
+  <script>
+    // Modal functions
+    function openModal(dimension, score) {
+      const modal = document.getElementById('modal');
+      const title = document.getElementById('modalTitle');
+      const body = document.getElementById('modalBody');
+      const list = document.getElementById('modalList');
+
+      title.textContent = `${dimension} (${score})`;
+
+      const details = {
+        'Energy Management': 'Deep work exists, but stress zone control is inconsistent. You scored 3.2/5 on deep work hours, 4.0/5 on recharge breaks, but only 2.9/5 on stress zone awareness.',
+        'Communication Rhythm': 'Strategic narrative cadence is irregular. Weekly tactical scored 3.1/5, monthly strategic 2.7/5, and vision repetition just 2.6/5.',
+        'Board & Governance': 'This is your primary blind spot. Board cadence, decision rights, and governance structure all need significant improvement to prevent misalignment when scaling.'
+      };
+
+      body.textContent = details[dimension] || 'Click any dimension tile to see detailed breakdown of contributing questions, peer comparison, and improvement recommendations.';
+
+      list.innerHTML = `
+        <div style="background: rgba(127, 171, 200, 0.1); padding: 16px; border-radius: 12px; margin-top: 16px;">
+          <strong style="display: block; margin-bottom: 8px;">Your score vs peers:</strong>
+          <div style="font-size: 14px; color: var(--text-secondary);">
+            You: <strong>${score}</strong> | Peer median: <strong>72</strong> | Top 25%: <strong>85</strong>
+          </div>
+        </div>
+        <div style="margin-top: 16px;">
+          <strong style="display: block; margin-bottom: 12px;">Improve this score:</strong>
+          <ul style="margin: 0; padding-left: 20px; color: var(--text-secondary); line-height: 1.8;">
+            <li>Weekly review session (Friday 4pm)</li>
+            <li>Create clear ownership documents</li>
+            <li>Delegate strategic work, not just tactical</li>
+          </ul>
+        </div>
+      `;
+
+      modal.classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+    }
+
+    // What-If Projections
+    const baselines = {
+      comm: 69,
+      gov: 58,
+      energy: 74,
+      overall: 78,
+      readiness: 84
+    };
+
+    function updateProjections() {
+      const commValue = parseInt(document.getElementById('commSlider').value);
+      const govValue = parseInt(document.getElementById('govSlider').value);
+      const energyValue = parseInt(document.getElementById('energySlider').value);
+
+      document.getElementById('commValue').textContent = commValue;
+      document.getElementById('govValue').textContent = govValue;
+      document.getElementById('energyValue').textContent = energyValue;
+
+      // Calculate deltas
+      const commDelta = commValue - baselines.comm;
+      const govDelta = govValue - baselines.gov;
+      const energyDelta = energyValue - baselines.energy;
+
+      // Simple projection formula
+      const overallChange = Math.round((commDelta + govDelta + energyDelta) / 6);
+      const readinessChange = Math.round((commDelta * 0.3 + govDelta * 0.2 + energyDelta * 0.4));
+      const timeReclaimed = Math.round((energyDelta * 0.5 + commDelta * 0.3));
+
+      const newOverall = baselines.overall + overallChange;
+      const newReadiness = baselines.readiness + readinessChange;
+
+      document.getElementById('projOverall').textContent = newOverall;
+      document.getElementById('projReadiness').textContent = newReadiness;
+      document.getElementById('projTime').textContent = `${timeReclaimed} hrs/week`;
+
+      document.getElementById('overallDelta').textContent = `(${overallChange >= 0 ? '+' : ''}${overallChange})`;
+      document.getElementById('readinessDelta').textContent = `(${readinessChange >= 0 ? '+' : ''}${readinessChange})`;
+    }
+
+    // Close modal on outside click
+    document.getElementById('modal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
