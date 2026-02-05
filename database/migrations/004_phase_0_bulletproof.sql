@@ -57,9 +57,17 @@ END $$;
 ALTER TABLE sub_dimension_scores
 ADD COLUMN IF NOT EXISTS assessment_id UUID REFERENCES baseline_assessments(id);
 
--- Add response_set_id for future batching
+-- Add response_set_id to group responses from same submission
 ALTER TABLE baseline_responses
 ADD COLUMN IF NOT EXISTS response_set_id UUID;
+
+-- Add question versioning for future-proofing
+ALTER TABLE baseline_responses
+ADD COLUMN IF NOT EXISTS question_version TEXT DEFAULT '1.0';
+
+-- Snapshot question text at time of response (never becomes ambiguous)
+ALTER TABLE baseline_responses
+ADD COLUMN IF NOT EXISTS question_text TEXT;
 
 -- Add model_version for score interpretation tracking
 ALTER TABLE sub_dimension_scores
@@ -95,9 +103,13 @@ ON sub_dimension_scores(user_id, calculated_at DESC);
 CREATE INDEX IF NOT EXISTS idx_scores_assessment
 ON sub_dimension_scores(assessment_id);
 
+-- Index for querying by response set (all responses from one submission)
 CREATE INDEX IF NOT EXISTS idx_baseline_responses_response_set
-ON baseline_responses(response_set_id)
-WHERE response_set_id IS NOT NULL;
+ON baseline_responses(response_set_id);
+
+-- Index for querying by question version (when we update questions)
+CREATE INDEX IF NOT EXISTS idx_baseline_responses_question_version
+ON baseline_responses(question_version);
 
 CREATE INDEX IF NOT EXISTS idx_scores_model_version
 ON sub_dimension_scores(model_version);
@@ -120,12 +132,16 @@ SET calculated_at = created_at
 WHERE calculated_at IS NULL AND created_at IS NOT NULL;
 
 -- ============================================
--- RESULT: APPEND-ONLY, NEVER DELETE USER DATA
+-- RESULT: TRULY BULLETPROOF - NEVER DELETE USER DATA
 -- ============================================
+-- ✅ New assessment_id for every completion/retake
+-- ✅ All historical responses preserved (never overwritten)
 -- ✅ All historical scores preserved
--- ✅ Multiple scores per dimension over time
--- ✅ Can compare baseline vs retake
--- ✅ Dashboard can reinterpret data any time
+-- ✅ response_set_id links all responses from one submission
+-- ✅ question_version + question_text snapshot (never ambiguous)
+-- ✅ Can compare baseline #1 vs baseline #2 vs baseline #3
+-- ✅ Can reinterpret data even after question changes
+-- ✅ Dashboard can query any historical point
 -- ✅ No breaking changes (all nullable)
 -- ✅ Existing data remains valid
 -- ============================================

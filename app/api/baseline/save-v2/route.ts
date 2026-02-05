@@ -91,78 +91,37 @@ export async function POST(request: Request) {
       }, { status: 400 })
     }
 
-    // STEP 3: Get or create baseline assessment
-    logs.push('Step 3: Finding existing assessment...')
+    // STEP 3: ALWAYS create new assessment (never reuse for retakes)
+    logs.push('Step 3: Creating new assessment...')
 
-    const { data: existingAssessment, error: findError } = await supabase
+    const { data: newAssessment, error: createError } = await supabase
       .from('baseline_assessments')
+      .insert({
+        user_id: user.id,
+        stage: stageNumber,
+        completed_at: stageNumber === 3 ? new Date().toISOString() : null,
+      })
       .select('id')
-      .eq('user_id', user.id)
-      .maybeSingle()
+      .single()
 
-    if (findError) {
-      logs.push(`Find error: ${findError.message}`)
+    if (createError || !newAssessment) {
+      logs.push(`Create error: ${createError?.message || 'No data returned'}`)
       return NextResponse.json({
         success: false,
-        error: `Database error finding assessment: ${findError.message}`,
+        error: `Failed to create assessment: ${createError?.message || 'Unknown error'}`,
         logs
       }, { status: 500 })
     }
 
-    let assessmentId: string
+    const assessmentId = newAssessment.id
+    logs.push(`Created new assessment: ${assessmentId} (retakes get new ID = preserve history)`)
 
-    if (existingAssessment) {
-      logs.push(`Found existing assessment: ${existingAssessment.id}`)
-      assessmentId = existingAssessment.id
+    // STEP 4: Prepare response records with versioning
+    logs.push('Step 4: Preparing response records with version snapshots...')
 
-      // Update it
-      logs.push('Step 3b: Updating assessment...')
-      const { error: updateError } = await supabase
-        .from('baseline_assessments')
-        .update({
-          stage: stageNumber,
-          completed_at: stageNumber === 3 ? new Date().toISOString() : null,
-        })
-        .eq('id', assessmentId)
-
-      if (updateError) {
-        logs.push(`Update error: ${updateError.message}`)
-        return NextResponse.json({
-          success: false,
-          error: `Failed to update assessment: ${updateError.message}`,
-          logs
-        }, { status: 500 })
-      }
-
-      logs.push('Assessment updated')
-    } else {
-      logs.push('No existing assessment, creating new...')
-
-      const { data: newAssessment, error: createError } = await supabase
-        .from('baseline_assessments')
-        .insert({
-          user_id: user.id,
-          stage: stageNumber,
-          completed_at: stageNumber === 3 ? new Date().toISOString() : null,
-        })
-        .select('id')
-        .single()
-
-      if (createError || !newAssessment) {
-        logs.push(`Create error: ${createError?.message || 'No data returned'}`)
-        return NextResponse.json({
-          success: false,
-          error: `Failed to create assessment: ${createError?.message || 'Unknown error'}`,
-          logs
-        }, { status: 500 })
-      }
-
-      assessmentId = newAssessment.id
-      logs.push(`Created assessment: ${assessmentId}`)
-    }
-
-    // STEP 4: Prepare response records
-    logs.push('Step 4: Preparing response records...')
+    // Generate unique response_set_id for this submission
+    const responseSetId = crypto.randomUUID()
+    const submittedAt = new Date().toISOString()
 
     const responseRecords = Object.entries(responses).map(([questionId, answer]) => {
       const qNum = parseInt(questionId)
@@ -175,37 +134,37 @@ export async function POST(request: Request) {
       return {
         user_id: user.id,
         assessment_id: assessmentId,
+        response_set_id: responseSetId, // FIX 2: Link all responses in this submission
         question_number: qNum,
+        question_version: '1.0', // FIX 3: Version tracking
+        question_text: question?.question || 'Unknown', // FIX 3: Snapshot question text
         sub_dimension: question?.subdimension || 'Unknown',
         territory: question?.territory || 'Leading Yourself',
         answer_value: answer as number,
         stage: stageNumber,
-        submitted_at: new Date().toISOString(), // Phase 0: timestamp tracking
+        submitted_at: submittedAt,
       }
     })
 
-    logs.push(`Prepared ${responseRecords.length} response records`)
+    logs.push(`Prepared ${responseRecords.length} response records (response_set_id: ${responseSetId}, version: 1.0)`)
 
-    // STEP 5: Upsert responses (no deletes - NEVER DELETE USER DATA)
-    logs.push('Step 5: Upserting responses (atomic, no deletes)...')
+    // STEP 5: Insert responses (append-only, new assessment each time)
+    logs.push('Step 5: Inserting responses (append-only, never overwrites)...')
 
-    const { error: upsertResponsesError } = await supabase
+    const { error: insertResponsesError } = await supabase
       .from('baseline_responses')
-      .upsert(responseRecords, {
-        onConflict: 'user_id,assessment_id,question_number',
-        ignoreDuplicates: false
-      })
+      .insert(responseRecords) // INSERT ONLY - new assessment_id each time
 
-    if (upsertResponsesError) {
-      logs.push(`Upsert responses error: ${upsertResponsesError.message}`)
+    if (insertResponsesError) {
+      logs.push(`Insert responses error: ${insertResponsesError.message}`)
       return NextResponse.json({
         success: false,
-        error: `Failed to save responses: ${upsertResponsesError.message}`,
+        error: `Failed to save responses: ${insertResponsesError.message}`,
         logs
       }, { status: 500 })
     }
 
-    logs.push(`Upserted ${responseRecords.length} responses (no data deleted)`)
+    logs.push(`Inserted ${responseRecords.length} responses (history preserved forever)`)
 
     // STEP 7: Calculate scores
     logs.push('Step 7: Calculating scores...')
