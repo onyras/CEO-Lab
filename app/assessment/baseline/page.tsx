@@ -14,6 +14,7 @@ export default function BaselineAssessment() {
   const [currentStage, setCurrentStage] = useState<1 | 2 | 3>(1)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [responses, setResponses] = useState<Record<number, number>>({})
+  const [saving, setSaving] = useState(false)
 
   // Stage boundaries
   const stageQuestions = {
@@ -132,8 +133,17 @@ export default function BaselineAssessment() {
     // Check if stage complete
     if (currentQuestionIndex === currentQuestions.length - 1) {
       // Save progress and show results
-      await saveProgress()
-      router.push(`/assessment/baseline/results?stage=${currentStage}`)
+      setSaving(true)
+      const result = await saveProgress()
+
+      if (!result || !result.success) {
+        alert('Failed to save your progress. Please check your connection and try again.')
+        setSaving(false)
+        return
+      }
+
+      setSaving(false)
+      router.push(`/results?stage=${currentStage}`)
     } else {
       setCurrentQuestionIndex(prev => prev + 1)
     }
@@ -154,15 +164,16 @@ export default function BaselineAssessment() {
         })
       })
 
-      const data = await response.json()
-
       if (!response.ok) {
+        const data = await response.json()
         console.error('Failed to save:', data.error)
+        return null
       }
 
-      return data
+      return await response.json()
     } catch (error) {
       console.error('Save error:', error)
+      return null
     }
   }
 
@@ -319,10 +330,10 @@ export default function BaselineAssessment() {
 
             <button
               onClick={handleNext}
-              disabled={!responses[currentQuestion.id]}
+              disabled={!responses[currentQuestion.id] || saving}
               className="px-6 py-2 bg-black text-white rounded-md hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {currentQuestionIndex === currentQuestions.length - 1 ? 'Complete Stage' : 'Next'} →
+              {saving ? 'Saving...' : currentQuestionIndex === currentQuestions.length - 1 ? 'Complete Stage' : 'Next'} →
             </button>
           </div>
         </div>

@@ -53,8 +53,8 @@ export default function ResultsDashboard() {
           setProfile(profileData)
         }
 
-        // Load sub-dimension scores if baseline completed
-        if (profileData?.baseline_completed) {
+        // Load sub-dimension scores if any baseline stage is completed
+        if (profileData?.baseline_completed || profileData?.baseline_stage >= 1) {
           // First try to load from sub_dimension_scores table
           const { data: scores } = await supabase
             .from('sub_dimension_scores')

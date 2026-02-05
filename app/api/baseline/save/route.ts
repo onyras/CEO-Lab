@@ -2,6 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { baselineQuestions } from '@/lib/baseline-questions'
+import { calculateBaselineScores } from '@/lib/scoring'
 
 export async function POST(request: Request) {
   try {
@@ -134,6 +135,36 @@ export async function POST(request: Request) {
         { error: responsesError.message },
         { status: 500 }
       )
+    }
+
+    // Calculate scores and populate sub_dimension_scores table
+    const scores = calculateBaselineScores(responses)
+
+    // Delete existing scores for this user
+    await supabase
+      .from('sub_dimension_scores')
+      .delete()
+      .eq('user_id', user.id)
+
+    // Insert new scores
+    const scoreRecords = scores.allSubdimensions.map(dim => ({
+      user_id: user.id,
+      sub_dimension: dim.subdimension,
+      territory: dim.territory === 'yourself' ? 'Leading Yourself' :
+                dim.territory === 'teams' ? 'Leading Teams' :
+                'Leading Organizations',
+      current_score: dim.score,
+      max_possible_score: dim.maxScore,
+      percentage: dim.percentage
+    }))
+
+    const { error: scoresError } = await supabase
+      .from('sub_dimension_scores')
+      .insert(scoreRecords)
+
+    if (scoresError) {
+      console.error('Scores error:', scoresError)
+      // Don't fail the entire request if scores don't save
     }
 
     // If Stage 1 complete, update user profile baseline_stage
