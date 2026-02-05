@@ -34,16 +34,18 @@ export async function POST(request: Request) {
 
     const { quarter, year, dimensions } = await request.json()
 
-    // Save quarterly focus
+    // Save quarterly focus with conflict resolution
     const { error } = await supabase
       .from('quarterly_focus')
       .upsert({
         user_id: user.id,
         quarter,
         year,
-        dimension_1: dimensions[0],
-        dimension_2: dimensions[1],
-        dimension_3: dimensions[2]
+        sub_dimension_1: dimensions[0],  // FIXED: was dimension_1
+        sub_dimension_2: dimensions[1],  // FIXED: was dimension_2
+        sub_dimension_3: dimensions[2]   // FIXED: was dimension_3
+      }, {
+        onConflict: 'user_id,year,quarter'  // FIXED: Added conflict resolution
       })
 
     if (error) {

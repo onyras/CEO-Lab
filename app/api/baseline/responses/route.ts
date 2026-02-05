@@ -51,13 +51,13 @@ export async function GET(request: Request) {
     // Get all responses for this assessment
     const { data: responses } = await supabase
       .from('baseline_responses')
-      .select('question_id, answer_value')
+      .select('question_number, answer_value')
       .eq('assessment_id', assessment.id)
 
     // Convert to { questionId: answerValue } format
     const responsesMap: Record<number, number> = {}
     responses?.forEach(r => {
-      responsesMap[r.question_id] = r.answer_value
+      responsesMap[r.question_number] = r.answer_value
     })
 
     return NextResponse.json({

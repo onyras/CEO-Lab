@@ -72,14 +72,14 @@ export default function BaselineAssessment() {
       // Load all responses for this assessment
       const { data: responseRows } = await supabase
         .from('baseline_responses')
-        .select('question_id, answer_value')
+        .select('question_number, answer_value')
         .eq('assessment_id', assessment.id)
 
       if (responseRows && responseRows.length > 0) {
         // Convert array of responses to Record<number, number>
         const savedResponses: Record<number, number> = {}
         responseRows.forEach(row => {
-          savedResponses[row.question_id] = row.answer_value
+          savedResponses[row.question_number] = row.answer_value
         })
         setResponses(savedResponses)
 

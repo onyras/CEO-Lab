@@ -52,7 +52,7 @@ export default function Dashboard() {
         // Load quarterly focus
         const { data: focus } = await supabase
           .from('quarterly_focus')
-          .select('dimension_1, dimension_2, dimension_3')
+          .select('sub_dimension_1, sub_dimension_2, sub_dimension_3')  // FIXED: was dimension_1/2/3
           .eq('user_id', session.user.id)
           .order('created_at', { ascending: false })
           .limit(1)
@@ -60,9 +60,9 @@ export default function Dashboard() {
 
         if (focus) {
           setFocusDimensions([
-            focus.dimension_1,
-            focus.dimension_2,
-            focus.dimension_3
+            focus.sub_dimension_1,  // FIXED: was dimension_1
+            focus.sub_dimension_2,  // FIXED: was dimension_2
+            focus.sub_dimension_3   // FIXED: was dimension_3
           ].filter(Boolean))
         }
 
