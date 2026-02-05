@@ -2,6 +2,22 @@
 -- No breaking changes, just adds safety constraints and future-ready columns
 
 -- ============================================
+-- 0. Clean up test data and duplicates
+-- ============================================
+
+-- Remove test question 999 (from debugging)
+DELETE FROM baseline_responses
+WHERE question_number = 999;
+
+-- Remove any actual duplicates (keep most recent)
+DELETE FROM baseline_responses a
+USING baseline_responses b
+WHERE a.id < b.id
+  AND a.user_id = b.user_id
+  AND a.assessment_id = b.assessment_id
+  AND a.question_number = b.question_number;
+
+-- ============================================
 -- 1. Add unique constraints for upsert safety
 -- ============================================
 
@@ -18,6 +34,17 @@ BEGIN
         UNIQUE (user_id, assessment_id, question_number);
     END IF;
 END $$;
+
+-- Clean up any test scores or duplicates in sub_dimension_scores
+DELETE FROM sub_dimension_scores
+WHERE sub_dimension = 'Test Dimension';
+
+-- Remove any duplicates in scores (keep most recent)
+DELETE FROM sub_dimension_scores a
+USING sub_dimension_scores b
+WHERE a.id < b.id
+  AND a.user_id = b.user_id
+  AND a.sub_dimension = b.sub_dimension;
 
 -- Ensure sub_dimension_scores has proper unique constraint
 -- (user_id, sub_dimension) should be unique for latest scores
