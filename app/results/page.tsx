@@ -10,6 +10,7 @@ import './results.css'
 interface UserProfile {
   hook_completed: boolean
   baseline_completed: boolean
+  baseline_stage: number
   subscription_status: string
 }
 
@@ -126,7 +127,9 @@ export default function ResultsDashboard() {
   }
 
   const isPremium = profile?.subscription_status === 'active'
-  const hasBaseline = profile?.baseline_completed || (profile?.baseline_stage && profile.baseline_stage >= 1)
+  const baselineStage = profile?.baseline_stage ?? 0
+  const hasScores = subDimensionScores.length > 0
+  const hasBaseline = Boolean(profile?.baseline_completed || baselineStage >= 1 || hasScores)
 
   const openModal = (dimension: string, score: number) => {
     setModalData({ dimension, score })
@@ -195,8 +198,8 @@ export default function ResultsDashboard() {
     )
   }
 
-  // Show message if baseline not completed
-  if (!hasBaseline || subDimensionScores.length === 0) {
+  // Show message if baseline not completed or scores not ready
+  if (!hasBaseline) {
     return (
       <div className="min-h-screen bg-[#F7F3ED]">
         <header className="border-b border-black/10 bg-white">
@@ -217,29 +220,55 @@ export default function ResultsDashboard() {
         <main className="max-w-7xl mx-auto px-8 py-12">
           <div className="bg-white rounded-lg p-12 text-center max-w-2xl mx-auto">
             <h2 className="text-3xl font-bold text-black mb-4">
-              {!hasBaseline ? 'Complete Your Baseline First' : 'Loading Your Results...'}
+              Complete Your Baseline First
             </h2>
             <p className="text-lg text-black/60 mb-8">
-              {!hasBaseline
-                ? 'Take the 100-question baseline assessment to unlock your comprehensive leadership dashboard.'
-                : 'Your assessment is being processed. This should only take a moment. If this persists, please refresh the page.'
-              }
+              Take the 100-question baseline assessment to unlock your comprehensive leadership dashboard.
             </p>
-            {!hasBaseline ? (
-              <a
-                href="/assessment/baseline"
-                className="inline-block px-8 py-3 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors"
-              >
-                Start Baseline Assessment
-              </a>
-            ) : (
-              <button
-                onClick={() => window.location.reload()}
-                className="inline-block px-8 py-3 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors"
-              >
-                Refresh Page
-              </button>
-            )}
+            <a
+              href="/assessment/baseline"
+              className="inline-block px-8 py-3 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors"
+            >
+              Start Baseline Assessment
+            </a>
+          </div>
+        </main>
+      </div>
+    )
+  }
+
+  if (!hasScores) {
+    return (
+      <div className="min-h-screen bg-[#F7F3ED]">
+        <header className="border-b border-black/10 bg-white">
+          <div className="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold text-black tracking-tight">Your Leadership Dashboard</h1>
+              <p className="text-black/60 mt-1">Complete view of your growth and progress</p>
+            </div>
+            <a
+              href="/dashboard"
+              className="text-sm font-medium text-black/60 hover:text-black transition-colors"
+            >
+              Back to Dashboard
+            </a>
+          </div>
+        </header>
+
+        <main className="max-w-7xl mx-auto px-8 py-12">
+          <div className="bg-white rounded-lg p-12 text-center max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold text-black mb-4">
+              Loading Your Results...
+            </h2>
+            <p className="text-lg text-black/60 mb-8">
+              Your assessment is being processed. This should only take a moment. If this persists, please refresh the page.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="inline-block px-8 py-3 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors"
+            >
+              Refresh Page
+            </button>
           </div>
         </main>
       </div>

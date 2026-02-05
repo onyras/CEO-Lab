@@ -46,11 +46,11 @@ This document contains everything related to the CEO Lab assessment system: ques
 
 **Leading Yourself (6 dimensions)**
 1. Energy Management
-2. Self-Awareness
-3. Above the Line
-4. Emotional Fluidity
-5. Contemplative Practice
-6. Stress Design
+2. Purpose & Direction
+3. Self-Awareness
+4. Leading above the Line
+5. Emotional Intelligence
+6. Grounded Presence
 
 **Leading Teams (6 dimensions)**
 7. Trust Formula
@@ -226,216 +226,221 @@ When problems repeat, do you see isolated incidents or systemic patterns?
 - 4: Regularly - a few times a week
 - 5: Daily - it's part of my system
 
-**Q5.** How many hours of sleep do you average per night, and how consistent is it?
-- 1: Less than 5 hours, erratic schedule
-- 2: 5-6 hours, somewhat consistent
-- 3: 6-7 hours, mostly consistent
-- 4: 7-8 hours, very consistent
-- 5: 8+ hours, locked in routine
+**Q5.** Which stress zone are you operating in most of the time?
+- 1: Burnout (exhausted, cynical, ineffective)
+- 2: Overload (overwhelmed, reactive, unsustainable)
+- 3: Under-stimulated (bored, unchallenged, coasting)
+- 4: Optimal (stretched but energized, in flow)
+- 5: Optimal AND I can adjust my stress level intentionally
 
 ---
 
-## 1.2 Self-Awareness (6 questions)
+## 1.2 Purpose & Direction (6 questions)
 
 **Q6.** Can you name your primary driver (what unconsciously motivates your behavior)?
 - 1: I don't know what that means
 - 2: I've heard of it but couldn't name mine
 - 3: I have a guess
-- 4: Yes, I've identified it
-- 5: Yes, and I understand where it came from
+- 4: Yes, I've identified it clearly
+- 5: Yes, and I understand its origin and impact
 
 **Q7.** Do you know the origin story of your primary driver (where it came from in your life)?
-- 1: No
+- 1: No, I've never thought about it
 - 2: I have some vague ideas
-- 3: Yes, I can trace it back
+- 3: Yes, I can trace it back to specific experiences
 - 4: Yes, and I see how it shapes my decisions
 - 5: Yes, and I've worked through it with a therapist/coach
 
-**Q8.** How often do you catch yourself mid-pattern (noticing when your driver is running you)?
-- 1: Never - I don't see it happening
-- 2: Rarely - only in hindsight
-- 3: Sometimes - maybe once a week
-- 4: Often - a few times a week
-- 5: Daily - I notice it in real-time
-
-**Q9.** Can you articulate your Zone of Genius (the work only you can do, that energizes you)?
+**Q8.** Can you articulate your Zone of Genius (the work only you can do, that energizes you)?
 - 1: I don't know what that is
 - 2: I have a vague idea
 - 3: I could describe it in general terms
-- 4: Yes, I can name it clearly
+- 4: Yes, I can name it clearly in one sentence
 - 5: Yes, and I've designed my role around it
 
-**Q10.** What percentage of your time do you spend in your Zone of Genius?
+**Q9.** What percentage of your time do you spend in your Zone of Genius?
 - 1: 0-10% (I'm doing everything else)
 - 2: 10-30% (occasionally)
 - 3: 30-50% (some of the time)
 - 4: 50-70% (most days)
 - 5: 70%+ (I've designed my role for this)
 
-**Q11.** Which cognitive biases do you regularly fall for?
-- 1: I don't know what cognitive biases are
-- 2: I know what they are but can't name mine
-- 3: I can name 1-2 that affect me
-- 4: I know several and catch them sometimes
-- 5: I actively track my biases and correct for them
+**Q10.** Do you have a clear sense of your long-term purpose (what you're building toward)?
+- 1: No - I'm focused on survival day-to-day
+- 2: Vague sense - it shifts frequently
+- 3: Yes, but it's not actionable
+- 4: Yes - clear purpose that guides decisions
+- 5: Yes - and my daily work aligns with it
+
+**Q11.** How aligned is your current work with what you actually care about?
+- 1: Not aligned - I'm doing this for money/status only
+- 2: Somewhat misaligned - frequent internal conflict
+- 3: 50/50 - some alignment, some compromise
+- 4: Mostly aligned - occasional compromises
+- 5: Fully aligned - my work is my calling
 
 ---
 
-## 1.3 Above the Line (5 questions)
+## 1.3 Self-Awareness (5 questions)
 
-**Q12.** When you're reactive (below the line), can you recognize it in the moment?
-- 1: No - I don't notice until much later
+**Q12.** How often do you catch yourself mid-pattern (noticing when your driver or habit is running you)?
+- 1: Never - I don't see it happening
+- 2: Rarely - only in hindsight (hours/days later)
+- 3: Sometimes - maybe once a week
+- 4: Often - a few times a week
+- 5: Daily - I notice it in real-time
+
+**Q13.** Can you name 3-5 cognitive biases that regularly affect your decisions?
+- 1: I don't know what cognitive biases are
+- 2: I know what they are but can't name mine
+- 3: I can name 1-2 that affect me
+- 4: I know 3-5 and catch them sometimes
+- 5: I actively track my biases and correct for them
+
+**Q14.** Do you know your triggers (situations, people, words that make you reactive)?
+- 1: No - I'm blindsided when I react
+- 2: Vague sense - notice patterns in hindsight
+- 3: I know 2-3 major triggers
+- 4: I know my triggers and spot them early
+- 5: I know my triggers and have strategies to navigate them
+
+**Q15.** How often do you seek feedback on your blind spots?
+- 1: Never - I avoid feedback
+- 2: Rarely - only when forced (performance review)
+- 3: Sometimes - when I remember to ask
+- 4: Regularly - quarterly or monthly
+- 5: Continuously - I have a 360 feedback system
+
+**Q16.** When you make a mistake, how quickly do you recognize your role in it?
+- 1: Never - I blame circumstances or others
+- 2: Rarely - only with hindsight and prompting
+- 3: Sometimes - after reflection
+- 4: Usually - within hours or a day
+- 5: Immediately - I own it in real-time
+
+---
+
+## 1.4 Leading above the Line (6 questions)
+
+**Q17.** When something goes wrong, what's your first internal reaction?
+- 1: "Who screwed this up?" (Blame/Villain)
+- 2: "Why does this always happen to me?" (Victim)
+- 3: "I'll fix it myself" (Hero/Rescuer)
+- 4: Mixed - sometimes reactive, sometimes curious
+- 5: "What did I miss? What can we learn?" (Curiosity)
+
+**Q18.** When you're reactive (below the line), can you recognize it in the moment?
+- 1: No - I don't notice until much later (days)
 - 2: Rarely - usually realize hours later
 - 3: Sometimes - maybe 30 minutes after
 - 4: Often - within a few minutes
 - 5: Yes - I catch myself in real-time
 
-**Q13.** How quickly can you recover and get back above the line?
-- 1: Hours or days - I stay stuck
-- 2: 1-2 hours with effort
+**Q19.** How quickly can you recover and get back above the line?
+- 1: Hours or days - I stay stuck in reactivity
+- 2: 1-2 hours with significant effort
 - 3: 30-60 minutes
 - 4: 10-20 minutes
 - 5: 1-5 minutes - I have a practice for this
 
-**Q14.** When you go below the line, which drama triangle role do you default to?
+**Q20.** When you go below the line, which drama triangle role do you default to?
 - 1: I don't know the drama triangle
 - 2: I know it but don't see my pattern
-- 3: I default to Victim/Villain/Hero
-- 5: I recognize all three and catch myself early
+- 3: I see my pattern but can't stop it
+- 4: I recognize it early and interrupt it
+- 5: I rarely go below the line anymore
 
-**Q15.** When something goes wrong, do you respond with blame or curiosity?
-- 1: Always blame - "Who screwed up?"
-- 2: Mostly blame with some curiosity
-- 3: 50/50 - depends on the situation
-- 4: Mostly curiosity - "What did I miss?"
-- 5: Always curiosity - "What can we learn?"
-
-**Q16.** When someone criticizes you, how defensive do you get?
+**Q21.** When someone criticizes you, how defensive do you get?
 - 1: Very - I immediately justify or counterattack
 - 2: Moderately - I get defensive but try to hide it
 - 3: Sometimes defensive, sometimes open
 - 4: Rarely defensive - I listen first
 - 5: Never defensive - I seek criticism actively
 
+**Q22.** Do you respond with curiosity or blame when your team makes mistakes?
+- 1: Always blame - "How could you mess this up?"
+- 2: Mostly blame with occasional curiosity
+- 3: 50/50 - depends on severity and mood
+- 4: Mostly curiosity - "What happened?"
+- 5: Always curiosity - "What can we learn together?"
+
 ---
 
-## 1.4 Emotional Fluidity (6 questions)
+## 1.5 Emotional Intelligence (5 questions)
 
-**Q17.** Can you identify and name the emotion you're feeling in real-time?
+**Q23.** Can you identify and name the emotion you're feeling in real-time?
 - 1: No - I'm disconnected from my emotions
 - 2: Rarely - only the obvious ones (anger, joy)
 - 3: Sometimes - basic emotions only
-- 4: Often - I can name nuanced emotions
+- 4: Often - I can name nuanced emotions (disappointment, resentment, etc.)
 - 5: Always - I track emotional states continuously
 
-**Q18.** When you feel an emotion, do you suppress it or allow it to move through you?
-- 1: Always suppress - emotions are weakness
-- 2: Mostly suppress - I push them down
-- 3: Sometimes allow, sometimes suppress
-- 4: Mostly allow - I let them move
-- 5: Fully allow - emotions are information
+**Q24.** When you feel a difficult emotion (anger, fear, sadness), what do you do?
+- 1: Suppress it - emotions are weakness
+- 2: Push it down but it leaks out sideways
+- 3: Notice it but don't know what to do with it
+- 4: Feel it and let it move through me
+- 5: Welcome it as information and process it cleanly
 
-**Q19.** Do you know your implicit contracts (unconscious agreements about how you should behave)?
-- 1: I don't know what that means
-- 2: I've heard of it but don't know mine
-- 3: I'm starting to see some patterns
-- 4: Yes, I can name several
-- 5: Yes, and I actively renegotiate them
-
-**Q20.** What is your relationship with fear?
+**Q25.** What is your relationship with fear?
 - 1: I avoid it or pretend it's not there
 - 2: I feel it but don't acknowledge it
-- 3: I notice it but don't know what to do with it
-- 4: I feel it and name it
-- 5: I welcome it as information and guidance
+- 3: I notice it but it controls my decisions
+- 4: I feel it, name it, and act anyway
+- 5: I welcome it as guidance and information
 
-**Q21.** How do you handle anger - suppress it or express it cleanly?
-- 1: I suppress it and it leaks out sideways
+**Q26.** Can you show vulnerability appropriately with your team?
+- 1: Never - I must appear strong and in control
+- 2: Rarely - only in crisis situations
+- 3: Sometimes - with people I trust deeply
+- 4: Often - I model vulnerability regularly
+- 5: Always - it's how I build trust and safety
+
+**Q27.** How do you handle anger - suppress it or express it cleanly?
+- 1: I suppress it completely and it builds up
 - 2: I explode when it builds up too much
-- 3: I feel it but don't know how to express it
-- 4: I express it but sometimes messily
-- 5: I express it cleanly and directly
-
-**Q22.** Can you show vulnerability appropriately with your team?
-- 1: Never - I must appear strong
-- 2: Rarely - only in crisis
-- 3: Sometimes - with people I trust
-- 4: Often - I model it regularly
-- 5: Always - it's how I build trust
+- 3: I feel it but express it messily (blame, sarcasm)
+- 4: I express it but sometimes it comes out sideways
+- 5: I express it cleanly and directly without blame
 
 ---
 
-## 1.5 Contemplative Practice (5 questions)
+## 1.6 Grounded Presence (5 questions)
 
-**Q23.** Do you have a contemplative practice (meditation, journaling, prayer, walking)?
+**Q28.** Do you have a contemplative practice (meditation, journaling, prayer, walking)?
 - 1: No - I don't have time for that
 - 2: I tried but it didn't stick
 - 3: Yes, but sporadic (once a week or less)
 - 4: Yes, regular (3-5 times per week)
 - 5: Yes, daily non-negotiable
 
-**Q24.** How often do you practice?
-- 1: Never
-- 2: A few times a month
+**Q29.** How often do you practice stillness?
+- 1: Never - I'm always busy
+- 2: A few times a month when stressed
 - 3: Once a week
 - 4: 3-5 times per week
-- 5: Daily
+- 5: Daily - it's foundational to my day
 
-**Q25.** What type of practice do you engage in?
+**Q30.** What type of contemplative practice do you engage in?
 - 1: None
-- 3: Awareness / Cultivation / Self-reflection (any single type)
-- 5: Multiple types - I rotate based on what I need
+- 2: One type sporadically
+- 3: One type consistently (awareness, cultivation, or self-reflection)
+- 4: Two types - I alternate based on need
+- 5: Multiple types - I choose strategically
 
-**Q26.** Do you take annual retreats (1+ days away for reflection)?
+**Q31.** Do you take annual retreats (1+ days away for reflection and stillness)?
 - 1: Never - I can't afford the time
 - 2: I've thought about it but never done it
 - 3: Once in the past few years
 - 4: Once per year
-- 5: Multiple times per year
+- 5: Multiple times per year - quarterly or more
 
-**Q27.** How do you listen in conversations?
+**Q32.** How do you listen in conversations?
 - 1: Habitually - waiting to speak, distracted
-- 2: Factual - listening for information
+- 2: Factual - listening for information only
 - 3: Empathic - listening for feeling and meaning
 - 4: Generative - listening for what wants to emerge
 - 5: I shift between all levels based on context
-
----
-
-## 1.6 Stress Design (5 questions)
-
-**Q28.** Which stress zone are you operating in right now?
-- 1: Burnout (exhausted, cynical, ineffective)
-- 2: Under-stimulated / Overload
-- 5: Optimal (stretched but not overwhelmed)
-
-**Q29.** Can you intentionally adjust your stress level (dial it up or down)?
-- 1: No - I'm at the mercy of circumstances
-- 2: Rarely - I don't know how
-- 3: Sometimes - with effort
-- 4: Often - I have tools for this
-- 5: Always - I design stress strategically
-
-**Q30.** Do you know your early warning signs of burnout?
-- 1: No - I usually crash without warning
-- 2: Vaguely - I notice when it's too late
-- 3: Yes - I can name 2-3 signals
-- 4: Yes - I track them actively
-- 5: Yes - and I adjust before hitting burnout
-
-**Q31.** How well do you balance fast thinking (reactive, intuitive) and slow thinking (deliberate, analytical)?
-- 1: All fast - I'm constantly reactive
-- 2: Mostly fast with occasional slow
-- 3: 50/50 - depends on the situation
-- 4: I intentionally choose based on context
-- 5: I design my environment to support both modes
-
-**Q32.** What is your time horizon - how far ahead do you think?
-- 1: Today/this week (survival mode)
-- 2: This month/quarter (operational)
-- 3: This year (tactical)
-- 4: 1-3 years (strategic)
-- 5: 3-10+ years (visionary)
 
 ---
 
@@ -978,11 +983,11 @@ When problems repeat, do you see isolated incidents or systemic patterns?
 ### LEADING YOURSELF (6 questions)
 
 1. **Energy Management:** "This week, how many hours of Deep Work did you complete?"
-2. **Self-Awareness:** "How many times did you catch yourself mid-pattern this week?"
-3. **Above the Line:** "When problems arose this week, did you respond with blame or curiosity?"
-4. **Emotional Fluidity:** "How many times did you name your emotion in real-time this week?"
-5. **Contemplative Practice:** "How many days did you practice this week?"
-6. **Stress Design:** "What was your stress zone this week?"
+2. **Purpose & Direction:** "This week, did your work align with your zone of genius?"
+3. **Self-Awareness:** "How many times did you catch yourself mid-pattern this week?"
+4. **Leading above the Line:** "When problems arose this week, did you respond with blame or curiosity?"
+5. **Emotional Intelligence:** "How many times did you name your emotion in real-time this week?"
+6. **Grounded Presence:** "How many days did you maintain stillness practice this week?"
 
 ### LEADING TEAMS (6 questions)
 

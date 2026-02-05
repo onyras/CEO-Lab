@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Konstantin Method — Leadership Scoreboard (Simple)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="teen.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="hero__left">
+        <p class="pill">Konstantin Method • 100Q Baseline</p>
+        <h1>Leadership Scoreboard (Simple)</h1>
+        <p class="subtitle">Think of this like a report card for leadership. It shows what you’re strong at, what you miss, and what to fix next.</p>
+        <div class="hero__meta">
+          <div>
+            <div class="meta__label">Participant</div>
+            <div class="meta__value">Niko Konstantin</div>
+          </div>
+          <div>
+            <div class="meta__label">Completed</div>
+            <div class="meta__value">February 4, 2026</div>
+          </div>
+          <div>
+            <div class="meta__label">Confidence</div>
+            <div class="meta__value">High • 100/100</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero__right">
+        <div class="score-card">
+          <div class="score-card__label">Overall Score</div>
+          <div class="score-card__value">78</div>
+          <div class="score-card__sub">You’re ahead of most people in this group.</div>
+          <div class="score-card__trend">
+            <span class="trend up">+6</span>
+            <span class="trend__label">last 30 days</span>
+          </div>
+        </div>
+        <div class="ring-grid">
+          <div class="ring">
+            <svg viewBox="0 0 120 120" class="ring__svg" data-score="84">
+              <circle class="ring__bg" cx="60" cy="60" r="50" />
+              <circle class="ring__fg" cx="60" cy="60" r="50" />
+            </svg>
+            <div class="ring__label">Energy Ready</div>
+          </div>
+          <div class="ring">
+            <svg viewBox="0 0 120 120" class="ring__svg" data-score="61">
+              <circle class="ring__bg" cx="60" cy="60" r="50" />
+              <circle class="ring__fg" cx="60" cy="60" r="50" />
+            </svg>
+            <div class="ring__label">Stress Level</div>
+          </div>
+          <div class="ring">
+            <svg viewBox="0 0 120 120" class="ring__svg" data-score="72">
+              <circle class="ring__bg" cx="60" cy="60" r="50" />
+              <circle class="ring__fg" cx="60" cy="60" r="50" />
+            </svg>
+            <div class="ring__label">Consistency</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section__header">
+        <h2>The 3 Big Areas</h2>
+        <p>Leadership grows in three stages: you, your team, your company.</p>
+      </div>
+      <div class="domain-grid">
+        <div class="domain-card">
+          <div class="domain-card__label">Leading Yourself</div>
+          <h3>Can you lead yourself?</h3>
+          <p>This checks if you know your patterns, manage your energy, and stay calm under pressure.</p>
+        </div>
+        <div class="domain-card">
+          <div class="domain-card__label">Leading Teams</div>
+          <h3>Can you lead people?</h3>
+          <p>This checks trust, communication, and how well your team works together.</p>
+        </div>
+        <div class="domain-card">
+          <div class="domain-card__label">Leading Organizations</div>
+          <h3>Can you lead the system?</h3>
+          <p>This checks strategy, structure, and how the organization scales.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section__header">
+        <h2>Territory Scores</h2>
+        <p>Simple view of your scores in each area.</p>
+      </div>
+      <div class="territory-grid">
+        <div class="territory-card" data-score="74">
+          <div class="territory-card__top">
+            <div>
+              <div class="territory-card__label">Leading Yourself</div>
+              <div class="territory-card__score">74</div>
+            </div>
+            <div class="badge blue">Self</div>
+          </div>
+          <div class="bar"><div class="bar__fill"></div></div>
+          <p class="territory-card__insight">You know yourself pretty well, but stress habits are messy.</p>
+        </div>
+        <div class="territory-card" data-score="81">
+          <div class="territory-card__top">
+            <div>
+              <div class="territory-card__label">Leading Teams</div>
+              <div class="territory-card__score">81</div>
+            </div>
+            <div class="badge green">Team</div>
+          </div>
+          <div class="bar"><div class="bar__fill"></div></div>
+          <p class="territory-card__insight">People trust you, but your communication rhythm is uneven.</p>
+        </div>
+        <div class="territory-card" data-score="79">
+          <div class="territory-card__top">
+            <div>
+              <div class="territory-card__label">Leading Organizations</div>
+              <div class="territory-card__score">79</div>
+            </div>
+            <div class="badge orange">Org</div>
+          </div>
+          <div class="bar"><div class="bar__fill"></div></div>
+          <p class="territory-card__insight">Your strategy is clear, but governance rules are weak.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="section__header">
+        <h2>Sub-Dimension Heatmap (Simple)</h2>
+        <p>18 skills, each scored from 0–100. Click to see why.</p>
+      </div>
+      <div class="heatmap" id="heatmap"></div>
+    </section>
+
+    <section class="section">
+      <div class="section__header">
+        <h2>3 Big Takeaways</h2>
+        <p>Here’s the simple truth behind the numbers.</p>
+      </div>
+      <div class="insight-grid">
+        <div class="insight-card">
+          <div class="insight-card__title">Your message doesn’t travel far enough</div>
+          <p>You know the strategy, but your team doesn’t hear it enough.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-card__title">You delegate, but feedback is weak</div>
+          <p>People have tasks, but the team doesn’t correct itself fast.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-card__title">Recovery is the missing piece</div>
+          <p>Your energy is good, but you don’t reset stress in a steady way.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="section__header">
+        <h2>Question Evidence (Simple)</h2>
+        <p>These answers shaped your results the most.</p>
+      </div>
+      <div class="driver-grid" id="driverGrid"></div>
+    </section>
+
+    <section class="section">
+      <div class="section__header">
+        <h2>Risk Lights</h2>
+        <p>Red means risk is high. Green means risk is low.</p>
+      </div>
+      <div class="risk-grid" id="riskGrid"></div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="section__header">
+        <h2>Leadership Debt</h2>
+        <p>The gap between your best and worst skills.</p>
+      </div>
+      <div class="debt">
+        <div class="debt__value">30</div>
+        <div class="debt__label">Big gap means your leadership feels uneven.</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section__header">
+        <h2>What to Do Next (30 Days)</h2>
+        <p>Simple, high‑impact moves.</p>
+      </div>
+      <div class="action-grid" id="actions"></div>
+    </section>
+
+    <footer class="footer">
+      <div>Konstantin Method — Simple, honest, useful.</div>
+      <div class="footer__small">Generated from 100-question baseline assessment • CEO Lab</div>
+    </footer>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal__content">
+      <button class="modal__close" id="modalClose">Close</button>
+      <h3 id="modalTitle">Detail</h3>
+      <p id="modalBody"></p>
+      <div class="modal__list" id="modalList"></div>
+    </div>
+  </div>
+
+  <script src="teen.js"></script>
+</body>
+</html>

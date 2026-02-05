@@ -40,7 +40,7 @@ The only reliable competitive edge in the AI age is continuous adaptation. But y
 **Business Model:**
 Premium subscription (~€100/month) targeting 3000 newsletter subscribers for launch. Conservative goal: 30-60 paid subscribers month 1. Key success metric: 80%+ weekly check-in completion rate.
 
-**Current Status:** Assessment architecture complete. All questions drafted. Ready for technical implementation and Niko review.
+**Current Status:** Assessment architecture complete. Dashboard design refined based on competitive analysis. Ready for V3 implementation combining strategic depth with visual interactivity.
 
 ---
 
@@ -152,6 +152,173 @@ Premium subscription (~€100/month) targeting 3000 newsletter subscribers for l
 
 ---
 
+## Dashboard Design Strategy (Updated 2026-02-04)
+
+### Design Philosophy
+
+**Core Principle:** Strategic depth + visual interactivity
+
+**V3 Approach:** Merge ChatGPT's clean, sophisticated design with our visual density and interactive features.
+
+### Key Design Decisions
+
+#### **1. Visual Style**
+- **Base:** ChatGPT's cleaner, more sophisticated aesthetic
+- **Enhancement:** Keep all visualizations (charts, rings, radar, heatmap)
+- **Typography:** More whitespace, bigger headlines, tighter hierarchy
+- **Layout:** Card-based with subtle borders, not heavy boxes
+- **Colors:** Beige background (#F7F3ED), accent colors for territories only (blue/green/orange)
+
+#### **2. Strategic Sections to Add**
+
+**Decision Friction Index**
+- Shows % of organizational decisions routing through CEO
+- Benchmark comparison (e.g., "41% vs 28% healthy")
+- Primary drivers identified (Communication Rhythm, Delegation, Governance)
+- Impact statement on business velocity
+- Horizontal bar visualization
+
+**Leadership Debt**
+- Gap between highest and lowest sub-dimensions
+- Shows organizational inconsistency
+- Simple number display (e.g., "30-point gap")
+- Explains cost of inconsistency
+
+**"If I Were Your Coach"**
+- 3 specific interventions ranked by leverage
+- Each includes: Current state, Target, Expected lift, Timeline
+- No sliders or what-if scenarios (removed for now)
+- Clear prescriptive recommendations
+
+**Leadership Wrapped**
+- Spotify-style annual highlights
+- Three cards: Biggest Growth, Most Consistent, Largest Drop
+- Dimension names + score changes
+- Shareable, emotional, memorable
+
+#### **3. Peer Comparisons (Enhanced)**
+
+**Current (weak):** Basic "You: 76, Peer: 71" text
+
+**V3 (enhanced):**
+- Multiple cohort filters (All CEOs, Series A, SaaS, Team Size 20-50)
+- Show your score vs each cohort median
+- Contextual interpretation ("Your advantage narrows in Series A cohort")
+- Visual distribution curve with your marker
+- Percentile within each cohort
+- Integrated throughout dashboard (not just one section)
+
+**Show peer context everywhere:**
+- Hero score card: Distribution bar with peer median
+- Territory cards: "Your cohort median: 72 (+2 advantage)"
+- Heatmap cells: "Peer: 74 (-6 gap) ← Blind spot"
+- Radar chart: Ghost overlay of peer median (toggleable)
+
+#### **4. Removed/Postponed**
+
+**What-If Scenarios:** Removed
+- Current implementation looks unpolished
+- Projections not accurate enough yet
+- May revisit in Phase 3 with better modeling
+
+**Historical Comparison Toggle:** Simplified
+- Don't need toggle for every chart
+- Integrate naturally where it adds value
+- Show in Leadership Wrapped and trend charts only
+
+#### **5. Proprietary Language (Konstantin Method)**
+
+**No external framework mentions:**
+- ❌ Don't mention: Trust Formula, Drama Triangle, 5 Dysfunctions, CEO Test
+- ✅ Use instead: Konstantin Method proprietary concepts
+
+**Proprietary terminology:**
+
+**Leading Yourself:**
+- Energy Architecture
+- Purpose & Direction
+- Self-Awareness
+- Leading above the Line
+- Emotional Intelligence
+- Grounded Presence
+
+**Leading Teams:**
+- Trust Scaffolding
+- Delegation Load
+- Feedback Loops
+- Multiplier Behavior
+- Team Health
+- Communication Rhythm
+
+**Leading Organizations:**
+- Strategic Clarity
+- Execution Rigor
+- Systems Thinking
+- Culture as System
+- Organizational Design
+- Governance Alignment
+
+#### **6. Section Structure (V3 Final)**
+
+1. Hero (score card + 3 rings + peer comparison bar)
+2. Konstantin Method Map (proprietary concepts, domain cards)
+3. Territory Scores (progress bars + insights)
+4. Sub-Dimension Heatmap (clickable cells with drill-down)
+5. Leadership Signature (radar chart with peer overlay option)
+6. Hidden Patterns (punchier AI insights)
+7. **Decision Friction Index** (new)
+8. **Leadership Debt** (new)
+9. Question Drivers (with click-to-explore)
+10. 12-Week Trends (line charts)
+11. Benchmark Distribution (enhanced peer comparison)
+12. **Leadership Wrapped** (new)
+13. Metrics Library (12 KPI tiles)
+14. Leverage Matrix (Impact vs Control)
+15. **"If I Were Your Coach"** (new)
+16. Your Next 30 Days (3 priority actions)
+
+**Total:** 16 sections (4 new, 12 enhanced)
+
+### Implementation Notes
+
+**Design Base:**
+- Use ChatGPT's spacing and hierarchy as foundation
+- Apply to all our existing visual components
+- No custom inline styles - use design system
+- Card-based layout throughout
+
+**Interactive Features to Keep:**
+- Click any heatmap cell → modal with details
+- Click question drivers → see contributing questions
+- Hover states with contextual info
+- Smooth animations and transitions
+
+**Interactive Features to Remove:**
+- What-if scenario sliders
+- Historical comparison toggles
+- Excessive hover states
+
+**Technical:**
+- Keep all canvas/SVG visualizations
+- Enhance modal system for drill-downs
+- Better loading states and animations
+- Responsive design for mobile
+
+### Success Metrics
+
+**User feedback should be:**
+- "This is sophisticated" (design quality)
+- "I can explore everything" (interactivity)
+- "I didn't know that about myself" (insights)
+- "I know exactly what to work on" (actionability)
+
+**Technical metrics:**
+- Dashboard load time: <2 seconds
+- Mobile responsive: All sections usable on phone
+- Accessibility: WCAG AA compliant
+
+---
+
 ### 1. Hook Assessment (FREE - 12 questions, ~5 min)
 
 **Purpose:** Create "aha" moment, show immediate value, drive signup
@@ -184,12 +351,12 @@ Premium subscription (~€100/month) targeting 3000 newsletter subscribers for l
 **Structure:** 18 sub-dimensions across 3 territories
 
 #### **Territory 1: Leading Yourself (32 questions)**
-1. Energy Management (5 questions)
-2. Self-Awareness (6 questions)
-3. Above the Line (5 questions)
-4. Emotional Fluidity (6 questions)
-5. Contemplative Practice (5 questions)
-6. Stress Design (5 questions)
+1. Energy Management (5 questions) - Protecting time for deep work and operating in optimal stress zone
+2. Purpose & Direction (6 questions) - Knowing what drives you and aligning work with your zone of genius
+3. Self-Awareness (5 questions) - Recognizing patterns, triggers, biases, and blind spots before they run you
+4. Leading above the Line (6 questions) - Responding with curiosity instead of blame, victim, or hero mindsets
+5. Emotional Intelligence (5 questions) - Identifying and navigating emotions in real-time without getting stuck or suppressing
+6. Grounded Presence (5 questions) - Maintaining inner stillness and perspective, especially under pressure
 
 #### **Territory 2: Leading Teams (35 questions)**
 7. Trust Formula (6 questions)
@@ -276,11 +443,11 @@ Premium subscription (~€100/month) targeting 3000 newsletter subscribers for l
 
 **Leading Yourself:**
 1. Energy Management: "This week, how many hours of Deep Work did you complete?"
-2. Self-Awareness: "How many times did you catch yourself mid-pattern this week?"
-3. Above the Line: "When problems arose, did you respond with blame or curiosity?"
-4. Emotional Fluidity: "How many times did you name your emotion in real-time?"
-5. Contemplative Practice: "How many days did you practice this week?"
-6. Stress Design: "What was your stress zone this week?"
+2. Purpose & Direction: "This week, did your work align with your zone of genius?"
+3. Self-Awareness: "How many times did you catch yourself mid-pattern this week?"
+4. Leading above the Line: "When problems arose, did you respond with blame or curiosity?"
+5. Emotional Intelligence: "How many times did you name your emotion in real-time?"
+6. Grounded Presence: "How many days did you maintain stillness practice this week?"
 
 **Leading Teams:**
 7. Trust Formula: "How many commitments did you keep vs. break this week?"
@@ -975,6 +1142,38 @@ But you can't adapt if you don't have measurement.
 **Phase 2:** Automate via WhatsApp once engagement patterns are proven
 **Impact:** Reduces Phase 1 timeline by ~1-2 weeks, de-risks technical complexity
 
+### 2026-02-04: Dashboard Design Strategy Finalized (V3)
+**Decision:** Merge ChatGPT's sophisticated design with our visual interactivity
+**Rationale:**
+- ChatGPT created cleaner, more sophisticated aesthetic with better hierarchy
+- Their strategic sections (Decision Friction, Leadership Debt, Coach, Wrapped) add massive value
+- Our interactive features (modals, charts, drill-downs) provide depth they lack
+- Best of both: Strategic depth + visual exploration
+**Key Changes:**
+- **Add 4 new sections:** Decision Friction Index, Leadership Debt, "If I Were Your Coach", Leadership Wrapped
+- **Remove:** What-if scenario sliders (premature, looks unpolished)
+- **Enhance:** Peer comparisons throughout (multiple cohorts, contextual interpretation, visual distribution)
+- **Proprietary language only:** No external framework mentions (Trust Formula, Drama Triangle, etc.) - use Konstantin Method concepts
+- **Design upgrade:** ChatGPT's spacing/hierarchy applied to all our visual components
+**Impact:** Creates differentiated dashboard that's both strategic AND interactive, fully proprietary to Konstantin Method
+
+### 2026-02-04: Konstantin Method Sub-Dimensions Updated
+**Decision:** Refined Leading Yourself sub-dimensions to match evolving framework
+**Changes:**
+- "Above the Line" → "Leading above the Line" (more active framing)
+- "Emotional Fluidity" → "Emotional Intelligence" (clearer, more recognizable)
+- "Contemplative Practice" → "Grounded Presence" (captures essence better)
+- "Stress Design" → Removed, replaced with "Purpose & Direction" (more foundational)
+**New Leading Yourself framework:**
+1. Energy Management
+2. Purpose & Direction (new)
+3. Self-Awareness
+4. Leading above the Line
+5. Emotional Intelligence
+6. Grounded Presence
+**Rationale:** Purpose & Direction is more foundational than Stress Design (which can be covered in Energy Management). Better represents the Konstantin Method's focus on alignment and inner clarity.
+**Impact:** Updates all assessment questions, dashboard labels, framework mapping, weekly check-in questions
+
 ### 2026-02-03: Full Build Strategy (Option B)
 **Decision:** Build complete platform and launch to newsletter (not concierge pilot)
 **Rationale:**
@@ -1325,11 +1524,11 @@ This dedicated document contains:
 ### LEADING YOURSELF (6 questions)
 
 1. **Energy Management:** "This week, how many hours of Deep Work did you complete?"
-2. **Self-Awareness:** "How many times did you catch yourself mid-pattern this week?"
-3. **Above the Line:** "When problems arose this week, did you respond with blame or curiosity?"
-4. **Emotional Fluidity:** "How many times did you name your emotion in real-time this week?"
-5. **Contemplative Practice:** "How many days did you practice this week?"
-6. **Stress Design:** "What was your stress zone this week?"
+2. **Purpose & Direction:** "This week, did your work align with your zone of genius?"
+3. **Self-Awareness:** "How many times did you catch yourself mid-pattern this week?"
+4. **Leading above the Line:** "When problems arose this week, did you respond with blame or curiosity?"
+5. **Emotional Intelligence:** "How many times did you name your emotion in real-time this week?"
+6. **Grounded Presence:** "How many days did you maintain stillness practice this week?"
 
 ### LEADING TEAMS (6 questions)
 
@@ -1356,22 +1555,28 @@ This dedicated document contains:
 ### LEADING YOURSELF
 
 **1.1 Energy Management**
-Frameworks: Deep Work, Harada Method, Work Smarter, Kodawari, Burnout Prevention
+Protecting time for deep work and operating in your optimal stress zone, not burnout or boredom
+Frameworks: Deep Work, Harada Method, Work Smarter, Kodawari, Yerkes-Dodson, Burnout Prevention
 
-**1.2 Self-Awareness**
-Frameworks: Five Drivers, Zone of Genius, Mental Biases, Leitmotif Principle, ZRM
+**1.2 Purpose & Direction**
+Knowing what drives you and aligning your work with your zone of genius
+Frameworks: Five Drivers, Zone of Genius, Leitmotif Principle, ZRM, Second Mountain
 
-**1.3 Above the Line**
-Frameworks: Above the Line, Drama Triangle, Four Horsemen, Emotional Intelligence
+**1.3 Self-Awareness**
+Recognizing your patterns, triggers, biases, and blind spots before they run you
+Frameworks: Mental Biases, Four Relationships, Self-Awareness Practices, Pattern Recognition
 
-**1.4 Emotional Fluidity**
-Frameworks: Emotional Fluidity, Contracts, The Undoing, Empathy vs Compassion
+**1.4 Leading above the Line**
+Responding with curiosity instead of blame, victim, or hero mindsets
+Frameworks: Above the Line, Drama Triangle, Four Horsemen, Radical Responsibility
 
-**1.5 Contemplative Practice**
-Frameworks: 3 Styles of Meditation, 4 Ways of Listening, Ritual, Second Mountain
+**1.5 Emotional Intelligence**
+Identifying and navigating emotions in real-time without getting stuck or suppressing
+Frameworks: Emotional Intelligence, Emotional Fluidity, Contracts, The Undoing, Empathy vs Compassion
 
-**1.6 Stress Design**
-Frameworks: Yerkes-Dodson, Strategic Stress Management, Wisdom Quadrant, Burnout Prevention
+**1.6 Grounded Presence**
+Maintaining inner stillness and perspective, especially under pressure
+Frameworks: 3 Styles of Meditation, 4 Ways of Listening, Ritual, Contemplative Practice, Wisdom Quadrant
 
 ### LEADING TEAMS
 

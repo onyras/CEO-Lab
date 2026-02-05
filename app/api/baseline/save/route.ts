@@ -35,6 +35,7 @@ export async function POST(request: Request) {
     }
 
     const { stage, responses } = await request.json()
+    const stageNumber = Number(stage) || 0
 
     // Create or update baseline assessment - use user_id for conflict resolution
     const { data: existingAssessment } = await supabase
@@ -50,8 +51,8 @@ export async function POST(request: Request) {
       const { data: updated, error: updateError } = await supabase
         .from('baseline_assessments')
         .update({
-          stage: stage,
-          completed_at: stage === 3 ? new Date().toISOString() : null,
+          stage: stageNumber,
+          completed_at: stageNumber === 3 ? new Date().toISOString() : null,
         })
         .eq('id', existingAssessment.id)
         .select()
@@ -72,8 +73,8 @@ export async function POST(request: Request) {
         .from('baseline_assessments')
         .insert({
           user_id: user.id,
-          stage: stage,
-          completed_at: stage === 3 ? new Date().toISOString() : null,
+          stage: stageNumber,
+          completed_at: stageNumber === 3 ? new Date().toISOString() : null,
         })
         .select()
         .single()
@@ -102,7 +103,7 @@ export async function POST(request: Request) {
           sub_dimension: question?.subdimension || 'Unknown',
           territory: question?.territory || 'Leading Yourself',
           answer_value: answer as number,
-          stage: stage,
+          stage: stageNumber,
         }
       }
     )
@@ -170,28 +171,21 @@ export async function POST(request: Request) {
     }
 
     // If Stage 1 complete, update user profile baseline_stage
-    if (stage === 1) {
-      await supabase
-        .from('user_profiles')
-        .update({ baseline_stage: 1 })
-        .eq('id', user.id)
-    }
+    if (stageNumber >= 1) {
+      const profileUpdates =
+        stageNumber === 3
+          ? { baseline_completed: true, baseline_stage: 3 }
+          : { baseline_stage: stageNumber }
 
-    // If Stage 3 complete, mark user profile as baseline_completed
-    if (stage === 3) {
       await supabase
         .from('user_profiles')
-        .update({
-          baseline_completed: true,
-          baseline_stage: 3
-        })
-        .eq('id', user.id)
+        .upsert({ id: user.id, ...profileUpdates }, { onConflict: 'id' })
     }
 
     return NextResponse.json({
       success: true,
       assessmentId: assessmentId,
-      stage,
+      stage: stageNumber,
       responsesSaved: responseRecords.length,
     })
   } catch (error: any) {

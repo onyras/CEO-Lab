@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Konstantin Method — Performance Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="whoop.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div>
+        <div class="eyebrow">Konstantin Method</div>
+        <h1>Leadership Performance</h1>
+        <p class="lede">Daily readiness, strain, and recovery translated into leadership data.</p>
+      </div>
+      <div class="top__meta">
+        <div>
+          <div class="meta__label">Profile</div>
+          <div class="meta__value">Niko Konstantin</div>
+        </div>
+        <div>
+          <div class="meta__label">Assessment</div>
+          <div class="meta__value">100Q Baseline</div>
+        </div>
+        <div>
+          <div class="meta__label">Updated</div>
+          <div class="meta__value">Feb 4, 2026</div>
+        </div>
+      </div>
+    </header>
+
+    <section class="grid">
+      <div class="card span-12 story">
+        <div class="story__label">One‑Sentence Diagnosis</div>
+        <div class="story__value" id="diagnosis">You are a strategist with high trust, but governance and cadence leak alignment.</div>
+        <div class="story__meta" id="diagnosisMeta">Primary risk: decision drag • Fastest lift: governance clarity</div>
+      </div>
+    </section>
+
+    <section class="grid hero">
+      <div class="card score span-6">
+        <div class="score__label">Leadership Score</div>
+        <div class="score__value">78</div>
+        <div class="score__sub">Top 18% of CEO cohort</div>
+        <div class="score__spark">
+          <svg viewBox="0 0 260 90" class="sparkline" data-points="58,61,63,62,64,66,68,70,72,74,76,78"></svg>
+        </div>
+      </div>
+      <div class="card ring span-2" data-score="84">
+        <div class="ring__label">Readiness</div>
+        <svg viewBox="0 0 120 120" class="ring__svg" data-score="84">
+          <circle class="ring__bg" cx="60" cy="60" r="50" />
+          <circle class="ring__fg" cx="60" cy="60" r="50" />
+        </svg>
+        <div class="ring__value">84</div>
+        <div class="ring__note">High</div>
+      </div>
+      <div class="card ring span-2" data-score="61">
+        <div class="ring__label">Strain</div>
+        <svg viewBox="0 0 120 120" class="ring__svg" data-score="61">
+          <circle class="ring__bg" cx="60" cy="60" r="50" />
+          <circle class="ring__fg" cx="60" cy="60" r="50" />
+        </svg>
+        <div class="ring__value">61</div>
+        <div class="ring__note">Moderate</div>
+      </div>
+      <div class="card ring span-2" data-score="72">
+        <div class="ring__label">Recovery</div>
+        <svg viewBox="0 0 120 120" class="ring__svg" data-score="72">
+          <circle class="ring__bg" cx="60" cy="60" r="50" />
+          <circle class="ring__fg" cx="60" cy="60" r="50" />
+        </svg>
+        <div class="ring__value">72</div>
+        <div class="ring__note">Stable</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card big span-6">
+        <div class="card__title">Leadership Load (7 days)</div>
+        <svg viewBox="0 0 520 170" class="area" data-points="52,58,61,67,63,69,72"></svg>
+        <div class="card__footer">
+          <span>Avg 63</span>
+          <span>Peak 72</span>
+          <span>Low 52</span>
+        </div>
+      </div>
+      <div class="card big span-6">
+        <div class="card__title">Recovery vs. Strain</div>
+        <svg viewBox="0 0 520 170" class="dual" data-a="72,70,68,66,71,74,72" data-b="58,61,64,66,63,60,61"></svg>
+        <div class="card__footer">
+          <span>Recovery up 4%</span>
+          <span>Strain down 3%</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card span-4">
+        <div class="card__title">Domains</div>
+        <div class="domain" data-score="74">
+          <span>Leading Yourself</span>
+          <div class="bar"><div class="bar__fill"></div></div>
+          <strong>74</strong>
+        </div>
+        <div class="domain" data-score="81">
+          <span>Leading Teams</span>
+          <div class="bar"><div class="bar__fill"></div></div>
+          <strong>81</strong>
+        </div>
+        <div class="domain" data-score="79">
+          <span>Leading Organizations</span>
+          <div class="bar"><div class="bar__fill"></div></div>
+          <strong>79</strong>
+        </div>
+      </div>
+      <div class="card span-4">
+        <div class="card__title">Today’s Focus</div>
+        <div class="pill-row">
+          <span>Governance rules</span>
+          <span>Weekly narrative</span>
+          <span>Energy zone ritual</span>
+        </div>
+        <p class="small">Your biggest leverage today is alignment + decision clarity.</p>
+      </div>
+      <div class="card span-4">
+        <div class="card__title">Consistency</div>
+        <div class="stack" id="consistency"></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card span-12">
+        <div class="card__title">Sub‑Dimension Grid</div>
+        <div class="heat" id="heat"></div>
+        <div class="grid__legend">
+          <span>Tap a tile for interpretation</span>
+          <span>Each tile shows score, percentile, confidence</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card span-12">
+        <div class="card__title">Leading Yourself Overview</div>
+        <div class="self" id="selfOverview"></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card big span-6">
+        <div class="card__title">Interpretation Models</div>
+        <div class="models" id="models"></div>
+      </div>
+      <div class="card span-3">
+        <div class="card__title">Trajectory Risk</div>
+        <div class="big-number" id="trajectoryValue">Low</div>
+        <p class="small" id="trajectoryNote">Stable trend with moderate volatility.</p>
+      </div>
+      <div class="card span-3">
+        <div class="card__title">Leverage Forecast</div>
+        <div class="big-number" id="leverageValue">+4.8</div>
+        <p class="small" id="leverageNote">Fixing Governance (+10) lifts overall score fastest.</p>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card span-4">
+        <div class="card__title">Top Drivers</div>
+        <div class="driver" id="drivers"></div>
+      </div>
+      <div class="card span-4">
+        <div class="card__title">Risk Signals</div>
+        <div class="risk" id="risks"></div>
+      </div>
+      <div class="card span-4">
+        <div class="card__title">Leverage Matrix</div>
+        <div class="matrix">
+          <div class="matrix__plot" id="matrix"></div>
+          <div class="matrix__axis matrix__axis--x">Control →</div>
+          <div class="matrix__axis matrix__axis--y">Impact ↑</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card span-12">
+        <div class="card__title">Model Evidence</div>
+        <div class="evidence" id="evidence"></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card span-12">
+        <div class="card__title">Insight Ladder</div>
+        <div class="ladder" id="ladder"></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card big span-6">
+        <div class="card__title">Weekly Routine Score</div>
+        <svg viewBox="0 0 520 170" class="bars" data-points="62,70,55,68,74,71,66"></svg>
+        <div class="card__footer">
+          <span>Best day: Fri</span>
+          <span>Weak day: Wed</span>
+        </div>
+      </div>
+      <div class="card big span-6">
+        <div class="card__title">Decision Friction</div>
+        <div class="friction">
+          <div class="friction__value">41%</div>
+          <div class="friction__note">Higher than healthy baseline (28%).</div>
+          <div class="bar"><div class="bar__fill" data-value="41"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card span-4">
+        <div class="card__title">Action Plan</div>
+        <div class="list" id="actions"></div>
+      </div>
+      <div class="card span-4">
+        <div class="card__title">If You Fix 1 Thing</div>
+        <div class="big-number">+8</div>
+        <p class="small">Governance clarity increases overall score the fastest.</p>
+      </div>
+      <div class="card span-4">
+        <div class="card__title">Leadership Debt</div>
+        <div class="big-number">30</div>
+        <p class="small">Gap between best and worst skills.</p>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card span-6">
+        <div class="card__title">What‑If Simulator</div>
+        <div class="whatif">
+          <div class="whatif__row">
+            <span>Improve Governance by</span>
+            <strong id="whatifDelta">+10</strong>
+          </div>
+          <input id="whatifSlider" type="range" min="0" max="20" value="10" />
+          <div class="whatif__row">
+            <span>Projected Overall Score</span>
+            <strong id="whatifScore">82.8</strong>
+          </div>
+          <div class="small">Based on elasticity of weakest areas.</div>
+        </div>
+      </div>
+      <div class="card span-6">
+        <div class="card__title">Leadership Debt Paydown Plan</div>
+        <div class="paydown" id="paydown"></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card span-12">
+        <div class="card__title">Career Utility</div>
+        <div class="career" id="career"></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card span-6">
+        <div class="card__title">Role Fit</div>
+        <div class="rolefit" id="rolefit"></div>
+      </div>
+      <div class="card span-6">
+        <div class="card__title">Next Role Path</div>
+        <div class="rolepath" id="rolepath"></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card span-12">
+        <div class="card__title">Leadership Proof Sheet</div>
+        <div class="proof" id="proof"></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Konstantin Method — Leadership is measurable.</span>
+      <span>Prototype • Whoop‑style data visualization</span>
+    </footer>
+  </div>
+
+  <script src="whoop.js"></script>
+</body>
+</html>

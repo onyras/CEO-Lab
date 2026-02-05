@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CEO Lab — Athletes vs CEOs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f7f3ed;
+      --card: #ffffff;
+      --ink: #000000;
+      --muted: rgba(0,0,0,0.6);
+      --line: rgba(0,0,0,0.1);
+      --blue: #7fabc8;
+      --green: #a6bea4;
+      --orange: #e08f6a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    .section {
+      position: relative;
+      padding: 96px 24px 110px;
+      overflow: hidden;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 36px;
+    }
+
+    .mesh {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(320px 220px at 15% 10%, rgba(127,171,200,0.35), transparent 60%),
+        radial-gradient(360px 260px at 85% 15%, rgba(166,190,164,0.35), transparent 60%),
+        radial-gradient(420px 300px at 50% 80%, rgba(224,143,106,0.2), transparent 65%);
+      opacity: 0.6;
+    }
+
+    .gridlines {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(circle at 20% 15%, black, transparent 60%);
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      font-size: clamp(32px, 4.6vw, 54px);
+      line-height: 1.05;
+      margin: 10px 0 12px;
+      font-weight: 800;
+    }
+
+    .lede {
+      font-size: 18px;
+      color: var(--muted);
+      margin: 0;
+      max-width: 720px;
+    }
+
+    .highlight {
+      text-decoration: underline;
+      text-decoration-thickness: 6px;
+      text-underline-offset: 6px;
+      text-decoration-color: var(--blue);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.88));
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+      display: grid;
+      gap: 16px;
+      position: relative;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      border: 1px solid rgba(0,0,0,0.04);
+      pointer-events: none;
+    }
+
+    .card--accent {
+      border-top: 4px solid var(--blue);
+    }
+
+    .card--muted {
+      border-top: 4px solid rgba(0,0,0,0.2);
+    }
+
+    .card__header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      object-fit: cover;
+      border: 1px solid var(--line);
+    }
+
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+      color: var(--ink);
+    }
+
+    .list li::before {
+      content: "✓";
+      margin-right: 10px;
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .list.muted { color: rgba(0,0,0,0.55); }
+
+    .list.muted li::before {
+      content: "—";
+      color: rgba(0,0,0,0.35);
+    }
+
+    .metric {
+      display: grid;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .bar {
+      height: 6px;
+      background: rgba(0,0,0,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar__fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+    }
+
+    .bridge {
+      display: grid;
+      align-content: center;
+      gap: 12px;
+      text-align: center;
+    }
+
+    .bridge__pill {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #000;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .bridge__line {
+      width: 2px;
+      height: 70px;
+      background: rgba(0,0,0,0.15);
+      margin: 0 auto;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #000;
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .proof {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 960px) {
+      .cards { grid-template-columns: 1fr; }
+      .bridge__line { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <section class="section">
+    <div class="mesh"></div>
+    <div class="gridlines"></div>
+
+    <div class="container">
+      <div>
+        <div class="eyebrow">CEO LAB — PROBLEM</div>
+        <h1>Athletes Have Post‑Game Analysis.<br />CEOs Have <span class="highlight">Guesswork</span>.</h1>
+        <p class="lede">CEO Lab installs a leadership scoreboard: review, metrics, blind spots, and a clear plan to improve.</p>
+      </div>
+
+      <div class="cards">
+        <div class="card card--accent">
+          <div class="card__header">
+            <img class="avatar" src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=300&auto=format&fit=crop" alt="Athlete" />
+            <span>Athletes</span>
+          </div>
+          <ul class="list">
+            <li>Film review after every performance</li>
+            <li>Metrics tracked weekly</li>
+            <li>Blind spots identified</li>
+            <li>Improvement plan created</li>
+          </ul>
+          <div class="metric">
+            <span>Feedback Loop</span>
+            <div class="bar"><div class="bar__fill" style="width:92%"></div></div>
+          </div>
+        </div>
+
+        <div class="bridge">
+          <div class="bridge__line"></div>
+          <div class="bridge__pill">CEO Lab = the missing scoreboard</div>
+          <a class="cta" href="#">See Your Score →</a>
+          <div class="bridge__line"></div>
+        </div>
+
+        <div class="card card--muted">
+          <div class="card__header">
+            <img class="avatar" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=300&auto=format&fit=crop" alt="CEO" />
+            <span>CEOs</span>
+          </div>
+          <ul class="list muted">
+            <li>Consume books and podcasts</li>
+            <li>Inconsistent coaching</li>
+            <li>No feedback loop</li>
+            <li>No systematic tracking</li>
+          </ul>
+          <div class="metric">
+            <span>Feedback Loop</span>
+            <div class="bar"><div class="bar__fill" style="width:24%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proof">
+        <span>Used by high‑performing founders</span>
+        <span>•</span>
+        <span>Weekly measurable gains</span>
+        <span>•</span>
+        <span>Blind spots revealed</span>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
