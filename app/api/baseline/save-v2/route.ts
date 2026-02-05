@@ -302,20 +302,12 @@ export async function POST(request: Request) {
       calculated_at: new Date().toISOString()
     }))
 
-    // Delete existing scores for this user then insert fresh
-    // Uses (user_id, sub_dimension) unique constraint from original schema
-    const { error: deleteScoresError } = await supabase
-      .from('sub_dimension_scores')
-      .delete()
-      .eq('user_id', user.id)
-
-    if (deleteScoresError) {
-      logs.push(`Delete scores warning: ${deleteScoresError.message}`)
-    }
-
+    // Upsert scores using the existing (user_id, sub_dimension) unique constraint
     const { error: saveScoresError } = await supabase
       .from('sub_dimension_scores')
-      .insert(scoreRecords)
+      .upsert(scoreRecords, {
+        onConflict: 'user_id,sub_dimension'
+      })
 
     if (saveScoresError) {
       logs.push(`Save scores error: ${saveScoresError.message}`)
