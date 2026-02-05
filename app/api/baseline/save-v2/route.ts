@@ -91,30 +91,81 @@ export async function POST(request: Request) {
       }, { status: 400 })
     }
 
-    // STEP 3: ALWAYS create new assessment (never reuse for retakes)
-    logs.push('Step 3: Creating new assessment...')
+    // STEP 3: Get or create assessment (smart logic for stages vs retakes)
+    logs.push('Step 3: Determining assessment (stage continuation vs new baseline)...')
 
-    const { data: newAssessment, error: createError } = await supabase
+    // Check for existing incomplete assessment
+    const { data: incompleteAssessment, error: findError } = await supabase
       .from('baseline_assessments')
-      .insert({
-        user_id: user.id,
-        stage: stageNumber,
-        completed_at: stageNumber === 3 ? new Date().toISOString() : null,
-      })
-      .select('id')
-      .single()
+      .select('id, stage, completed_at')
+      .eq('user_id', user.id)
+      .is('completed_at', null) // Only incomplete assessments
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
 
-    if (createError || !newAssessment) {
-      logs.push(`Create error: ${createError?.message || 'No data returned'}`)
+    if (findError) {
+      logs.push(`Find error: ${findError.message}`)
       return NextResponse.json({
         success: false,
-        error: `Failed to create assessment: ${createError?.message || 'Unknown error'}`,
+        error: `Database error finding assessment: ${findError.message}`,
         logs
       }, { status: 500 })
     }
 
-    const assessmentId = newAssessment.id
-    logs.push(`Created new assessment: ${assessmentId} (retakes get new ID = preserve history)`)
+    let assessmentId: string
+
+    // Logic: Reuse incomplete assessment OR create new if starting fresh
+    if (incompleteAssessment && stageNumber > incompleteAssessment.stage) {
+      // Continuing same baseline run (stage progression)
+      assessmentId = incompleteAssessment.id
+      logs.push(`Reusing assessment ${assessmentId} (stage ${incompleteAssessment.stage} → ${stageNumber})`)
+
+      // Update stage progress
+      const { error: updateError } = await supabase
+        .from('baseline_assessments')
+        .update({
+          stage: stageNumber,
+          completed_at: stageNumber === 3 ? new Date().toISOString() : null,
+        })
+        .eq('id', assessmentId)
+
+      if (updateError) {
+        logs.push(`Update error: ${updateError.message}`)
+        return NextResponse.json({
+          success: false,
+          error: `Failed to update assessment: ${updateError.message}`,
+          logs
+        }, { status: 500 })
+      }
+
+      logs.push('Assessment updated - same baseline run continues')
+    } else {
+      // Starting new baseline (first stage or explicit retake)
+      logs.push('Creating new assessment (new baseline run or retake)')
+
+      const { data: newAssessment, error: createError } = await supabase
+        .from('baseline_assessments')
+        .insert({
+          user_id: user.id,
+          stage: stageNumber,
+          completed_at: stageNumber === 3 ? new Date().toISOString() : null,
+        })
+        .select('id')
+        .single()
+
+      if (createError || !newAssessment) {
+        logs.push(`Create error: ${createError?.message || 'No data returned'}`)
+        return NextResponse.json({
+          success: false,
+          error: `Failed to create assessment: ${createError?.message || 'Unknown error'}`,
+          logs
+        }, { status: 500 })
+      }
+
+      assessmentId = newAssessment.id
+      logs.push(`Created new assessment: ${assessmentId}`)
+    }
 
     // STEP 4: Prepare response records with versioning
     logs.push('Step 4: Preparing response records with version snapshots...')
