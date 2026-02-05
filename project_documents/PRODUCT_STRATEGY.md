@@ -1142,6 +1142,29 @@ But you can't adapt if you don't have measurement.
 **Phase 2:** Automate via WhatsApp once engagement patterns are proven
 **Impact:** Reduces Phase 1 timeline by ~1-2 weeks, de-risks technical complexity
 
+### 2026-02-05: Accountability Agent Feature Defined
+**Decision:** Add personalized WhatsApp accountability system as major product feature
+**What It Is:**
+- Post-baseline: System suggests 3 weak areas based on assessment scores
+- User creates 3 custom behavioral questions (one per focus area)
+- User defines 3 measurement options per question (tap-to-answer buttons)
+- Delivered every Monday 9 AM via WhatsApp
+- Multi-answer support enabled (users can select multiple options)
+- 12-week tracking with quarterly review and reset
+**User Experience:**
+- Setup wizard (3 steps): Select focus → Write questions → Define measurement options
+- Weekly check-in: 3 taps, 60 seconds, immediate completion summary
+- Dashboard: 3 line charts showing weekly progress + AI insights
+- Quarterly: Review progress, adjust or keep same questions
+**Why This Matters:**
+- Transforms CEO Lab from assessment tool to active accountability system
+- Personalized (user defines what to measure, not generic templates)
+- Behavioral (tracks what users DO, not what they think)
+- Low-friction (WhatsApp + tap interface, no typing)
+- Integrated with baseline (questions map to 18 sub-dimensions)
+**Implementation:** 5-week timeline (MVP → Intelligence → Polish)
+**Impact:** Makes CEO Lab sticky through weekly engagement, drives retention, positions for coaching upsell
+
 ### 2026-02-04: Dashboard Design Strategy Finalized (V3)
 **Decision:** Merge ChatGPT's sophisticated design with our visual interactivity
 **Rationale:**
@@ -1342,9 +1365,391 @@ But you can't adapt if you don't have measurement.
 
 ---
 
+## WhatsApp Dynamic Flows System (2026-02-05)
+
+### Overview
+**Purpose:** Send personalized 3-question weekly check-ins via WhatsApp to CEO Lab users based on their individual focus areas
+
+### The Challenge
+- 100+ users each select 3 unique focus areas from their baseline assessment
+- Each user needs different questions based on their personalized categories
+- Questions sent weekly for 13 weeks (1 quarter)
+- WhatsApp Flows Manager UI only supports static flows (all users see same questions)
+
+### The Solution: API-Based Dynamic Flow Generation
+Generate unique WhatsApp Flow JSON for each user programmatically and send via WhatsApp Cloud API
+
+### Architecture
+```
+CEO Lab DB → Weekly Cron Job → Generate Flow JSON per user → Send via API → Webhook receives responses → Save to DB
+```
+
+### Technical Implementation
+
+**Files Created:** `/Users/acai/Documents/AI Agent/nk/projects/09_ceo_lab/whatsapp_flows/`
+
+**Core Components:**
+1. **flow-generator.js** - Generates personalized Flow JSON for each user
+2. **send-weekly.js** - Cron job that runs weekly to send flows
+3. **webhook-handler.js** - Receives and processes user responses
+4. **config.js** - Configuration and credentials
+5. **database-schema.sql** - Database structure for tracking
+
+**Data Flow:**
+1. User completes baseline assessment → Selects 3 focus categories
+2. System stores user profile with 3 personalized questions
+3. Every Monday 9am: Cron job triggers
+4. For each active user:
+   - Fetch their 3 questions from database
+   - Generate unique Flow JSON with their questions
+   - Send Flow via WhatsApp API
+5. User opens WhatsApp → Sees personalized 3 questions → Submits
+6. Webhook receives response → Parses answers → Saves to database
+7. Updates dashboard with new data point
+
+**Cost Estimate:**
+- 100 users × 1 message/week × 4 weeks = 400 conversations/month
+- **Within WhatsApp free tier (1,000 conversations/month)**
+- Hosting: Vercel (free tier) or Railway ($5/month)
+- **Total: $0-5/month**
+
+**Database Schema:**
+```sql
+-- User weekly questions
+user_weekly_questions:
+  - user_id
+  - quarter (Q1, Q2, Q3, Q4)
+  - category_1, category_2, category_3
+  - question_1, question_2, question_3
+  - active (boolean)
+
+-- Weekly responses
+weekly_responses:
+  - response_id
+  - user_id
+  - week_number
+  - quarter
+  - answer_1, answer_2, answer_3
+  - submitted_at
+```
+
+**Tech Stack:**
+- Node.js for backend scripts
+- Supabase for database (existing CEO Lab DB)
+- WhatsApp Cloud API (credentials from setup)
+- Vercel Cron Jobs (for scheduling)
+
+**Timeline:**
+- Setup & Configuration: 2 hours
+- Flow Generator Logic: 3 hours
+- Webhook Handler: 2 hours
+- Testing: 2 hours
+- **Total: 1 day to build and test**
+
+### Deployment Strategy
+1. **Development:** Test with 5 beta users first
+2. **Staging:** Verify flows send correctly, responses save
+3. **Production:** Roll out to all CEO Lab users
+
+### Success Metrics
+- Weekly completion rate: Target 80%+
+- Response time: <2 minutes per check-in
+- Data quality: All answers saved correctly
+- User feedback: "This is seamless"
+
+---
+
+## Accountability Agent (Major Feature)
+
+### Overview
+**What It Is:** Personalized WhatsApp-based accountability system that helps users track custom behavioral metrics weekly through interactive tap-to-answer questions.
+
+**When It Activates:** Immediately after user completes baseline assessment
+
+**The User Journey:**
+
+1. **Post-Baseline Suggestions (Automated)**
+   - User completes baseline assessment
+   - System analyzes scores and identifies 3-5 lowest sub-dimensions
+   - Dashboard shows: "Based on your results, we recommend focusing on:"
+     - Energy Management (Score: 24%)
+     - Trust Formula (Score: 31%)
+     - Strategic Clarity (Score: 28%)
+   - User selects 3 focus areas for the quarter
+
+2. **Custom Question Development (Interactive)**
+   - For each selected focus area, user creates 1 custom question
+   - System provides examples based on the sub-dimension:
+     - Energy Management: "How many hours of deep work did I complete?"
+     - Trust Formula: "Did I keep all commitments I made?"
+     - Strategic Clarity: "Did I review and refine my strategy?"
+   - User can customize or write their own behavioral question
+
+3. **Measurement Options (User-Defined)**
+   - For each question, user defines 3 measurement options (tap-to-select answers)
+   - System suggests options based on question type:
+     - **Time-based:** "0-5 hours", "5-10 hours", "10-15 hours", "15+ hours"
+     - **Yes/No:** "Yes", "No", "Partially"
+     - **Frequency:** "0 times", "1-3 times", "4-7 times", "8+ times"
+     - **Percentage:** "0-25%", "25-50%", "50-75%", "75-100%"
+   - User can fully customize all 3 options (multi-answer selection enabled)
+
+4. **Weekly Delivery (Every Monday 9 AM)**
+   - WhatsApp message sent: "Good morning! Week X check-in (Q1 2026)"
+   - Question 1 appears with 3 tap-to-answer buttons
+   - User taps answer → System saves → Question 2 appears
+   - User taps answer → System saves → Question 3 appears
+   - User taps answer → System shows completion summary
+
+5. **Multi-Answer Support**
+   - Users can select multiple answers if applicable
+   - Example: "Which energy practices did you do this week?"
+     - Tap: "Meditation" + "Deep Work blocks" + "No meetings before 10am"
+   - System saves all selected options
+
+6. **Completion Summary (Immediate)**
+   ```
+   ✅ Week 8 complete!
+
+   Quick summary:
+   • Deep Work: 12 hours (↑ from last week's 8)
+   • Commitments: All kept (↑ 3-week streak)
+   • Strategy Review: Yes (✓ 5 weeks in a row)
+
+   See full insights: ceolab.app/dashboard
+   Keep going! 🔥 8-week streak
+   ```
+
+### Technical Architecture
+
+**Database Schema:**
+```sql
+-- User focus areas (selected post-baseline)
+accountability_agent_setup:
+  - user_id
+  - quarter (Q1, Q2, Q3, Q4)
+  - focus_area_1, focus_area_2, focus_area_3 (sub-dimension names)
+  - question_1, question_2, question_3 (user-written)
+  - options_1 (array), options_2 (array), options_3 (array)
+  - created_at
+
+-- Weekly responses
+accountability_agent_responses:
+  - response_id
+  - user_id
+  - week_number
+  - quarter
+  - question_1_answer (array - supports multi-select)
+  - question_2_answer (array)
+  - question_3_answer (array)
+  - submitted_at
+```
+
+**WhatsApp Interactive Messages:**
+- Use Button Messages for ≤3 options (single or multi-select)
+- Use List Messages for 4-10 options
+- Multi-select enabled via `selection_type: "multiple"` in payload
+
+**Weekly Send Flow:**
+1. Cron job runs every Monday 9 AM
+2. Fetch all active users with accountability_agent_setup
+3. For each user:
+   - Generate interactive message with their custom Question 1
+   - Send via WhatsApp API
+4. User taps answer → Webhook receives response
+5. Save answer to database, send Question 2
+6. Repeat for Question 3
+7. Send completion summary with streak + insights
+
+**API Routes:**
+- `/api/accountability/setup` - POST: Save user's 3 questions + options
+- `/api/accountability/suggest` - GET: Return low-scoring sub-dimensions
+- `/api/accountability/webhook` - POST: Receive WhatsApp responses
+- `/api/accountability/send` - POST: Trigger weekly send (cron-invoked)
+
+### Dashboard Integration
+
+**Setup Flow (After Baseline):**
+1. Card appears: "Set Up Your Accountability Agent"
+2. Click → Modal opens with 3-step wizard:
+   - **Step 1:** Select 3 focus areas (suggested based on scores)
+   - **Step 2:** Write or customize 3 questions
+   - **Step 3:** Define measurement options for each question
+3. Preview: "Your weekly check-in will look like this..."
+4. Confirm → Saves to database → First message sends next Monday
+
+**Tracking Dashboard:**
+- New section: "Accountability Agent Progress"
+- 3 line charts (one per custom question)
+- Shows weekly data points over 12-week quarter
+- Trend indicators (improving, stable, declining)
+- AI-generated insights per question
+- Comparison to baseline score (if applicable)
+
+**Quarterly Reset:**
+- After 13 weeks, system prompts: "Q1 complete! Ready to set Q2 focus?"
+- User reviews Q1 progress
+- Option to keep same questions OR choose new focus areas
+- Repeats setup flow for Q2
+
+### User Experience
+
+**Why This Works:**
+- **Personalized:** Users create questions that matter to them
+- **Behavioral:** Tracks what they DO, not what they think
+- **Low-friction:** 3 taps on Monday morning, done in 60 seconds
+- **Immediate feedback:** Completion summary + streak tracking
+- **Flexible:** Can adjust questions quarterly based on progress
+- **Multi-dimensional:** Tracks multiple behaviors per question (multi-select)
+
+**Example User Setup:**
+
+**Focus Area 1: Energy Management**
+- Question: "Which energy practices did I complete this week?"
+- Options:
+  - [ ] 10+ hours deep work
+  - [ ] No meetings before 10am
+  - [ ] Daily meditation
+- Multi-select: YES
+
+**Focus Area 2: Trust Formula**
+- Question: "Did I keep all commitments I made this week?"
+- Options:
+  - ( ) Yes, 100%
+  - ( ) Mostly (1-2 broken)
+  - ( ) No (3+ broken)
+- Multi-select: NO
+
+**Focus Area 3: Strategic Clarity**
+- Question: "How many times did I review our strategy this week?"
+- Options:
+  - ( ) 0 times
+  - ( ) 1-2 times
+  - ( ) 3+ times
+- Multi-select: NO
+
+### Success Metrics
+
+**Engagement:**
+- 80%+ weekly completion rate
+- Average response time: <2 minutes
+- 90%+ accuracy (answers correlate with dashboard data)
+
+**Impact:**
+- Users who complete 80%+ weeks show 2x score improvement vs baseline
+- Quarterly retention: 90%+ of users continue to Q2
+- NPS: 50+ ("This keeps me accountable")
+
+**Product-Market Fit Signals:**
+- Users proactively share screenshots of streaks on LinkedIn
+- "I can't skip Monday check-ins anymore" feedback
+- Low churn rate (<10% monthly)
+
+### Differentiation
+
+**Why This is Unique:**
+- **Not a generic habit tracker** - Questions are derived from professional leadership assessment
+- **Not a chatbot** - System is structured, behavioral, data-driven
+- **Not one-size-fits-all** - Users define what to measure based on their gaps
+- **Integrated with baseline** - Questions map to 18 sub-dimensions framework
+- **Professional context** - Designed for CEOs tracking leadership development, not personal habits
+
+**Comparable Products (And How We're Different):**
+- **Coach.me:** Generic habits, no professional framework → We're CEO-specific
+- **Reflectly:** Journal prompts, no measurement → We track behavioral metrics
+- **BetterUp:** Scheduled coaching calls → We're daily/weekly accountability
+- **Whoop:** Tracks physiology → We track leadership behaviors
+
+### Pricing Strategy
+
+**Included in €100/month CEO Lab subscription:**
+- Baseline assessment + Accountability Agent setup
+- Unlimited weekly check-ins
+- Full dashboard with trend tracking
+- Quarterly reviews and adjustments
+- AI-generated insights
+
+**Upsell Opportunity:**
+- **1-on-1 Coaching Package (€15k):** "Your data shows you're stuck on Trust Formula. Let's work on it together."
+- Dashboard CTA: "Book a call with Niko to accelerate progress"
+
+### Implementation Timeline
+
+**Phase 1: MVP (2 weeks)**
+- [ ] Build setup wizard (3-step flow)
+- [ ] Database schema for custom questions + options
+- [ ] WhatsApp interactive message builder
+- [ ] Webhook handler for multi-select responses
+- [ ] Basic dashboard visualization (3 charts)
+
+**Phase 2: Intelligence (2 weeks)**
+- [ ] AI-powered suggestion engine (analyze baseline, suggest focus)
+- [ ] Smart question templates per sub-dimension
+- [ ] Trend analysis and insights generation
+- [ ] Completion summary automation
+
+**Phase 3: Polish (1 week)**
+- [ ] Quarterly review flow
+- [ ] Streak tracking and gamification
+- [ ] Social sharing (optional screenshots)
+- [ ] Mobile-responsive dashboard
+
+**Total: 5 weeks from start to launch**
+
+### Technical Requirements
+
+**Frontend:**
+- Setup wizard component (React)
+- Dashboard charts (Recharts or D3.js)
+- Mobile-first responsive design
+
+**Backend:**
+- Supabase functions for suggestion engine
+- WhatsApp API integration (already in place)
+- Cron job scheduler (Vercel Cron or similar)
+
+**Integrations:**
+- WhatsApp Cloud API (existing)
+- Supabase Realtime (for live dashboard updates)
+- AI analysis (OpenAI API or similar)
+
+**Cost:**
+- WhatsApp messages: Covered in free tier (1,000 conversations/month)
+- AI analysis: ~$0.10 per user per quarter
+- Total: <$1/user/year
+
+### Launch Strategy
+
+**Beta Test:**
+- 20 users complete baseline → Set up Accountability Agent
+- Track completion rates, gather feedback
+- Iterate on question templates and UX
+
+**Full Launch:**
+- Add to onboarding flow (all new users see setup wizard)
+- Announcement to existing users: "New feature: Accountability Agent"
+- Case studies: "How Sarah increased deep work from 4 to 16 hours/week"
+- LinkedIn content: "The only way to change behavior is to measure it"
+
+### Risk Mitigation
+
+**Risk: Low completion rates**
+- Mitigation: Keep to 3 questions max, Monday mornings only, streak tracking
+- Fallback: Allow users to pause for 1-2 weeks without losing streak
+
+**Risk: Users don't know what to measure**
+- Mitigation: Smart suggestions based on baseline, templates per sub-dimension
+- Fallback: Provide 5 pre-written questions per focus area they can use
+
+**Risk: Questions become stale**
+- Mitigation: Quarterly review prompts, easy to adjust mid-quarter
+- Fallback: System suggests "Your answers haven't changed in 4 weeks - time to level up?"
+
+---
+
 ## Next Immediate Actions
 
-**Priority:** Assessment architecture complete, move to technical implementation
+**Priority:** Assessment architecture complete, move to technical implementation + WhatsApp Flows
 
 1. **Completed (2026-02-02):**
    - [x] Complete assessment architecture finalized (100 questions, 3 stages)
@@ -1357,7 +1762,22 @@ But you can't adapt if you don't have measurement.
    - [x] Framework prescription logic defined
    - [x] All product questions resolved
 
-2. **This week:**
+2. **Completed (2026-02-05):**
+   - [x] WhatsApp Business API setup complete
+   - [x] WhatsApp Flows architecture designed
+   - [x] Build WhatsApp Dynamic Flows system ✅
+     - flow-generator.js (personalized JSON generation)
+     - send-weekly.js (automated weekly sending)
+     - webhook-handler.js (response processing)
+     - database-schema.sql (complete schema with RLS)
+     - Complete documentation (README, SETUP, QUICK_START)
+   - [x] WhatsApp webhook integrated into Next.js API routes
+   - [x] Deployed to Vercel (production-ready)
+   - [x] **Accountability Agent feature defined and documented**
+   - [ ] Build Accountability Agent MVP (5-week timeline)
+   - [ ] Test with beta users
+
+3. **This week:**
    - [ ] Review all 130 questions with Niko for approval
    - [ ] Create technical implementation spec document
    - [ ] Design dashboard wireframes/mockups
