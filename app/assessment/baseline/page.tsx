@@ -10,6 +10,9 @@ export default function BaselineAssessment() {
   const [loading, setLoading] = useState(true)
   const [hasAccess, setHasAccess] = useState(false)
   const [alreadyCompleted, setAlreadyCompleted] = useState(false)
+  const [canRedo, setCanRedo] = useState(false)
+  const [daysSinceCompletion, setDaysSinceCompletion] = useState(0)
+  const [redoUsed, setRedoUsed] = useState(false)
   const [userId, setUserId] = useState<string | null>(null)
   const [currentStage, setCurrentStage] = useState<1 | 2 | 3>(1)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -48,7 +51,7 @@ export default function BaselineAssessment() {
     // Check subscription status and completion
     const { data: profile } = await supabase
       .from('user_profiles')
-      .select('subscription_status, baseline_completed')
+      .select('subscription_status, baseline_completed, baseline_stage')
       .eq('id', user.id)
       .single()
 
@@ -58,8 +61,28 @@ export default function BaselineAssessment() {
       setHasAccess(false)
     }
 
+    // Check if baseline completed and when
     if (profile?.baseline_completed) {
       setAlreadyCompleted(true)
+
+      // Check when last baseline was completed (for redo logic)
+      const { data: latestComplete } = await supabase
+        .from('baseline_assessments')
+        .select('completed_at, redo_count')
+        .eq('user_id', user.id)
+        .not('completed_at', 'is', null)
+        .order('completed_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+
+      if (latestComplete?.completed_at) {
+        const daysSince = (Date.now() - new Date(latestComplete.completed_at).getTime()) / (1000 * 60 * 60 * 24)
+        const redoCount = latestComplete.redo_count || 0
+
+        setDaysSinceCompletion(Math.round(daysSince))
+        setRedoUsed(redoCount >= 1)
+        setCanRedo(daysSince < 90 && redoCount < 1)
+      }
     }
 
     // Load existing assessment progress
@@ -67,41 +90,58 @@ export default function BaselineAssessment() {
       .from('baseline_assessments')
       .select('id, stage')
       .eq('user_id', user.id)
-      .single()
+      .is('completed_at', null) // Only incomplete assessments
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
 
+    // Determine completed stage: assessment first, profile baseline_stage as fallback
+    const completedStage = assessment?.stage || profile?.baseline_stage || 0
+
+    // Load responses if we have an assessment
+    let savedResponses: Record<number, number> = {}
     if (assessment) {
-      // Load all responses for this assessment
       const { data: responseRows } = await supabase
         .from('baseline_responses')
         .select('question_number, answer_value')
         .eq('assessment_id', assessment.id)
 
       if (responseRows && responseRows.length > 0) {
-        // Convert array of responses to Record<number, number>
-        const savedResponses: Record<number, number> = {}
         responseRows.forEach(row => {
           savedResponses[row.question_number] = row.answer_value
         })
         setResponses(savedResponses)
+      }
+    }
 
-        // Determine which stage to start based on stage
-        const stageCompleted = assessment.stage || 0
+    // Fallback: if no responses found via assessment, load by user_id directly
+    if (Object.keys(savedResponses).length === 0 && completedStage > 0) {
+      const { data: responseRows } = await supabase
+        .from('baseline_responses')
+        .select('question_number, answer_value')
+        .eq('user_id', user.id)
+        .order('question_number', { ascending: true })
 
-        if (stageCompleted === 1) {
-          // Stage 1 complete, start Stage 2 from question 31
-          setCurrentStage(2)
-          setCurrentQuestionIndex(30)
-        } else if (stageCompleted === 2) {
-          // Stage 2 complete, start Stage 3 from question 61
-          setCurrentStage(3)
-          setCurrentQuestionIndex(60)
-        } else {
-          // In progress, resume from last answered question
-          const answerCount = Object.keys(savedResponses).length
-          if (answerCount > 0 && answerCount < 30) {
-            setCurrentQuestionIndex(answerCount)
-          }
-        }
+      if (responseRows && responseRows.length > 0) {
+        responseRows.forEach(row => {
+          savedResponses[row.question_number] = row.answer_value
+        })
+        setResponses(savedResponses)
+      }
+    }
+
+    // Set correct stage based on completed stage (outside response check)
+    if (completedStage === 1) {
+      setCurrentStage(2)
+      setCurrentQuestionIndex(30)
+    } else if (completedStage === 2) {
+      setCurrentStage(3)
+      setCurrentQuestionIndex(60)
+    } else if (completedStage === 0) {
+      // In progress within stage 1, resume from last answered question
+      const answerCount = Object.keys(savedResponses).length
+      if (answerCount > 0 && answerCount < 30) {
+        setCurrentQuestionIndex(answerCount)
       }
     }
 
@@ -198,6 +238,23 @@ export default function BaselineAssessment() {
   }
 
   if (alreadyCompleted) {
+    let buttonText = 'Start New Baseline (Quarterly Retake)'
+    let buttonDescription = `It's been ${daysSinceCompletion} days since your last baseline. Time for your quarterly retake! This creates a new baseline and preserves your previous one for comparison.`
+    let buttonDisabled = false
+
+    if (daysSinceCompletion < 90) {
+      if (canRedo) {
+        // Can still redo
+        buttonText = 'Redo Baseline (Overwrites Current)'
+        buttonDescription = `It's been ${daysSinceCompletion} days since your last baseline. You have ONE redo opportunity to update your scores (overwrites previous answers).`
+      } else if (redoUsed) {
+        // Already used redo
+        buttonText = `Next Baseline Available in ${90 - daysSinceCompletion} Days`
+        buttonDescription = `You've already used your one redo opportunity. Your next quarterly baseline will be available in ${90 - daysSinceCompletion} days.`
+        buttonDisabled = true
+      }
+    }
+
     return (
       <div className="min-h-screen bg-white">
         <header className="border-b border-gray-200">
@@ -213,23 +270,31 @@ export default function BaselineAssessment() {
                 ✓ Assessment Completed
               </span>
             </div>
-            <h1 className="text-4xl font-bold mb-4 text-gray-900">You've Already Completed the Full Baseline</h1>
-            <p className="text-xl text-gray-600 mb-12">
-              You can view your results or restart the assessment to update your answers.
+            <h1 className="text-4xl font-bold mb-4 text-gray-900">Baseline Assessment Completed</h1>
+            <p className="text-xl text-gray-600 mb-4">
+              You completed your baseline assessment {daysSinceCompletion} days ago.
+            </p>
+            <p className="text-lg text-gray-500 mb-12">
+              {buttonDescription}
             </p>
 
             <div className="flex gap-4 justify-center">
               <a
-                href="/assessment/baseline/results"
+                href="/results"
                 className="px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors"
               >
                 View Results
               </a>
               <button
                 onClick={handleRestart}
-                className="px-6 py-3 border-2 border-black/20 text-black rounded-lg font-semibold hover:border-black transition-colors"
+                disabled={buttonDisabled}
+                className={`px-6 py-3 border-2 rounded-lg font-semibold transition-colors ${
+                  buttonDisabled
+                    ? 'border-gray-300 text-gray-400 cursor-not-allowed'
+                    : 'border-black/20 text-black hover:border-black'
+                }`}
               >
-                Restart Test
+                {buttonText}
               </button>
               <a
                 href="/dashboard"
