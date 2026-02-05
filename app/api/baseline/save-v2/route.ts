@@ -92,12 +92,12 @@ export async function POST(request: Request) {
     }
 
     // STEP 3: Get or create assessment (smart logic for stages vs retakes)
-    logs.push('Step 3: Determining assessment (stage continuation vs new baseline)...')
+    logs.push('Step 3: Determining assessment (stage continuation, redo, or new baseline)...')
 
     // Check for existing incomplete assessment
     const { data: incompleteAssessment, error: findError } = await supabase
       .from('baseline_assessments')
-      .select('id, stage, completed_at')
+      .select('id, stage, completed_at, redo_count')
       .eq('user_id', user.id)
       .is('completed_at', null) // Only incomplete assessments
       .order('created_at', { ascending: false })
@@ -114,12 +114,13 @@ export async function POST(request: Request) {
     }
 
     let assessmentId: string
+    let isRedo = false
 
-    // Logic: Reuse incomplete assessment OR create new if starting fresh
+    // Logic: Resume incomplete OR decide redo vs new baseline
     if (incompleteAssessment && stageNumber > incompleteAssessment.stage) {
-      // Continuing same baseline run (stage progression)
+      // RESUME: Stage progression (1→2→3)
       assessmentId = incompleteAssessment.id
-      logs.push(`Reusing assessment ${assessmentId} (stage ${incompleteAssessment.stage} → ${stageNumber})`)
+      logs.push(`RESUME: Reusing assessment ${assessmentId} (stage ${incompleteAssessment.stage} → ${stageNumber})`)
 
       // Update stage progress
       const { error: updateError } = await supabase
@@ -141,30 +142,96 @@ export async function POST(request: Request) {
 
       logs.push('Assessment updated - same baseline run continues')
     } else {
-      // Starting new baseline (first stage or explicit retake)
-      logs.push('Creating new assessment (new baseline run or retake)')
-
-      const { data: newAssessment, error: createError } = await supabase
+      // Check for recent completion (redo vs new baseline)
+      const { data: recentComplete, error: recentError } = await supabase
         .from('baseline_assessments')
-        .insert({
-          user_id: user.id,
-          stage: stageNumber,
-          completed_at: stageNumber === 3 ? new Date().toISOString() : null,
-        })
-        .select('id')
-        .single()
+        .select('id, completed_at, redo_count')
+        .eq('user_id', user.id)
+        .not('completed_at', 'is', null)
+        .order('completed_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
 
-      if (createError || !newAssessment) {
-        logs.push(`Create error: ${createError?.message || 'No data returned'}`)
+      if (recentError) {
+        logs.push(`Recent check error: ${recentError.message}`)
         return NextResponse.json({
           success: false,
-          error: `Failed to create assessment: ${createError?.message || 'Unknown error'}`,
+          error: `Database error checking recent completion: ${recentError.message}`,
           logs
         }, { status: 500 })
       }
 
-      assessmentId = newAssessment.id
-      logs.push(`Created new assessment: ${assessmentId}`)
+      const daysSinceCompletion = recentComplete
+        ? (Date.now() - new Date(recentComplete.completed_at).getTime()) / (1000 * 60 * 60 * 24)
+        : 999
+
+      logs.push(`Days since last completion: ${daysSinceCompletion.toFixed(1)}`)
+
+      if (recentComplete && daysSinceCompletion < 90) {
+        // Check if redo already used
+        const redoCount = recentComplete.redo_count || 0
+
+        if (redoCount >= 1) {
+          logs.push(`REDO BLOCKED: User already used their one redo (redo_count: ${redoCount})`)
+          const daysUntilQuarterly = Math.ceil(90 - daysSinceCompletion)
+          return NextResponse.json({
+            success: false,
+            error: `You have already used your one redo opportunity. Your next quarterly baseline will be available in ${daysUntilQuarterly} days.`,
+            logs
+          }, { status: 400 })
+        }
+
+        // REDO: Overwrite same baseline (within 90 days, first redo only)
+        assessmentId = recentComplete.id
+        isRedo = true
+        logs.push(`REDO: Reusing assessment ${assessmentId} (${daysSinceCompletion.toFixed(1)} days since completion, redo_count: ${redoCount})`)
+
+        // Update assessment and increment redo count
+        const { error: updateError } = await supabase
+          .from('baseline_assessments')
+          .update({
+            stage: stageNumber,
+            completed_at: stageNumber === 3 ? new Date().toISOString() : null,
+            redo_count: redoCount + 1,
+          })
+          .eq('id', assessmentId)
+
+        if (updateError) {
+          logs.push(`Update error: ${updateError.message}`)
+          return NextResponse.json({
+            success: false,
+            error: `Failed to update assessment: ${updateError.message}`,
+            logs
+          }, { status: 500 })
+        }
+
+        logs.push('Redo mode: Will overwrite previous responses (redo count incremented)')
+      } else {
+        // NEW BASELINE: Quarterly retake (90+ days or first time)
+        logs.push(`NEW BASELINE: Creating new assessment (${recentComplete ? '90+ days passed' : 'first time'})`)
+
+        const { data: newAssessment, error: createError } = await supabase
+          .from('baseline_assessments')
+          .insert({
+            user_id: user.id,
+            stage: stageNumber,
+            completed_at: stageNumber === 3 ? new Date().toISOString() : null,
+          })
+          .select('id')
+          .single()
+
+        if (createError || !newAssessment) {
+          logs.push(`Create error: ${createError?.message || 'No data returned'}`)
+          return NextResponse.json({
+            success: false,
+            error: `Failed to create assessment: ${createError?.message || 'Unknown error'}`,
+            logs
+          }, { status: 500 })
+        }
+
+        assessmentId = newAssessment.id
+        logs.push(`Created new assessment: ${assessmentId}`)
+      }
     }
 
     // STEP 4: Prepare response records with versioning
@@ -185,10 +252,8 @@ export async function POST(request: Request) {
       return {
         user_id: user.id,
         assessment_id: assessmentId,
-        response_set_id: responseSetId, // FIX 2: Link all responses in this submission
+        response_set_id: responseSetId,
         question_number: qNum,
-        question_version: '1.0', // FIX 3: Version tracking
-        question_text: question?.question || 'Unknown', // FIX 3: Snapshot question text
         sub_dimension: question?.subdimension || 'Unknown',
         territory: question?.territory || 'Leading Yourself',
         answer_value: answer as number,
@@ -199,23 +264,25 @@ export async function POST(request: Request) {
 
     logs.push(`Prepared ${responseRecords.length} response records (response_set_id: ${responseSetId}, version: 1.0)`)
 
-    // STEP 5: Insert responses (append-only, new assessment each time)
-    logs.push('Step 5: Inserting responses (append-only, never overwrites)...')
+    // STEP 5: Save responses (upsert for redo support)
+    logs.push(`Step 5: Saving responses (${isRedo ? 'UPSERT for redo' : 'INSERT for new baseline'})...`)
 
-    const { error: insertResponsesError } = await supabase
+    const { error: saveResponsesError } = await supabase
       .from('baseline_responses')
-      .insert(responseRecords) // INSERT ONLY - new assessment_id each time
+      .upsert(responseRecords, {
+        onConflict: 'user_id,assessment_id,question_number' // Overwrite if redo, insert if new
+      })
 
-    if (insertResponsesError) {
-      logs.push(`Insert responses error: ${insertResponsesError.message}`)
+    if (saveResponsesError) {
+      logs.push(`Save responses error: ${saveResponsesError.message}`)
       return NextResponse.json({
         success: false,
-        error: `Failed to save responses: ${insertResponsesError.message}`,
+        error: `Failed to save responses: ${saveResponsesError.message}`,
         logs
       }, { status: 500 })
     }
 
-    logs.push(`Inserted ${responseRecords.length} responses (history preserved forever)`)
+    logs.push(`Saved ${responseRecords.length} responses ${isRedo ? '(overwrote previous)' : '(new entries)'}`)
 
     // STEP 7: Calculate scores
     logs.push('Step 7: Calculating scores...')
@@ -233,8 +300,8 @@ export async function POST(request: Request) {
       }, { status: 500 })
     }
 
-    // STEP 8: Insert scores (append-only - NEVER DELETE OR OVERWRITE)
-    logs.push('Step 8: Inserting scores (append-only, preserves history)...')
+    // STEP 8: Save scores (upsert for redo support)
+    logs.push(`Step 8: Saving scores (${isRedo ? 'UPSERT for redo' : 'INSERT for new baseline'})...`)
 
     const scoreRecords = scores.allSubdimensions.map(dim => ({
       user_id: user.id,
@@ -250,20 +317,22 @@ export async function POST(request: Request) {
       calculated_at: new Date().toISOString() // Phase 0: timestamp tracking
     }))
 
-    const { error: insertScoresError } = await supabase
+    const { error: saveScoresError } = await supabase
       .from('sub_dimension_scores')
-      .insert(scoreRecords) // INSERT ONLY - never update or delete
+      .upsert(scoreRecords, {
+        onConflict: 'user_id,assessment_id,sub_dimension' // Overwrite if redo, insert if new
+      })
 
-    if (insertScoresError) {
-      logs.push(`Insert scores error: ${insertScoresError.message}`)
+    if (saveScoresError) {
+      logs.push(`Save scores error: ${saveScoresError.message}`)
       return NextResponse.json({
         success: false,
-        error: `Failed to save scores: ${insertScoresError.message}`,
+        error: `Failed to save scores: ${saveScoresError.message}`,
         logs
       }, { status: 500 })
     }
 
-    logs.push(`Inserted ${scoreRecords.length} new score records (history preserved)`)
+    logs.push(`Saved ${scoreRecords.length} score records ${isRedo ? '(overwrote previous)' : '(new entries)'}`)
 
     // STEP 9: Update user profile
     logs.push('Step 9: Updating user profile...')
