@@ -156,6 +156,8 @@ export default function BaselineAssessment() {
 
   const saveProgress = async () => {
     try {
+      console.log('Saving:', { stage: currentStage, responseCount: Object.keys(responses).length })
+
       const response = await fetch('/api/baseline/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -165,16 +167,25 @@ export default function BaselineAssessment() {
         })
       })
 
+      console.log('Response status:', response.status, response.statusText)
+
       if (!response.ok) {
-        const data = await response.json()
-        console.error('Failed to save:', data.error)
-        return null
+        const text = await response.text()
+        console.error('API error response:', text)
+        try {
+          const data = JSON.parse(text)
+          return { success: false, error: data.error || `HTTP ${response.status}: ${response.statusText}` }
+        } catch {
+          return { success: false, error: `HTTP ${response.status}: ${text.substring(0, 200)}` }
+        }
       }
 
-      return await response.json()
+      const data = await response.json()
+      console.log('Save successful:', data)
+      return data
     } catch (error) {
       console.error('Save error:', error)
-      return null
+      return { success: false, error: error instanceof Error ? error.message : String(error) }
     }
   }
 
