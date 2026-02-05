@@ -108,12 +108,25 @@ export async function POST(request: Request) {
       }
     )
 
-    // Upsert responses (safer than delete + insert - atomic operation prevents data loss)
+    // Delete existing responses for these questions, then insert new ones
+    const questionNumbers = responseRecords.map(r => r.question_number)
+
+    const { error: deleteError } = await supabase
+      .from('baseline_responses')
+      .delete()
+      .eq('user_id', user.id)
+      .eq('assessment_id', assessmentId)
+      .in('question_number', questionNumbers)
+
+    if (deleteError) {
+      console.error('Delete error:', deleteError)
+      // Continue anyway - the insert might work
+    }
+
+    // Insert new responses
     const { error: responsesError } = await supabase
       .from('baseline_responses')
-      .upsert(responseRecords, {
-        onConflict: 'user_id,assessment_id,question_number'  // FIXED: Use atomic upsert to prevent data loss
-      })
+      .insert(responseRecords)
 
     if (responsesError) {
       console.error('Responses error:', responsesError)
