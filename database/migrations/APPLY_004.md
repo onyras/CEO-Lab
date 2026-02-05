@@ -1,78 +1,103 @@
-# Apply Phase 0 Migration
+# Apply Phase 0 Migration - Append-Only Pattern
 
 ## What This Does
 
-✅ Stops all data deletion (uses upsert instead)
-✅ Adds unique constraints for data safety
-✅ Adds future-ready columns (nullable, no breaking changes)
-✅ Adds timestamps for audit tracking
+✅ **NEVER DELETES USER DATA** - All historical scores preserved forever
+✅ Adds `assessment_id` to scores for historical tracking
+✅ Removes constraints that would prevent multiple scores over time
+✅ Adds timestamps for audit trail
+✅ Enables "compare baseline vs retake" features
+
+## Core Principle: APPEND-ONLY
+
+**Old way (BAD):**
+- User completes baseline → Score = 65
+- User retakes → Score = 75, **old score deleted** ❌
+
+**New way (GOOD):**
+- User completes baseline → Score = 65 ✅
+- User retakes → Score = 75 ✅, **old score still exists** ✅
+- Can compare: "You improved from 65 to 75!" ✅
 
 ## How to Apply
 
-### Option 1: Supabase Dashboard (Recommended)
+### Supabase Dashboard (Recommended)
 
 1. Go to https://supabase.com/dashboard
 2. Select your CEO Lab project
 3. Go to **SQL Editor**
 4. Copy/paste contents of `004_phase_0_bulletproof.sql`
-5. Click **Run**
+5. **Supabase will warn "destructive operation"** - this is expected
+6. Click **"Run this query"** - it only deletes test data (question 999, "Test Dimension")
 
-### Option 2: Supabase CLI
+## What Gets Cleaned Up
 
-```bash
-# If you have Supabase CLI installed
-supabase db push
-```
+The migration removes ONLY test/debugging data:
+- Question 999 (from debugging sessions)
+- "Test Dimension" scores (from test endpoint)
+- Duplicate records from bugs (keeps most recent)
 
-### Option 3: Direct SQL
-
-```bash
-# Connect to your database and run:
-psql YOUR_DATABASE_URL < database/migrations/004_phase_0_bulletproof.sql
-```
+**Real user data is never touched.**
 
 ## Verify It Worked
 
-After running the migration, check:
-
 ```sql
--- Should show the new columns
-SELECT column_name, data_type
-FROM information_schema.columns
-WHERE table_name = 'baseline_responses'
-AND column_name IN ('response_set_id', 'submitted_at');
-
--- Should show 2 rows
+-- Check new column exists
 SELECT column_name, data_type
 FROM information_schema.columns
 WHERE table_name = 'sub_dimension_scores'
-AND column_name IN ('model_version', 'calculated_at');
+AND column_name = 'assessment_id';
+
+-- Should return: assessment_id | uuid
+
+-- Check constraint was NOT added (we want multiple scores)
+SELECT constraint_name
+FROM information_schema.table_constraints
+WHERE table_name = 'sub_dimension_scores'
+AND constraint_name = 'sub_dimension_scores_user_subdim_key';
+
+-- Should return: 0 rows (constraint does NOT exist - this is correct!)
+```
+
+## What Changes in Your App
+
+**After migration + code deploy:**
+- User retakes baseline → **NEW scores inserted** (old scores preserved)
+- Dashboard shows latest scores by default
+- Historical scores remain in database
+- Can build "progress over time" features anytime
+- Can compare baseline vs follow-up scores
+
+**Example:**
+```sql
+-- See all scores over time for one user
+SELECT sub_dimension, percentage, calculated_at
+FROM sub_dimension_scores
+WHERE user_id = 'xxx'
+ORDER BY calculated_at DESC;
+
+-- Shows multiple scores per dimension ✅
 ```
 
 ## Safety
 
-- **No data is deleted** - all existing records remain unchanged
-- **All new columns are nullable** - existing data stays valid
-- **Backwards compatible** - old code still works
-
-## What Changes in Your App
-
-After migration + code deploy:
-- Baseline saves will use upsert (no more deletes)
-- New responses get `submitted_at` timestamp
-- New scores get `model_version` and `calculated_at`
-- Everything else works exactly the same
+- ✅ All historical data preserved
+- ✅ No breaking changes
+- ✅ Dashboard shows latest scores
+- ✅ Old scores available for future features
+- ✅ Can reinterpret data anytime
 
 ## Rollback (if needed)
 
 ```sql
--- Remove new columns (only if needed)
+-- Remove assessment_id column
+ALTER TABLE sub_dimension_scores DROP COLUMN IF EXISTS assessment_id;
+
+-- Remove other new columns
 ALTER TABLE baseline_responses DROP COLUMN IF EXISTS response_set_id;
 ALTER TABLE baseline_responses DROP COLUMN IF EXISTS submitted_at;
 ALTER TABLE sub_dimension_scores DROP COLUMN IF EXISTS model_version;
 ALTER TABLE sub_dimension_scores DROP COLUMN IF EXISTS calculated_at;
 
--- Remove constraints
-ALTER TABLE baseline_responses DROP CONSTRAINT IF EXISTS baseline_responses_user_assessment_question_key;
-ALTER TABLE sub_dimension_scores DROP CONSTRAINT IF EXISTS sub_dimension_scores_user_subdim_key;
+-- Note: This won't restore deleted test data, but real data is safe
 ```
