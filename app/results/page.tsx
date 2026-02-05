@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
+import { calculateBaselineScores } from '@/lib/scoring'
 import type { User } from '@supabase/supabase-js'
 import './results.css'
 
@@ -54,26 +55,45 @@ export default function ResultsDashboard() {
 
         // Load sub-dimension scores if baseline completed
         if (profileData?.baseline_completed) {
+          // First try to load from sub_dimension_scores table
           const { data: scores } = await supabase
             .from('sub_dimension_scores')
             .select('sub_dimension, territory, percentage')
             .eq('user_id', session.user.id)
 
           if (scores && scores.length > 0) {
+            // Use pre-calculated scores
             setSubDimensionScores(scores)
+            calculateTerritoryScores(scores)
+          } else {
+            // Fallback: Calculate from baseline_responses (NEVER DELETE USER DATA)
+            const { data: responsesData } = await supabase
+              .from('baseline_responses')
+              .select('question_number, answer_value')
+              .eq('user_id', session.user.id)
 
-            // Calculate territory scores
-            const territories = ['Leading Yourself', 'Leading Teams', 'Leading Organizations']
-            const territoryScoreData = territories.map(territory => {
-              const territoryDimensions = scores.filter(s => s.territory === territory)
-              const avg = territoryDimensions.reduce((sum, s) => sum + s.percentage, 0) / territoryDimensions.length
-              return { territory, score: Math.round(avg) }
-            })
-            setTerritoryScores(territoryScoreData)
+            if (responsesData && responsesData.length > 0) {
+              // Convert to format expected by calculateBaselineScores
+              const responses: Record<number, number> = {}
+              responsesData.forEach(r => {
+                responses[r.question_number] = r.answer_value
+              })
 
-            // Calculate overall score
-            const overall = Math.round(scores.reduce((sum, s) => sum + s.percentage, 0) / scores.length)
-            setOverallScore(overall)
+              // Calculate scores using the same logic as before
+              const calculatedScores = calculateBaselineScores(responses)
+
+              // Convert to our display format
+              const displayScores: SubDimensionScore[] = calculatedScores.allSubdimensions.map(dim => ({
+                sub_dimension: dim.subdimension,
+                territory: dim.territory === 'yourself' ? 'Leading Yourself' :
+                          dim.territory === 'teams' ? 'Leading Teams' :
+                          'Leading Organizations',
+                percentage: dim.percentage
+              }))
+
+              setSubDimensionScores(displayScores)
+              calculateTerritoryScores(displayScores)
+            }
           }
         }
       } else {
@@ -85,6 +105,24 @@ export default function ResultsDashboard() {
 
     loadData()
   }, [router])
+
+  const calculateTerritoryScores = (scores: SubDimensionScore[]) => {
+    const territories = ['Leading Yourself', 'Leading Teams', 'Leading Organizations']
+    const territoryScoreData = territories.map(territory => {
+      const territoryDimensions = scores.filter(s => s.territory === territory)
+      const avg = territoryDimensions.length > 0
+        ? territoryDimensions.reduce((sum, s) => sum + s.percentage, 0) / territoryDimensions.length
+        : 0
+      return { territory, score: Math.round(avg) }
+    })
+    setTerritoryScores(territoryScoreData)
+
+    // Calculate overall score
+    const overall = scores.length > 0
+      ? Math.round(scores.reduce((sum, s) => sum + s.percentage, 0) / scores.length)
+      : 0
+    setOverallScore(overall)
+  }
 
   const isPremium = profile?.subscription_status === 'active'
   const hasBaseline = profile?.baseline_completed
@@ -238,7 +276,7 @@ export default function ResultsDashboard() {
             <div className="score-card">
               <div className="score-card__label">Overall Leadership Score</div>
               <div className="score-card__value">{overallScore}</div>
-              <div className="score-card__sub">Calculated across 18 leadership dimensions</div>
+              <div className="score-card__sub">Calculated across {subDimensionScores.length} leadership dimensions</div>
             </div>
           </div>
         </header>
@@ -316,7 +354,7 @@ export default function ResultsDashboard() {
         <section className="section section--alt">
           <div className="section__header">
             <h2>Sub-Dimension Heatmap</h2>
-            <p>18 sub-dimensions scored from 0–100. Click a tile for details.</p>
+            <p>{subDimensionScores.length} sub-dimensions scored from 0–100. Click a tile for details.</p>
           </div>
           <div className="heatmap">
             {subDimensionScores.map((dim) => (
@@ -353,7 +391,7 @@ export default function ResultsDashboard() {
         <section className="section section--alt">
           <div className="section__header">
             <h2>Metrics Library</h2>
-            <p>All 18 dimensions at a glance.</p>
+            <p>All {subDimensionScores.length} dimensions at a glance.</p>
           </div>
           <div className="metrics-grid">
             {subDimensionScores
