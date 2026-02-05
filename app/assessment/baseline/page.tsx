@@ -290,9 +290,9 @@ export default function BaselineAssessment() {
 
           {/* Answer Options */}
           <div className="space-y-3 mb-8">
-            {currentQuestion.options.map((option) => (
+            {currentQuestion.options.map((option, index) => (
               <button
-                key={option.value}
+                key={`${currentQuestion.id}-${index}`}
                 onClick={() => handleAnswer(currentQuestion.id, option.value)}
                 className={`w-full text-left px-6 py-4 rounded-lg border-2 transition-all ${
                   responses[currentQuestion.id] === option.value
