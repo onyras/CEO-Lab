@@ -269,12 +269,39 @@ export async function POST(request: Request) {
 
     logs.push(`Saved ${responseRecords.length} responses ${isRedo ? '(overwrote previous)' : '(new entries)'}`)
 
-    // STEP 7: Calculate scores
-    logs.push('Step 7: Calculating scores...')
+    // STEP 7: Load ALL responses from DB, then calculate scores
+    logs.push('Step 7: Loading all responses from DB for complete score calculation...')
+
+    // Load ALL responses for this user/assessment from the database
+    // This ensures scores reflect ALL stages, not just what the frontend sent
+    const { data: allResponses, error: loadAllError } = await supabase
+      .from('baseline_responses')
+      .select('question_number, answer_value')
+      .eq('user_id', user.id)
+      .eq('assessment_id', assessmentId)
+
+    if (loadAllError) {
+      logs.push(`Load all responses error: ${loadAllError.message}`)
+      return NextResponse.json({
+        success: false,
+        error: `Failed to load responses for scoring: ${loadAllError.message}`,
+        logs
+      }, { status: 500 })
+    }
+
+    // Build complete responses map from database
+    const completeResponses: Record<number, number> = {}
+    if (allResponses && allResponses.length > 0) {
+      allResponses.forEach(row => {
+        completeResponses[row.question_number] = row.answer_value
+      })
+    }
+
+    logs.push(`Loaded ${Object.keys(completeResponses).length} total responses from DB (across all stages)`)
 
     let scores
     try {
-      scores = calculateBaselineScores(responses)
+      scores = calculateBaselineScores(completeResponses)
       logs.push(`Calculated scores for ${scores.allSubdimensions.length} subdimensions`)
     } catch (scoreError) {
       logs.push(`Score calculation error: ${scoreError}`)
