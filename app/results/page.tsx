@@ -36,6 +36,37 @@ export default function ResultsDashboard() {
   const [modalOpen, setModalOpen] = useState(false)
   const [modalData, setModalData] = useState<{ dimension: string; score: number } | null>(null)
 
+  const loadFromResponses = async (supabase: any, userId: string) => {
+    // Fallback: Calculate from baseline_responses (NEVER DELETE USER DATA)
+    const { data: responsesData } = await supabase
+      .from('baseline_responses')
+      .select('question_number, answer_value')
+      .eq('user_id', userId)
+
+    if (responsesData && responsesData.length > 0) {
+      // Convert to format expected by calculateBaselineScores
+      const responses: Record<number, number> = {}
+      responsesData.forEach((r: any) => {
+        responses[r.question_number] = r.answer_value
+      })
+
+      // Calculate scores using the same logic as before
+      const calculatedScores = calculateBaselineScores(responses)
+
+      // Convert to our display format
+      const displayScores: SubDimensionScore[] = calculatedScores.allSubdimensions.map(dim => ({
+        sub_dimension: dim.subdimension,
+        territory: dim.territory === 'yourself' ? 'Leading Yourself' :
+                  dim.territory === 'teams' ? 'Leading Teams' :
+                  'Leading Organizations',
+        percentage: dim.percentage
+      }))
+
+      setSubDimensionScores(displayScores)
+      calculateTerritoryScores(displayScores)
+    }
+  }
+
   useEffect(() => {
     const loadData = async () => {
       const supabase = createClient()
@@ -57,47 +88,64 @@ export default function ResultsDashboard() {
         // Load sub-dimension scores if any baseline stage is completed
         const baselineStage = profileData?.baseline_stage ?? 0
         if (profileData?.baseline_completed || baselineStage >= 1) {
-          // First try to load from sub_dimension_scores table
-          const { data: scores } = await supabase
-            .from('sub_dimension_scores')
-            .select('sub_dimension, territory, percentage')
+          // Get latest assessment
+          const { data: latestAssessment } = await supabase
+            .from('baseline_assessments')
+            .select('id')
             .eq('user_id', session.user.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .single()
 
-          if (scores && scores.length > 0) {
-            // Use pre-calculated scores
-            setSubDimensionScores(scores)
-            calculateTerritoryScores(scores)
-          } else {
-            // Fallback: Calculate from baseline_responses (NEVER DELETE USER DATA)
-            const { data: responsesData } = await supabase
-              .from('baseline_responses')
-              .select('question_number, answer_value')
+          if (latestAssessment) {
+            // Get scores for latest assessment only
+            const { data: scores } = await supabase
+              .from('sub_dimension_scores')
+              .select('sub_dimension, territory, percentage')
               .eq('user_id', session.user.id)
+              .eq('assessment_id', latestAssessment.id)
 
-            if (responsesData && responsesData.length > 0) {
-              // Convert to format expected by calculateBaselineScores
-              const responses: Record<number, number> = {}
-              responsesData.forEach(r => {
-                responses[r.question_number] = r.answer_value
+            if (scores && scores.length > 0) {
+              // Use pre-calculated scores from latest assessment
+              setSubDimensionScores(scores)
+              calculateTerritoryScores(scores)
+            } else {
+              // Fallback: Calculate from responses
+              await loadFromResponses(supabase, session.user.id)
+            }
+          } else {
+            // No assessment found, try old data without assessment_id
+            const { data: scores } = await supabase
+              .from('sub_dimension_scores')
+              .select('sub_dimension, territory, percentage, calculated_at')
+              .eq('user_id', session.user.id)
+              .order('calculated_at', { ascending: false })
+
+            if (scores && scores.length > 0) {
+              // Get latest score for each dimension
+              const latestScores = new Map<string, SubDimensionScore>()
+              scores.forEach(score => {
+                if (!latestScores.has(score.sub_dimension)) {
+                  latestScores.set(score.sub_dimension, {
+                    sub_dimension: score.sub_dimension,
+                    territory: score.territory,
+                    percentage: score.percentage
+                  })
+                }
               })
-
-              // Calculate scores using the same logic as before
-              const calculatedScores = calculateBaselineScores(responses)
-
-              // Convert to our display format
-              const displayScores: SubDimensionScore[] = calculatedScores.allSubdimensions.map(dim => ({
-                sub_dimension: dim.subdimension,
-                territory: dim.territory === 'yourself' ? 'Leading Yourself' :
-                          dim.territory === 'teams' ? 'Leading Teams' :
-                          'Leading Organizations',
-                percentage: dim.percentage
-              }))
-
-              setSubDimensionScores(displayScores)
-              calculateTerritoryScores(displayScores)
+              const scoreArray = Array.from(latestScores.values())
+              setSubDimensionScores(scoreArray)
+              calculateTerritoryScores(scoreArray)
+            } else {
+              // Final fallback: Calculate from responses
+              await loadFromResponses(supabase, session.user.id)
             }
           }
+        } else {
+          // Try fallback for edge cases
+          await loadFromResponses(supabase, session.user.id)
         }
+      }
       } else {
         router.push('/auth')
       }

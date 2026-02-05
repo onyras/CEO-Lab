@@ -223,11 +223,12 @@ export async function POST(request: Request) {
       }, { status: 500 })
     }
 
-    // STEP 8: Upsert scores (no deletes - NEVER DELETE USER DATA)
-    logs.push('Step 8: Upserting scores (atomic, no deletes)...')
+    // STEP 8: Insert scores (append-only - NEVER DELETE OR OVERWRITE)
+    logs.push('Step 8: Inserting scores (append-only, preserves history)...')
 
     const scoreRecords = scores.allSubdimensions.map(dim => ({
       user_id: user.id,
+      assessment_id: assessmentId, // Link to specific assessment for history
       sub_dimension: dim.subdimension,
       territory: dim.territory === 'yourself' ? 'Leading Yourself' :
                 dim.territory === 'teams' ? 'Leading Teams' :
@@ -239,23 +240,20 @@ export async function POST(request: Request) {
       calculated_at: new Date().toISOString() // Phase 0: timestamp tracking
     }))
 
-    const { error: upsertScoresError } = await supabase
+    const { error: insertScoresError } = await supabase
       .from('sub_dimension_scores')
-      .upsert(scoreRecords, {
-        onConflict: 'user_id,sub_dimension',
-        ignoreDuplicates: false
-      })
+      .insert(scoreRecords) // INSERT ONLY - never update or delete
 
-    if (upsertScoresError) {
-      logs.push(`Upsert scores error: ${upsertScoresError.message}`)
+    if (insertScoresError) {
+      logs.push(`Insert scores error: ${insertScoresError.message}`)
       return NextResponse.json({
         success: false,
-        error: `Failed to save scores: ${upsertScoresError.message}`,
+        error: `Failed to save scores: ${insertScoresError.message}`,
         logs
       }, { status: 500 })
     }
 
-    logs.push(`Upserted ${scoreRecords.length} score records (no data deleted)`)
+    logs.push(`Inserted ${scoreRecords.length} new score records (history preserved)`)
 
     // STEP 9: Update user profile
     logs.push('Step 9: Updating user profile...')

@@ -1,15 +1,20 @@
--- Phase 0: Minimal Bulletproof Changes
--- No breaking changes, just adds safety constraints and future-ready columns
+-- Phase 0: Append-Only Pattern - NEVER DELETE USER DATA
+-- All historical data preserved forever
 
 -- ============================================
--- 0. Clean up test data and duplicates
+-- 0. Clean up ONLY test/debugging data
 -- ============================================
 
--- Remove test question 999 (from debugging)
+-- Remove test question 999 (from debugging sessions only)
 DELETE FROM baseline_responses
 WHERE question_number = 999;
 
--- Remove any actual duplicates (keep most recent)
+-- Remove test scores (from debugging only)
+DELETE FROM sub_dimension_scores
+WHERE sub_dimension = 'Test Dimension';
+
+-- Remove accidental duplicates in baseline_responses (same assessment, same question, same user)
+-- These are true duplicates from bugs, not historical data
 DELETE FROM baseline_responses a
 USING baseline_responses b
 WHERE a.id < b.id
@@ -18,11 +23,12 @@ WHERE a.id < b.id
   AND a.question_number = b.question_number;
 
 -- ============================================
--- 1. Add unique constraints for upsert safety
+-- 1. Add constraint ONLY for baseline_responses
 -- ============================================
 
 -- Ensure baseline_responses has proper unique constraint
--- (user_id, assessment_id, question_number) should be unique
+-- This is safe: one answer per question per assessment
+-- Different assessments = different answers = preserved history ✅
 DO $$
 BEGIN
     IF NOT EXISTS (
@@ -35,55 +41,59 @@ BEGIN
     END IF;
 END $$;
 
--- Clean up any test scores or duplicates in sub_dimension_scores
-DELETE FROM sub_dimension_scores
-WHERE sub_dimension = 'Test Dimension';
-
--- Remove any duplicates in scores (keep most recent)
-DELETE FROM sub_dimension_scores a
-USING sub_dimension_scores b
-WHERE a.id < b.id
-  AND a.user_id = b.user_id
-  AND a.sub_dimension = b.sub_dimension;
-
--- Ensure sub_dimension_scores has proper unique constraint
--- (user_id, sub_dimension) should be unique for latest scores
-DO $$
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM pg_constraint
-        WHERE conname = 'sub_dimension_scores_user_subdim_key'
-    ) THEN
-        ALTER TABLE sub_dimension_scores
-        ADD CONSTRAINT sub_dimension_scores_user_subdim_key
-        UNIQUE (user_id, sub_dimension);
-    END IF;
-END $$;
+-- ============================================
+-- 2. NO CONSTRAINT on sub_dimension_scores
+-- ============================================
+-- We want MULTIPLE scores per dimension over time
+-- Each score is a historical snapshot
+-- NEVER delete old scores - append only!
 
 -- ============================================
--- 2. Add future-ready columns (nullable)
+-- 3. Add columns for historical tracking
 -- ============================================
+
+-- Add assessment_id to scores so we can track which baseline they came from
+-- This lets us keep multiple scores over time ✅
+ALTER TABLE sub_dimension_scores
+ADD COLUMN IF NOT EXISTS assessment_id UUID REFERENCES baseline_assessments(id);
 
 -- Add response_set_id for future batching
--- Nullable so existing data is valid
 ALTER TABLE baseline_responses
 ADD COLUMN IF NOT EXISTS response_set_id UUID;
 
 -- Add model_version for score interpretation tracking
--- Nullable so existing scores remain valid
 ALTER TABLE sub_dimension_scores
 ADD COLUMN IF NOT EXISTS model_version TEXT DEFAULT '1.0';
 
--- Add submitted_at for proper time tracking
+-- Add timestamps for history tracking
 ALTER TABLE baseline_responses
 ADD COLUMN IF NOT EXISTS submitted_at TIMESTAMPTZ DEFAULT NOW();
 
 ALTER TABLE sub_dimension_scores
 ADD COLUMN IF NOT EXISTS calculated_at TIMESTAMPTZ DEFAULT NOW();
 
+-- Backfill assessment_id for existing scores from user's most recent assessment
+UPDATE sub_dimension_scores s
+SET assessment_id = (
+    SELECT id
+    FROM baseline_assessments a
+    WHERE a.user_id = s.user_id
+    ORDER BY created_at DESC
+    LIMIT 1
+)
+WHERE assessment_id IS NULL;
+
 -- ============================================
--- 3. Add indexes for performance
+-- 4. Add indexes for performance
 -- ============================================
+
+-- Index for getting latest scores per user
+CREATE INDEX IF NOT EXISTS idx_scores_user_calculated
+ON sub_dimension_scores(user_id, calculated_at DESC);
+
+-- Index for getting scores by assessment
+CREATE INDEX IF NOT EXISTS idx_scores_assessment
+ON sub_dimension_scores(assessment_id);
 
 CREATE INDEX IF NOT EXISTS idx_baseline_responses_response_set
 ON baseline_responses(response_set_id)
@@ -96,7 +106,7 @@ CREATE INDEX IF NOT EXISTS idx_responses_submitted_at
 ON baseline_responses(submitted_at DESC);
 
 -- ============================================
--- 4. Update existing data with timestamps
+-- 5. Backfill existing data
 -- ============================================
 
 -- Backfill submitted_at from created_at if it exists
@@ -110,9 +120,12 @@ SET calculated_at = created_at
 WHERE calculated_at IS NULL AND created_at IS NOT NULL;
 
 -- ============================================
--- RESULT:
--- ✅ No data loss possible (upserts work safely)
--- ✅ Future-ready for versioning (columns exist)
+-- RESULT: APPEND-ONLY, NEVER DELETE USER DATA
+-- ============================================
+-- ✅ All historical scores preserved
+-- ✅ Multiple scores per dimension over time
+-- ✅ Can compare baseline vs retake
+-- ✅ Dashboard can reinterpret data any time
 -- ✅ No breaking changes (all nullable)
 -- ✅ Existing data remains valid
 -- ============================================
