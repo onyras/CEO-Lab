@@ -45,7 +45,7 @@ export default function ResultsDashboard() {
 
         const { data: profileData } = await supabase
           .from('user_profiles')
-          .select('hook_completed, baseline_completed, subscription_status')
+          .select('hook_completed, baseline_completed, baseline_stage, subscription_status')
           .eq('id', session.user.id)
           .single()
 
@@ -125,7 +125,7 @@ export default function ResultsDashboard() {
   }
 
   const isPremium = profile?.subscription_status === 'active'
-  const hasBaseline = profile?.baseline_completed
+  const hasBaseline = profile?.baseline_completed || (profile?.baseline_stage && profile.baseline_stage >= 1)
 
   const openModal = (dimension: string, score: number) => {
     setModalData({ dimension, score })
