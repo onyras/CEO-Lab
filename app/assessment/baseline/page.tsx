@@ -158,7 +158,7 @@ export default function BaselineAssessment() {
     try {
       console.log('Saving:', { stage: currentStage, responseCount: Object.keys(responses).length })
 
-      const response = await fetch('/api/baseline/save', {
+      const response = await fetch('/api/baseline/save-v2', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
