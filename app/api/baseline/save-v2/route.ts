@@ -97,7 +97,7 @@ export async function POST(request: Request) {
     // Check for existing incomplete assessment
     const { data: incompleteAssessment, error: findError } = await supabase
       .from('baseline_assessments')
-      .select('id, stage, completed_at, redo_count')
+      .select('id, stage, completed_at')
       .eq('user_id', user.id)
       .is('completed_at', null) // Only incomplete assessments
       .order('created_at', { ascending: false })
@@ -145,7 +145,7 @@ export async function POST(request: Request) {
       // Check for recent completion (redo vs new baseline)
       const { data: recentComplete, error: recentError } = await supabase
         .from('baseline_assessments')
-        .select('id, completed_at, redo_count')
+        .select('id, completed_at')
         .eq('user_id', user.id)
         .not('completed_at', 'is', null)
         .order('completed_at', { ascending: false })
@@ -168,31 +168,16 @@ export async function POST(request: Request) {
       logs.push(`Days since last completion: ${daysSinceCompletion.toFixed(1)}`)
 
       if (recentComplete && daysSinceCompletion < 90) {
-        // Check if redo already used
-        const redoCount = recentComplete.redo_count || 0
-
-        if (redoCount >= 1) {
-          logs.push(`REDO BLOCKED: User already used their one redo (redo_count: ${redoCount})`)
-          const daysUntilQuarterly = Math.ceil(90 - daysSinceCompletion)
-          return NextResponse.json({
-            success: false,
-            error: `You have already used your one redo opportunity. Your next quarterly baseline will be available in ${daysUntilQuarterly} days.`,
-            logs
-          }, { status: 400 })
-        }
-
-        // REDO: Overwrite same baseline (within 90 days, first redo only)
+        // REDO: Overwrite same baseline (within 90 days)
         assessmentId = recentComplete.id
         isRedo = true
-        logs.push(`REDO: Reusing assessment ${assessmentId} (${daysSinceCompletion.toFixed(1)} days since completion, redo_count: ${redoCount})`)
+        logs.push(`REDO: Reusing assessment ${assessmentId} (${daysSinceCompletion.toFixed(1)} days since completion)`)
 
-        // Update assessment and increment redo count
         const { error: updateError } = await supabase
           .from('baseline_assessments')
           .update({
             stage: stageNumber,
             completed_at: stageNumber === 3 ? new Date().toISOString() : null,
-            redo_count: redoCount + 1,
           })
           .eq('id', assessmentId)
 
@@ -205,7 +190,7 @@ export async function POST(request: Request) {
           }, { status: 500 })
         }
 
-        logs.push('Redo mode: Will overwrite previous responses (redo count incremented)')
+        logs.push('Redo mode: Will overwrite previous responses')
       } else {
         // NEW BASELINE: Quarterly retake (90+ days or first time)
         logs.push(`NEW BASELINE: Creating new assessment (${recentComplete ? '90+ days passed' : 'first time'})`)
@@ -300,12 +285,12 @@ export async function POST(request: Request) {
       }, { status: 500 })
     }
 
-    // STEP 8: Save scores (upsert for redo support)
-    logs.push(`Step 8: Saving scores (${isRedo ? 'UPSERT for redo' : 'INSERT for new baseline'})...`)
+    // STEP 8: Save scores (delete old + insert new for this user)
+    logs.push('Step 8: Saving scores...')
 
     const scoreRecords = scores.allSubdimensions.map(dim => ({
       user_id: user.id,
-      assessment_id: assessmentId, // Link to specific assessment for history
+      assessment_id: assessmentId,
       sub_dimension: dim.subdimension,
       territory: dim.territory === 'yourself' ? 'Leading Yourself' :
                 dim.territory === 'teams' ? 'Leading Teams' :
@@ -313,15 +298,24 @@ export async function POST(request: Request) {
       current_score: dim.score,
       max_possible_score: dim.maxScore,
       percentage: dim.percentage,
-      model_version: '1.0', // Phase 0: version tracking for future interpretation updates
-      calculated_at: new Date().toISOString() // Phase 0: timestamp tracking
+      model_version: '1.0',
+      calculated_at: new Date().toISOString()
     }))
+
+    // Delete existing scores for this user then insert fresh
+    // Uses (user_id, sub_dimension) unique constraint from original schema
+    const { error: deleteScoresError } = await supabase
+      .from('sub_dimension_scores')
+      .delete()
+      .eq('user_id', user.id)
+
+    if (deleteScoresError) {
+      logs.push(`Delete scores warning: ${deleteScoresError.message}`)
+    }
 
     const { error: saveScoresError } = await supabase
       .from('sub_dimension_scores')
-      .upsert(scoreRecords, {
-        onConflict: 'user_id,assessment_id,sub_dimension' // Overwrite if redo, insert if new
-      })
+      .insert(scoreRecords)
 
     if (saveScoresError) {
       logs.push(`Save scores error: ${saveScoresError.message}`)
@@ -332,7 +326,7 @@ export async function POST(request: Request) {
       }, { status: 500 })
     }
 
-    logs.push(`Saved ${scoreRecords.length} score records ${isRedo ? '(overwrote previous)' : '(new entries)'}`)
+    logs.push(`Saved ${scoreRecords.length} score records`)
 
     // STEP 9: Update user profile
     logs.push('Step 9: Updating user profile...')
