@@ -51,7 +51,6 @@ export async function POST(request: Request) {
         .from('baseline_assessments')
         .update({
           stage: stage,
-          stage_completed: stage,
           completed_at: stage === 3 ? new Date().toISOString() : null,
         })
         .eq('id', existingAssessment.id)
@@ -74,7 +73,6 @@ export async function POST(request: Request) {
         .insert({
           user_id: user.id,
           stage: stage,
-          stage_completed: stage,
           completed_at: stage === 3 ? new Date().toISOString() : null,
         })
         .select()

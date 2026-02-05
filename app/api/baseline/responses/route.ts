@@ -35,7 +35,7 @@ export async function GET(request: Request) {
     // Get most recent baseline assessment
     const { data: assessment } = await supabase
       .from('baseline_assessments')
-      .select('id, stage_completed')
+      .select('id, stage')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(1)
@@ -62,7 +62,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       responses: responsesMap,
-      stage: assessment.stage_completed
+      stage: assessment.stage
     })
   } catch (error: any) {
     console.error('Fetch responses error:', error)

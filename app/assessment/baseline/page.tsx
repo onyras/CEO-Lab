@@ -65,7 +65,7 @@ export default function BaselineAssessment() {
     // Load existing assessment progress
     const { data: assessment } = await supabase
       .from('baseline_assessments')
-      .select('id, stage_completed')
+      .select('id, stage')
       .eq('user_id', user.id)
       .single()
 
@@ -84,8 +84,8 @@ export default function BaselineAssessment() {
         })
         setResponses(savedResponses)
 
-        // Determine which stage to start based on stage_completed
-        const stageCompleted = assessment.stage_completed || 0
+        // Determine which stage to start based on stage
+        const stageCompleted = assessment.stage || 0
 
         if (stageCompleted === 1) {
           // Stage 1 complete, start Stage 2 from question 31
