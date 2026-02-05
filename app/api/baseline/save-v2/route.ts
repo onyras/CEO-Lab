@@ -180,47 +180,32 @@ export async function POST(request: Request) {
         territory: question?.territory || 'Leading Yourself',
         answer_value: answer as number,
         stage: stageNumber,
+        submitted_at: new Date().toISOString(), // Phase 0: timestamp tracking
       }
     })
 
     logs.push(`Prepared ${responseRecords.length} response records`)
 
-    // STEP 5: Delete old responses for these questions
-    logs.push('Step 5: Deleting old responses...')
+    // STEP 5: Upsert responses (no deletes - NEVER DELETE USER DATA)
+    logs.push('Step 5: Upserting responses (atomic, no deletes)...')
 
-    const questionNumbers = responseRecords.map(r => r.question_number)
-
-    const { error: deleteResponsesError } = await supabase
+    const { error: upsertResponsesError } = await supabase
       .from('baseline_responses')
-      .delete()
-      .eq('user_id', user.id)
-      .eq('assessment_id', assessmentId)
-      .in('question_number', questionNumbers)
+      .upsert(responseRecords, {
+        onConflict: 'user_id,assessment_id,question_number',
+        ignoreDuplicates: false
+      })
 
-    if (deleteResponsesError) {
-      logs.push(`Delete responses warning: ${deleteResponsesError.message}`)
-      // Continue anyway - might be no old responses
-    } else {
-      logs.push('Old responses deleted (or none existed)')
-    }
-
-    // STEP 6: Insert new responses
-    logs.push('Step 6: Inserting responses...')
-
-    const { error: insertResponsesError } = await supabase
-      .from('baseline_responses')
-      .insert(responseRecords)
-
-    if (insertResponsesError) {
-      logs.push(`Insert responses error: ${insertResponsesError.message}`)
+    if (upsertResponsesError) {
+      logs.push(`Upsert responses error: ${upsertResponsesError.message}`)
       return NextResponse.json({
         success: false,
-        error: `Failed to save responses: ${insertResponsesError.message}`,
+        error: `Failed to save responses: ${upsertResponsesError.message}`,
         logs
       }, { status: 500 })
     }
 
-    logs.push(`Inserted ${responseRecords.length} responses`)
+    logs.push(`Upserted ${responseRecords.length} responses (no data deleted)`)
 
     // STEP 7: Calculate scores
     logs.push('Step 7: Calculating scores...')
@@ -238,23 +223,8 @@ export async function POST(request: Request) {
       }, { status: 500 })
     }
 
-    // STEP 8: Delete old scores
-    logs.push('Step 8: Deleting old scores...')
-
-    const { error: deleteScoresError } = await supabase
-      .from('sub_dimension_scores')
-      .delete()
-      .eq('user_id', user.id)
-
-    if (deleteScoresError) {
-      logs.push(`Delete scores warning: ${deleteScoresError.message}`)
-      // Continue anyway
-    } else {
-      logs.push('Old scores deleted (or none existed)')
-    }
-
-    // STEP 9: Insert new scores
-    logs.push('Step 9: Inserting scores...')
+    // STEP 8: Upsert scores (no deletes - NEVER DELETE USER DATA)
+    logs.push('Step 8: Upserting scores (atomic, no deletes)...')
 
     const scoreRecords = scores.allSubdimensions.map(dim => ({
       user_id: user.id,
@@ -264,26 +234,31 @@ export async function POST(request: Request) {
                 'Leading Organizations',
       current_score: dim.score,
       max_possible_score: dim.maxScore,
-      percentage: dim.percentage
+      percentage: dim.percentage,
+      model_version: '1.0', // Phase 0: version tracking for future interpretation updates
+      calculated_at: new Date().toISOString() // Phase 0: timestamp tracking
     }))
 
-    const { error: insertScoresError } = await supabase
+    const { error: upsertScoresError } = await supabase
       .from('sub_dimension_scores')
-      .insert(scoreRecords)
+      .upsert(scoreRecords, {
+        onConflict: 'user_id,sub_dimension',
+        ignoreDuplicates: false
+      })
 
-    if (insertScoresError) {
-      logs.push(`Insert scores error: ${insertScoresError.message}`)
+    if (upsertScoresError) {
+      logs.push(`Upsert scores error: ${upsertScoresError.message}`)
       return NextResponse.json({
         success: false,
-        error: `Failed to save scores: ${insertScoresError.message}`,
+        error: `Failed to save scores: ${upsertScoresError.message}`,
         logs
       }, { status: 500 })
     }
 
-    logs.push(`Inserted ${scoreRecords.length} score records`)
+    logs.push(`Upserted ${scoreRecords.length} score records (no data deleted)`)
 
-    // STEP 10: Update user profile
-    logs.push('Step 10: Updating user profile...')
+    // STEP 9: Update user profile
+    logs.push('Step 9: Updating user profile...')
 
     const profileUpdates = stageNumber === 3
       ? { baseline_completed: true, baseline_stage: 3 }
