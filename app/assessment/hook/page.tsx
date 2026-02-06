@@ -309,10 +309,10 @@ export default function HookAssessmentPage() {
               with personalized frameworks and development recommendations.
             </p>
             <a
-              href="/assessment"
+              href="/auth"
               className="inline-block bg-white text-black px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white/90 transition-colors"
             >
-              Take Full Assessment
+              Sign Up for Full Assessment
             </a>
           </div>
 
