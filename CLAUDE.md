@@ -31,6 +31,17 @@ project_documents/README.md    ← What's where. Always check this first.
 
 ## Rules
 
+### Source of Truth: Project Documents
+
+**CRITICAL: Every file in `project_documents/` is a source of truth. When writing code that implements anything described in these documents, you MUST read the actual document first and use its content verbatim.**
+
+- **NEVER generate, fabricate, or paraphrase content** that exists in project documents. Item text, question text, scenario text, scale labels, framework names, narrative templates — if it's in the spec, copy it exactly.
+- **ALWAYS read the full source document** before writing code that depends on it. If the file is large, read it in chunks. Do not rely on summaries, structural descriptions, or assumptions about what the file "probably" contains.
+- **When delegating to sub-agents**, the sub-agent MUST be instructed to read the source file directly. Passing a structural description is not sufficient — the agent must read and extract verbatim content from the actual file.
+- **After writing content from a spec**, verify a sample of items against the source document to confirm verbatim accuracy.
+
+This rule exists because a previous session generated 96 fake assessment questions instead of reading the 72KB spec file that contained all the real ones. That mistake required a complete rewrite.
+
 ### Design System
 - **ALWAYS** check `design/BRAND.md` and `design/COMPONENTS.md` before writing UI code
 - Colors: beige `#F7F3ED`, black, white. Territory accents: blue `#7FABC8`, green `#A6BEA4`, orange `#E08F6A`

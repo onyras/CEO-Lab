@@ -27,29 +27,58 @@ export const DIMENSIONS: DimensionDefinition[] = [
 ]
 
 // ─── Reverse-Scored Items ────────────────────────────────────────
-// Pattern: 3rd item in each dimension's 5-item set is reverse-scored
-// Note: Spec says items 2 and 4 are forward, items 1,3,5 vary.
-// The actual R-tagged items from the assessment spec:
-
-// Per Scoring Engine v4.0, Section 1.3:
-// "Each dimension: 4 forward + 1 reverse. Pattern: items 1,2,4,5 forward. Item 3 reverse."
-// 15 total (one per dimension): the 3rd item in each set of 5.
+// Derived from the (R) markings on each item in CEO_LAB_ASSESSMENT_V4.md.
+// Most dimensions have 2 reverse-scored items; LY.3 and LT.1 have 1 each.
+// 28 total across 15 dimensions.
+//
+// NOTE: The Scoring Engine v4.0 Section 1.3 claims "1 reverse per dimension,
+// item 3 is reverse" — that is a simplification error. The actual item bank
+// in the Assessment spec marks 2 items (R) per dimension as listed below.
+// The Assessment spec is the source of truth for scoring direction.
 export const REVERSE_SCORED_ITEMS = new Set<string>([
-  'B03',  // LY.1
-  'B08',  // LY.2
-  'B13',  // LY.3
-  'B18',  // LY.4
-  'B23',  // LY.5
-  'B28',  // LT.1
-  'B33',  // LT.2
-  'B38',  // LT.3
-  'B43',  // LT.4
-  'B48',  // LT.5
-  'B53',  // LO.1
-  'B58',  // LO.2
-  'B63',  // LO.3
-  'B68',  // LO.4
-  'B73',  // LO.5
+  // LY.1 Self-Awareness
+  'B02',  // (R) same type of conflict with different people
+  'B04',  // (R) feedback genuinely surprised me
+  // LY.2 Emotional Mastery
+  'B07',  // (R) suppressed emotion came out later
+  'B10',  // (R) avoided giving honest feedback
+  // LY.3 Grounded Presence
+  'B12',  // (R) mind kept racing when trying to rest
+  // LY.4 Purpose & Mastery
+  'B17',  // (R) spent time on work someone else could handle
+  'B20',  // (R) felt pulled in directions that don't align
+  // LY.5 Peak Performance
+  'B22',  // (R) worked through obvious signs of exhaustion
+  'B25',  // (R) spent majority of time in reactive mode
+  // LT.1 Building Trust
+  'B28',  // (R) learned about problem from back channel
+  // LT.2 Hard Conversations
+  'B32',  // (R) avoided uncomfortable conversation
+  'B35',  // (R) softened feedback so much it didn't land
+  // LT.3 Diagnosing the Real Problem
+  'B37',  // (R) provided answer before team could develop own
+  'B39',  // (R) people came to me for decisions they could make
+  // LT.4 Team Operating System
+  'B42',  // (R) meetings ended without clear outcomes
+  'B45',  // (R) team's way of working was mostly improvised
+  // LT.5 Leader Identity
+  'B47',  // (R) took back delegated task
+  'B50',  // (R) attended meeting in area I should have let go
+  // LO.1 Strategic Clarity
+  'B52',  // (R) pursued opportunity that didn't fit strategy
+  'B55',  // (R) confused business plan with actual strategy
+  // LO.2 Culture Design
+  'B57',  // (R) tolerated high performer violating norms
+  'B59',  // (R) gap between stated culture and actual behavior
+  // LO.3 Organizational Architecture
+  'B62',  // (R) org structure created bottlenecks
+  'B64',  // (R) people worked around formal structure
+  // LO.4 CEO Evolution
+  'B67',  // (R) doing work I should have transitioned away from
+  'B70',  // (R) held onto area because letting go felt like losing relevance
+  // LO.5 Leading Change
+  'B72',  // (R) withheld or softened bad news to board
+  'B75',  // (R) avoided making needed organizational change
 ])
 
 // ─── Stage Assignment ────────────────────────────────────────────

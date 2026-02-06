@@ -47,7 +47,7 @@ export const weeklyItems: WeeklyItem[] = [
   {
     id: 'W07',
     dimensionId: 'LT.2',
-    text: 'Is there a difficult conversation you\'re currently avoiding?',
+    text: "Is there a difficult conversation you're currently avoiding?",
     responseFormat: 'select:Yes/No',
   },
   {
@@ -73,20 +73,20 @@ export const weeklyItems: WeeklyItem[] = [
   {
     id: 'W11',
     dimensionId: 'LO.1',
-    text: 'Did you say no to something this week that didn\'t fit your strategy?',
+    text: "Did you say no to something this week that didn't fit your strategy?",
     responseFormat: 'select:Yes/No/Nothing came up',
   },
   {
     id: 'W12',
     dimensionId: 'LO.2',
     text: 'Did you observe behavior this week that violated cultural norms? If so, did you address it?',
-    responseFormat: 'select:No violations/Saw it, addressed it/Saw it, didn\'t address it',
+    responseFormat: "select:No violations/Saw it, addressed it/Saw it, didn't address it",
   },
   {
     id: 'W13',
     dimensionId: 'LO.3',
     text: 'This week, did anyone need to work around the formal structure to get something done?',
-    responseFormat: 'select:Yes/No/Don\'t know',
+    responseFormat: "select:Yes/No/Don't know",
   },
   {
     id: 'W14',

@@ -2,13 +2,11 @@ import type { BehavioralItem, SjiItem, ImItem } from '@/types/assessment'
 
 // ─── Behavioral Items (B01-B75) ──────────────────────────────────────
 // 75 items: 5 per dimension, 15 dimensions
-// Scoring direction per Scoring Engine v4.0 Section 1.3:
-//   Items 1, 2, 4, 5 per dimension = forward
-//   Item 3 per dimension = reverse
+// Scoring direction per spec V4: (F) = forward, (R) = reverse — per item
 // Stage assignment:
-//   1st item per dimension = Stage 1
-//   2nd + 3rd items = Stage 2
-//   4th + 5th items = Stage 3
+//   1st item per dimension = Stage 1  (15 items)
+//   2nd + 3rd items = Stage 2         (30 items)
+//   4th + 5th items = Stage 3         (30 items)
 
 export const behavioralItems: BehavioralItem[] = [
   // ═══════════════════════════════════════════════
@@ -28,7 +26,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B02',
     dimensionId: 'LY.1',
     text: 'In the past 30 days, I found myself in the same type of conflict or frustration with different people.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -36,7 +34,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B03',
     dimensionId: 'LY.1',
     text: 'In the past 30 days, I actively sought honest feedback about my leadership from someone who would tell me the truth.',
-    scoringDirection: 'reverse',
+    scoringDirection: 'forward',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -44,7 +42,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B04',
     dimensionId: 'LY.1',
     text: 'In the past 30 days, feedback I received about my leadership genuinely surprised me.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 3,
   },
@@ -61,7 +59,7 @@ export const behavioralItems: BehavioralItem[] = [
   {
     id: 'B06',
     dimensionId: 'LY.2',
-    text: 'In the past 30 days, when I experienced a difficult emotion at work, I could name the specific emotion (beyond "stressed" or "frustrated") and what triggered it.',
+    text: 'In the past 30 days, when I experienced a difficult emotion at work, I could name the specific emotion (beyond \u201cstressed\u201d or \u201cfrustrated\u201d) and what triggered it.',
     scoringDirection: 'forward',
     scaleType: 'frequency',
     stage: 1,
@@ -70,7 +68,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B07',
     dimensionId: 'LY.2',
     text: 'In the past 30 days, I suppressed a strong emotion at work and it came out later in an unintended way (irritability, withdrawal, sarcasm, or snapping).',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -78,7 +76,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B08',
     dimensionId: 'LY.2',
     text: 'In the past 30 days, when I needed to express frustration or disappointment to a colleague, I did so without blame, sarcasm, or passive-aggression.',
-    scoringDirection: 'reverse',
+    scoringDirection: 'forward',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -94,7 +92,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B10',
     dimensionId: 'LY.2',
     text: 'In the past 30 days, I avoided giving someone honest feedback because I was worried about how they would feel.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 3,
   },
@@ -119,7 +117,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B12',
     dimensionId: 'LY.3',
     text: 'In the past 30 days, when I tried to rest or disconnect from work, my mind kept racing about tasks, problems, or unfinished business.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -127,7 +125,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B13',
     dimensionId: 'LY.3',
     text: 'In the past 30 days, when someone was speaking to me in an important conversation, I listened with full attention without planning my response, checking my phone, or mentally drifting.',
-    scoringDirection: 'reverse',
+    scoringDirection: 'forward',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -161,7 +159,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B17',
     dimensionId: 'LY.4',
     text: 'In the past 30 days, I spent significant time on work that someone else could handle, because I hadn\'t delegated it or let go of it.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -169,7 +167,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B18',
     dimensionId: 'LY.4',
     text: 'My daily decisions and priorities consistently connect to a long-term direction that matters deeply to me beyond financial outcomes.',
-    scoringDirection: 'reverse',
+    scoringDirection: 'forward',
     scaleType: 'degree',
     stage: 2,
   },
@@ -185,7 +183,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B20',
     dimensionId: 'LY.4',
     text: 'In the past 30 days, I felt pulled in directions that don\'t align with what I actually care about most.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 3,
   },
@@ -210,7 +208,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B22',
     dimensionId: 'LY.5',
     text: 'In the past 30 days, I worked through obvious signs of exhaustion (physical tiredness, difficulty concentrating, irritability) rather than stopping to recover.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -218,7 +216,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B23',
     dimensionId: 'LY.5',
     text: 'In the past 30 days, I said no to a request, meeting, or opportunity specifically because it was low-leverage relative to my top priorities.',
-    scoringDirection: 'reverse',
+    scoringDirection: 'forward',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -234,7 +232,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B25',
     dimensionId: 'LY.5',
     text: 'In the past 30 days, I spent the majority of my time in reactive mode (responding to emails, attending meetings others scheduled, firefighting) rather than proactive deep work.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 3,
   },
@@ -271,7 +269,7 @@ export const behavioralItems: BehavioralItem[] = [
   {
     id: 'B29',
     dimensionId: 'LT.1',
-    text: 'In the past 30 days, I said "I don\'t know" or "I was wrong" in front of my team.',
+    text: 'In the past 30 days, I said \u201cI don\u2019t know\u201d or \u201cI was wrong\u201d in front of my team.',
     scoringDirection: 'forward',
     scaleType: 'frequency',
     stage: 3,
@@ -279,7 +277,7 @@ export const behavioralItems: BehavioralItem[] = [
   {
     id: 'B30',
     dimensionId: 'LT.1',
-    text: 'If I asked my direct reports right now whether they believe I have their genuine interests at heart (not just the company\'s), they would say yes.',
+    text: 'If I asked my direct reports right now whether they believe I have their genuine interests at heart (not just the company\u2019s), they would say yes.',
     scoringDirection: 'forward',
     scaleType: 'confidence',
     stage: 3,
@@ -297,16 +295,16 @@ export const behavioralItems: BehavioralItem[] = [
   {
     id: 'B32',
     dimensionId: 'LT.2',
-    text: 'In the past 30 days, I avoided an uncomfortable conversation by telling myself "the timing isn\'t right" or "it will resolve itself."',
-    scoringDirection: 'forward',
+    text: 'In the past 30 days, I avoided an uncomfortable conversation by telling myself \u201cthe timing isn\u2019t right\u201d or \u201cit will resolve itself.\u201d',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 2,
   },
   {
     id: 'B33',
     dimensionId: 'LT.2',
-    text: 'In the past 30 days, when someone told me something I didn\'t want to hear, I focused on understanding their perspective before responding with my own.',
-    scoringDirection: 'reverse',
+    text: 'In the past 30 days, when someone told me something I didn\u2019t want to hear, I focused on understanding their perspective before responding with my own.',
+    scoringDirection: 'forward',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -322,7 +320,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B35',
     dimensionId: 'LT.2',
     text: 'In the past 30 days, I softened feedback so much that the other person walked away without understanding the seriousness of the issue.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 3,
   },
@@ -340,7 +338,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B37',
     dimensionId: 'LT.3',
     text: 'In the past 30 days, I provided my answer or solution before giving the team adequate time to develop their own.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -348,7 +346,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B38',
     dimensionId: 'LT.3',
     text: 'In the past 30 days, when something went wrong on my team, I considered my own contribution to the problem (not just what others did wrong).',
-    scoringDirection: 'reverse',
+    scoringDirection: 'forward',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -356,7 +354,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B39',
     dimensionId: 'LT.3',
     text: 'In the past 30 days, people on my team came to me for decisions they had the information and authority to make themselves.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 3,
   },
@@ -389,7 +387,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B42',
     dimensionId: 'LT.4',
     text: 'In the past 30 days, meetings I led ended without clear outcomes, owners, or next steps.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -397,7 +395,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B43',
     dimensionId: 'LT.4',
     text: 'My team currently has a clear, shared understanding of who decides what, without needing to check with me.',
-    scoringDirection: 'reverse',
+    scoringDirection: 'forward',
     scaleType: 'degree',
     stage: 2,
   },
@@ -412,8 +410,8 @@ export const behavioralItems: BehavioralItem[] = [
   {
     id: 'B45',
     dimensionId: 'LT.4',
-    text: 'In the past 30 days, my team\'s way of working was mostly improvised rather than following a designed rhythm of check-ins, reviews, and planning.',
-    scoringDirection: 'forward',
+    text: 'In the past 30 days, my team\u2019s way of working was mostly improvised rather than following a designed rhythm of check-ins, reviews, and planning.',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 3,
   },
@@ -430,8 +428,8 @@ export const behavioralItems: BehavioralItem[] = [
   {
     id: 'B47',
     dimensionId: 'LT.5',
-    text: 'In the past 30 days, I took back a task or responsibility I had delegated because the quality wasn\'t up to my standards.',
-    scoringDirection: 'forward',
+    text: 'In the past 30 days, I took back a task or responsibility I had delegated because the quality wasn\u2019t up to my standards.',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -439,7 +437,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B48',
     dimensionId: 'LT.5',
     text: 'My leadership team currently functions as genuine peers who collaborate with each other, not as individuals who each relate to me separately.',
-    scoringDirection: 'reverse',
+    scoringDirection: 'forward',
     scaleType: 'degree',
     stage: 2,
   },
@@ -455,7 +453,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B50',
     dimensionId: 'LT.5',
     text: 'In the past 30 days, I attended a meeting or made a decision in an area I should have let go of by now, because I still felt I needed to be involved.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 3,
   },
@@ -468,7 +466,7 @@ export const behavioralItems: BehavioralItem[] = [
   {
     id: 'B51',
     dimensionId: 'LO.1',
-    text: 'I can articulate my company\'s strategy in one clear sentence, including what we have chosen NOT to do.',
+    text: 'I can articulate my company\u2019s strategy in one clear sentence, including what we have chosen NOT to do.',
     scoringDirection: 'forward',
     scaleType: 'degree',
     stage: 1,
@@ -476,8 +474,8 @@ export const behavioralItems: BehavioralItem[] = [
   {
     id: 'B52',
     dimensionId: 'LO.1',
-    text: 'In the past 30 days, I pursued or seriously considered an opportunity that didn\'t fit our stated strategy.',
-    scoringDirection: 'forward',
+    text: 'In the past 30 days, I pursued or seriously considered an opportunity that didn\u2019t fit our stated strategy.',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -485,7 +483,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B53',
     dimensionId: 'LO.1',
     text: 'In the past 30 days, when a team member made an operational decision, they were able to use our strategic priorities as the filter without consulting me.',
-    scoringDirection: 'reverse',
+    scoringDirection: 'forward',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -501,16 +499,16 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B55',
     dimensionId: 'LO.1',
     text: 'In the past 30 days, I caught myself or my leadership team confusing a business plan or list of initiatives with an actual strategy (a set of integrated choices about where to play and how to win).',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 3,
   },
 
-  // ─── LO.2 Culture Design (Shape) ─────────────
+  // ─── LO.2 Culture Design (Shape) ──────────────
   {
     id: 'B56',
     dimensionId: 'LO.2',
-    text: 'My company\'s culture is currently defined as specific, observable behaviors (not abstract values like "innovation" or "excellence") that people can be held accountable to.',
+    text: 'My company\u2019s culture is currently defined as specific, observable behaviors (not abstract values like \u201cinnovation\u201d or \u201cexcellence\u201d) that people can be held accountable to.',
     scoringDirection: 'forward',
     scaleType: 'degree',
     stage: 1,
@@ -519,7 +517,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B57',
     dimensionId: 'LO.2',
     text: 'In the past 30 days, I tolerated behavior from a high performer that violated our cultural norms because they were delivering strong results.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -527,7 +525,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B58',
     dimensionId: 'LO.2',
     text: 'In the past 30 days, when someone acted against our cultural expectations, it was addressed directly and promptly, regardless of their seniority or performance.',
-    scoringDirection: 'reverse',
+    scoringDirection: 'forward',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -535,7 +533,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B59',
     dimensionId: 'LO.2',
     text: 'In the past 30 days, I noticed a gap between what we say our culture is and how people actually behave day to day.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 3,
   },
@@ -552,7 +550,7 @@ export const behavioralItems: BehavioralItem[] = [
   {
     id: 'B61',
     dimensionId: 'LO.3',
-    text: 'My company\'s organizational structure was deliberately designed for our current size and strategy, not inherited from an earlier stage.',
+    text: 'My company\u2019s organizational structure was deliberately designed for our current size and strategy, not inherited from an earlier stage.',
     scoringDirection: 'forward',
     scaleType: 'degree',
     stage: 1,
@@ -561,7 +559,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B62',
     dimensionId: 'LO.3',
     text: 'In the past 30 days, my organizational structure created bottlenecks, confusion, or duplicated effort that slowed the team down.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -569,7 +567,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B63',
     dimensionId: 'LO.3',
     text: 'Decision rights in my organization are currently documented and clear: for any significant decision, people know who owns it.',
-    scoringDirection: 'reverse',
+    scoringDirection: 'forward',
     scaleType: 'degree',
     stage: 2,
   },
@@ -577,7 +575,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B64',
     dimensionId: 'LO.3',
     text: 'In the past 30 days, people worked around the formal structure (going directly to someone outside the reporting line, escalating to me to bypass a process) to get things done.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 3,
   },
@@ -590,11 +588,11 @@ export const behavioralItems: BehavioralItem[] = [
     stage: 3,
   },
 
-  // ─── LO.4 CEO Evolution (Evolve) ─────────────
+  // ─── LO.4 CEO Evolution (Evolve) ──────────────
   {
     id: 'B66',
     dimensionId: 'LO.4',
-    text: 'My role today looks meaningfully different from my role 12 months ago, reflecting the company\'s growth and changing needs.',
+    text: 'My role today looks meaningfully different from my role 12 months ago, reflecting the company\u2019s growth and changing needs.',
     scoringDirection: 'forward',
     scaleType: 'degree',
     stage: 1,
@@ -602,8 +600,8 @@ export const behavioralItems: BehavioralItem[] = [
   {
     id: 'B67',
     dimensionId: 'LO.4',
-    text: 'In the past 30 days, I found myself doing work that I should have transitioned away from given the company\'s current size.',
-    scoringDirection: 'forward',
+    text: 'In the past 30 days, I found myself doing work that I should have transitioned away from given the company\u2019s current size.',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -611,14 +609,14 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B68',
     dimensionId: 'LO.4',
     text: 'In the past 30 days, I deliberately assessed whether my current skills and approach still match what the company needs from its CEO at this stage.',
-    scoringDirection: 'reverse',
+    scoringDirection: 'forward',
     scaleType: 'frequency',
     stage: 2,
   },
   {
     id: 'B69',
     dimensionId: 'LO.4',
-    text: 'If I honestly evaluated myself against the job description of "CEO of this company at its current stage," I would be a strong fit.',
+    text: 'If I honestly evaluated myself against the job description of \u201cCEO of this company at its current stage,\u201d I would be a strong fit.',
     scoringDirection: 'forward',
     scaleType: 'confidence',
     stage: 3,
@@ -627,7 +625,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B70',
     dimensionId: 'LO.4',
     text: 'In the past 30 days, I held onto a functional area or set of decisions because letting go felt like losing my relevance, even though someone else could handle it.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 3,
   },
@@ -645,7 +643,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B72',
     dimensionId: 'LO.5',
     text: 'In the past 30 days, I withheld or softened bad news when communicating with my board.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -653,7 +651,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B73',
     dimensionId: 'LO.5',
     text: 'In the past 30 days, I evaluated a risk or opportunity using a structured approach (scenario analysis, pre-mortem, staged rollout) rather than relying on gut instinct alone.',
-    scoringDirection: 'reverse',
+    scoringDirection: 'forward',
     scaleType: 'frequency',
     stage: 2,
   },
@@ -669,7 +667,7 @@ export const behavioralItems: BehavioralItem[] = [
     id: 'B75',
     dimensionId: 'LO.5',
     text: 'In the past 30 days, I avoided making a needed organizational change because the disruption felt too risky or uncomfortable.',
-    scoringDirection: 'forward',
+    scoringDirection: 'reverse',
     scaleType: 'frequency',
     stage: 3,
   },
@@ -684,10 +682,10 @@ export const sjiItems: SjiItem[] = [
   {
     id: 'SJ01',
     dimensionId: 'LY.1',
-    scenario: 'You\'re in a leadership team meeting. A direct report presents a proposal you immediately dislike. You notice your jaw tightening and an urge to shut it down. You:',
+    scenario: 'You\u2019re in a leadership team meeting. A direct report presents a proposal you immediately dislike. You notice your jaw tightening and an urge to shut it down. You:',
     options: [
       {
-        text: 'Voice your concerns directly and explain why it won\'t work.',
+        text: 'Voice your concerns directly and explain why it won\u2019t work.',
         maturityScore: 2,
         behavioralTag: 'Controller',
       },
@@ -702,7 +700,7 @@ export const sjiItems: SjiItem[] = [
         behavioralTag: 'Avoider',
       },
       {
-        text: 'Share that you\'re having a strong reaction and want to understand it before responding.',
+        text: 'Share that you\u2019re having a strong reaction and want to understand it before responding.',
         maturityScore: 3,
         behavioralTag: 'Facilitator',
       },
@@ -713,7 +711,7 @@ export const sjiItems: SjiItem[] = [
   {
     id: 'SJ02',
     dimensionId: 'LY.2',
-    scenario: 'Your co-founder just told you they\'re considering leaving. You feel a wave of anger, betrayal, and fear. You:',
+    scenario: 'Your co-founder just told you they\u2019re considering leaving. You feel a wave of anger, betrayal, and fear. You:',
     options: [
       {
         text: 'Tell them you understand and ask them to take the weekend to think about it, while you do the same.',
@@ -731,7 +729,7 @@ export const sjiItems: SjiItem[] = [
         behavioralTag: 'Controller',
       },
       {
-        text: 'Acknowledge the emotions you\'re feeling out loud and ask what\'s driving their consideration.',
+        text: 'Acknowledge the emotions you\u2019re feeling out loud and ask what\u2019s driving their consideration.',
         maturityScore: 3,
         behavioralTag: 'Facilitator',
       },
@@ -742,7 +740,7 @@ export const sjiItems: SjiItem[] = [
   {
     id: 'SJ03',
     dimensionId: 'LY.3',
-    scenario: 'You\'ve just received a threatening legal notice 30 minutes before an important all-hands meeting. Your team will read your energy. You:',
+    scenario: 'You\u2019ve just received a threatening legal notice 30 minutes before an important all-hands meeting. Your team will read your energy. You:',
     options: [
       {
         text: 'Postpone the all-hands to deal with the legal issue first.',
@@ -755,7 +753,7 @@ export const sjiItems: SjiItem[] = [
         behavioralTag: 'Facilitator',
       },
       {
-        text: 'Run the all-hands but mention the legal situation briefly so people don\'t sense unaddressed tension.',
+        text: 'Run the all-hands but mention the legal situation briefly so people don\u2019t sense unaddressed tension.',
         maturityScore: 3,
         behavioralTag: 'Controller',
       },
@@ -779,17 +777,17 @@ export const sjiItems: SjiItem[] = [
         behavioralTag: 'Controller',
       },
       {
-        text: 'Decline; it doesn\'t align with your current priorities and would dilute your focus.',
+        text: 'Decline; it doesn\u2019t align with your current priorities and would dilute your focus.',
         maturityScore: 3,
         behavioralTag: 'Facilitator',
       },
       {
-        text: 'Ask what specifically you\'d contribute and how it connects to your own development as a leader, then decide.',
+        text: 'Ask what specifically you\u2019d contribute and how it connects to your own development as a leader, then decide.',
         maturityScore: 4,
         behavioralTag: 'Facilitator',
       },
       {
-        text: 'Accept but plan to reduce the time commitment once you\'re established.',
+        text: 'Accept but plan to reduce the time commitment once you\u2019re established.',
         maturityScore: 2,
         behavioralTag: 'Avoider',
       },
@@ -800,7 +798,7 @@ export const sjiItems: SjiItem[] = [
   {
     id: 'SJ05',
     dimensionId: 'LY.5',
-    scenario: 'It\'s Thursday evening. You\'ve been in meetings since 8am. You have a strategic document to write that requires deep thinking, and the deadline is tomorrow morning. You:',
+    scenario: 'It\u2019s Thursday evening. You\u2019ve been in meetings since 8am. You have a strategic document to write that requires deep thinking, and the deadline is tomorrow morning. You:',
     options: [
       {
         text: 'Power through tonight; you can rest this weekend.',
@@ -808,7 +806,7 @@ export const sjiItems: SjiItem[] = [
         behavioralTag: 'Controller',
       },
       {
-        text: 'Send a message moving the deadline to Monday and go home. You know you won\'t produce your best work exhausted.',
+        text: 'Send a message moving the deadline to Monday and go home. You know you won\u2019t produce your best work exhausted.',
         maturityScore: 4,
         behavioralTag: 'Facilitator',
       },
@@ -842,7 +840,7 @@ export const sjiItems: SjiItem[] = [
         behavioralTag: 'Rescuer',
       },
       {
-        text: 'Express disappointment that they didn\'t raise this earlier and set a new standard for flagging risks.',
+        text: 'Express disappointment that they didn\u2019t raise this earlier and set a new standard for flagging risks.',
         maturityScore: 2,
         behavioralTag: 'Controller',
       },
@@ -858,7 +856,7 @@ export const sjiItems: SjiItem[] = [
   {
     id: 'SJ07',
     dimensionId: 'LT.2',
-    scenario: 'Your Head of Sales has been underperforming for two quarters. You\'ve hinted at concerns but haven\'t had a direct conversation. They seem unaware of the severity. A board member just asked about sales leadership. You:',
+    scenario: 'Your Head of Sales has been underperforming for two quarters. You\u2019ve hinted at concerns but haven\u2019t had a direct conversation. They seem unaware of the severity. A board member just asked about sales leadership. You:',
     options: [
       {
         text: 'Have the direct conversation this week, acknowledging you should have raised it sooner, and set clear expectations with a timeline.',
@@ -871,7 +869,7 @@ export const sjiItems: SjiItem[] = [
         behavioralTag: 'Avoider',
       },
       {
-        text: 'Hire a sales consultant to "support" the Head of Sales, hoping the consultant identifies and addresses the gap.',
+        text: 'Hire a sales consultant to \u201csupport\u201d the Head of Sales, hoping the consultant identifies and addresses the gap.',
         maturityScore: 2,
         behavioralTag: 'Avoider',
       },
@@ -887,10 +885,10 @@ export const sjiItems: SjiItem[] = [
   {
     id: 'SJ08',
     dimensionId: 'LT.3',
-    scenario: 'Your product team keeps missing sprint commitments. The engineering lead says they need more developers. The product lead says the scope keeps changing. They each blame the other\'s function. You:',
+    scenario: 'Your product team keeps missing sprint commitments. The engineering lead says they need more developers. The product lead says the scope keeps changing. They each blame the other\u2019s function. You:',
     options: [
       {
-        text: 'Hire more developers; if the engineering lead says they\'re under-resourced, that\'s probably true.',
+        text: 'Hire more developers; if the engineering lead says they\u2019re under-resourced, that\u2019s probably true.',
         maturityScore: 1,
         behavioralTag: 'Rescuer',
       },
@@ -916,7 +914,7 @@ export const sjiItems: SjiItem[] = [
   {
     id: 'SJ09',
     dimensionId: 'LT.4',
-    scenario: 'You realize your leadership team meetings have become status update sessions. People share what\'s happening in their function but rarely make decisions, debate priorities, or hold each other accountable. You:',
+    scenario: 'You realize your leadership team meetings have become status update sessions. People share what\u2019s happening in their function but rarely make decisions, debate priorities, or hold each other accountable. You:',
     options: [
       {
         text: 'Redesign the meeting format: pre-reads for status, meeting time reserved for decisions and debate. Announce the change and explain why.',
@@ -934,7 +932,7 @@ export const sjiItems: SjiItem[] = [
         behavioralTag: 'Avoider',
       },
       {
-        text: 'Add a new monthly strategic meeting for "real" discussions and keep the weekly as-is.',
+        text: 'Add a new monthly strategic meeting for \u201creal\u201d discussions and keep the weekly as-is.',
         maturityScore: 2,
         behavioralTag: 'Controller',
       },
@@ -953,7 +951,7 @@ export const sjiItems: SjiItem[] = [
         behavioralTag: 'Controller',
       },
       {
-        text: 'Ask probing questions about the strategy and data behind the choice, then say "I trust your judgment, let\'s run with it" if the logic holds.',
+        text: 'Ask probing questions about the strategy and data behind the choice, then say \u201cI trust your judgment, let\u2019s run with it\u201d if the logic holds.',
         maturityScore: 4,
         behavioralTag: 'Facilitator',
       },
@@ -987,7 +985,7 @@ export const sjiItems: SjiItem[] = [
         behavioralTag: 'Facilitator',
       },
       {
-        text: 'Propose a limited version of the engagement that serves the customer without derailing your roadmap, and be willing to walk away if they won\'t accept it.',
+        text: 'Propose a limited version of the engagement that serves the customer without derailing your roadmap, and be willing to walk away if they won\u2019t accept it.',
         maturityScore: 4,
         behavioralTag: 'Facilitator',
       },
@@ -1003,10 +1001,10 @@ export const sjiItems: SjiItem[] = [
   {
     id: 'SJ12',
     dimensionId: 'LO.2',
-    scenario: 'Your best salesperson consistently hits 150% of quota. They\'re also dismissive to support staff, take credit for team efforts, and several people have quietly complained. You:',
+    scenario: 'Your best salesperson consistently hits 150% of quota. They\u2019re also dismissive to support staff, take credit for team efforts, and several people have quietly complained. You:',
     options: [
       {
-        text: 'Have a direct conversation: their behavior violates cultural expectations and must change regardless of their sales numbers, with clear consequences if it doesn\'t.',
+        text: 'Have a direct conversation: their behavior violates cultural expectations and must change regardless of their sales numbers, with clear consequences if it doesn\u2019t.',
         maturityScore: 4,
         behavioralTag: 'Facilitator',
       },
@@ -1032,7 +1030,7 @@ export const sjiItems: SjiItem[] = [
   {
     id: 'SJ13',
     dimensionId: 'LO.3',
-    scenario: 'Your company has doubled to 120 people, but the org structure hasn\'t changed since you were 60. Decision-making is slow, teams step on each other\'s work, and middle managers escalate everything. You:',
+    scenario: 'Your company has doubled to 120 people, but the org structure hasn\u2019t changed since you were 60. Decision-making is slow, teams step on each other\u2019s work, and middle managers escalate everything. You:',
     options: [
       {
         text: 'Add a COO to sort out the operational complexity.',
@@ -1061,10 +1059,10 @@ export const sjiItems: SjiItem[] = [
   {
     id: 'SJ14',
     dimensionId: 'LO.4',
-    scenario: 'You realize that the company needs a world-class CFO for the next funding round, but you\'ve been handling finance yourself since founding. A board member suggests that your involvement in finance is creating a bottleneck. You:',
+    scenario: 'You realize that the company needs a world-class CFO for the next funding round, but you\u2019ve been handling finance yourself since founding. A board member suggests that your involvement in finance is creating a bottleneck. You:',
     options: [
       {
-        text: 'Agree it\'s time and begin a search immediately, committing to a full handover.',
+        text: 'Agree it\u2019s time and begin a search immediately, committing to a full handover.',
         maturityScore: 4,
         behavioralTag: 'Facilitator',
       },
@@ -1098,7 +1096,7 @@ export const sjiItems: SjiItem[] = [
         behavioralTag: 'Controller',
       },
       {
-        text: 'Roll it out in phases: align the leadership team first, develop a communication plan together, then cascade to the organization with each leader owning their team\'s transition.',
+        text: 'Roll it out in phases: align the leadership team first, develop a communication plan together, then cascade to the organization with each leader owning their team\u2019s transition.',
         maturityScore: 4,
         behavioralTag: 'Facilitator',
       },
@@ -1139,11 +1137,11 @@ export const imItems: ImItem[] = [
   },
   {
     id: 'IM05',
-    text: 'When I\'m under extreme pressure, I remain completely calm and clearheaded.',
+    text: 'When I\u2019m under extreme pressure, I remain completely calm and clearheaded.',
   },
   {
     id: 'IM06',
-    text: 'I give equal weight to every person\'s input, regardless of their seniority or my prior opinion of their judgment.',
+    text: 'I give equal weight to every person\u2019s input, regardless of their seniority or my prior opinion of their judgment.',
   },
 ]
 

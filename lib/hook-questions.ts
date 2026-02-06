@@ -12,7 +12,7 @@ export const hookItems: HookItem[] = [
     territory: 'leading_yourself',
     text: 'In the past week, when something frustrated you at work, how quickly did you recognize what was really going on underneath the frustration?',
     options: [
-      { text: 'I didn\'t', value: 1 },
+      { text: "I didn't", value: 1 },
       { text: 'After the fact', value: 2 },
       { text: 'Within a few hours', value: 3 },
       { text: 'Within minutes', value: 4 },
@@ -62,7 +62,7 @@ export const hookItems: HookItem[] = [
     territory: 'leading_teams',
     text: 'Think of the last time a team conflict or performance issue needed your attention. How did you handle it?',
     options: [
-      { text: 'Haven\'t addressed it yet', value: 1 },
+      { text: "Haven't addressed it yet", value: 1 },
       { text: 'Addressed it but weeks later', value: 2 },
       { text: 'Addressed it within a few days', value: 3 },
       { text: 'Addressed it same week with curiosity about root causes', value: 4 },
@@ -86,7 +86,7 @@ export const hookItems: HookItem[] = [
     id: 'H07',
     dimensions: ['LO.1'],
     territory: 'leading_organizations',
-    text: 'If you asked five random employees to describe your company\'s strategy in one sentence, how consistent would their answers be?',
+    text: "If you asked five random employees to describe your company's strategy in one sentence, how consistent would their answers be?",
     options: [
       { text: 'Very different', value: 1 },
       { text: 'Somewhat similar', value: 2 },

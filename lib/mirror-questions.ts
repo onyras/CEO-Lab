@@ -73,7 +73,7 @@ export const mirrorItems: MirrorItem[] = [
   {
     id: 'M11',
     dimensionId: 'LO.1',
-    text: 'I can clearly articulate our company\'s strategic priorities and use them to guide my own decisions.',
+    text: "I can clearly articulate our company's strategic priorities and use them to guide my own decisions.",
     scaleType: 'degree',
   },
   {
@@ -91,7 +91,7 @@ export const mirrorItems: MirrorItem[] = [
   {
     id: 'M14',
     dimensionId: 'LO.4',
-    text: 'This leader has visibly evolved their role to match the company\'s current needs rather than holding onto responsibilities from an earlier stage.',
+    text: "This leader has visibly evolved their role to match the company's current needs rather than holding onto responsibilities from an earlier stage.",
     scaleType: 'degree',
   },
   {
