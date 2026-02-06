@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
 import { mirrorItems } from '@/lib/mirror-questions'
@@ -46,7 +46,7 @@ interface MirrorResponseData {
 // Main component — detects mode from URL params
 // ═══════════════════════════════════════════════════════════════════
 
-export default function MirrorPage() {
+function MirrorPageInner() {
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
 
@@ -55,6 +55,14 @@ export default function MirrorPage() {
   }
 
   return <CeoMode />
+}
+
+export default function MirrorPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-[#F7F3ED]"><p className="text-black/40">Loading...</p></div>}>
+      <MirrorPageInner />
+    </Suspense>
+  )
 }
 
 // ═══════════════════════════════════════════════════════════════════
