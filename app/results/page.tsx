@@ -1,622 +1,668 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
-import { calculateBaselineScores } from '@/lib/scoring'
-import type { User } from '@supabase/supabase-js'
-import './results.css'
+import { DIMENSIONS, TERRITORY_CONFIG, getDimension } from '@/lib/constants'
+import { getFrameworkPrescription, getBsiLabel, getVerbalLabel } from '@/lib/scoring'
+import { TerritoryBars } from '@/components/visualizations/TerritoryBars'
+import { DimensionHeatmap } from '@/components/visualizations/DimensionHeatmap'
+import { ArchetypeBadge } from '@/components/visualizations/ArchetypeBadge'
+import { MirrorDotPlot } from '@/components/visualizations/MirrorDotPlot'
+import { RoadmapTimeline } from '@/components/visualizations/RoadmapTimeline'
+import { AnimatedScore } from '@/components/shared/AnimatedScore'
+import type {
+  FullResults,
+  DimensionScore,
+  TerritoryScore,
+  ArchetypeMatch,
+  MirrorGap,
+  DimensionId,
+  Territory,
+} from '@/types/assessment'
 
-interface UserProfile {
-  hook_completed: boolean
-  baseline_completed: boolean
-  baseline_stage: number
-  subscription_status: string
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+const TERRITORY_COLORS: Record<Territory, string> = {
+  leading_yourself: '#7FABC8',
+  leading_teams: '#A6BEA4',
+  leading_organizations: '#E08F6A',
 }
 
-interface SubDimensionScore {
-  sub_dimension: string
-  territory: string
-  percentage: number
+function getSectionNumber(n: number): string {
+  return n.toString().padStart(2, '0')
 }
 
-interface TerritoryScore {
-  territory: string
-  score: number
-}
-
-export default function ResultsDashboard() {
-  const router = useRouter()
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [profile, setProfile] = useState<UserProfile | null>(null)
-  const [subDimensionScores, setSubDimensionScores] = useState<SubDimensionScore[]>([])
-  const [territoryScores, setTerritoryScores] = useState<TerritoryScore[]>([])
-  const [overallScore, setOverallScore] = useState(0)
-  const [modalOpen, setModalOpen] = useState(false)
-  const [modalData, setModalData] = useState<{ dimension: string; score: number } | null>(null)
-  const [hasMultipleBaselines, setHasMultipleBaselines] = useState(false)
-  const [baselineScores, setBaselineScores] = useState<SubDimensionScore[]>([])
-  const [showComparison, setShowComparison] = useState(false)
-
-  const loadFromResponses = async (supabase: any, userId: string) => {
-    // Fallback: Calculate from baseline_responses (NEVER DELETE USER DATA)
-    const { data: responsesData } = await supabase
-      .from('baseline_responses')
-      .select('question_number, answer_value')
-      .eq('user_id', userId)
-
-    if (responsesData && responsesData.length > 0) {
-      // Convert to format expected by calculateBaselineScores
-      const responses: Record<number, number> = {}
-      responsesData.forEach((r: any) => {
-        responses[r.question_number] = r.answer_value
-      })
-
-      // Calculate scores using the same logic as before
-      const calculatedScores = calculateBaselineScores(responses)
-
-      // Convert to our display format
-      const displayScores: SubDimensionScore[] = calculatedScores.allSubdimensions.map(dim => ({
-        sub_dimension: dim.subdimension,
-        territory: dim.territory === 'yourself' ? 'Leading Yourself' :
-                  dim.territory === 'teams' ? 'Leading Teams' :
-                  'Leading Organizations',
-        percentage: dim.percentage
-      }))
-
-      setSubDimensionScores(displayScores)
-      calculateTerritoryScores(displayScores)
+/** Build the heatmap data the DimensionHeatmap component expects. */
+function buildHeatmapData(dimensionScores: DimensionScore[]) {
+  return dimensionScores.map((ds) => {
+    const def = getDimension(ds.dimensionId)
+    return {
+      dimensionId: ds.dimensionId,
+      name: def.name,
+      territory: def.territory,
+      percentage: Math.round(ds.percentage),
+      verbalLabel: ds.verbalLabel,
     }
-  }
+  })
+}
 
-  useEffect(() => {
-    const loadData = async () => {
-      const supabase = createClient()
-      const { data: { session } } = await supabase.auth.getSession()
+/** Build roadmap entries from priority dimensions. */
+function buildRoadmapEntries(
+  priorityDimensions: DimensionId[],
+  dimensionScores: DimensionScore[]
+) {
+  return priorityDimensions.map((dimId, index) => {
+    const def = getDimension(dimId)
+    const score = dimensionScores.find((ds) => ds.dimensionId === dimId)
+    const percentage = score?.percentage ?? 0
+    const frameworks = getFrameworkPrescription(dimId, percentage)
 
-      if (session?.user) {
-        setUser(session.user)
+    // Spread priorities across a 90-day window
+    const startDay = index * 14 + 1
+    const endDay = startDay + 20
 
-        const { data: profileData } = await supabase
-          .from('user_profiles')
-          .select('hook_completed, baseline_completed, baseline_stage, subscription_status')
-          .eq('id', session.user.id)
-          .single()
-
-        if (profileData) {
-          setProfile(profileData)
-        }
-
-        // Load sub-dimension scores if any baseline stage is completed
-        const baselineStage = profileData?.baseline_stage ?? 0
-        if (profileData?.baseline_completed || baselineStage >= 1) {
-          // Get all completed assessments (for comparison feature)
-          const { data: allAssessments } = await supabase
-            .from('baseline_assessments')
-            .select('id, completed_at')
-            .eq('user_id', session.user.id)
-            .not('completed_at', 'is', null)
-            .order('completed_at', { ascending: true })
-
-          if (allAssessments && allAssessments.length >= 2) {
-            // Multiple baselines exist - enable comparison
-            setHasMultipleBaselines(true)
-            const firstAssessment = allAssessments[0]
-            const latestAssessment = allAssessments[allAssessments.length - 1]
-
-            // Load baseline (first) scores
-            const { data: baselineScoresData } = await supabase
-              .from('sub_dimension_scores')
-              .select('sub_dimension, territory, percentage')
-              .eq('user_id', session.user.id)
-              .eq('assessment_id', firstAssessment.id)
-
-            if (baselineScoresData && baselineScoresData.length > 0) {
-              setBaselineScores(baselineScoresData)
-            }
-
-            // Load latest scores
-            const { data: latestScoresData } = await supabase
-              .from('sub_dimension_scores')
-              .select('sub_dimension, territory, percentage')
-              .eq('user_id', session.user.id)
-              .eq('assessment_id', latestAssessment.id)
-
-            if (latestScoresData && latestScoresData.length > 0) {
-              setSubDimensionScores(latestScoresData)
-              calculateTerritoryScores(latestScoresData)
-            } else {
-              await loadFromResponses(supabase, session.user.id)
-            }
-          } else if (allAssessments && allAssessments.length === 1) {
-            // Single baseline - show just that
-            const latestAssessment = allAssessments[0]
-            const { data: scores } = await supabase
-              .from('sub_dimension_scores')
-              .select('sub_dimension, territory, percentage')
-              .eq('user_id', session.user.id)
-              .eq('assessment_id', latestAssessment.id)
-
-            if (scores && scores.length > 0) {
-              setSubDimensionScores(scores)
-              calculateTerritoryScores(scores)
-            } else {
-              await loadFromResponses(supabase, session.user.id)
-            }
-          } else {
-            // No assessment found, try old data without assessment_id
-            const { data: scores } = await supabase
-              .from('sub_dimension_scores')
-              .select('sub_dimension, territory, percentage, calculated_at')
-              .eq('user_id', session.user.id)
-              .order('calculated_at', { ascending: false })
-
-            if (scores && scores.length > 0) {
-              // Get latest score for each dimension
-              const latestScores = new Map<string, SubDimensionScore>()
-              scores.forEach(score => {
-                if (!latestScores.has(score.sub_dimension)) {
-                  latestScores.set(score.sub_dimension, {
-                    sub_dimension: score.sub_dimension,
-                    territory: score.territory,
-                    percentage: score.percentage
-                  })
-                }
-              })
-              const scoreArray = Array.from(latestScores.values())
-              setSubDimensionScores(scoreArray)
-              calculateTerritoryScores(scoreArray)
-            } else {
-              // Final fallback: Calculate from responses
-              await loadFromResponses(supabase, session.user.id)
-            }
-          }
-        } else {
-          // Try fallback for edge cases
-          await loadFromResponses(supabase, session.user.id)
-        }
-      } else {
-        router.push('/auth')
-      }
-
-      setLoading(false)
+    return {
+      dimensionId: dimId,
+      dimensionName: def.name,
+      territory: def.territory,
+      percentage,
+      verbalLabel: score?.verbalLabel ?? getVerbalLabel(percentage),
+      frameworks,
+      startDay: Math.min(startDay, 90),
+      endDay: Math.min(endDay, 90),
     }
+  })
+}
 
-    loadData()
-  }, [router])
+// ---------------------------------------------------------------------------
+// Section Components
+// ---------------------------------------------------------------------------
 
-  const calculateTerritoryScores = (scores: SubDimensionScore[]) => {
-    const territories = ['Leading Yourself', 'Leading Teams', 'Leading Organizations']
-    const territoryScoreData = territories.map(territory => {
-      const territoryDimensions = scores.filter(s => s.territory === territory)
-      const avg = territoryDimensions.length > 0
-        ? territoryDimensions.reduce((sum, s) => sum + s.percentage, 0) / territoryDimensions.length
-        : 0
-      return { territory, score: Math.round(avg) }
-    })
-    setTerritoryScores(territoryScoreData)
-
-    // Calculate overall score
-    const overall = scores.length > 0
-      ? Math.round(scores.reduce((sum, s) => sum + s.percentage, 0) / scores.length)
-      : 0
-    setOverallScore(overall)
-  }
-
-  const isPremium = profile?.subscription_status === 'active'
-  const baselineStage = profile?.baseline_stage ?? 0
-  const hasScores = subDimensionScores.length > 0
-  const hasBaseline = Boolean(profile?.baseline_completed || baselineStage >= 1 || hasScores)
-
-  const openModal = (dimension: string, score: number) => {
-    setModalData({ dimension, score })
-    setModalOpen(true)
-  }
-
-  const closeModal = () => {
-    setModalOpen(false)
-    setModalData(null)
-  }
-
-  const getScoreRange = (score: number): string => {
-    if (score < 40) return 'low'
-    if (score < 60) return 'medium'
-    if (score < 80) return 'good'
-    return 'excellent'
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center">
-        <div className="text-black/60">Loading your leadership dashboard...</div>
-      </div>
-    )
-  }
-
-  // Show paywall if not premium
-  if (!isPremium) {
-    return (
-      <div className="min-h-screen bg-[#F7F3ED]">
-        <header className="border-b border-black/10 bg-white">
-          <div className="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-black tracking-tight">Your Leadership Dashboard</h1>
-              <p className="text-black/60 mt-1">Complete view of your growth and progress</p>
-            </div>
-            <a
-              href="/dashboard"
-              className="text-sm font-medium text-black/60 hover:text-black transition-colors"
-            >
-              Back to Dashboard
-            </a>
-          </div>
-        </header>
-
-        <main className="max-w-7xl mx-auto px-8 py-12">
-          <div className="bg-white rounded-lg p-12 text-center max-w-2xl mx-auto">
-            <div className="w-16 h-16 bg-black/10 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg className="w-8 h-8 text-black/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-            </div>
-            <h2 className="text-3xl font-bold text-black mb-4">Premium Feature</h2>
-            <p className="text-lg text-black/60 mb-8">
-              Unlock your comprehensive leadership dashboard with 18 sub-dimensions, AI-powered insights, what-if scenario planning, and personalized action plans.
-            </p>
-            <a
-              href="/dashboard?tab=payment"
-              className="inline-block px-8 py-3 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors"
-            >
-              Upgrade to Premium - €100/month
-            </a>
-          </div>
-        </main>
-      </div>
-    )
-  }
-
-  // Show message if baseline not completed or scores not ready
-  if (!hasBaseline) {
-    return (
-      <div className="min-h-screen bg-[#F7F3ED]">
-        <header className="border-b border-black/10 bg-white">
-          <div className="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-black tracking-tight">Your Leadership Dashboard</h1>
-              <p className="text-black/60 mt-1">Complete view of your growth and progress</p>
-            </div>
-            <a
-              href="/dashboard"
-              className="text-sm font-medium text-black/60 hover:text-black transition-colors"
-            >
-              Back to Dashboard
-            </a>
-          </div>
-        </header>
-
-        <main className="max-w-7xl mx-auto px-8 py-12">
-          <div className="bg-white rounded-lg p-12 text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold text-black mb-4">
-              Complete Your Baseline First
-            </h2>
-            <p className="text-lg text-black/60 mb-8">
-              Take the 100-question baseline assessment to unlock your comprehensive leadership dashboard.
-            </p>
-            <a
-              href="/assessment/baseline"
-              className="inline-block px-8 py-3 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors"
-            >
-              Start Baseline Assessment
-            </a>
-          </div>
-        </main>
-      </div>
-    )
-  }
-
-  if (!hasScores) {
-    return (
-      <div className="min-h-screen bg-[#F7F3ED]">
-        <header className="border-b border-black/10 bg-white">
-          <div className="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-black tracking-tight">Your Leadership Dashboard</h1>
-              <p className="text-black/60 mt-1">Complete view of your growth and progress</p>
-            </div>
-            <a
-              href="/dashboard"
-              className="text-sm font-medium text-black/60 hover:text-black transition-colors"
-            >
-              Back to Dashboard
-            </a>
-          </div>
-        </header>
-
-        <main className="max-w-7xl mx-auto px-8 py-12">
-          <div className="bg-white rounded-lg p-12 text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold text-black mb-4">
-              Loading Your Results...
-            </h2>
-            <p className="text-lg text-black/60 mb-8">
-              Your assessment is being processed. This should only take a moment. If this persists, please refresh the page.
-            </p>
-            <button
-              onClick={() => window.location.reload()}
-              className="inline-block px-8 py-3 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors"
-            >
-              Refresh Page
-            </button>
-          </div>
-        </main>
-      </div>
-    )
-  }
-
-  // Main comprehensive dashboard
+function SectionCard({
+  number,
+  title,
+  children,
+}: {
+  number: number
+  title: string
+  children: React.ReactNode
+}) {
   return (
-    <div className="min-h-screen bg-[#F7F3ED]">
-      {/* Header */}
-      <header className="border-b border-black/10 bg-white">
-        <div className="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-black tracking-tight">Leadership Scoreboard</h1>
-            <p className="text-black/60 mt-1">Your comprehensive leadership profile</p>
+    <section className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+      <div className="mb-6">
+        <span className="text-xs font-medium text-black/30 tracking-wider uppercase">
+          {getSectionNumber(number)}
+        </span>
+        <h2 className="text-2xl md:text-3xl font-bold text-black mt-1 leading-tight">
+          {title}
+        </h2>
+      </div>
+      {children}
+    </section>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Section 01 — The Headline
+// ---------------------------------------------------------------------------
+
+function HeadlineSection({
+  clmi,
+  bsi,
+  hasMirrorData,
+}: {
+  clmi: number
+  bsi?: number
+  hasMirrorData: boolean
+}) {
+  const rounded = Math.round(clmi)
+  const label = getVerbalLabel(clmi)
+
+  return (
+    <SectionCard number={1} title="The Headline">
+      <div className="text-center">
+        {/* CLMI Score */}
+        <div className="mb-4">
+          <AnimatedScore
+            value={rounded}
+            suffix="%"
+            className="text-[72px] md:text-[96px] font-bold text-black leading-none tracking-tight"
+          />
+        </div>
+
+        {/* Interpretation */}
+        <p className="text-lg md:text-xl text-black/70 max-w-xl mx-auto leading-relaxed">
+          Your Conscious Leadership Maturity Index places you in the{' '}
+          <span className="font-semibold text-black">{label}</span> range.
+        </p>
+
+        {/* BSI — only if mirror data available */}
+        {hasMirrorData && bsi != null && (
+          <div className="mt-6 pt-6 border-t border-black/10">
+            <p className="text-base text-black/60">
+              Your Blind Spot Index is{' '}
+              <span className="font-semibold text-black">{bsi.toFixed(1)}</span>
+              {' '}&mdash;{' '}
+              <span className="text-black/80">{getBsiLabel(bsi)}</span>.
+            </p>
           </div>
+        )}
+      </div>
+    </SectionCard>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Section 02 — Three Territories
+// ---------------------------------------------------------------------------
+
+function TerritoriesSection({
+  territoryScores,
+}: {
+  territoryScores: TerritoryScore[]
+}) {
+  return (
+    <SectionCard number={2} title="Three Territories">
+      <TerritoryBars
+        territories={territoryScores.map((ts) => ({
+          territory: ts.territory,
+          score: Math.round(ts.score),
+          verbalLabel: ts.verbalLabel,
+        }))}
+      />
+
+      {/* Arc narratives */}
+      <div className="mt-6 grid md:grid-cols-3 gap-4">
+        {territoryScores.map((ts) => {
+          const config = TERRITORY_CONFIG[ts.territory]
+          return (
+            <div
+              key={ts.territory}
+              className="text-center py-3 px-4 rounded-lg bg-[#F7F3ED]"
+            >
+              <p className="text-xs font-medium text-black/40 mb-1">
+                {config.displayLabel}
+              </p>
+              <p
+                className="text-sm font-medium"
+                style={{ color: TERRITORY_COLORS[ts.territory] }}
+              >
+                {config.arcDescription}
+              </p>
+            </div>
+          )
+        })}
+      </div>
+    </SectionCard>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Section 03 — 15 Dimensions
+// ---------------------------------------------------------------------------
+
+function DimensionsSection({
+  dimensionScores,
+}: {
+  dimensionScores: DimensionScore[]
+}) {
+  return (
+    <SectionCard number={3} title="15 Dimensions">
+      <p className="text-black/60 mb-6 text-sm">
+        All 15 leadership dimensions, grouped by territory and color-coded by
+        your score range.
+      </p>
+      <DimensionHeatmap dimensions={buildHeatmapData(dimensionScores)} />
+    </SectionCard>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Section 04 — Priority Dimensions (Mirror / Meaning / Move)
+// ---------------------------------------------------------------------------
+
+function PriorityDimensionsSection({
+  priorityDimensions,
+  dimensionScores,
+}: {
+  priorityDimensions: DimensionId[]
+  dimensionScores: DimensionScore[]
+}) {
+  return (
+    <SectionCard number={4} title="Priority Dimensions">
+      <p className="text-black/60 mb-6 text-sm">
+        Your 3-5 most impactful development areas. Mirror the gap, understand
+        the meaning, then move.
+      </p>
+
+      <div className="space-y-4">
+        {priorityDimensions.map((dimId) => {
+          const def = getDimension(dimId)
+          const score = dimensionScores.find((ds) => ds.dimensionId === dimId)
+          if (!score) return null
+
+          const percentage = Math.round(score.percentage)
+          const frameworks = getFrameworkPrescription(dimId, score.percentage)
+
+          return (
+            <div
+              key={dimId}
+              className="border border-black/10 rounded-lg p-6 hover:border-black/20 transition-colors"
+            >
+              {/* Header row */}
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <p className="text-xs font-medium text-black/40 mb-0.5">
+                    {def.id} &middot;{' '}
+                    {TERRITORY_CONFIG[def.territory].displayLabel}
+                  </p>
+                  <h3 className="text-lg font-semibold text-black">
+                    {def.name}
+                  </h3>
+                </div>
+                <div className="text-right shrink-0 ml-4">
+                  <span className="text-2xl font-bold text-black">
+                    {percentage}%
+                  </span>
+                  <p className="text-xs text-black/50 mt-0.5">
+                    {score.verbalLabel}
+                  </p>
+                </div>
+              </div>
+
+              {/* Score bar */}
+              <div className="h-2 w-full rounded-full bg-[#F7F3ED] overflow-hidden mb-4">
+                <div
+                  className="h-full rounded-full transition-all duration-500 ease-out"
+                  style={{
+                    width: `${percentage}%`,
+                    backgroundColor: TERRITORY_COLORS[def.territory],
+                  }}
+                />
+              </div>
+
+              {/* What this means */}
+              <p className="text-sm text-black/70 mb-4 leading-relaxed">
+                {def.coreQuestion}
+              </p>
+
+              {/* Framework prescriptions */}
+              {frameworks.length > 0 && (
+                <div>
+                  <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-2">
+                    Recommended Frameworks
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {frameworks.map((fw) => (
+                      <span
+                        key={fw}
+                        className="inline-block px-3 py-1.5 text-xs font-medium text-black bg-[#F7F3ED] rounded-full"
+                      >
+                        {fw}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </SectionCard>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Section 05 — Archetypes
+// ---------------------------------------------------------------------------
+
+function ArchetypesSection({
+  archetypes,
+}: {
+  archetypes: ArchetypeMatch[]
+}) {
+  const hasMatches = archetypes.length > 0
+
+  return (
+    <SectionCard number={5} title="Archetypes">
+      {hasMatches ? (
+        <>
+          <p className="text-black/60 mb-6 text-sm">
+            Your leadership profile matches the following pattern
+            {archetypes.length > 1 ? 's' : ''}.
+          </p>
+          <div className="grid md:grid-cols-3 gap-4">
+            {archetypes.map((arch) => (
+              <ArchetypeBadge
+                key={arch.name}
+                name={arch.name}
+                matchType={arch.matchType}
+                signatureStrength={arch.signatureStrength}
+                sjiConfirmed={arch.sjiConfirmed}
+                displayRank={arch.displayRank}
+              />
+            ))}
+          </div>
+        </>
+      ) : (
+        <div className="text-center py-8">
+          <p className="text-black/60 text-sm max-w-md mx-auto leading-relaxed">
+            Your profile does not match a single dominant pattern. This is not
+            unusual &mdash; focus on your priority dimensions for the most
+            targeted development path.
+          </p>
+        </div>
+      )}
+    </SectionCard>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Section 06 — Blind Spots
+// ---------------------------------------------------------------------------
+
+function BlindSpotsSection({
+  mirrorGaps,
+  hasMirrorData,
+}: {
+  mirrorGaps?: MirrorGap[]
+  hasMirrorData: boolean
+}) {
+  return (
+    <SectionCard number={6} title="Blind Spots">
+      {hasMirrorData && mirrorGaps && mirrorGaps.length > 0 ? (
+        <>
+          <p className="text-black/60 mb-6 text-sm">
+            How others see your leadership compared to how you see yourself.
+            Larger gaps signal blind spots worth exploring.
+          </p>
+          <MirrorDotPlot gaps={mirrorGaps.map(gap => ({
+            dimensionId: gap.dimensionId,
+            dimensionName: getDimension(gap.dimensionId).name,
+            ceoPct: gap.ceoPct,
+            raterPct: gap.raterPct,
+            gapLabel: gap.gapLabel,
+            severity: gap.severity,
+          }))} />
+        </>
+      ) : (
+        <div className="text-center py-8">
+          <p className="text-black/60 text-sm max-w-md mx-auto leading-relaxed mb-6">
+            Blind spot analysis requires a Mirror Check &mdash; a brief survey
+            completed by someone who works closely with you.
+          </p>
           <a
             href="/dashboard"
-            className="text-sm font-medium text-black/60 hover:text-black transition-colors"
+            className="inline-block bg-black text-white px-8 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
           >
-            Back to Dashboard
+            Invite a Trusted Colleague
           </a>
+        </div>
+      )}
+    </SectionCard>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Section 07 — Development Roadmap
+// ---------------------------------------------------------------------------
+
+function RoadmapSection({
+  priorityDimensions,
+  dimensionScores,
+}: {
+  priorityDimensions: DimensionId[]
+  dimensionScores: DimensionScore[]
+}) {
+  const entries = buildRoadmapEntries(priorityDimensions, dimensionScores)
+
+  return (
+    <SectionCard number={7} title="Development Roadmap">
+      <p className="text-black/60 mb-6 text-sm">
+        Your 90-day plan based on priority dimensions and their framework
+        prescriptions.
+      </p>
+      <RoadmapTimeline priorityDimensions={entries} />
+    </SectionCard>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Section 08 — Closing
+// ---------------------------------------------------------------------------
+
+function ClosingSection() {
+  return (
+    <SectionCard number={8} title="What Comes Next">
+      <div className="text-center py-4">
+        <p className="text-lg text-black/70 max-w-lg mx-auto leading-relaxed mb-6">
+          Leadership growth is not a destination &mdash; it is a practice.
+          Return weekly to track your progress.
+        </p>
+        <a
+          href="/dashboard"
+          className="inline-block bg-black text-white px-8 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
+        >
+          Go to Dashboard
+        </a>
+      </div>
+    </SectionCard>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Loading State
+// ---------------------------------------------------------------------------
+
+function LoadingSkeleton() {
+  return (
+    <div className="min-h-screen bg-[#F7F3ED]">
+      <div className="max-w-4xl mx-auto px-6 py-16">
+        <div className="space-y-6">
+          {/* Header skeleton */}
+          <div className="text-center mb-12">
+            <div className="h-8 w-48 bg-black/5 rounded mx-auto mb-3 animate-pulse" />
+            <div className="h-4 w-72 bg-black/5 rounded mx-auto animate-pulse" />
+          </div>
+
+          {/* Card skeletons */}
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-lg p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
+            >
+              <div className="h-4 w-8 bg-black/5 rounded mb-3 animate-pulse" />
+              <div className="h-6 w-40 bg-black/5 rounded mb-6 animate-pulse" />
+              <div className="space-y-3">
+                <div className="h-3 w-full bg-black/5 rounded animate-pulse" />
+                <div className="h-3 w-4/5 bg-black/5 rounded animate-pulse" />
+                <div className="h-3 w-3/5 bg-black/5 rounded animate-pulse" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Error State
+// ---------------------------------------------------------------------------
+
+function ErrorState({ message }: { message: string }) {
+  return (
+    <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6">
+      <div className="bg-white rounded-lg p-10 max-w-md w-full text-center shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <h2 className="text-xl font-bold text-black mb-3">
+          Unable to Load Results
+        </h2>
+        <p className="text-sm text-black/60 mb-6 leading-relaxed">{message}</p>
+        <a
+          href="/dashboard"
+          className="inline-block bg-black text-white px-8 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
+        >
+          Return to Dashboard
+        </a>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Main Page Component
+// ---------------------------------------------------------------------------
+
+export default function ResultsPage() {
+  const router = useRouter()
+  const [results, setResults] = useState<FullResults | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function loadResults() {
+      try {
+        // Check authentication
+        const supabase = createClient()
+        const {
+          data: { session },
+        } = await supabase.auth.getSession()
+
+        if (!session) {
+          router.replace('/auth')
+          return
+        }
+
+        // Fetch results from API
+        const response = await fetch('/api/v4/results')
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            router.replace('/auth')
+            return
+          }
+          if (response.status === 404) {
+            setError(
+              'No assessment results found. Complete the assessment first to view your results.'
+            )
+            setLoading(false)
+            return
+          }
+          throw new Error(`Failed to load results (${response.status})`)
+        }
+
+        const data = await response.json()
+        setResults(data.results)
+      } catch (err) {
+        console.error('Error loading results:', err)
+        setError(
+          'Something went wrong while loading your results. Please try again.'
+        )
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadResults()
+  }, [router])
+
+  // Loading
+  if (loading) {
+    return <LoadingSkeleton />
+  }
+
+  // Error
+  if (error || !results) {
+    return (
+      <ErrorState
+        message={
+          error ??
+          'No assessment results found. Complete the assessment first to view your results.'
+        }
+      />
+    )
+  }
+
+  // Derived data
+  const clmi = results.session.clmi ?? 0
+  const hasMirrorData =
+    results.mirrorGaps != null && results.mirrorGaps.length > 0
+  const bsi = results.bsi
+
+  return (
+    <div className="min-h-screen bg-[#F7F3ED] print:bg-white">
+      {/* Page header */}
+      <header className="pt-12 pb-6 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-xs font-medium text-black/40 uppercase tracking-wider mb-2">
+            CEO Lab Assessment
+          </p>
+          <h1 className="text-3xl md:text-4xl font-bold text-black">
+            Your Leadership Report
+          </h1>
         </div>
       </header>
 
-      <div className="page">
-        {/* 1. Hero / Leadership Scoreboard */}
-        <header className="hero">
-          <div className="hero__left">
-            <p className="pill">Konstantin Method • 100Q Baseline</p>
-            <h1>Leadership Scoreboard</h1>
-            <p className="subtitle">A comprehensive system for reducing leadership blind spots across three domains. This dashboard transforms 100 standardized questions into your personalized leadership map.</p>
-            <div className="hero__meta">
-              <div>
-                <div className="meta__label">Participant</div>
-                <div className="meta__value">{user?.user_metadata?.full_name || user?.email}</div>
-              </div>
-              <div>
-                <div className="meta__label">Completed</div>
-                <div className="meta__value">{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
-              </div>
-              <div>
-                <div className="meta__label">Confidence</div>
-                <div className="meta__value">High • 100/100</div>
-              </div>
-            </div>
-          </div>
-          <div className="hero__right">
-            <div className="score-card">
-              <div className="score-card__label">Overall Leadership Score</div>
-              <div className="score-card__value">{overallScore}</div>
-              <div className="score-card__sub">Calculated across {subDimensionScores.length} leadership dimensions</div>
-            </div>
-          </div>
-        </header>
+      {/* Report sections */}
+      <main className="max-w-4xl mx-auto px-6 pb-20 space-y-6">
+        {/* 01 — The Headline */}
+        <HeadlineSection
+          clmi={clmi}
+          bsi={bsi}
+          hasMirrorData={hasMirrorData}
+        />
 
-        {/* 2. The Konstantin Method Map */}
-        <section className="section">
-          <div className="section__header">
-            <h2>The Konstantin Method Map</h2>
-            <p>The 100 questions are anchored to 18 sub-dimensions across three domains. Each domain compounds the next.</p>
-          </div>
-          <div className="domain-grid">
-            <div className="domain-card">
-              <div className="domain-card__label">Leading Yourself</div>
-              <h3>Clarity before Influence</h3>
-              <p>Drivers, reactivity, energy, and self-awareness that shape every decision you make.</p>
-              <ul className="domain-card__list">
-                <li>5 Drivers</li>
-                <li>Leading Above the Line</li>
-                <li>Purpose & Direction</li>
-                <li>4 Ways of Listening</li>
-              </ul>
-            </div>
-            <div className="domain-card">
-              <div className="domain-card__label">Leading Teams</div>
-              <h3>Trust before Performance</h3>
-              <p>Psychological safety, accountability, and communication rhythm define your team's ceiling.</p>
-              <ul className="domain-card__list">
-                <li>Trust Formula</li>
-                <li>Drama Triangle</li>
-                <li>5 Dysfunctions</li>
-                <li>Nonviolent Communication</li>
-              </ul>
-            </div>
-            <div className="domain-card">
-              <div className="domain-card__label">Leading Organizations</div>
-              <h3>System before Scale</h3>
-              <p>Strategy, culture, and structure that must cohere as complexity increases.</p>
-              <ul className="domain-card__list">
-                <li>CEO Test</li>
-                <li>Strategy Traps</li>
-                <li>Culture Diagnostics</li>
-                <li>Org Quadrants</li>
-              </ul>
-            </div>
-          </div>
-        </section>
+        {/* 02 — Three Territories */}
+        <TerritoriesSection territoryScores={results.territoryScores} />
 
-        {/* 3. Territory Scores */}
-        <section className="section">
-          <div className="section__header">
-            <h2>Territory Scores</h2>
-            <p>Scores across the three domains, normalized to 100.</p>
-          </div>
-          <div className="territory-grid">
-            {territoryScores.map((territory, index) => (
-              <div key={territory.territory} className="territory-card">
-                <div className="territory-card__top">
-                  <div>
-                    <div className="territory-card__label">{territory.territory}</div>
-                    <div className="territory-card__score">{territory.score}</div>
-                  </div>
-                  <div className={`badge ${index === 0 ? 'blue' : index === 1 ? 'green' : 'orange'}`}>
-                    {index === 0 ? 'Self' : index === 1 ? 'Teams' : 'Org'}
-                  </div>
-                </div>
-                <div className="bar">
-                  <div className="bar__fill" style={{ width: `${territory.score}%` }}></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* 03 — 15 Dimensions */}
+        <DimensionsSection dimensionScores={results.dimensionScores} />
 
-        {/* 3.5. Baseline vs Latest Comparison (if multiple baselines exist) */}
-        {hasMultipleBaselines && (
-          <section className="section section--alt">
-            <div className="section__header">
-              <h2>Baseline vs Latest Comparison</h2>
-              <p>Track your growth across quarterly baselines. Positive changes in green.</p>
-              <button
-                onClick={() => setShowComparison(!showComparison)}
-                className="px-4 py-2 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors mt-4"
-              >
-                {showComparison ? 'Hide Comparison' : 'Show Comparison'}
-              </button>
-            </div>
-            {showComparison && baselineScores.length > 0 && (
-              <div className="metrics-grid">
-                {subDimensionScores
-                  .sort((a, b) => a.sub_dimension.localeCompare(b.sub_dimension))
-                  .map((latestDim) => {
-                    const baselineDim = baselineScores.find(b => b.sub_dimension === latestDim.sub_dimension)
-                    const change = baselineDim ? Math.round(latestDim.percentage - baselineDim.percentage) : 0
-                    const hasImproved = change > 0
+        {/* 04 — Priority Dimensions */}
+        <PriorityDimensionsSection
+          priorityDimensions={results.priorityDimensions}
+          dimensionScores={results.dimensionScores}
+        />
 
-                    return (
-                      <div key={latestDim.sub_dimension} className="metric" style={{ border: hasImproved ? '2px solid #22c55e' : '2px solid #e5e7eb' }}>
-                        <div className="metric__label" style={{ marginBottom: '8px' }}>{latestDim.sub_dimension}</div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <div>
-                            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Baseline</div>
-                            <div className="metric__value" style={{ fontSize: '24px' }}>{baselineDim ? Math.round(baselineDim.percentage) : '—'}</div>
-                          </div>
-                          <div style={{ fontSize: '20px', color: hasImproved ? '#22c55e' : change < 0 ? '#ef4444' : '#6b7280' }}>
-                            {change > 0 ? `+${change}` : change}
-                          </div>
-                          <div>
-                            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Latest</div>
-                            <div className="metric__value" style={{ fontSize: '24px' }}>{Math.round(latestDim.percentage)}</div>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })}
-              </div>
-            )}
-          </section>
-        )}
+        {/* 05 — Archetypes */}
+        <ArchetypesSection archetypes={results.archetypes} />
 
-        {/* 4. Sub-Dimension Heatmap */}
-        <section className="section section--alt">
-          <div className="section__header">
-            <h2>Sub-Dimension Heatmap</h2>
-            <p>{subDimensionScores.length} sub-dimensions scored from 0–100. Click a tile for details.</p>
-          </div>
-          <div className="heatmap">
-            {subDimensionScores.map((dim) => (
-              <div
-                key={dim.sub_dimension}
-                className="heatmap-tile"
-                data-score-range={getScoreRange(dim.percentage)}
-                onClick={() => openModal(dim.sub_dimension, Math.round(dim.percentage))}
-              >
-                <div className="heatmap-tile__score">{Math.round(dim.percentage)}</div>
-                <div className="heatmap-tile__label">{dim.sub_dimension}</div>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* 06 — Blind Spots */}
+        <BlindSpotsSection
+          mirrorGaps={results.mirrorGaps}
+          hasMirrorData={hasMirrorData}
+        />
 
-        {/* 5. Insights You Didn't Know */}
-        <section className="section">
-          <div className="section__header">
-            <h2>Insights You Didn't Know</h2>
-            <p>Personalized interpretations derived from score interplay.</p>
-          </div>
-          <div className="insight-grid">
-            <div className="insight-card">
-              <div className="insight-card__title">Your highest and lowest scores reveal your growth edge</div>
-              <p>
-                Your strongest dimension is {subDimensionScores.reduce((max, dim) => dim.percentage > max.percentage ? dim : max).sub_dimension} ({Math.round(subDimensionScores.reduce((max, dim) => dim.percentage > max.percentage ? dim : max).percentage)}), while your biggest opportunity is {subDimensionScores.reduce((min, dim) => dim.percentage < min.percentage ? dim : min).sub_dimension} ({Math.round(subDimensionScores.reduce((min, dim) => dim.percentage < min.percentage ? dim : min).percentage)}). Closing this gap unlocks your next level of leadership.
-              </p>
-            </div>
-          </div>
-        </section>
+        {/* 07 — Development Roadmap */}
+        <RoadmapSection
+          priorityDimensions={results.priorityDimensions}
+          dimensionScores={results.dimensionScores}
+        />
 
-        {/* 6. Metrics Library */}
-        <section className="section section--alt">
-          <div className="section__header">
-            <h2>Metrics Library</h2>
-            <p>All {subDimensionScores.length} dimensions at a glance.</p>
-          </div>
-          <div className="metrics-grid">
-            {subDimensionScores
-              .sort((a, b) => b.percentage - a.percentage)
-              .map((dim) => (
-                <div key={dim.sub_dimension} className="metric">
-                  <div className="metric__value">{Math.round(dim.percentage)}</div>
-                  <div className="metric__label">{dim.sub_dimension}</div>
-                </div>
-              ))}
-          </div>
-        </section>
+        {/* 08 — Closing */}
+        <ClosingSection />
+      </main>
 
-        {/* 7. Next Steps */}
-        <section className="section">
-          <div className="section__header">
-            <h2>Next Steps</h2>
-            <p>Focus on your lowest-scoring dimensions for maximum impact.</p>
-          </div>
-          <div className="action-grid">
-            {subDimensionScores
-              .sort((a, b) => a.percentage - b.percentage)
-              .slice(0, 3)
-              .map((dim) => (
-                <div key={dim.sub_dimension} className="action-card">
-                  <div className="action-card__title">Improve {dim.sub_dimension}</div>
-                  <p>Current score: {Math.round(dim.percentage)}. This is one of your key growth opportunities.</p>
-                  <div className="action-card__meta">Focus area for maximum impact</div>
-                </div>
-              ))}
-          </div>
-        </section>
-
-        <footer className="footer">
-          <div>Konstantin Method — Leadership is measurable.</div>
-          <div className="footer__small">Generated from 100-question baseline assessment • CEO Lab</div>
-        </footer>
-      </div>
-
-      {/* Modal */}
-      {modalOpen && modalData && (
-        <div className="modal active" onClick={closeModal}>
-          <div className="modal__content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal__close" onClick={closeModal}>Close</button>
-            <h3>{modalData.dimension} ({modalData.score})</h3>
-            <p style={{ marginTop: '16px', color: 'var(--text-secondary)' }}>
-              This dimension measures a critical aspect of your leadership. Your score of {modalData.score} provides insight into your current capability in this area.
-            </p>
-            <div style={{ background: 'rgba(127, 171, 200, 0.1)', padding: '16px', borderRadius: '12px', marginTop: '16px' }}>
-              <strong style={{ display: 'block', marginBottom: '8px' }}>Your score vs typical range:</strong>
-              <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
-                You: <strong>{modalData.score}</strong> | Typical range: <strong>60-75</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Print styles (inline for portability) */}
+      <style jsx global>{`
+        @media print {
+          body {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+          }
+          header,
+          main {
+            max-width: 100% !important;
+          }
+          section {
+            break-inside: avoid;
+            page-break-inside: avoid;
+          }
+        }
+      `}</style>
     </div>
   )
 }

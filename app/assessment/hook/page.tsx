@@ -1,305 +1,471 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { hookQuestions } from '@/lib/hook-questions'
-import { HookAnswer } from '@/types/assessment'
-import { supabase } from '@/lib/supabase'
-import { createClient } from '@/lib/supabase-browser'
+import { useState, useEffect, useCallback } from 'react'
+import { hookItems } from '@/lib/hook-questions'
+import { getDimension } from '@/lib/constants'
+import type { DimensionId, Territory } from '@/types/assessment'
 
-export default function Assessment() {
-  const router = useRouter()
-  const [currentQuestion, setCurrentQuestion] = useState(0)
-  const [answers, setAnswers] = useState<HookAnswer[]>([])
-  const [selectedValue, setSelectedValue] = useState<number | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [alreadyCompleted, setAlreadyCompleted] = useState(false)
-  const [userId, setUserId] = useState<string | null>(null)
+// ─── Territory display config ────────────────────────────────────────
 
+const TERRITORY_DISPLAY: Record<Territory, { label: string; color: string }> = {
+  leading_yourself: { label: 'Leading Yourself', color: '#7FABC8' },
+  leading_teams: { label: 'Leading Teams', color: '#A6BEA4' },
+  leading_organizations: { label: 'Leading Organizations', color: '#E08F6A' },
+}
+
+// ─── Types ───────────────────────────────────────────────────────────
+
+type Phase = 'intro' | 'questions' | 'submitting' | 'results'
+
+interface ResponseData {
+  value: number
+  responseTimeMs: number
+}
+
+interface HookResults {
+  lyScore: number
+  ltScore: number
+  loScore: number
+  sharpestDimension: DimensionId
+}
+
+// ─── Component ───────────────────────────────────────────────────────
+
+export default function HookAssessmentPage() {
+  const [phase, setPhase] = useState<Phase>('intro')
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [responses, setResponses] = useState<Map<string, ResponseData>>(new Map())
+  const [displayedAt, setDisplayedAt] = useState<number>(Date.now())
+  const [submitting, setSubmitting] = useState(false)
+  const [results, setResults] = useState<HookResults | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  // Track when a new question is shown
   useEffect(() => {
-    const checkCompletion = async () => {
-      const supabase = createClient()
-      const { data: { session } } = await supabase.auth.getSession()
-
-      if (session?.user) {
-        setUserId(session.user.id)
-
-        // Check if user has completed this assessment
-        const { data: profile } = await supabase
-          .from('user_profiles')
-          .select('hook_completed')
-          .eq('id', session.user.id)
-          .single()
-
-        if (profile?.hook_completed) {
-          setAlreadyCompleted(true)
-        }
-      }
-
-      setLoading(false)
+    if (phase === 'questions') {
+      setDisplayedAt(Date.now())
     }
+  }, [currentIndex, phase])
 
-    checkCompletion()
+  // Current item
+  const item = hookItems[currentIndex]
+  const totalItems = hookItems.length
+  const currentResponse = item ? responses.get(item.id) : undefined
+  const hasAnswer = currentResponse !== undefined
+  const isLastItem = currentIndex === totalItems - 1
+
+  // Count completed items
+  const completedCount = responses.size
+
+  // ─── Handlers ────────────────────────────────────────────────────
+
+  const handleStart = useCallback(() => {
+    setPhase('questions')
+    setDisplayedAt(Date.now())
   }, [])
 
-  const question = hookQuestions[currentQuestion]
-  const isLastQuestion = currentQuestion === hookQuestions.length - 1
-  const hasAnswer = selectedValue !== null
+  const handleSelectOption = useCallback((value: number) => {
+    const now = Date.now()
+    const responseTimeMs = now - displayedAt
 
-  const handleSelectOption = (value: number) => {
-    setSelectedValue(value)
-  }
+    setResponses((prev: Map<string, ResponseData>) => {
+      const next = new Map(prev)
+      next.set(item.id, { value, responseTimeMs })
+      return next
+    })
+  }, [displayedAt, item])
 
-  const handleNext = () => {
-    if (selectedValue === null) return
+  const handleNext = useCallback(async () => {
+    if (!hasAnswer) return
 
-    // Save answer
-    const newAnswers = [
-      ...answers.filter(a => a.questionId !== question.id),
-      { questionId: question.id, value: selectedValue }
-    ]
-    setAnswers(newAnswers)
-
-    if (isLastQuestion) {
-      // Submit and go to results
-      handleSubmit(newAnswers)
+    if (isLastItem) {
+      // Submit
+      await handleSubmit()
     } else {
-      // Go to next question
-      setCurrentQuestion(prev => prev + 1)
-      // Check if next question already has an answer
-      const nextQuestion = hookQuestions[currentQuestion + 1]
-      const existingAnswer = newAnswers.find(a => a.questionId === nextQuestion.id)
-      setSelectedValue(existingAnswer?.value ?? null)
+      setCurrentIndex((prev: number) => prev + 1)
     }
-  }
+  }, [hasAnswer, isLastItem, currentIndex])
 
-  const handleBack = () => {
-    if (currentQuestion === 0) return
+  const handleBack = useCallback(() => {
+    if (currentIndex === 0) return
+    setCurrentIndex((prev: number) => prev - 1)
+  }, [currentIndex])
 
-    setCurrentQuestion(prev => prev - 1)
-    const prevQuestion = hookQuestions[currentQuestion - 1]
-    const existingAnswer = answers.find(a => a.questionId === prevQuestion.id)
-    setSelectedValue(existingAnswer?.value ?? null)
-  }
+  const handleSubmit = useCallback(async () => {
+    setPhase('submitting')
+    setSubmitting(true)
+    setError(null)
 
-  const handleRestart = async () => {
-    if (!userId) return
-
-    const supabase = createClient()
-
-    // Update user profile to mark as not completed
-    await supabase
-      .from('user_profiles')
-      .update({ hook_completed: false })
-      .eq('id', userId)
-
-    setAlreadyCompleted(false)
-    setCurrentQuestion(0)
-    setAnswers([])
-    setSelectedValue(null)
-  }
-
-  const handleSubmit = async (finalAnswers: HookAnswer[]) => {
-    // Calculate scores
-    const scoreYourself = finalAnswers
-      .filter(a => hookQuestions.find(q => q.id === a.questionId)?.territory === 'yourself')
-      .reduce((sum, a) => sum + a.value, 0)
-
-    const scoreTeams = finalAnswers
-      .filter(a => hookQuestions.find(q => q.id === a.questionId)?.territory === 'teams')
-      .reduce((sum, a) => sum + a.value, 0)
-
-    const scoreOrganizations = finalAnswers
-      .filter(a => hookQuestions.find(q => q.id === a.questionId)?.territory === 'organizations')
-      .reduce((sum, a) => sum + a.value, 0)
-
-    const totalScore = scoreYourself + scoreTeams + scoreOrganizations
-
-    // Save to Supabase
     try {
-      const supabase = createClient()
-
-      const { data: assessment, error: assessmentError } = await supabase
-        .from('hook_assessments')
-        .insert({
-          user_id: userId,
-          score_yourself: scoreYourself,
-          score_teams: scoreTeams,
-          score_organizations: scoreOrganizations,
-          total_score: totalScore,
-          completed_at: new Date().toISOString()
-        })
-        .select()
-        .single()
-
-      if (assessmentError) throw assessmentError
-
-      // Save individual responses
-      const responses = finalAnswers.map(answer => ({
-        assessment_id: assessment.id,
-        question_number: answer.questionId,
-        answer_value: answer.value
+      const responsePayload = [...responses.entries()].map(([itemId, data]) => ({
+        itemId,
+        value: data.value,
       }))
 
-      const { error: responsesError } = await supabase
-        .from('hook_responses')
-        .insert(responses)
-
-      if (responsesError) throw responsesError
-
-      // Mark assessment as completed in user profile
-      await supabase
-        .from('user_profiles')
-        .update({ hook_completed: true })
-        .eq('id', userId)
-
-      // Navigate to results with scores
-      const params = new URLSearchParams({
-        yourself: scoreYourself.toString(),
-        teams: scoreTeams.toString(),
-        organizations: scoreOrganizations.toString(),
-        total: totalScore.toString()
+      const res = await fetch('/api/v4/hook', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ responses: responsePayload }),
       })
-      router.push(`/assessment/results?${params.toString()}`)
 
-    } catch (error) {
-      console.error('Error saving assessment:', error)
-      // Still navigate to results even if save fails
-      const params = new URLSearchParams({
-        yourself: scoreYourself.toString(),
-        teams: scoreTeams.toString(),
-        organizations: scoreOrganizations.toString(),
-        total: totalScore.toString()
+      const json = await res.json()
+
+      if (!res.ok || !json.success) {
+        throw new Error(json.error || 'Failed to submit assessment')
+      }
+
+      setResults({
+        lyScore: json.scores.lyScore,
+        ltScore: json.scores.ltScore,
+        loScore: json.scores.loScore,
+        sharpestDimension: json.scores.sharpestDimension,
       })
-      router.push(`/assessment/results?${params.toString()}`)
+      setPhase('results')
+    } catch (err: any) {
+      console.error('Hook submission error:', err)
+      setError(err.message || 'Something went wrong. Please try again.')
+      setPhase('questions')
+    } finally {
+      setSubmitting(false)
     }
-  }
+  }, [responses])
 
-  if (loading) {
+  // ─── Intro Screen ────────────────────────────────────────────────
+
+  if (phase === 'intro') {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-gray-600">Loading...</div>
+      <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6">
+        <div className="max-w-xl w-full text-center">
+          <div className="mb-8">
+            <p className="text-sm font-semibold tracking-widest uppercase text-black/40 mb-4">
+              Free Assessment
+            </p>
+            <h1 className="text-4xl md:text-5xl font-bold text-black tracking-tight mb-4">
+              CEO Leadership Snapshot
+            </h1>
+            <p className="text-lg text-black/60 leading-relaxed max-w-md mx-auto">
+              10 questions across three territories of leadership.
+              Get an instant read on where you stand as a CEO.
+            </p>
+          </div>
+
+          <div className="bg-white rounded-lg p-6 mb-8 border border-black/10">
+            <div className="flex items-center justify-between text-sm text-black/50">
+              <span>10 questions</span>
+              <span className="w-1 h-1 rounded-full bg-black/20" />
+              <span>About 5 minutes</span>
+              <span className="w-1 h-1 rounded-full bg-black/20" />
+              <span>No account needed</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center gap-4 mb-12">
+            <div className="flex gap-3">
+              {(['leading_yourself', 'leading_teams', 'leading_organizations'] as Territory[]).map(t => (
+                <span
+                  key={t}
+                  className="inline-flex items-center gap-1.5 text-xs font-medium text-black/60"
+                >
+                  <span
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: TERRITORY_DISPLAY[t].color }}
+                  />
+                  {TERRITORY_DISPLAY[t].label}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <button
+            onClick={handleStart}
+            className="bg-black text-white px-10 py-4 rounded-lg text-lg font-semibold hover:bg-black/90 transition-colors"
+          >
+            Start Assessment
+          </button>
+        </div>
       </div>
     )
   }
 
-  if (alreadyCompleted) {
-    return (
-      <div className="min-h-screen bg-white">
-        <header className="border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 py-4">
-            <h1 className="text-2xl font-bold text-gray-900">CEO Lab</h1>
-          </div>
-        </header>
+  // ─── Submitting Screen ───────────────────────────────────────────
 
-        <main className="max-w-4xl mx-auto px-4 py-12">
-          <div className="text-center">
-            <div className="mb-6">
-              <span className="inline-flex items-center px-4 py-2 bg-green-100 text-green-800 rounded-lg font-semibold">
-                ✓ Assessment Completed
+  if (phase === 'submitting') {
+    return (
+      <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6">
+        <div className="text-center">
+          <div className="mb-4">
+            <div className="w-8 h-8 border-2 border-black/20 border-t-black rounded-full animate-spin mx-auto" />
+          </div>
+          <p className="text-black/60 text-lg">Calculating your results...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // ─── Results Screen ──────────────────────────────────────────────
+
+  if (phase === 'results' && results) {
+    const sharpestDim = getDimension(results.sharpestDimension)
+    const sharpestTerritory = TERRITORY_DISPLAY[sharpestDim.territory]
+
+    const territories = [
+      {
+        key: 'leading_yourself' as Territory,
+        label: 'Leading Yourself',
+        score: results.lyScore,
+        color: '#7FABC8',
+      },
+      {
+        key: 'leading_teams' as Territory,
+        label: 'Leading Teams',
+        score: results.ltScore,
+        color: '#A6BEA4',
+      },
+      {
+        key: 'leading_organizations' as Territory,
+        label: 'Leading Organizations',
+        score: results.loScore,
+        color: '#E08F6A',
+      },
+    ]
+
+    const overallScore = Math.round((results.lyScore + results.ltScore + results.loScore) / 3)
+
+    return (
+      <div className="min-h-screen bg-[#F7F3ED] px-6 py-12">
+        <div className="max-w-2xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <p className="text-sm font-semibold tracking-widest uppercase text-black/40 mb-3">
+              Your Results
+            </p>
+            <h1 className="text-4xl md:text-5xl font-bold text-black tracking-tight mb-3">
+              Leadership Snapshot
+            </h1>
+            <p className="text-black/60 text-lg">
+              Here is how you scored across the three territories.
+            </p>
+          </div>
+
+          {/* Overall Score */}
+          <div className="bg-white rounded-lg p-8 border border-black/10 mb-6 text-center">
+            <p className="text-sm text-black/50 mb-2">Overall Score</p>
+            <p className="text-5xl font-bold text-black">{overallScore}%</p>
+          </div>
+
+          {/* Territory Scores */}
+          <div className="bg-white rounded-lg p-8 border border-black/10 mb-6">
+            <div className="space-y-6">
+              {territories.map(t => (
+                <div key={t.key}>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: t.color }}
+                      />
+                      <span className="text-sm font-semibold text-black">{t.label}</span>
+                    </div>
+                    <span className="text-sm font-bold text-black">{Math.round(t.score)}%</span>
+                  </div>
+                  <div className="w-full bg-black/5 rounded-full h-3">
+                    <div
+                      className="h-3 rounded-full transition-all duration-1000 ease-out"
+                      style={{
+                        width: `${Math.max(2, t.score)}%`,
+                        backgroundColor: t.color,
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Sharpest Insight */}
+          <div className="bg-white rounded-lg p-8 border border-black/10 mb-8">
+            <p className="text-sm text-black/50 mb-2">Sharpest Insight</p>
+            <div className="flex items-center gap-2 mb-3">
+              <span
+                className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold text-white"
+                style={{ backgroundColor: sharpestTerritory.color }}
+              >
+                {sharpestTerritory.label}
               </span>
             </div>
-            <h1 className="text-4xl font-bold mb-4 text-gray-900">You've Already Completed This Assessment</h1>
-            <p className="text-xl text-gray-600 mb-12">
-              You can view your results or restart the assessment to update your answers.
+            <h3 className="text-xl font-bold text-black mb-2">{sharpestDim.name}</h3>
+            <p className="text-black/60 leading-relaxed">
+              {sharpestDim.coreQuestion}
             </p>
-
-            <div className="flex gap-4 justify-center">
-              <a
-                href="/assessment/results"
-                className="px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-colors"
-              >
-                View Results
-              </a>
-              <button
-                onClick={handleRestart}
-                className="px-6 py-3 border-2 border-black/20 text-black rounded-lg font-semibold hover:border-black transition-colors"
-              >
-                Restart Test
-              </button>
-              <a
-                href="/dashboard"
-                className="px-6 py-3 border-2 border-black/20 text-black rounded-lg font-semibold hover:border-black transition-colors"
-              >
-                Back to Dashboard
-              </a>
-            </div>
           </div>
-        </main>
+
+          {/* CTA */}
+          <div className="bg-black rounded-lg p-8 text-center">
+            <h3 className="text-2xl font-bold text-white mb-3">
+              Want the full picture?
+            </h3>
+            <p className="text-white/60 mb-6 max-w-md mx-auto">
+              The complete CEO Lab assessment measures 15 dimensions in depth,
+              with personalized frameworks and development recommendations.
+            </p>
+            <a
+              href="/assessment"
+              className="inline-block bg-white text-black px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white/90 transition-colors"
+            >
+              Take Full Assessment
+            </a>
+          </div>
+
+          {/* Retake */}
+          <div className="text-center mt-6">
+            <button
+              onClick={() => {
+                setPhase('intro')
+                setCurrentIndex(0)
+                setResponses(new Map())
+                setResults(null)
+                setError(null)
+              }}
+              className="text-sm text-black/40 hover:text-black/70 transition-colors"
+            >
+              Retake assessment
+            </button>
+          </div>
+        </div>
       </div>
     )
   }
 
+  // ─── Questions Screen ────────────────────────────────────────────
+
+  const territory = TERRITORY_DISPLAY[item.territory]
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#F7F3ED] flex flex-col">
+      {/* Progress Bar */}
+      <div className="w-full bg-black/5 h-1">
+        <div
+          className="h-1 bg-black transition-all duration-300 ease-out"
+          style={{ width: `${(completedCount / totalItems) * 100}%` }}
+        />
+      </div>
+
       {/* Header */}
-      <header className="border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold text-gray-900">CEO Lab</h1>
+      <div className="px-6 pt-6 pb-2">
+        <div className="max-w-2xl mx-auto flex items-center justify-between">
+          <p className="text-sm text-black/40 font-medium">
+            {currentIndex + 1} of {totalItems}
+          </p>
+          <p className="text-sm text-black/40 font-medium">
+            CEO Leadership Snapshot
+          </p>
         </div>
-      </header>
+      </div>
 
-      {/* Assessment Content */}
-      <main className="max-w-4xl mx-auto px-4 py-12">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-gray-900">CEO Leadership Assessment</h1>
-          <p className="text-xl text-gray-600">12 questions across 3 territories of leadership</p>
-        </div>
+      {/* Question Area */}
+      <div className="flex-1 flex items-center justify-center px-6 py-8">
+        <div className="max-w-2xl w-full">
+          {/* Error Banner */}
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800 text-sm">
+              {error}
+            </div>
+          )}
 
-        {/* Question Card */}
-        <div className="bg-white border-2 border-gray-200 rounded-lg p-8 mb-8">
-          <div className="text-sm text-gray-500 uppercase tracking-wide mb-4">
-            Question {currentQuestion + 1} of {hookQuestions.length}
+          {/* Territory Badge */}
+          <div className="mb-6">
+            <span
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold"
+              style={{
+                backgroundColor: `${territory.color}20`,
+                color: territory.color,
+              }}
+            >
+              <span
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ backgroundColor: territory.color }}
+              />
+              {territory.label}
+            </span>
           </div>
 
-          <h2 className="text-2xl font-bold mb-6 text-gray-900">
-            {question.question}
+          {/* Question Text */}
+          <h2 className="text-2xl md:text-3xl font-bold text-black leading-tight mb-8">
+            {item.text}
           </h2>
 
-          {/* Options */}
-          <div className="space-y-3">
-            {question.options.map((option) => (
-              <button
-                key={option.value}
-                onClick={() => handleSelectOption(option.value)}
-                className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
-                  selectedValue === option.value
-                    ? 'border-black bg-gray-50'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
+          {/* Option Cards */}
+          <div className="space-y-3 mb-10">
+            {item.options.map((option) => {
+              const isSelected = currentResponse?.value === option.value
+
+              return (
+                <button
+                  key={option.value}
+                  onClick={() => handleSelectOption(option.value)}
+                  className={`
+                    w-full text-left p-5 rounded-lg border-2 transition-all duration-150
+                    ${isSelected
+                      ? 'border-black bg-black text-white'
+                      : 'border-black/10 bg-white hover:border-black/30 text-black'
+                    }
+                  `}
+                >
+                  <span className={`text-base leading-relaxed ${isSelected ? 'text-white' : 'text-black'}`}>
+                    {option.text}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Navigation */}
+          <div className="flex items-center justify-between">
+            <button
+              onClick={handleBack}
+              disabled={currentIndex === 0}
+              className={`
+                flex items-center gap-1 px-4 py-3 text-sm font-medium transition-colors
+                ${currentIndex === 0
+                  ? 'text-black/20 cursor-not-allowed'
+                  : 'text-black/50 hover:text-black'
+                }
+              `}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                className="flex-shrink-0"
               >
-                <span className="text-gray-900">{option.text}</span>
-              </button>
-            ))}
+                <path
+                  d="M10 12L6 8L10 4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Back
+            </button>
+
+            <button
+              onClick={handleNext}
+              disabled={!hasAnswer || submitting}
+              className={`
+                px-8 py-3 rounded-lg text-base font-semibold transition-all duration-150
+                ${hasAnswer
+                  ? 'bg-black text-white hover:bg-black/90'
+                  : 'bg-black/10 text-black/30 cursor-not-allowed'
+                }
+              `}
+            >
+              {isLastItem ? 'See Results' : 'Next'}
+            </button>
           </div>
         </div>
-
-        {/* Navigation */}
-        <div className="flex items-center justify-between">
-          <button
-            onClick={handleBack}
-            disabled={currentQuestion === 0}
-            className="px-6 py-3 border-2 border-gray-200 rounded-md text-gray-900 hover:border-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
-          >
-            Back
-          </button>
-
-          <div className="text-sm text-gray-500">
-            Territory: {question.territory === 'yourself' ? 'Leading Yourself' :
-                       question.territory === 'teams' ? 'Leading Teams' :
-                       'Leading Organizations'}
-          </div>
-
-          <button
-            onClick={handleNext}
-            disabled={!hasAnswer}
-            className="px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed"
-          >
-            {isLastQuestion ? 'See Results' : 'Next'}
-          </button>
-        </div>
-      </main>
+      </div>
     </div>
   )
 }

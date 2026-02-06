@@ -1,153 +1,133 @@
-import { HookQuestion } from '@/types/assessment'
+// CEO Lab V4 — Hook Assessment Items (free tier)
+// Source: CEO_LAB_ASSESSMENT_V4.md, "HOOK ASSESSMENT" section
+// 10 items covering all 15 dimensions through paired indicators
 
-export const hookQuestions: HookQuestion[] = [
-  // LEADING YOURSELF (4 questions)
+import type { HookItem } from '@/types/assessment'
+
+export const hookItems: HookItem[] = [
+  // ─── Leading Yourself ──────────────────────────────────────────
   {
-    id: 1,
-    territory: 'yourself',
-    subdimension: 'Energy Management',
-    question: 'In the last week, how many hours did you spend on work that only you could do (not meetings, emails, or fire-fighting)?',
+    id: 'H01',
+    dimensions: ['LY.1', 'LY.2'],
+    territory: 'leading_yourself',
+    text: 'In the past week, when something frustrated you at work, how quickly did you recognize what was really going on underneath the frustration?',
     options: [
-      { text: '0-2 hours (I\'m drowning)', value: 1 },
-      { text: '3-5 hours (I\'m surviving)', value: 2 },
-      { text: '6-10 hours (I\'m managing)', value: 3 },
-      { text: '10+ hours (I\'m thriving)', value: 4 }
-    ]
+      { text: 'I didn\'t', value: 1 },
+      { text: 'After the fact', value: 2 },
+      { text: 'Within a few hours', value: 3 },
+      { text: 'Within minutes', value: 4 },
+    ],
   },
   {
-    id: 2,
-    territory: 'yourself',
-    subdimension: 'Self-Awareness',
-    question: 'When was the last time you said "I don\'t know" in front of your team?',
+    id: 'H02',
+    dimensions: ['LY.3'],
+    territory: 'leading_yourself',
+    text: 'In the past week, how often did you feel genuinely present and undistracted during your most important conversations?',
     options: [
-      { text: 'Can\'t remember (I\'m the expert)', value: 1 },
-      { text: 'More than a month ago', value: 2 },
-      { text: 'In the last 2 weeks', value: 3 },
-      { text: 'This week (I model vulnerability)', value: 4 }
-    ]
+      { text: 'Almost never', value: 1 },
+      { text: 'Once or twice', value: 2 },
+      { text: 'About half the time', value: 3 },
+      { text: 'Most of the time', value: 4 },
+    ],
   },
   {
-    id: 3,
-    territory: 'yourself',
-    subdimension: 'Above the Line',
-    question: 'When something goes wrong, what\'s your first internal reaction?',
+    id: 'H03',
+    dimensions: ['LY.4', 'LY.5'],
+    territory: 'leading_yourself',
+    text: 'In the past week, what percentage of your working time was spent on work that only you could do, versus meetings, email, and firefighting?',
     options: [
-      { text: '"Who screwed this up?" (Blame)', value: 1 },
-      { text: '"Why does this always happen?" (Victim)', value: 2 },
-      { text: '"I\'ll fix it myself" (Hero)', value: 3 },
-      { text: '"What did I miss? What can we learn?" (Curiosity)', value: 4 }
-    ]
-  },
-  {
-    id: 4,
-    territory: 'yourself',
-    subdimension: 'Contemplative Practice',
-    question: 'Do you have a daily practice that creates space for stillness (meditation, journaling, walking)?',
-    options: [
-      { text: 'No, I don\'t have time', value: 1 },
-      { text: 'I try, but it\'s sporadic', value: 2 },
-      { text: 'Yes, a few times a week', value: 3 },
-      { text: 'Yes, it\'s non-negotiable', value: 4 }
-    ]
+      { text: 'Less than 20% deep work', value: 1 },
+      { text: '20-40%', value: 2 },
+      { text: '40-60%', value: 3 },
+      { text: 'More than 60%', value: 4 },
+    ],
   },
 
-  // LEADING TEAMS (4 questions)
+  // ─── Leading Teams ─────────────────────────────────────────────
   {
-    id: 5,
-    territory: 'teams',
-    subdimension: 'Psychological Safety',
-    question: 'How long does it take for bad news to reach you?',
+    id: 'H04',
+    dimensions: ['LT.1'],
+    territory: 'leading_teams',
+    text: 'In the past month, how many times did someone on your team bring you bad news proactively (before you had to discover it)?',
     options: [
-      { text: 'I find out weeks later (or never)', value: 1 },
-      { text: 'Days, through back channels', value: 2 },
-      { text: 'Within 24 hours', value: 3 },
-      { text: 'Immediately, people seek me out', value: 4 }
-    ]
+      { text: 'Never', value: 1 },
+      { text: 'Once', value: 2 },
+      { text: 'A few times', value: 3 },
+      { text: 'Regularly', value: 4 },
+    ],
   },
   {
-    id: 6,
-    territory: 'teams',
-    subdimension: 'Multiplier Behavior',
-    question: 'In your last team meeting, did you ask more questions or give more answers?',
+    id: 'H05',
+    dimensions: ['LT.2', 'LT.3'],
+    territory: 'leading_teams',
+    text: 'Think of the last time a team conflict or performance issue needed your attention. How did you handle it?',
     options: [
-      { text: 'All answers (I\'m the expert)', value: 1 },
-      { text: 'Mostly answers, some questions', value: 2 },
-      { text: 'Balanced', value: 3 },
-      { text: 'Mostly questions (I expand their thinking)', value: 4 }
-    ]
+      { text: 'Haven\'t addressed it yet', value: 1 },
+      { text: 'Addressed it but weeks later', value: 2 },
+      { text: 'Addressed it within a few days', value: 3 },
+      { text: 'Addressed it same week with curiosity about root causes', value: 4 },
+    ],
   },
   {
-    id: 7,
-    territory: 'teams',
-    subdimension: 'Trust Formula',
-    question: 'When you commit to something, how often do you deliver on time?',
+    id: 'H06',
+    dimensions: ['LT.4', 'LT.5'],
+    territory: 'leading_teams',
+    text: 'If you left for two weeks with no contact, how would your team function?',
     options: [
-      { text: 'I overcommit and underdeliver', value: 1 },
-      { text: '50-70% of the time', value: 2 },
-      { text: '80-90% of the time', value: 3 },
-      { text: '95%+, or I renegotiate early', value: 4 }
-    ]
-  },
-  {
-    id: 8,
-    territory: 'teams',
-    subdimension: 'Delegation',
-    question: 'What percentage of decisions require your final approval?',
-    options: [
-      { text: '80%+ (I\'m the bottleneck)', value: 1 },
-      { text: '50-70% (I\'m involved in most)', value: 2 },
-      { text: '30-50% (Team owns a lot)', value: 3 },
-      { text: '<20% (Team is empowered)', value: 4 }
-    ]
+      { text: 'Major problems', value: 1 },
+      { text: 'Things would slow significantly', value: 2 },
+      { text: 'Most things would continue', value: 3 },
+      { text: 'Smoothly, with clear systems in place', value: 4 },
+    ],
   },
 
-  // LEADING ORGANIZATIONS (4 questions)
+  // ─── Leading Organizations ─────────────────────────────────────
   {
-    id: 9,
-    territory: 'organizations',
-    subdimension: 'Strategic Clarity',
-    question: 'Can every person on your leadership team explain your strategy in one sentence, and would they all say the same thing?',
+    id: 'H07',
+    dimensions: ['LO.1'],
+    territory: 'leading_organizations',
+    text: 'If you asked five random employees to describe your company\'s strategy in one sentence, how consistent would their answers be?',
     options: [
-      { text: 'No, we\'re not aligned', value: 1 },
-      { text: 'Probably not', value: 2 },
-      { text: 'Most could', value: 3 },
-      { text: 'Yes, we\'re crystal clear', value: 4 }
-    ]
+      { text: 'Very different', value: 1 },
+      { text: 'Somewhat similar', value: 2 },
+      { text: 'Mostly aligned', value: 3 },
+      { text: 'Nearly identical', value: 4 },
+    ],
   },
   {
-    id: 10,
-    territory: 'organizations',
-    subdimension: 'Culture as System',
-    question: 'Is your culture designed intentionally, or did it just happen?',
+    id: 'H08',
+    dimensions: ['LO.2'],
+    territory: 'leading_organizations',
+    text: 'In the past month, did you address a cultural norm violation by a strong performer?',
     options: [
-      { text: 'It just happened (we\'re winging it)', value: 1 },
-      { text: 'We have values on a wall', value: 2 },
-      { text: 'We\'re actively shaping it', value: 3 },
-      { text: 'It\'s designed and enforced', value: 4 }
-    ]
+      { text: 'No, and I tolerated the behavior', value: 1 },
+      { text: 'No, but I planned to', value: 2 },
+      { text: 'Yes, indirectly', value: 3 },
+      { text: 'Yes, directly and promptly', value: 4 },
+    ],
   },
   {
-    id: 11,
-    territory: 'organizations',
-    subdimension: 'Three Transitions',
-    question: 'Are you working IN the business (execution) or ON the business (strategy, structure, culture)?',
+    id: 'H09',
+    dimensions: ['LO.3', 'LO.4'],
+    territory: 'leading_organizations',
+    text: 'How different is your daily work today compared to 12 months ago?',
     options: [
-      { text: '80% IN, 20% ON (I\'m an operator)', value: 1 },
-      { text: '60% IN, 40% ON (I\'m transitioning)', value: 2 },
-      { text: '40% IN, 60% ON (I\'m leading)', value: 3 },
-      { text: '80% ON, 20% IN (I\'m architecting)', value: 4 }
-    ]
+      { text: 'Essentially the same', value: 1 },
+      { text: 'Slightly different', value: 2 },
+      { text: 'Noticeably different', value: 3 },
+      { text: 'Fundamentally different, reflecting company growth', value: 4 },
+    ],
   },
   {
-    id: 12,
-    territory: 'organizations',
-    subdimension: 'Systems Thinking',
-    question: 'When problems repeat, do you see isolated incidents or systemic patterns?',
+    id: 'H10',
+    dimensions: ['LO.5'],
+    territory: 'leading_organizations',
+    text: 'How would you describe your board communication?',
     options: [
-      { text: 'Everything feels random', value: 1 },
-      { text: 'I see incidents', value: 2 },
-      { text: 'I\'m starting to see patterns', value: 3 },
-      { text: 'I diagnose systems', value: 4 }
-    ]
-  }
+      { text: 'Mostly performance updates', value: 1 },
+      { text: 'Honest about wins, careful about challenges', value: 2 },
+      { text: 'Open about most things', value: 3 },
+      { text: 'Radically candid, including my own uncertainties', value: 4 },
+    ],
+  },
 ]
