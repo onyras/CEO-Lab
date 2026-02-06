@@ -121,8 +121,11 @@ export default function BaselineAssessment() {
         return
       }
 
-      const session = await res.json()
-      const { sessionId: sid, stageReached, stageItems: items, answeredItems: answered } = session
+      const data = await res.json()
+      const sid = data.session?.id || data.sessionId
+      const stageReached = data.session?.stageReached || data.stageReached
+      const items = data.stageItems
+      const answered = data.answeredItems
 
       setSessionId(sid)
 
