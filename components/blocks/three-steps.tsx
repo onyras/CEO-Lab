@@ -27,7 +27,7 @@ export function ThreeSteps() {
 
             <CardContent>
               <p className="text-base text-black/70 leading-relaxed">
-                100 questions across 18 dimensions in three 20-minute sessions.
+                96 questions across 15 dimensions in three 20-minute sessions.
                 Honest, objective, comprehensive.
               </p>
             </CardContent>
