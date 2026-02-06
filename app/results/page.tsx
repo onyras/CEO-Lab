@@ -3,8 +3,18 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
-import { DIMENSIONS, TERRITORY_CONFIG, getDimension } from '@/lib/constants'
-import { getFrameworkPrescription, getBsiLabel, getVerbalLabel } from '@/lib/scoring'
+import { TERRITORY_CONFIG, getDimension } from '@/lib/constants'
+import { getFrameworkPrescription, getVerbalLabel } from '@/lib/scoring'
+import {
+  buildHeadlineText,
+  buildBsiHeadlineText,
+  IM_HANDLING,
+  getTerritoryArcNarrative,
+  DIMENSION_CONTENT,
+  ARCHETYPE_DESCRIPTIONS,
+  BLIND_SPOT_CLOSING,
+  CLOSING_TEXT,
+} from '@/lib/report-content'
 import { TerritoryBars } from '@/components/visualizations/TerritoryBars'
 import { DimensionHeatmap } from '@/components/visualizations/DimensionHeatmap'
 import { ArchetypeBadge } from '@/components/visualizations/ArchetypeBadge'
@@ -113,13 +123,27 @@ function HeadlineSection({
   clmi,
   bsi,
   hasMirrorData,
+  territoryScores,
+  imFlagged,
 }: {
   clmi: number
   bsi?: number
   hasMirrorData: boolean
+  territoryScores: TerritoryScore[]
+  imFlagged: boolean
 }) {
   const rounded = Math.round(clmi)
   const label = getVerbalLabel(clmi)
+
+  const headlineText = buildHeadlineText(
+    clmi,
+    label,
+    territoryScores.map((ts) => ({
+      territory: ts.territory,
+      score: ts.score,
+      label: ts.verbalLabel,
+    }))
+  )
 
   return (
     <SectionCard number={1} title="The Headline">
@@ -133,21 +157,37 @@ function HeadlineSection({
           />
         </div>
 
-        {/* Interpretation */}
+        {/* Interpretation with territory summary */}
         <p className="text-lg md:text-xl text-black/70 max-w-xl mx-auto leading-relaxed">
           Your Conscious Leadership Maturity Index places you in the{' '}
           <span className="font-semibold text-black">{label}</span> range.
         </p>
 
+        {/* Territory scores summary */}
+        <p className="text-base text-black/60 max-w-xl mx-auto leading-relaxed mt-3">
+          {headlineText}
+        </p>
+
         {/* BSI — only if mirror data available */}
         {hasMirrorData && bsi != null && (
           <div className="mt-6 pt-6 border-t border-black/10">
-            <p className="text-base text-black/60">
-              Your Blind Spot Index is{' '}
-              <span className="font-semibold text-black">{bsi.toFixed(1)}</span>
-              {' '}&mdash;{' '}
-              <span className="text-black/80">{getBsiLabel(bsi)}</span>.
+            <p className="text-base text-black/60 max-w-xl mx-auto leading-relaxed">
+              {buildBsiHeadlineText(bsi)}
             </p>
+          </div>
+        )}
+
+        {/* IM Validity Advisory */}
+        {imFlagged && (
+          <div className="mt-6 pt-6 border-t border-black/10">
+            <div className="bg-[#F7F3ED] rounded-lg p-5 max-w-xl mx-auto text-left">
+              <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-2">
+                A Note on Your Responses
+              </p>
+              <p className="text-sm text-black/70 leading-relaxed">
+                {IM_HANDLING.headlineAdvisory}
+              </p>
+            </div>
           </div>
         )}
       </div>
@@ -174,23 +214,24 @@ function TerritoriesSection({
         }))}
       />
 
-      {/* Arc narratives */}
+      {/* Score-based arc narratives */}
       <div className="mt-6 grid md:grid-cols-3 gap-4">
         {territoryScores.map((ts) => {
           const config = TERRITORY_CONFIG[ts.territory]
+          const narrative = getTerritoryArcNarrative(ts.territory, ts.score)
           return (
             <div
               key={ts.territory}
-              className="text-center py-3 px-4 rounded-lg bg-[#F7F3ED]"
+              className="py-4 px-5 rounded-lg bg-[#F7F3ED]"
             >
-              <p className="text-xs font-medium text-black/40 mb-1">
-                {config.displayLabel}
-              </p>
               <p
-                className="text-sm font-medium"
+                className="text-xs font-semibold tracking-wider uppercase mb-2"
                 style={{ color: TERRITORY_COLORS[ts.territory] }}
               >
-                {config.arcDescription}
+                {config.displayLabel}
+              </p>
+              <p className="text-sm text-black/70 leading-relaxed">
+                {narrative}
               </p>
             </div>
           )
@@ -227,9 +268,11 @@ function DimensionsSection({
 function PriorityDimensionsSection({
   priorityDimensions,
   dimensionScores,
+  imFlagged,
 }: {
   priorityDimensions: DimensionId[]
   dimensionScores: DimensionScore[]
+  imFlagged: boolean
 }) {
   return (
     <SectionCard number={4} title="Priority Dimensions">
@@ -238,7 +281,16 @@ function PriorityDimensionsSection({
         the meaning, then move.
       </p>
 
-      <div className="space-y-4">
+      {/* IM framework note */}
+      {imFlagged && (
+        <div className="bg-[#F7F3ED] rounded-lg p-5 mb-6">
+          <p className="text-sm text-black/70 leading-relaxed">
+            {IM_HANDLING.priorityFrameworkNote}
+          </p>
+        </div>
+      )}
+
+      <div className="space-y-8">
         {priorityDimensions.map((dimId) => {
           const def = getDimension(dimId)
           const score = dimensionScores.find((ds) => ds.dimensionId === dimId)
@@ -246,6 +298,8 @@ function PriorityDimensionsSection({
 
           const percentage = Math.round(score.percentage)
           const frameworks = getFrameworkPrescription(dimId, score.percentage)
+          const content = DIMENSION_CONTENT[dimId]
+          const isLow = score.percentage <= 50
 
           return (
             <div
@@ -274,7 +328,7 @@ function PriorityDimensionsSection({
               </div>
 
               {/* Score bar */}
-              <div className="h-2 w-full rounded-full bg-[#F7F3ED] overflow-hidden mb-4">
+              <div className="h-2 w-full rounded-full bg-[#F7F3ED] overflow-hidden mb-6">
                 <div
                   className="h-full rounded-full transition-all duration-500 ease-out"
                   style={{
@@ -284,29 +338,95 @@ function PriorityDimensionsSection({
                 />
               </div>
 
-              {/* What this means */}
-              <p className="text-sm text-black/70 mb-4 leading-relaxed">
-                {def.coreQuestion}
-              </p>
+              {/* ── MIRROR ── */}
+              <div className="mb-6">
+                <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-2">
+                  Mirror
+                </p>
+                <p className="text-sm text-black/70 leading-relaxed mb-2">
+                  <span className="font-semibold text-black">{def.name}</span>:{' '}
+                  {content.behavioralDefinition}
+                </p>
+                <p className="text-sm text-black/60 leading-relaxed">
+                  Your score of {percentage}% ({score.verbalLabel}) means this
+                  is{' '}
+                  {percentage <= 40
+                    ? 'a critical development area'
+                    : percentage <= 60
+                      ? 'an area still being built'
+                      : percentage <= 80
+                        ? 'a solid foundation with room to deepen'
+                        : 'a genuine strength'}
+                  .
+                </p>
+              </div>
 
-              {/* Framework prescriptions */}
-              {frameworks.length > 0 && (
-                <div>
-                  <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-2">
-                    Recommended Frameworks
+              {/* ── MEANING ── */}
+              <div className="mb-6">
+                <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-2">
+                  Meaning
+                </p>
+                {/* Paragraph 1: indicator text based on score */}
+                <p className="text-sm text-black/70 leading-relaxed mb-3">
+                  {isLow ? content.lowIndicator : content.highIndicator}
+                </p>
+                {/* Paragraph 2: cost of ignoring */}
+                <p className="text-sm text-black/70 leading-relaxed mb-3">
+                  {content.costOfIgnoring}
+                </p>
+                {/* Core question */}
+                <div className="bg-[#F7F3ED] rounded-lg p-4">
+                  <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-1">
+                    The Question to Sit With
+                  </p>
+                  <p className="text-sm font-medium text-black/80 italic leading-relaxed">
+                    {def.coreQuestion}
+                  </p>
+                </div>
+              </div>
+
+              {/* ── MOVE ── */}
+              <div>
+                <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-2">
+                  Move
+                </p>
+
+                {/* Framework prescriptions */}
+                {frameworks.length > 0 && (
+                  <div className="mb-3">
+                    <p className="text-xs font-medium text-black/50 mb-2">
+                      Recommended frameworks for your current score:
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {frameworks.map((fw) => (
+                        <span
+                          key={fw}
+                          className="inline-block px-3 py-1.5 text-xs font-medium text-black bg-[#F7F3ED] rounded-full"
+                        >
+                          {fw}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Complete framework list from DIMENSION_CONTENT */}
+                <div className="mt-3">
+                  <p className="text-xs font-medium text-black/50 mb-2">
+                    Full framework library for {def.name}:
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {frameworks.map((fw) => (
+                    {content.frameworks.map((fw) => (
                       <span
                         key={fw}
-                        className="inline-block px-3 py-1.5 text-xs font-medium text-black bg-[#F7F3ED] rounded-full"
+                        className="inline-block px-3 py-1.5 text-xs text-black/60 border border-black/10 rounded-full"
                       >
                         {fw}
                       </span>
                     ))}
                   </div>
                 </div>
-              )}
+              </div>
             </div>
           )
         })}
@@ -321,20 +441,33 @@ function PriorityDimensionsSection({
 
 function ArchetypesSection({
   archetypes,
+  imFlagged,
 }: {
   archetypes: ArchetypeMatch[]
+  imFlagged: boolean
 }) {
   const hasMatches = archetypes.length > 0
 
   return (
     <SectionCard number={5} title="Archetypes">
+      {/* IM note at top when flagged */}
+      {imFlagged && (
+        <div className="bg-[#F7F3ED] rounded-lg p-5 mb-6">
+          <p className="text-sm text-black/70 leading-relaxed">
+            {IM_HANDLING.archetypeNote}
+          </p>
+        </div>
+      )}
+
       {hasMatches ? (
         <>
           <p className="text-black/60 mb-6 text-sm">
             Your leadership profile matches the following pattern
             {archetypes.length > 1 ? 's' : ''}.
           </p>
-          <div className="grid md:grid-cols-3 gap-4">
+
+          {/* Badge visualization row */}
+          <div className="grid md:grid-cols-3 gap-4 mb-8">
             {archetypes.map((arch) => (
               <ArchetypeBadge
                 key={arch.name}
@@ -346,13 +479,112 @@ function ArchetypesSection({
               />
             ))}
           </div>
+
+          {/* Detailed archetype narratives */}
+          <div className="space-y-6">
+            {archetypes.map((arch) => {
+              const desc = ARCHETYPE_DESCRIPTIONS[arch.name]
+              if (!desc) return null
+
+              return (
+                <div
+                  key={arch.name}
+                  className="border border-black/10 rounded-lg p-6"
+                >
+                  {/* Archetype name and one-sentence description */}
+                  <div className="mb-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-lg font-semibold text-black">
+                        {desc.name}
+                      </h3>
+                      <span className="text-xs font-medium text-black/40 px-2 py-0.5 bg-[#F7F3ED] rounded-full">
+                        {arch.matchType === 'full'
+                          ? 'Full match'
+                          : 'Partial match'}
+                      </span>
+                    </div>
+                    <p className="text-base text-black/70 leading-relaxed font-medium italic">
+                      {desc.oneSentence}
+                    </p>
+                  </div>
+
+                  {/* What this looks like */}
+                  <div className="mb-4">
+                    <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-1">
+                      What This Looks Like
+                    </p>
+                    <p className="text-sm text-black/70 leading-relaxed">
+                      {desc.whatThisLooksLike}
+                    </p>
+                  </div>
+
+                  {/* What this is costing you */}
+                  <div className="mb-4">
+                    <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-1">
+                      What This Is Costing You
+                    </p>
+                    <p className="text-sm text-black/70 leading-relaxed">
+                      {desc.whatThisIsCostingYou}
+                    </p>
+                  </div>
+
+                  {/* The shift */}
+                  <div className="mb-4">
+                    <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-1">
+                      The Shift
+                    </p>
+                    <p className="text-sm text-black/70 leading-relaxed">
+                      {desc.theShift}
+                    </p>
+                  </div>
+
+                  {/* Framework references */}
+                  {desc.frameworkReferences.length > 0 && (
+                    <div className="mb-4">
+                      <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-2">
+                        Key Frameworks
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {desc.frameworkReferences.map((fw) => (
+                          <span
+                            key={fw}
+                            className="inline-block px-3 py-1.5 text-xs font-medium text-black bg-[#F7F3ED] rounded-full"
+                          >
+                            {fw}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* SJI confirmation status */}
+                  {arch.sjiConfirmed != null && (
+                    <div className="pt-3 border-t border-black/10">
+                      {arch.sjiConfirmed ? (
+                        <p className="text-xs text-black/50 flex items-center gap-1.5">
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#A6BEA4]" />
+                          Confirmed by situational responses
+                        </p>
+                      ) : (
+                        <p className="text-xs text-black/50 flex items-center gap-1.5">
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#E08F6A]" />
+                          Self-report and situational responses diverge. Worth
+                          exploring.
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
         </>
       ) : (
         <div className="text-center py-8">
           <p className="text-black/60 text-sm max-w-md mx-auto leading-relaxed">
-            Your profile does not match a single dominant pattern. This is not
-            unusual &mdash; focus on your priority dimensions for the most
-            targeted development path.
+            Your profile doesn&apos;t match a single dominant pattern. This
+            usually means a balanced profile or a transitional phase. Your
+            dimension-level results above tell the more specific story.
           </p>
         </div>
       )}
@@ -367,10 +599,16 @@ function ArchetypesSection({
 function BlindSpotsSection({
   mirrorGaps,
   hasMirrorData,
+  imFlagged,
 }: {
   mirrorGaps?: MirrorGap[]
   hasMirrorData: boolean
+  imFlagged: boolean
 }) {
+  const significantGaps = (mirrorGaps ?? []).filter(
+    (g) => g.severity === 'significant' || g.severity === 'critical'
+  )
+
   return (
     <SectionCard number={6} title="Blind Spots">
       {hasMirrorData && mirrorGaps && mirrorGaps.length > 0 ? (
@@ -379,14 +617,76 @@ function BlindSpotsSection({
             How others see your leadership compared to how you see yourself.
             Larger gaps signal blind spots worth exploring.
           </p>
-          <MirrorDotPlot gaps={mirrorGaps.map(gap => ({
-            dimensionId: gap.dimensionId,
-            dimensionName: getDimension(gap.dimensionId).name,
-            ceoPct: gap.ceoPct,
-            raterPct: gap.raterPct,
-            gapLabel: gap.gapLabel,
-            severity: gap.severity,
-          }))} />
+
+          {/* IM mirror elevation note */}
+          {imFlagged && (
+            <div className="bg-[#F7F3ED] rounded-lg p-5 mb-6">
+              <p className="text-sm text-black/70 leading-relaxed">
+                {IM_HANDLING.mirrorElevation}
+              </p>
+            </div>
+          )}
+
+          {/* Visualization */}
+          <MirrorDotPlot
+            gaps={mirrorGaps.map((gap) => ({
+              dimensionId: gap.dimensionId,
+              dimensionName: getDimension(gap.dimensionId).name,
+              ceoPct: gap.ceoPct,
+              raterPct: gap.raterPct,
+              gapLabel: gap.gapLabel,
+              severity: gap.severity,
+            }))}
+          />
+
+          {/* Narrative paragraphs for significant/critical gaps */}
+          {significantGaps.length > 0 && (
+            <div className="mt-6 space-y-4">
+              {significantGaps.map((gap) => {
+                const def = getDimension(gap.dimensionId)
+                const gapDirection =
+                  gap.ceoPct > gap.raterPct
+                    ? 'higher than your rater'
+                    : 'lower than your rater'
+                const gapSize = Math.abs(
+                  Math.round(gap.ceoPct - gap.raterPct)
+                )
+
+                return (
+                  <div
+                    key={gap.dimensionId}
+                    className="border-l-2 pl-4 py-2"
+                    style={{
+                      borderColor:
+                        gap.severity === 'critical' ? '#E08F6A' : '#7FABC8',
+                    }}
+                  >
+                    <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-1">
+                      {def.name}{' '}
+                      <span className="normal-case font-normal">
+                        &mdash; {gap.gapLabel}
+                      </span>
+                    </p>
+                    <p className="text-sm text-black/70 leading-relaxed">
+                      You rated yourself {gapSize} points {gapDirection} on{' '}
+                      {def.name}. This {gapSize} point gap suggests that your
+                      experience of your own leadership in this area differs
+                      meaningfully from how it lands with others. This is not a
+                      judgment &mdash; it is information worth exploring in
+                      conversation with your rater.
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+
+          {/* Closing text */}
+          <div className="mt-6 pt-6 border-t border-black/10">
+            <p className="text-sm text-black/60 leading-relaxed">
+              {BLIND_SPOT_CLOSING}
+            </p>
+          </div>
         </>
       ) : (
         <div className="text-center py-8">
@@ -419,13 +719,93 @@ function RoadmapSection({
 }) {
   const entries = buildRoadmapEntries(priorityDimensions, dimensionScores)
 
+  // Take the top 3 priority dimensions for the detailed practice plan
+  const top3 = priorityDimensions.slice(0, 3)
+
   return (
     <SectionCard number={7} title="Development Roadmap">
       <p className="text-black/60 mb-6 text-sm">
         Your 90-day plan based on priority dimensions and their framework
         prescriptions.
       </p>
+
+      {/* Timeline visualization */}
       <RoadmapTimeline priorityDimensions={entries} />
+
+      {/* Detailed practice plan for top 3 */}
+      <div className="mt-8 space-y-6">
+        <p className="text-xs font-semibold text-black/40 uppercase tracking-wider">
+          Your First Moves
+        </p>
+
+        {top3.map((dimId) => {
+          const def = getDimension(dimId)
+          const score = dimensionScores.find((ds) => ds.dimensionId === dimId)
+          const percentage = score?.percentage ?? 0
+          const frameworks = getFrameworkPrescription(dimId, percentage)
+          const content = DIMENSION_CONTENT[dimId]
+          const primaryFramework =
+            frameworks.length > 0 ? frameworks[0] : 'See framework list above'
+
+          return (
+            <div
+              key={dimId}
+              className="border border-black/10 rounded-lg p-5"
+            >
+              <div className="flex items-start justify-between mb-3">
+                <h4 className="text-base font-semibold text-black">
+                  {def.name}
+                </h4>
+                <span
+                  className="text-xs font-medium px-2 py-0.5 rounded-full text-white shrink-0 ml-3"
+                  style={{
+                    backgroundColor: TERRITORY_COLORS[def.territory],
+                  }}
+                >
+                  {primaryFramework}
+                </span>
+              </div>
+
+              <div className="space-y-3">
+                <div>
+                  <p className="text-xs font-semibold text-black/50 mb-1">
+                    This week:
+                  </p>
+                  <p className="text-sm text-black/70 leading-relaxed">
+                    {content.highIndicator.split('.')[0]}.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs font-semibold text-black/50 mb-1">
+                    Observable shift:
+                  </p>
+                  <p className="text-sm text-black/70 leading-relaxed">
+                    {percentage <= 40
+                      ? `You will notice moments where you catch the old pattern before it completes. That noticing is the first sign of growth in ${def.name}.`
+                      : percentage <= 60
+                        ? `You will begin to see consistency where there was previously inconsistency. ${def.name} will shift from something you do sometimes to something others can count on.`
+                        : `The shift will be subtle but others will notice: ${def.name} will move from a personal practice to something that shapes how your team operates.`}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Quarterly reassessment reminder */}
+      <div className="mt-8 bg-[#F7F3ED] rounded-lg p-5 text-center">
+        <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-2">
+          Quarterly Reassessment
+        </p>
+        <p className="text-sm text-black/60 leading-relaxed max-w-lg mx-auto">
+          Retake the full assessment in 90 days to measure your progress. The
+          Weekly Pulse in your dashboard tracks momentum between assessments.
+          Meaningful shift in leadership behavior takes 8-12 weeks of
+          deliberate practice.
+        </p>
+      </div>
     </SectionCard>
   )
 }
@@ -435,13 +815,22 @@ function RoadmapSection({
 // ---------------------------------------------------------------------------
 
 function ClosingSection() {
+  // Split closing text by the double newline to render as separate paragraphs
+  const paragraphs = CLOSING_TEXT.split('\n\n')
+
   return (
     <SectionCard number={8} title="What Comes Next">
       <div className="text-center py-4">
-        <p className="text-lg text-black/70 max-w-lg mx-auto leading-relaxed mb-6">
-          Leadership growth is not a destination &mdash; it is a practice.
-          Return weekly to track your progress.
-        </p>
+        <div className="max-w-lg mx-auto mb-8">
+          {paragraphs.map((paragraph, i) => (
+            <p
+              key={i}
+              className="text-lg text-black/70 leading-relaxed mb-4 last:mb-0"
+            >
+              {paragraph}
+            </p>
+          ))}
+        </div>
         <a
           href="/dashboard"
           className="inline-block bg-black text-white px-8 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
@@ -591,6 +980,7 @@ export default function ResultsPage() {
   const hasMirrorData =
     results.mirrorGaps != null && results.mirrorGaps.length > 0
   const bsi = results.bsi
+  const imFlagged = results.session.imFlagged
 
   return (
     <div className="min-h-screen bg-[#F7F3ED] print:bg-white">
@@ -613,6 +1003,8 @@ export default function ResultsPage() {
           clmi={clmi}
           bsi={bsi}
           hasMirrorData={hasMirrorData}
+          territoryScores={results.territoryScores}
+          imFlagged={imFlagged}
         />
 
         {/* 02 — Three Territories */}
@@ -625,15 +1017,20 @@ export default function ResultsPage() {
         <PriorityDimensionsSection
           priorityDimensions={results.priorityDimensions}
           dimensionScores={results.dimensionScores}
+          imFlagged={imFlagged}
         />
 
         {/* 05 — Archetypes */}
-        <ArchetypesSection archetypes={results.archetypes} />
+        <ArchetypesSection
+          archetypes={results.archetypes}
+          imFlagged={imFlagged}
+        />
 
         {/* 06 — Blind Spots */}
         <BlindSpotsSection
           mirrorGaps={results.mirrorGaps}
           hasMirrorData={hasMirrorData}
+          imFlagged={imFlagged}
         />
 
         {/* 07 — Development Roadmap */}

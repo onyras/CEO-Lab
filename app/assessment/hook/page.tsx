@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { hookItems } from '@/lib/hook-questions'
 import { getDimension } from '@/lib/constants'
+import { getTerritoryArcNarrative, buildHookInsight, HOOK_NEXT_STEP } from '@/lib/report-content'
 import type { DimensionId, Territory } from '@/types/assessment'
 
 // ─── Territory display config ────────────────────────────────────────
@@ -208,7 +209,17 @@ export default function HookAssessmentPage() {
     const sharpestDim = getDimension(results.sharpestDimension)
     const sharpestTerritory = TERRITORY_DISPLAY[sharpestDim.territory]
 
-    const territories = [
+    // Determine if the sharpest dimension is a low score by checking
+    // the actual response value for the hook item that maps to it
+    const sharpestHookItem = hookItems.find(hi =>
+      hi.dimensions.includes(results.sharpestDimension)
+    )
+    const sharpestResponseValue = sharpestHookItem
+      ? responses.get(sharpestHookItem.id)?.value ?? 2.5
+      : 2.5
+    const isLow = sharpestResponseValue < 2.5
+
+    const territories: { key: Territory; label: string; score: number; color: string }[] = [
       {
         key: 'leading_yourself' as Territory,
         label: 'Leading Yourself',
@@ -229,8 +240,6 @@ export default function HookAssessmentPage() {
       },
     ]
 
-    const overallScore = Math.round((results.lyScore + results.ltScore + results.loScore) / 3)
-
     return (
       <div className="min-h-screen bg-[#F7F3ED] px-6 py-12">
         <div className="max-w-2xl mx-auto">
@@ -247,15 +256,12 @@ export default function HookAssessmentPage() {
             </p>
           </div>
 
-          {/* Overall Score */}
-          <div className="bg-white rounded-lg p-8 border border-black/10 mb-6 text-center">
-            <p className="text-sm text-black/50 mb-2">Overall Score</p>
-            <p className="text-5xl font-bold text-black">{overallScore}%</p>
-          </div>
-
-          {/* Territory Scores */}
+          {/* Section 1: Your Territory Snapshot */}
           <div className="bg-white rounded-lg p-8 border border-black/10 mb-6">
-            <div className="space-y-6">
+            <h2 className="text-lg font-bold text-black mb-6">Your Territory Snapshot</h2>
+
+            {/* Territory bar chart */}
+            <div className="space-y-6 mb-8">
               {territories.map(t => (
                 <div key={t.key}>
                   <div className="flex items-center justify-between mb-2">
@@ -280,12 +286,29 @@ export default function HookAssessmentPage() {
                 </div>
               ))}
             </div>
+
+            {/* Territory arc narratives */}
+            <div className="space-y-4">
+              {territories.map(t => (
+                <div key={t.key} className="flex gap-3">
+                  <span
+                    className="w-1 flex-shrink-0 rounded-full mt-1"
+                    style={{ backgroundColor: t.color }}
+                  />
+                  <p className="text-sm text-black/70 leading-relaxed">
+                    <span className="font-semibold text-black">{t.label}:</span>{' '}
+                    {getTerritoryArcNarrative(t.key, t.score)}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Sharpest Insight */}
-          <div className="bg-white rounded-lg p-8 border border-black/10 mb-8">
-            <p className="text-sm text-black/50 mb-2">Sharpest Insight</p>
-            <div className="flex items-center gap-2 mb-3">
+          {/* Section 2: Your Sharpest Insight */}
+          <div className="bg-white rounded-lg p-8 border border-black/10 mb-6">
+            <h2 className="text-lg font-bold text-black mb-4">Your Sharpest Insight</h2>
+
+            <div className="flex items-center gap-2 mb-4">
               <span
                 className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold text-white"
                 style={{ backgroundColor: sharpestTerritory.color }}
@@ -293,27 +316,37 @@ export default function HookAssessmentPage() {
                 {sharpestTerritory.label}
               </span>
             </div>
-            <h3 className="text-xl font-bold text-black mb-2">{sharpestDim.name}</h3>
-            <p className="text-black/60 leading-relaxed">
-              {sharpestDim.coreQuestion}
+
+            <h3 className="text-xl font-bold text-black mb-3">{sharpestDim.name}</h3>
+
+            <p className="text-black/70 leading-relaxed mb-4">
+              {buildHookInsight(sharpestDim.name, sharpestResponseValue, isLow)}
             </p>
+
+            <div className="bg-[#F7F3ED] rounded-lg p-4">
+              <p className="text-xs font-semibold tracking-widest uppercase text-black/40 mb-1">
+                Core Question
+              </p>
+              <p className="text-sm text-black/80 italic leading-relaxed">
+                {sharpestDim.coreQuestion}
+              </p>
+            </div>
           </div>
 
-          {/* CTA */}
-          <div className="bg-black rounded-lg p-8 text-center">
-            <h3 className="text-2xl font-bold text-white mb-3">
-              Want the full picture?
-            </h3>
-            <p className="text-white/60 mb-6 max-w-md mx-auto">
-              The complete CEO Lab assessment measures 15 dimensions in depth,
-              with personalized frameworks and development recommendations.
+          {/* Section 3: Your Next Step */}
+          <div className="bg-white rounded-lg p-8 border border-black/10 mb-8">
+            <h2 className="text-lg font-bold text-black mb-4">Your Next Step</h2>
+            <p className="text-black/70 leading-relaxed mb-6">
+              {HOOK_NEXT_STEP}
             </p>
-            <a
-              href="/auth"
-              className="inline-block bg-white text-black px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white/90 transition-colors"
-            >
-              Sign Up for Full Assessment
-            </a>
+            <div className="text-center">
+              <a
+                href="/auth"
+                className="inline-block bg-black text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-black/90 transition-colors"
+              >
+                Take the Full Assessment
+              </a>
+            </div>
           </div>
 
           {/* Retake */}
