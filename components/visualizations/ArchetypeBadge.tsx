@@ -6,6 +6,7 @@ interface ArchetypeBadgeProps {
   signatureStrength: number
   sjiConfirmed?: boolean
   displayRank: number
+  territoryAccent?: string
 }
 
 export function ArchetypeBadge({
@@ -14,17 +15,21 @@ export function ArchetypeBadge({
   signatureStrength,
   sjiConfirmed,
   displayRank,
+  territoryAccent,
 }: ArchetypeBadgeProps) {
   const clampedStrength = Math.max(0, Math.min(100, signatureStrength))
   const isFull = matchType === 'full'
 
   return (
-    <div className="w-full rounded-lg border border-black/10 bg-white p-5 font-[Inter]">
+    <div
+      className="w-full rounded-lg border border-black/10 bg-white p-5 font-[Inter]"
+      style={territoryAccent ? { borderLeftWidth: 3, borderLeftColor: territoryAccent } : undefined}
+    >
       {/* Rank + Name row */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-3">
-          {/* Rank badge */}
-          <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[#F7F3ED] text-xs font-semibold text-black">
+          {/* Rank badge — larger visual weight */}
+          <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#F7F3ED] text-sm font-bold text-black">
             #{displayRank}
           </span>
           <h3 className="text-lg font-semibold text-black leading-tight">

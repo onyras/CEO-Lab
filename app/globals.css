@@ -261,6 +261,16 @@ body {
   }
 }
 
+/* ScoreRing animation */
+.score-ring-progress {
+  transition: stroke-dashoffset 1s ease-out;
+}
+
+/* Safe area for mobile bottom nav */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 @layer base {
   * {
     @apply border-border;

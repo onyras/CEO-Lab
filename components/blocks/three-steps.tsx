@@ -1,80 +1,94 @@
+'use client'
+
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { ClipboardCheck, TrendingUp, LineChart } from 'lucide-react'
 import { ReactNode } from 'react'
+import { StaggeredContainer, StaggeredItem } from '@/components/shared/StaggeredAnimation'
 
 export function ThreeSteps() {
   return (
     <section className="py-16 md:py-32 bg-[#F7F3ED]">
       <div className="@container mx-auto max-w-5xl px-6">
-        <div className="text-center">
-          <h2 className="text-balance text-4xl font-bold lg:text-5xl">
-            Three Steps to Measurable Growth
-          </h2>
-        </div>
-        <div className="@min-4xl:max-w-full @min-4xl:grid-cols-3 mx-auto mt-8 grid max-w-sm gap-8 md:mt-16">
-          {/* Step 1 - Assess */}
-          <Card className="group border-0 bg-white shadow-none">
-            <CardHeader className="pb-3">
-              <StepDecorator number={1}>
-                <ClipboardCheck className="size-6" aria-hidden />
-              </StepDecorator>
+        <StaggeredContainer triggerOnScroll>
+          <StaggeredItem>
+            <div className="text-center">
+              <h2 className="text-balance text-4xl font-bold lg:text-5xl">
+                Three Steps to Measurable Growth
+              </h2>
+            </div>
+          </StaggeredItem>
 
-              <h3 className="mt-6 text-2xl font-bold">Assess</h3>
-              <p className="text-base font-semibold text-black/70">
-                Complete your baseline assessment
-              </p>
-            </CardHeader>
+          <div className="@min-4xl:max-w-full @min-4xl:grid-cols-3 mx-auto mt-8 grid max-w-sm gap-8 md:mt-16">
+            {/* Step 1 - Assess */}
+            <StaggeredItem>
+              <Card className="group border-0 bg-white shadow-none">
+                <CardHeader className="pb-3">
+                  <StepDecorator number={1}>
+                    <ClipboardCheck className="size-6" aria-hidden />
+                  </StepDecorator>
 
-            <CardContent>
-              <p className="text-base text-black/70 leading-relaxed">
-                96 questions across 15 dimensions in three 20-minute sessions.
-                Honest, objective, comprehensive.
-              </p>
-            </CardContent>
-          </Card>
+                  <h3 className="mt-6 text-2xl font-bold">Assess</h3>
+                  <p className="text-base font-semibold text-black/70">
+                    Complete your baseline assessment
+                  </p>
+                </CardHeader>
 
-          {/* Step 2 - Track */}
-          <Card className="group border-0 bg-white shadow-none">
-            <CardHeader className="pb-3">
-              <StepDecorator number={2}>
-                <LineChart className="size-6" aria-hidden />
-              </StepDecorator>
+                <CardContent>
+                  <p className="text-base text-black/70 leading-relaxed">
+                    96 questions across 15 dimensions in three 20-minute sessions.
+                    Honest, objective, comprehensive.
+                  </p>
+                </CardContent>
+              </Card>
+            </StaggeredItem>
 
-              <h3 className="mt-6 text-2xl font-bold">Track</h3>
-              <p className="text-base font-semibold text-black/70">
-                Weekly check-ins via WhatsApp
-              </p>
-            </CardHeader>
+            {/* Step 2 - Track */}
+            <StaggeredItem>
+              <Card className="group border-0 bg-white shadow-none">
+                <CardHeader className="pb-3">
+                  <StepDecorator number={2}>
+                    <LineChart className="size-6" aria-hidden />
+                  </StepDecorator>
 
-            <CardContent>
-              <p className="text-base text-black/70 leading-relaxed">
-                Choose 3 dimensions to focus on per quarter. Answer 3 questions weekly.
-                Track your progress over time.
-              </p>
-            </CardContent>
-          </Card>
+                  <h3 className="mt-6 text-2xl font-bold">Track</h3>
+                  <p className="text-base font-semibold text-black/70">
+                    Weekly check-ins via WhatsApp
+                  </p>
+                </CardHeader>
 
-          {/* Step 3 - Improve */}
-          <Card className="group border-0 bg-white shadow-none">
-            <CardHeader className="pb-3">
-              <StepDecorator number={3}>
-                <TrendingUp className="size-6" aria-hidden />
-              </StepDecorator>
+                <CardContent>
+                  <p className="text-base text-black/70 leading-relaxed">
+                    Choose 3 dimensions to focus on per quarter. Answer 3 questions weekly.
+                    Track your progress over time.
+                  </p>
+                </CardContent>
+              </Card>
+            </StaggeredItem>
 
-              <h3 className="mt-6 text-2xl font-bold">Improve</h3>
-              <p className="text-base font-semibold text-black/70">
-                Get tailored insights and frameworks
-              </p>
-            </CardHeader>
+            {/* Step 3 - Improve */}
+            <StaggeredItem>
+              <Card className="group border-0 bg-white shadow-none">
+                <CardHeader className="pb-3">
+                  <StepDecorator number={3}>
+                    <TrendingUp className="size-6" aria-hidden />
+                  </StepDecorator>
 
-            <CardContent>
-              <p className="text-base text-black/70 leading-relaxed">
-                Your dashboard shows exactly where to focus. We prescribe specific
-                frameworks from the Konstantin Method based on your scores. No guessing.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+                  <h3 className="mt-6 text-2xl font-bold">Improve</h3>
+                  <p className="text-base font-semibold text-black/70">
+                    Get tailored insights and frameworks
+                  </p>
+                </CardHeader>
+
+                <CardContent>
+                  <p className="text-base text-black/70 leading-relaxed">
+                    Your dashboard shows exactly where to focus. We prescribe specific
+                    frameworks from the Konstantin Method based on your scores. No guessing.
+                  </p>
+                </CardContent>
+              </Card>
+            </StaggeredItem>
+          </div>
+        </StaggeredContainer>
       </div>
     </section>
   )

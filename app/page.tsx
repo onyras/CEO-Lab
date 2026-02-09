@@ -10,41 +10,14 @@ import {
   BarChart3,
   BookOpen,
   Info,
-  ChevronDown,
   ClipboardCheck,
   TrendingUp,
   LineChart,
   Star,
 } from 'lucide-react'
+import { StaggeredContainer, StaggeredItem } from '@/components/shared/StaggeredAnimation'
 
 // ─── Data ──────────────────────────────────────────────────────────
-
-const TESTIMONIALS = [
-  {
-    quote:
-      "Before CEO Lab, I was making decisions based on anxiety, not data. I'd wake up at 3am wondering if I was actually growing as a leader or just getting lucky. The assessment showed me my blind spots in black and white - my delegation score was 32%. That was the wake-up call. Now, 90 days later, I'm at 68% and my team is making decisions without me. The anxiety is gone. I know exactly where I stand and where to focus next. That clarity alone is worth 10x the price.",
-    author: 'Sarah Chen',
-    role: 'Founder & CEO, Series A SaaS (40-person team)',
-    avatar:
-      'https://images.unsplash.com/photo-1701615004837-40d8573b6652?q=80&w=1480&auto=format&fit=crop',
-  },
-  {
-    quote:
-      "The 15 dimensions framework finally gave me a language to talk about leadership with my team. Before, it was all fuzzy concepts. Now we measure, track, and improve systematically. Our investor asked how we scaled culture so well - it's because we stopped guessing and started measuring.",
-    author: 'Marcus Johnson',
-    role: 'Co-Founder & CEO, Series B Fintech (120-person team)',
-    avatar:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1287&auto=format&fit=crop',
-  },
-  {
-    quote:
-      "I hired three executive coaches over two years and never knew if I was actually getting better. CEO Lab gave me the dashboard I needed. Seeing my 'Grounded Presence' score go from 45% to 82% over six months wasn't just satisfying—it was proof that the work was working. That's powerful.",
-    author: 'Elena Rodriguez',
-    role: 'Founder & CEO, Series A EdTech (55-person team)',
-    avatar:
-      'https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=2670&auto=format&fit=crop',
-  },
-]
 
 const DIMENSIONS = [
   {
@@ -204,70 +177,59 @@ function Hero() {
       >
         <div className="w-full max-w-[1280px] mx-auto relative perspective-1000">
           {/* Header text */}
-          <div className="relative w-full text-center">
-            <h1 className="text-[48px] md:text-[52px] lg:text-[56px] font-bold text-black mb-6 leading-[1.1] tracking-tight">
-              A measurement system for your
-              <br />
-              leadership development
-            </h1>
+          <StaggeredContainer className="relative w-full text-center">
+            <StaggeredItem>
+              <h1 className="text-[48px] md:text-[52px] lg:text-[56px] font-bold text-black mb-6 leading-[1.1] tracking-tight">
+                A measurement system for your
+                <br />
+                leadership development
+              </h1>
+            </StaggeredItem>
 
-            <p className="text-base md:text-lg text-black/60 leading-relaxed max-w-[42rem] mx-auto mb-10">
-              CEO Lab tracks your growth across 15 leadership dimensions. Get
-              instant scores, spot blind spots, and see what&apos;s really
-              driving or blocking your growth.
-            </p>
+            <StaggeredItem>
+              <p className="text-base md:text-lg text-black/60 leading-relaxed max-w-[42rem] mx-auto mb-10">
+                CEO Lab tracks your growth across 15 leadership dimensions. Get
+                instant scores, spot blind spots, and see what&apos;s really
+                driving or blocking your growth.
+              </p>
+            </StaggeredItem>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
-              <Link
-                href="/assessment/hook"
-                className="w-full sm:w-auto bg-black text-white px-8 py-3.5 rounded-lg text-base font-semibold hover:bg-black/90 transition-all duration-200 inline-flex items-center justify-center gap-2"
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 20 20"
-                  fill="none"
+            <StaggeredItem>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
+                <Link
+                  href="/assessment/hook"
+                  className="w-full sm:w-auto bg-black text-white px-8 py-3.5 rounded-lg text-base font-semibold hover:bg-black/90 transition-all duration-200 inline-flex items-center justify-center gap-2"
                 >
-                  <path
-                    d="M10 4v12m-6-6h12"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                Get My Free CEO Score
-              </Link>
-              <Link
-                href="#problem"
-                className="w-full sm:w-auto bg-transparent text-black border-2 border-black/10 px-8 py-3.5 rounded-lg text-base font-semibold hover:bg-black/5 hover:border-black/20 transition-all duration-200 text-center"
-              >
-                Learn more
-              </Link>
-            </div>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                  >
+                    <path
+                      d="M10 4v12m-6-6h12"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  Get My Free CEO Score
+                </Link>
+                <Link
+                  href="#problem"
+                  className="w-full sm:w-auto bg-transparent text-black border-2 border-black/10 px-8 py-3.5 rounded-lg text-base font-semibold hover:bg-black/5 hover:border-black/20 transition-all duration-200 text-center"
+                >
+                  Learn more
+                </Link>
+              </div>
+            </StaggeredItem>
 
-            <p className="text-sm text-black/40 mb-16">
-              Free assessment &middot; No credit card required
-            </p>
-          </div>
-
-          {/* Company logos */}
-          <div className="max-w-[1100px] mx-auto mb-12 md:mb-16 px-8">
-            <p className="text-xs text-black/40 text-center mb-6 uppercase tracking-widest">
-              These companies use CEO Lab
-            </p>
-            <div className="flex justify-center items-center gap-12 flex-wrap opacity-40 grayscale">
-              {[1, 2, 3, 4, 5].map((n) => (
-                <Image
-                  key={n}
-                  src={`/logos/company${n}.svg`}
-                  alt={`Company ${n}`}
-                  width={120}
-                  height={32}
-                  className="h-8 w-auto"
-                />
-              ))}
-            </div>
-          </div>
+            <StaggeredItem>
+              <p className="text-sm text-black/40 mb-16">
+                Free assessment &middot; No credit card required
+              </p>
+            </StaggeredItem>
+          </StaggeredContainer>
 
           {/* 3D Dashboard Card */}
           <motion.div
@@ -301,108 +263,84 @@ function ProblemSection() {
     <section id="problem" className="bg-white py-32 md:py-40 px-8">
       <div className="max-w-[1100px] mx-auto">
         {/* Opening Contrast */}
-        <div className="mb-24">
-          <span className="section-label block text-sm font-medium text-[#7FABC8] text-center mb-4 tracking-wide">
-            {'> '}ceo-lab --problem
-          </span>
-          <h2 className="text-[42px] font-bold leading-[1.1] text-center mb-12 max-w-[900px] mx-auto">
-            Athletes Have Post-Game Analysis.
-            <br />
-            What Do CEOs Have?
-          </h2>
+        <StaggeredContainer triggerOnScroll className="mb-24">
+          <StaggeredItem>
+            <h2 className="text-[42px] font-bold leading-[1.1] text-center mb-12 max-w-[900px] mx-auto">
+              Athletes Have Post-Game Analysis.
+              <br />
+              What Do CEOs Have?
+            </h2>
+          </StaggeredItem>
 
           {/* Comparison cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[56rem] mx-auto">
             {/* Athletes card */}
-            <div className="bg-white border border-black/8 rounded-xl p-10 relative overflow-hidden">
-              <div className="accent-bar-blue absolute top-0 left-0 right-0 h-1" />
-              <h3 className="text-2xl font-bold mb-8 mt-2">Athletes</h3>
-              <ul className="flex flex-col gap-5">
-                {[
-                  'Game footage review',
-                  'Performance metrics tracked',
-                  'Progress measured weekly',
-                  'Blind spots identified',
-                  'Improvement plan created',
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-base text-black/80"
-                  >
-                    <span className="font-bold text-[#7FABC8] flex-shrink-0">
-                      &#10003;
-                    </span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <StaggeredItem>
+              <div className="bg-white border border-black/8 rounded-xl p-10 relative overflow-hidden">
+                <div className="accent-bar-blue absolute top-0 left-0 right-0 h-1" />
+                <h3 className="text-2xl font-bold mb-8 mt-2">Athletes</h3>
+                <ul className="flex flex-col gap-5">
+                  {[
+                    'Game footage review',
+                    'Performance metrics tracked',
+                    'Progress measured weekly',
+                    'Blind spots identified',
+                    'Improvement plan created',
+                  ].map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-start gap-3 text-base text-black/80"
+                    >
+                      <span className="font-bold text-[#7FABC8] flex-shrink-0">
+                        &#10003;
+                      </span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </StaggeredItem>
 
             {/* CEOs card */}
-            <div className="bg-white border border-black/8 rounded-xl p-10 relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-black/6" />
-              <h3 className="text-2xl font-bold mb-8 mt-2">CEOs</h3>
-              <ul className="flex flex-col gap-5">
-                {[
-                  'Read books',
-                  'Listen to podcasts',
-                  'Maybe have a coach',
-                  "Hope they're improving",
-                  'No systematic tracking',
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-base text-black/40"
-                  >
-                    <span className="text-black/20 flex-shrink-0">&mdash;</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <StaggeredItem>
+              <div className="bg-white border border-black/8 rounded-xl p-10 relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-black/6" />
+                <h3 className="text-2xl font-bold mb-8 mt-2">CEOs</h3>
+                <ul className="flex flex-col gap-5">
+                  {[
+                    'Read books',
+                    'Listen to podcasts',
+                    'Maybe have a coach',
+                    "Hope they're improving",
+                    'No systematic tracking',
+                  ].map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-start gap-3 text-base text-black/40"
+                    >
+                      <span className="text-black/20 flex-shrink-0">&mdash;</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </StaggeredItem>
           </div>
-        </div>
+        </StaggeredContainer>
 
-        {/* The Question highlight */}
-        <div className="mb-24 p-12 bg-gradient-to-br from-[#7FABC8]/8 to-[#A6BEA4]/8 rounded-xl text-center max-w-[56rem] mx-auto">
-          <h2 className="text-[32px] font-bold leading-[1.2] mb-6">
-            When was the last time you objectively measured your own leadership?
-          </h2>
-          <p className="text-lg text-black/60 leading-relaxed">
-            Not your company&apos;s performance. Not your team&apos;s output.
-            <br />
-            <strong className="text-black font-semibold">
-              Your leadership.
-            </strong>
-          </p>
-        </div>
-
-        {/* Cost icons */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
-          {[
-            {
-              icon: '❓',
-              title: 'No Data',
-              desc: 'Every decision based on gut feeling, not evidence',
-            },
-            {
-              icon: '⚠️',
-              title: 'Anxiety Fills the Gap',
-              desc: '"Am I really the right person to lead this?"',
-            },
-            {
-              icon: '📉',
-              title: 'Invisible Decline',
-              desc: 'Competitors who measure are improving faster',
-            },
-          ].map((item) => (
-            <div key={item.title} className="text-center px-8 py-12">
-              <div className="text-7xl mb-4 opacity-15">{item.icon}</div>
-              <h4 className="text-lg font-semibold mb-3">{item.title}</h4>
-              <p className="text-sm text-black/50">{item.desc}</p>
+        {/* Punchline */}
+        <StaggeredContainer triggerOnScroll>
+          <StaggeredItem>
+            <div className="text-center max-w-[56rem] mx-auto">
+              <h2 className="text-[32px] font-bold leading-[1.2] mb-4">
+                You can&apos;t improve what you don&apos;t measure.
+              </h2>
+              <p className="text-base text-black/60">
+                CEO Lab gives you the scoreboard.
+              </p>
             </div>
-          ))}
-        </div>
+          </StaggeredItem>
+        </StaggeredContainer>
       </div>
     </section>
   )
@@ -416,30 +354,25 @@ function SolutionSection() {
       {/* Grid background */}
       <div className="absolute inset-0 opacity-50 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px)', backgroundSize: '50px 50px' }} />
 
-      <div className="max-w-[1000px] mx-auto relative">
-        <span className="section-label block text-sm font-medium text-[#7FABC8] text-center mb-4 tracking-wide">
-          {'> '}ceo-lab --solution
-        </span>
-        <h2 className="text-[42px] font-bold leading-[1.1] text-center mb-8">
-          Your Leadership Scoreboard
-        </h2>
-        <p className="text-base text-black/60 leading-relaxed text-center max-w-[48rem] mx-auto mb-12">
-          CEO Lab is a leadership measurement platform built on the Konstantin
-          Method — 60+ frameworks synthesized from 15 years of work with Series
-          A-C founders.
-          <br />
-          <br />
-          We give you what athletes have: a baseline, systematic tracking, and
-          objective feedback on whether you&apos;re improving.
-          <br />
-          <br />
-          Not another content library. Not more frameworks to browse. A
-          scoreboard that shows you — with data — where you stand and where to
-          focus next.
-        </p>
+      <StaggeredContainer triggerOnScroll className="max-w-[1000px] mx-auto relative">
+        <StaggeredItem>
+          <h2 className="text-[42px] font-bold leading-[1.1] text-center mb-8">
+            Your Leadership Scoreboard
+          </h2>
+        </StaggeredItem>
+
+        <StaggeredItem>
+          <p className="text-base text-black/60 leading-relaxed text-center max-w-[48rem] mx-auto mb-12">
+            Built on the Konstantin Method — 60+ frameworks from 15 years
+            working with Series A-C founders. We give you what athletes have:
+            a baseline, systematic tracking, and objective feedback on whether
+            you&apos;re actually improving.
+          </p>
+        </StaggeredItem>
 
         {/* Bento Grid */}
-        <div className="bento-grid">
+        <StaggeredItem>
+          <div className="bento-grid">
           {/* Baseline Assessment - span 3 */}
           <div className="bento-card span-3">
             <div className="pattern-bg" />
@@ -598,7 +531,8 @@ function SolutionSection() {
             </div>
           </div>
         </div>
-      </div>
+        </StaggeredItem>
+      </StaggeredContainer>
     </section>
   )
 }
@@ -606,104 +540,45 @@ function SolutionSection() {
 // ─── Dimensions Accordion ─────────────────────────────────────────
 
 function DimensionsSection() {
-  const [openSections, setOpenSections] = useState<number[]>([])
-
-  function toggleSection(idx: number) {
-    setOpenSections((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
-    )
-  }
-
-  let dimCounter = 0
+  const territoryAccents = ['#7FABC8', '#A6BEA4', '#E08F6A']
 
   return (
     <section className="bg-white py-16 px-8">
       <div className="max-w-[1000px] mx-auto">
-        <span className="section-label block text-sm font-medium text-[#7FABC8] text-center mb-4 tracking-wide">
-          {'> '}ceo-lab --dimensions
-        </span>
         <h2 className="text-[42px] font-bold leading-[1.1] text-center mb-4">
           15 Leadership Dimensions
         </h2>
-        <p className="text-lg text-black/60 text-center mb-16 max-w-[48rem] mx-auto">
-          Click to explore each category of leadership
+        <p className="text-base text-black/60 text-center mb-16 max-w-[48rem] mx-auto">
+          Three territories. Five dimensions each. The assessment reveals the depth.
         </p>
 
-        <div className="max-w-[900px] mx-auto flex flex-col gap-6">
-          {DIMENSIONS.map((section, sectionIdx) => {
-            const isOpen = openSections.includes(sectionIdx)
-            const startNum = dimCounter
-            dimCounter += section.items.length
-
-            return (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {DIMENSIONS.map((section, idx) => (
+            <div
+              key={section.territory}
+              className="bg-white border border-black/8 rounded-xl p-8 relative overflow-hidden"
+            >
               <div
-                key={section.territory}
-                className={`rounded-xl border overflow-hidden relative transition-all duration-300 ${
-                  isOpen ? 'border-black/8' : 'border-black/8'
-                }`}
-              >
-                {/* Left accent bar */}
-                <div
-                  className={`absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-[#7FABC8] to-[#A6BEA4] transition-opacity duration-300 ${
-                    isOpen ? 'opacity-100' : 'opacity-0'
-                  }`}
-                />
-
-                {/* Header */}
-                <button
-                  onClick={() => toggleSection(sectionIdx)}
-                  className="w-full py-8 px-8 pl-10 bg-white hover:bg-black/[0.02] transition-all duration-300 flex justify-between items-center cursor-pointer text-left"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#7FABC8]/10 to-[#A6BEA4]/10 rounded-xl flex items-center justify-center text-lg font-bold text-[#7FABC8]">
-                      {sectionIdx + 1}
-                    </div>
-                    <div>
-                      <h3 className="text-[22px] font-bold mb-1">
-                        {section.territory}
-                      </h3>
-                      <p className="text-sm text-black/60">
-                        {section.subtitle}
-                      </p>
-                    </div>
-                  </div>
-                  <ChevronDown
-                    className={`w-5 h-5 text-black/30 transition-all duration-300 flex-shrink-0 ${
-                      isOpen ? 'rotate-180 text-[#7FABC8]' : ''
-                    }`}
-                  />
-                </button>
-
-                {/* Content */}
-                <div
-                  className={`overflow-hidden transition-all duration-400 ${
-                    isOpen ? 'max-h-[2000px]' : 'max-h-0'
-                  }`}
-                >
-                  <div className="px-8 pl-10 pb-8 flex flex-col gap-3">
-                    {section.items.map((item, itemIdx) => (
-                      <div
-                        key={item.name}
-                        className="flex gap-4 p-4 bg-black/[0.02] rounded-lg"
-                      >
-                        <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-[#7FABC8] to-[#A6BEA4] text-white rounded-md flex items-center justify-center text-sm font-bold">
-                          {startNum + itemIdx + 1}
-                        </div>
-                        <div>
-                          <h4 className="text-[15px] font-semibold mb-1">
-                            {item.name}
-                          </h4>
-                          <p className="text-[13px] text-black/60">
-                            {item.desc}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )
-          })}
+                className="absolute top-0 left-0 right-0 h-1"
+                style={{ backgroundColor: territoryAccents[idx] }}
+              />
+              <h3 className="text-xl font-bold mb-6 mt-2">{section.territory}</h3>
+              <ul className="flex flex-col gap-3">
+                {section.items.map((item) => (
+                  <li
+                    key={item.name}
+                    className="text-[15px] text-black/70 flex items-center gap-2.5"
+                  >
+                    <span
+                      className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: territoryAccents[idx] }}
+                    />
+                    {item.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -737,9 +612,6 @@ function HowItWorks() {
   return (
     <section className="bg-white py-16 px-8">
       <div className="max-w-[1000px] mx-auto">
-        <span className="section-label block text-sm font-medium text-[#7FABC8] text-center mb-4 tracking-wide">
-          {'> '}ceo-lab --process
-        </span>
         <h2 className="text-[42px] font-bold leading-[1.1] text-center mb-8">
           Three Steps to Measurable Growth
         </h2>
@@ -773,112 +645,37 @@ function HowItWorks() {
 
 // ─── Testimonial Carousel ─────────────────────────────────────────
 
-function TestimonialSection() {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [isAnimating, setIsAnimating] = useState(false)
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-
-  function handleSelect(index: number) {
-    if (index === activeIndex || isAnimating) return
-    setIsAnimating(true)
-
-    // After fade-out duration, swap content
-    setTimeout(() => {
-      setActiveIndex(index)
-      // After tiny delay, fade back in
-      setTimeout(() => {
-        setIsAnimating(false)
-      }, 50)
-    }, 200)
-  }
-
-  const current = TESTIMONIALS[activeIndex]
+function CredentialsSection() {
+  const stats = [
+    { value: '15', label: 'Years', desc: 'Working with founders and CEOs' },
+    { value: '60+', label: 'Frameworks', desc: 'Synthesized into the Konstantin Method' },
+    { value: 'Series A-C', label: 'Founders', desc: 'The leaders we build this for' },
+  ]
 
   return (
     <section className="bg-white py-16 px-8">
-      <div className="max-w-[56rem] mx-auto">
-        <div className="flex flex-col items-center gap-10 py-16">
-          {/* Quote */}
-          <div className="relative px-8">
-            <span className="absolute -left-2 -top-12 text-[7rem] font-bold text-black/6 select-none pointer-events-none leading-none">
-              &ldquo;
-            </span>
-            <p
-              className={`text-xl md:text-2xl font-normal text-center max-w-[32rem] leading-relaxed text-black transition-all duration-400 ${
-                isAnimating
-                  ? 'opacity-0 blur-[4px] scale-[0.98]'
-                  : 'opacity-100 blur-0 scale-100'
-              }`}
+      <div className="max-w-[1000px] mx-auto">
+        <h2 className="text-[42px] font-bold leading-[1.1] text-center mb-4">
+          Built on Real Experience
+        </h2>
+        <p className="text-base text-black/60 text-center mb-16 max-w-[48rem] mx-auto">
+          Not theory. Not AI-generated advice. A measurement system built from
+          thousands of hours coaching the people who build companies.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="bg-white border border-black/8 rounded-xl p-8 text-center"
             >
-              {current.quote}
-            </p>
-            <span className="absolute -right-2 -bottom-16 text-[7rem] font-bold text-black/6 select-none pointer-events-none leading-none">
-              &rdquo;
-            </span>
-          </div>
-
-          {/* Footer */}
-          <div className="flex flex-col items-center gap-6 mt-2">
-            <p
-              className={`text-xs text-black/50 tracking-[0.2em] uppercase transition-all duration-500 ${
-                isAnimating ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
-              }`}
-            >
-              {current.role}
-            </p>
-
-            {/* Avatars */}
-            <div className="flex items-center gap-2">
-              {TESTIMONIALS.map((t, idx) => {
-                const isActive = idx === activeIndex
-                const isHovered = idx === hoveredIndex
-
-                return (
-                  <button
-                    key={t.author}
-                    onClick={() => handleSelect(idx)}
-                    onMouseEnter={() => {
-                      if (!isActive) setHoveredIndex(idx)
-                    }}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    className={`relative flex items-center rounded-full transition-all duration-500 border-none cursor-pointer overflow-hidden ${
-                      isActive
-                        ? 'bg-black shadow-lg px-4 py-2 pl-2'
-                        : isHovered
-                          ? 'bg-black/5 px-4 py-2 pl-2'
-                          : 'bg-transparent p-0.5'
-                    }`}
-                  >
-                    <div
-                      className={`relative flex-shrink-0 w-8 h-8 rounded-full overflow-hidden transition-all duration-500 ${
-                        isActive ? 'shadow-[0_0_0_2px_rgba(255,255,255,0.3)]' : ''
-                      }`}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={t.avatar}
-                        alt={t.author}
-                        className={`w-full h-full object-cover transition-transform duration-500 ${
-                          !isActive && isHovered ? 'scale-105' : ''
-                        }`}
-                      />
-                    </div>
-                    <span
-                      className={`text-sm font-medium whitespace-nowrap transition-all duration-500 overflow-hidden ${
-                        isActive
-                          ? 'max-w-[10rem] opacity-100 ml-2 text-white'
-                          : isHovered
-                            ? 'max-w-[10rem] opacity-100 ml-2 text-black'
-                            : 'max-w-0 opacity-0 ml-0'
-                      }`}
-                    >
-                      {t.author}
-                    </span>
-                  </button>
-                )
-              })}
+              <p className="text-[40px] font-bold text-black mb-1">{stat.value}</p>
+              <p className="text-sm font-semibold text-[#7FABC8] uppercase tracking-wider mb-3">
+                {stat.label}
+              </p>
+              <p className="text-sm text-black/60">{stat.desc}</p>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
@@ -891,9 +688,6 @@ function PricingSection() {
   return (
     <section className="bg-white py-16 px-8">
       <div className="max-w-[1000px] mx-auto">
-        <span className="section-label block text-sm font-medium text-[#7FABC8] text-center mb-4 tracking-wide">
-          {'> '}ceo-lab --pricing
-        </span>
         <div className="text-center max-w-[900px] mx-auto">
           <h2 className="text-[42px] font-bold leading-[1.2] mb-6">
             &euro;100/Month for Complete Leadership Tracking
@@ -1093,7 +887,7 @@ export default function LandingPage() {
       <SolutionSection />
       <DimensionsSection />
       <HowItWorks />
-      <TestimonialSection />
+      <CredentialsSection />
       <PricingSection />
       <FAQSection />
       <FinalCTA />

@@ -8,12 +8,9 @@ const TERRITORY_CONFIG = {
 
 type Territory = keyof typeof TERRITORY_CONFIG
 
-function getHeatColor(percentage: number): { bg: string; label: string } {
-  if (percentage <= 20) return { bg: '#E57373', label: 'Critical gap' }
-  if (percentage <= 40) return { bg: '#FFB74D', label: 'Early development' }
-  if (percentage <= 60) return { bg: '#AED581', label: 'Building' }
-  if (percentage <= 80) return { bg: '#81C784', label: 'Strong' }
-  return { bg: '#7FABC8', label: 'Mastery' }
+function getOpacity(percentage: number): number {
+  // Map 0-100% to 0.2-1.0 opacity for territory accent color
+  return 0.2 + (Math.max(0, Math.min(100, percentage)) / 100) * 0.8
 }
 
 interface DimensionHeatmapProps {
@@ -57,8 +54,8 @@ export function DimensionHeatmap({ dimensions }: DimensionHeatmapProps) {
           {/* Dimension rows */}
           <div className="space-y-2">
             {group.items.map((dim) => {
-              const heat = getHeatColor(dim.percentage)
               const clamped = Math.max(0, Math.min(100, dim.percentage))
+              const opacity = getOpacity(dim.percentage)
 
               return (
                 <div
@@ -70,13 +67,14 @@ export function DimensionHeatmap({ dimensions }: DimensionHeatmapProps) {
                     {dim.name}
                   </div>
 
-                  {/* Heat bar */}
+                  {/* Heat bar — territory accent color at varying opacity */}
                   <div className="relative flex-1 h-6 rounded bg-[#F7F3ED] overflow-hidden">
                     <div
                       className="h-full rounded transition-all duration-500 ease-out"
                       style={{
                         width: `${clamped}%`,
-                        backgroundColor: heat.bg,
+                        backgroundColor: group.config.accent,
+                        opacity,
                       }}
                     />
                   </div>
@@ -97,24 +95,19 @@ export function DimensionHeatmap({ dimensions }: DimensionHeatmapProps) {
         </div>
       ))}
 
-      {/* Legend */}
+      {/* Legend — simplified with territory colors */}
       <div className="flex flex-wrap items-center gap-4 pt-3 border-t border-black/10">
+        <span className="text-[10px] text-black/40">Opacity indicates score level:</span>
         {[
-          { range: '0-20%', color: '#E57373', label: 'Critical gap' },
-          { range: '21-40%', color: '#FFB74D', label: 'Early development' },
-          { range: '41-60%', color: '#AED581', label: 'Building' },
-          { range: '61-80%', color: '#81C784', label: 'Strong' },
-          { range: '81-100%', color: '#7FABC8', label: 'Mastery' },
+          { range: '0-20%', label: 'Critical gap' },
+          { range: '21-40%', label: 'Early development' },
+          { range: '41-60%', label: 'Building' },
+          { range: '61-80%', label: 'Strong' },
+          { range: '81-100%', label: 'Mastery' },
         ].map((item) => (
-          <div key={item.range} className="flex items-center gap-1.5">
-            <div
-              className="w-3 h-3 rounded-sm"
-              style={{ backgroundColor: item.color }}
-            />
-            <span className="text-[10px] text-black/60">
-              {item.range} {item.label}
-            </span>
-          </div>
+          <span key={item.range} className="text-[10px] text-black/50">
+            {item.range} {item.label}
+          </span>
         ))}
       </div>
     </div>
