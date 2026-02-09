@@ -196,8 +196,8 @@ function Hero() {
 
   return (
     <section className="relative bg-white overflow-hidden">
-      {/* Grid + dots background */}
-      <div className="hero-bg absolute inset-0" />
+      {/* Grid + dots background — fades out at bottom */}
+      <div className="hero-bg absolute inset-0" style={{ maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)' }} />
 
       <div
         ref={containerRef}
@@ -276,7 +276,7 @@ function Hero() {
               transformStyle: 'preserve-3d',
             }}
           >
-            <div className="hero-3d-card-inner h-full w-full border-4 border-[#6C6C6C] bg-[#222] rounded-[30px] shadow-2xl overflow-hidden flex items-center justify-center">
+            <div className="hero-3d-card-inner h-full w-full border-4 border-[#6C6C6C] bg-[#222] rounded-[30px] shadow-lg shadow-black/10 overflow-hidden flex items-center justify-center">
               <Image
                 src="/dashboard-preview.svg"
                 alt="CEO Lab Dashboard"
