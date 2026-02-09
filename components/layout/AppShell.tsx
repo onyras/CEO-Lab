@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: DashboardIcon },
-  { href: '/results', label: 'Results', icon: ResultsIcon },
+  { href: '/results', label: 'CEO Lab', icon: ResultsIcon },
 ]
 
 function DashboardIcon({ active }: { active: boolean }) {
