@@ -798,8 +798,141 @@ function OverviewTab({ data }: { data: DashboardData }) {
 
 // ─── Dimensions Tab ───────────────────────────────────────────────
 
+// ─── Dimension Insight Content ────────────────────────────────────
+
+const MICRO_ACTIONS: Record<string, string> = {
+  'LY.1': 'Before your next decision, write down what emotion is driving it.',
+  'LY.2': 'Next time you feel triggered, name the emotion out loud before responding.',
+  'LY.3': 'Start tomorrow with 2 minutes of silence before checking your phone.',
+  'LY.4': 'Block 90 minutes this week for your single highest-leverage task.',
+  'LY.5': 'Audit your calendar — cancel one meeting that doesn\'t need you.',
+  'LT.1': 'Ask one team member: "What\'s the thing no one is saying?"',
+  'LT.2': 'Have the conversation you\'ve been postponing. Today.',
+  'LT.3': 'For the next issue, ask "why" three times before jumping to solutions.',
+  'LT.4': 'Review your team\'s weekly rhythm — cut or shorten one meeting.',
+  'LT.5': 'Delegate one thing you usually do yourself. Fully. Don\'t check on it.',
+  'LO.1': 'Write your strategy in one sentence. If you can\'t, that\'s your signal.',
+  'LO.2': 'Name three behaviors you want to see more of. Are you modeling them?',
+  'LO.3': 'Draw your org chart for 12 months from now. What\'s different?',
+  'LO.4': 'Ask yourself: what got you here that won\'t get you there?',
+  'LO.5': 'Identify one thing that\'s working well and protect it from change.',
+}
+
+function getScoreInsight(dimensionId: string, score: number): string {
+  const insights: Record<string, Record<string, string>> = {
+    'LY.1': {
+      low: 'Patterns are running you — you\'re reacting before you realize it.',
+      mid: 'You see your patterns but they still drive you under pressure.',
+      high: 'Strong self-awareness. Now model it — help your team see their own.',
+    },
+    'LY.2': {
+      low: 'Emotions are either hijacking your decisions or being suppressed entirely.',
+      mid: 'You manage emotions in calm moments but lose precision under stress.',
+      high: 'You navigate emotions well. Your team reads your composure as safety.',
+    },
+    'LY.3': {
+      low: 'Constant reactivity is clouding your judgment. Stillness is a skill to build.',
+      mid: 'You can find calm but it\'s fragile. Pressure still pulls you off center.',
+      high: 'You stay grounded under fire. This is the foundation of everything else.',
+    },
+    'LY.4': {
+      low: 'You\'re spending time on things anyone could do. Your zone of genius is unprotected.',
+      mid: 'You know what matters but aren\'t fully committed to it yet.',
+      high: 'Clear purpose drives your decisions. You\'re building something only you can build.',
+    },
+    'LY.5': {
+      low: 'You\'re burning capacity that you\'ll need later. This is a sustainability risk.',
+      mid: 'You protect your energy sometimes but let urgency override your boundaries.',
+      high: 'You\'ve built systems to sustain performance. This is a competitive advantage.',
+    },
+    'LT.1': {
+      low: 'Truth is traveling slowly in your team. People are editing what they tell you.',
+      mid: 'Trust exists but isn\'t deep enough for real candor under pressure.',
+      high: 'Your team tells you the truth fast. That\'s the most valuable thing a leader can build.',
+    },
+    'LT.2': {
+      low: 'Avoided conversations are creating hidden debt. Problems are compounding.',
+      mid: 'You have hard conversations but sometimes too late or too softly.',
+      high: 'You address issues directly and early. Relationships grow from it, not despite it.',
+    },
+    'LT.3': {
+      low: 'You\'re solving symptoms. The real problems are one or two layers deeper.',
+      mid: 'You sense there\'s more beneath the surface but don\'t always dig deep enough.',
+      high: 'You consistently find the root cause. Your team brings you the hard puzzles.',
+    },
+    'LT.4': {
+      low: 'Your team lacks clear rhythms. People don\'t know what\'s expected or when.',
+      mid: 'Basic structures exist but aren\'t consistent enough to create momentum.',
+      high: 'Your team runs on clear systems. You\'ve freed yourself to think, not manage.',
+    },
+    'LT.5': {
+      low: 'You\'re either too involved or too absent. Boundaries need definition.',
+      mid: 'You know you should step back but struggle to let go of ownership.',
+      high: 'You\'ve found the line between leading and doing. Your team feels autonomous.',
+    },
+    'LO.1': {
+      low: 'Your strategy isn\'t clear enough for others to make decisions without you.',
+      mid: 'The vision is there but the choices about what NOT to do aren\'t sharp.',
+      high: 'Crisp strategy. Your team makes the same decisions you would in your absence.',
+    },
+    'LO.2': {
+      low: 'Culture is happening to you, not being designed by you. Values are aspirational, not lived.',
+      mid: 'You care about culture but haven\'t codified it into observable behaviors.',
+      high: 'You\'ve designed the invisible forces. Culture is a system, not a poster.',
+    },
+    'LO.3': {
+      low: 'Your org structure reflects your past, not your future. Restructure is overdue.',
+      mid: 'Structure mostly works but creates friction at the seams between teams.',
+      high: 'Your organization is built for where you\'re going. Structure enables, not constrains.',
+    },
+    'LO.4': {
+      low: 'The CEO your company needed last year isn\'t the one it needs next year. Time to evolve.',
+      mid: 'You\'re growing but parts of your old operating mode are holding you back.',
+      high: 'You\'re actively becoming who your company needs next. That\'s rare and valuable.',
+    },
+    'LO.5': {
+      low: 'Change is either too disruptive or not happening. Neither is sustainable.',
+      mid: 'You can drive change but sometimes break what was working in the process.',
+      high: 'You balance preservation and innovation. Change lands without casualties.',
+    },
+  }
+
+  const dimInsights = insights[dimensionId]
+  if (!dimInsights) return ''
+  if (score < 40) return dimInsights.low
+  if (score < 65) return dimInsights.mid
+  return dimInsights.high
+}
+
+type DimPriority = 'strength' | 'growth' | 'quick-win' | null
+
+function getDimPriorities(scores: DimensionScoreData[]): Record<string, DimPriority> {
+  const sorted = [...scores].sort((a, b) => a.score - b.score)
+  const result: Record<string, DimPriority> = {}
+
+  // Bottom 3 = growth areas
+  sorted.slice(0, 3).forEach((d) => { result[d.dimensionId] = 'growth' })
+  // Top 3 = strengths
+  sorted.slice(-3).forEach((d) => { result[d.dimensionId] = 'strength' })
+  // Scores 55-72 not already tagged = quick wins (close to leveling up)
+  sorted.forEach((d) => {
+    if (!result[d.dimensionId] && d.score >= 55 && d.score <= 72) {
+      result[d.dimensionId] = 'quick-win'
+    }
+  })
+
+  return result
+}
+
+const PRIORITY_CONFIG = {
+  strength: { label: 'Strength', color: 'bg-[#A6BEA4]/15 text-[#6B8E6B]' },
+  growth: { label: 'Growth Area', color: 'bg-[#E08F6A]/15 text-[#C0714E]' },
+  'quick-win': { label: 'Quick Win', color: 'bg-[#7FABC8]/15 text-[#5B8DAD]' },
+}
+
 function DimensionsTab({ data }: { data: DashboardData }) {
   const [expanded, setExpanded] = useState<DimensionId | null>(null)
+  const priorities = getDimPriorities(data.dimensionScores)
 
   const territories: Territory[] = ['leading_yourself', 'leading_teams', 'leading_organizations']
 
@@ -833,6 +966,9 @@ function DimensionsTab({ data }: { data: DashboardData }) {
                 const isExpanded = expanded === dim.dimensionId
                 const dimConfig = getDimension(dim.dimensionId)
                 const score = Math.round(dim.score)
+                const priority = priorities[dim.dimensionId]
+                const insight = getScoreInsight(dim.dimensionId, score)
+                const action = MICRO_ACTIONS[dim.dimensionId]
 
                 return (
                   <div key={dim.dimensionId}>
@@ -840,15 +976,17 @@ function DimensionsTab({ data }: { data: DashboardData }) {
                       onClick={() => setExpanded(isExpanded ? null : dim.dimensionId)}
                       className="w-full p-4 rounded-xl hover:bg-[#F7F3ED]/50 transition-colors text-left"
                     >
-                      {/* Name + description */}
-                      <div className="flex items-start justify-between gap-4 mb-2">
-                        <div className="min-w-0">
+                      {/* Name + priority badge + score */}
+                      <div className="flex items-start justify-between gap-3 mb-1">
+                        <div className="flex items-center gap-2 min-w-0 flex-wrap">
                           <p className="text-sm font-semibold text-black">{dim.name}</p>
-                          <p className="text-xs text-black/45 mt-0.5 leading-relaxed">
-                            {dimConfig.coreQuestion}
-                          </p>
+                          {priority && (
+                            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${PRIORITY_CONFIG[priority].color}`}>
+                              {PRIORITY_CONFIG[priority].label}
+                            </span>
+                          )}
                         </div>
-                        <div className="flex items-center gap-2 flex-shrink-0 pt-0.5">
+                        <div className="flex items-center gap-2 flex-shrink-0">
                           <span className="text-lg font-bold text-black">{score}%</span>
                           <svg
                             className={`w-4 h-4 text-black/25 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
@@ -859,8 +997,8 @@ function DimensionsTab({ data }: { data: DashboardData }) {
                         </div>
                       </div>
 
-                      {/* Score bar + verbal label */}
-                      <div className="flex items-center gap-3">
+                      {/* Score bar */}
+                      <div className="flex items-center gap-3 mb-2">
                         <div className="flex-1 bg-black/[0.04] rounded-full h-2.5 overflow-hidden">
                           <div
                             className="h-full rounded-full transition-all duration-500 ease-out"
@@ -879,14 +1017,29 @@ function DimensionsTab({ data }: { data: DashboardData }) {
                           {dim.label}
                         </span>
                       </div>
+
+                      {/* Score insight — always visible */}
+                      <p className="text-xs text-black/50 leading-relaxed">
+                        {insight}
+                      </p>
                     </button>
 
-                    {/* Expanded detail */}
+                    {/* Expanded: micro-action + link */}
                     {isExpanded && (
-                      <div className="mx-4 mb-3 pl-4 border-l-2 py-3" style={{ borderColor: color }}>
+                      <div className="mx-4 mb-3 pl-4 border-l-2 py-3 space-y-3" style={{ borderColor: color }}>
+                        {action && (
+                          <div className="bg-[#F7F3ED] rounded-lg p-3">
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-black/40 mb-1">
+                              Try this week
+                            </p>
+                            <p className="text-xs text-black/70 leading-relaxed">
+                              {action}
+                            </p>
+                          </div>
+                        )}
                         <a
                           href="/results"
-                          className="text-xs font-medium text-black/60 hover:text-black transition-colors"
+                          className="text-xs font-medium text-black/50 hover:text-black transition-colors inline-block"
                         >
                           View full analysis in Results →
                         </a>
