@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: DashboardIcon },
   { href: '/results', label: 'Results', icon: ResultsIcon },
-  { href: '/assessment/baseline', label: 'Assessment', icon: AssessmentIcon },
+  { href: '/assessment', label: 'Assessment', icon: AssessmentIcon },
 ]
 
 function DashboardIcon({ active }: { active: boolean }) {
