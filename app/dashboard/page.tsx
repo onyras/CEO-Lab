@@ -147,26 +147,38 @@ export default function DashboardPage() {
         return
       }
 
-      const { data: session } = await supabase
+      // First, look for a completed session
+      const { data: completedSession } = await supabase
         .from('assessment_sessions')
         .select('id, completed_at, stage_reached, clmi, bsi')
         .eq('ceo_id', user.id)
         .eq('version', '4.0')
-        .order('created_at', { ascending: false })
+        .not('completed_at', 'is', null)
+        .order('completed_at', { ascending: false })
         .limit(1)
         .maybeSingle()
 
-      const hasBaseline = !!session
-      const baselineComplete = !!session?.completed_at
-      const stageReached = session?.stage_reached || 0
+      // If we have a completed session, use it for the full dashboard
+      const session = completedSession
 
-      if (!hasBaseline) {
-        setData({ ...emptyData })
-        setDashboardState('baseline-pending')
-        return
-      }
+      if (!session) {
+        // No completed session — check for any in-progress session
+        const { data: latestSession } = await supabase
+          .from('assessment_sessions')
+          .select('id, completed_at, stage_reached, clmi, bsi')
+          .eq('ceo_id', user.id)
+          .eq('version', '4.0')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle()
 
-      if (!baselineComplete) {
+        if (!latestSession) {
+          setData({ ...emptyData })
+          setDashboardState('baseline-pending')
+          return
+        }
+
+        const stageReached = latestSession.stage_reached || 0
         setData({ ...emptyData, stageReached })
         setDashboardState('baseline-in-progress')
         return
@@ -269,7 +281,7 @@ export default function DashboardPage() {
         mirrorCount: mirrorCount ?? 0,
         bsi: session.bsi ?? null,
         lastAssessmentDate: session.completed_at,
-        stageReached,
+        stageReached: session.stage_reached || 3,
       })
       setDashboardState('complete')
     } catch (err: any) {

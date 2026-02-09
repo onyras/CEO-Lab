@@ -784,16 +784,16 @@ export default function ResultsPage() {
             imFlagged={imFlagged}
           />
 
-          {/* Underline-style tab bar */}
-          <div className="flex gap-6 border-b border-black/10 mb-6">
+          {/* Tab bar */}
+          <div className="flex gap-1 p-1.5 bg-black/[0.04] rounded-xl mb-8">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`pb-3 text-sm font-medium transition-all border-b-2 -mb-[1px] ${
+                className={`flex-1 py-3 px-4 rounded-lg text-base font-semibold transition-all ${
                   activeTab === tab.key
-                    ? 'border-black text-black'
-                    : 'border-transparent text-black/40 hover:text-black/60'
+                    ? 'bg-white text-black shadow-sm'
+                    : 'text-black/40 hover:text-black/60'
                 }`}
               >
                 {tab.label}
