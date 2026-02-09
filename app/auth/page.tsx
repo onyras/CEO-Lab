@@ -10,13 +10,26 @@ export default function AuthPage() {
   const [message, setMessage] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
+  // Read hookSessionId from localStorage (set by hook assessment)
+  const getCallbackUrl = () => {
+    const base = `${window.location.origin}/auth/callback`
+    try {
+      const stored = localStorage.getItem('ceolab_hook_results')
+      if (stored) {
+        const { hookSessionId } = JSON.parse(stored)
+        if (hookSessionId) return `${base}?hookSessionId=${hookSessionId}`
+      }
+    } catch {}
+    return base
+  }
+
   const handleGoogleSignIn = async () => {
     try {
       const supabase = createClient()
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: getCallbackUrl(),
         },
       })
       if (error) throw error
@@ -36,7 +49,7 @@ export default function AuthPage() {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: getCallbackUrl(),
         },
       })
 

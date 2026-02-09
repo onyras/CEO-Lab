@@ -2,9 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { hookItems } from '@/lib/hook-questions'
-import { getDimension } from '@/lib/constants'
-import { getTerritoryArcNarrative, buildHookInsight, HOOK_NEXT_STEP } from '@/lib/report-content'
-import type { DimensionId, Territory } from '@/types/assessment'
+import type { Territory } from '@/types/assessment'
 
 // ─── Territory display config ────────────────────────────────────────
 
@@ -16,18 +14,11 @@ const TERRITORY_DISPLAY: Record<Territory, { label: string; color: string }> = {
 
 // ─── Types ───────────────────────────────────────────────────────────
 
-type Phase = 'intro' | 'questions' | 'submitting' | 'results'
+type Phase = 'intro' | 'questions' | 'submitting'
 
 interface ResponseData {
   value: number
   responseTimeMs: number
-}
-
-interface HookResults {
-  lyScore: number
-  ltScore: number
-  loScore: number
-  sharpestDimension: DimensionId
 }
 
 // ─── Component ───────────────────────────────────────────────────────
@@ -38,7 +29,6 @@ export default function HookAssessmentPage() {
   const [responses, setResponses] = useState<Map<string, ResponseData>>(new Map())
   const [displayedAt, setDisplayedAt] = useState<number>(Date.now())
   const [submitting, setSubmitting] = useState(false)
-  const [results, setResults] = useState<HookResults | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   // Track when a new question is shown
@@ -115,13 +105,17 @@ export default function HookAssessmentPage() {
         throw new Error(json.error || 'Failed to submit assessment')
       }
 
-      setResults({
+      // Save hook results to localStorage for the dashboard to pick up
+      localStorage.setItem('ceolab_hook_results', JSON.stringify({
+        hookSessionId: json.hookSessionId,
         lyScore: json.scores.lyScore,
         ltScore: json.scores.ltScore,
         loScore: json.scores.loScore,
         sharpestDimension: json.scores.sharpestDimension,
-      })
-      setPhase('results')
+      }))
+
+      // Redirect to auth — results will show on dashboard after sign-in
+      window.location.href = '/auth'
     } catch (err: any) {
       console.error('Hook submission error:', err)
       setError(err.message || 'Something went wrong. Please try again.')
@@ -198,172 +192,6 @@ export default function HookAssessmentPage() {
             <div className="w-8 h-8 border-2 border-black/20 border-t-black rounded-full animate-spin mx-auto" />
           </div>
           <p className="text-black/60 text-lg">Calculating your results...</p>
-        </div>
-      </div>
-    )
-  }
-
-  // ─── Results Screen ──────────────────────────────────────────────
-
-  if (phase === 'results' && results) {
-    const sharpestDim = getDimension(results.sharpestDimension)
-    const sharpestTerritory = TERRITORY_DISPLAY[sharpestDim.territory]
-
-    // Determine if the sharpest dimension is a low score by checking
-    // the actual response value for the hook item that maps to it
-    const sharpestHookItem = hookItems.find(hi =>
-      hi.dimensions.includes(results.sharpestDimension)
-    )
-    const sharpestResponseValue = sharpestHookItem
-      ? responses.get(sharpestHookItem.id)?.value ?? 2.5
-      : 2.5
-    const isLow = sharpestResponseValue < 2.5
-
-    const territories: { key: Territory; label: string; score: number; color: string }[] = [
-      {
-        key: 'leading_yourself' as Territory,
-        label: 'Leading Yourself',
-        score: results.lyScore,
-        color: '#7FABC8',
-      },
-      {
-        key: 'leading_teams' as Territory,
-        label: 'Leading Teams',
-        score: results.ltScore,
-        color: '#A6BEA4',
-      },
-      {
-        key: 'leading_organizations' as Territory,
-        label: 'Leading Organizations',
-        score: results.loScore,
-        color: '#E08F6A',
-      },
-    ]
-
-    return (
-      <div className="min-h-screen bg-[#F7F3ED] px-6 py-12">
-        <div className="max-w-2xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <p className="text-sm font-semibold tracking-widest uppercase text-black/40 mb-3">
-              Your Results
-            </p>
-            <h1 className="text-4xl md:text-5xl font-bold text-black tracking-tight mb-3">
-              Leadership Snapshot
-            </h1>
-            <p className="text-black/60 text-lg">
-              Here is how you scored across the three territories.
-            </p>
-          </div>
-
-          {/* Section 1: Your Territory Snapshot */}
-          <div className="bg-white rounded-lg p-8 border border-black/10 mb-6">
-            <h2 className="text-lg font-bold text-black mb-6">Your Territory Snapshot</h2>
-
-            {/* Territory bar chart */}
-            <div className="space-y-6 mb-8">
-              {territories.map(t => (
-                <div key={t.key}>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                        style={{ backgroundColor: t.color }}
-                      />
-                      <span className="text-sm font-semibold text-black">{t.label}</span>
-                    </div>
-                    <span className="text-sm font-bold text-black">{Math.round(t.score)}%</span>
-                  </div>
-                  <div className="w-full bg-black/5 rounded-full h-3">
-                    <div
-                      className="h-3 rounded-full transition-all duration-1000 ease-out"
-                      style={{
-                        width: `${Math.max(2, t.score)}%`,
-                        backgroundColor: t.color,
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Territory arc narratives */}
-            <div className="space-y-4">
-              {territories.map(t => (
-                <div key={t.key} className="flex gap-3">
-                  <span
-                    className="w-1 flex-shrink-0 rounded-full mt-1"
-                    style={{ backgroundColor: t.color }}
-                  />
-                  <p className="text-sm text-black/70 leading-relaxed">
-                    <span className="font-semibold text-black">{t.label}:</span>{' '}
-                    {getTerritoryArcNarrative(t.key, t.score)}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Section 2: Your Sharpest Insight */}
-          <div className="bg-white rounded-lg p-8 border border-black/10 mb-6">
-            <h2 className="text-lg font-bold text-black mb-4">Your Sharpest Insight</h2>
-
-            <div className="flex items-center gap-2 mb-4">
-              <span
-                className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold text-white"
-                style={{ backgroundColor: sharpestTerritory.color }}
-              >
-                {sharpestTerritory.label}
-              </span>
-            </div>
-
-            <h3 className="text-xl font-bold text-black mb-3">{sharpestDim.name}</h3>
-
-            <p className="text-black/70 leading-relaxed mb-4">
-              {buildHookInsight(sharpestDim.name, sharpestResponseValue, isLow)}
-            </p>
-
-            <div className="bg-[#F7F3ED] rounded-lg p-4">
-              <p className="text-xs font-semibold tracking-widest uppercase text-black/40 mb-1">
-                Core Question
-              </p>
-              <p className="text-sm text-black/80 italic leading-relaxed">
-                {sharpestDim.coreQuestion}
-              </p>
-            </div>
-          </div>
-
-          {/* Section 3: Your Next Step */}
-          <div className="bg-white rounded-lg p-8 border border-black/10 mb-8">
-            <h2 className="text-lg font-bold text-black mb-4">Your Next Step</h2>
-            <p className="text-black/70 leading-relaxed mb-6">
-              {HOOK_NEXT_STEP}
-            </p>
-            <div className="text-center">
-              <a
-                href="/auth"
-                className="inline-block bg-black text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-black/90 transition-colors"
-              >
-                Take the Full Assessment
-              </a>
-            </div>
-          </div>
-
-          {/* Retake */}
-          <div className="text-center mt-6">
-            <button
-              onClick={() => {
-                setPhase('intro')
-                setCurrentIndex(0)
-                setResponses(new Map())
-                setResults(null)
-                setError(null)
-              }}
-              className="text-sm text-black/40 hover:text-black/70 transition-colors"
-            >
-              Retake assessment
-            </button>
-          </div>
         </div>
       </div>
     )

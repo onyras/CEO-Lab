@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
 import { getDimension, TERRITORY_CONFIG } from '@/lib/constants'
 import { getVerbalLabel } from '@/lib/scoring'
+import { buildHookInsight } from '@/lib/report-content'
 import { AppShell } from '@/components/layout/AppShell'
 import { ScoreRing } from '@/components/visualizations/ScoreRing'
 import type { DimensionId, Territory, VerbalLabel } from '@/types/assessment'
@@ -15,6 +16,15 @@ const TERRITORY_COLORS: Record<Territory, string> = {
   leading_yourself: '#7FABC8',
   leading_teams: '#A6BEA4',
   leading_organizations: '#E08F6A',
+}
+
+// ─── Hook Results Types ────────────────────────────────────────────
+
+interface HookResultsData {
+  lyScore: number
+  ltScore: number
+  loScore: number
+  sharpestDimension: DimensionId
 }
 
 // ─── Types ────────────────────────────────────────────────────────
@@ -97,6 +107,7 @@ export default function DashboardPage() {
   const [dashboardState, setDashboardState] = useState<DashboardState>('loading')
   const [error, setError] = useState<string | null>(null)
   const [data, setData] = useState<DashboardData | null>(null)
+  const [userId, setUserId] = useState<string | undefined>(undefined)
 
   const loadDashboard = useCallback(async () => {
     try {
@@ -111,6 +122,8 @@ export default function DashboardPage() {
         router.push('/auth')
         return
       }
+
+      setUserId(user.id)
 
       const userName = user.user_metadata?.full_name
         || user.user_metadata?.name
@@ -321,11 +334,11 @@ export default function DashboardPage() {
   }
 
   if (dashboardState === 'free') {
-    return <FreeUserView userName={data?.userName || 'CEO'} />
+    return <FreeUserView userName={data?.userName || 'CEO'} userId={userId} />
   }
 
   if (dashboardState === 'baseline-pending') {
-    return <BaselinePendingView userName={data?.userName || 'CEO'} />
+    return <BaselinePendingView userName={data?.userName || 'CEO'} userId={userId} />
   }
 
   if (dashboardState === 'baseline-in-progress') {
@@ -338,14 +351,147 @@ export default function DashboardPage() {
 }
 
 // ═══════════════════════════════════════════════════════════════════
+// Hook Results Banner — shown above FreeUserView / BaselinePendingView
+// ═══════════════════════════════════════════════════════════════════
+
+function HookResultsBanner({ userId }: { userId?: string }) {
+  const [hookData, setHookData] = useState<HookResultsData | null>(null)
+
+  useEffect(() => {
+    async function loadHookResults() {
+      // 1. Check localStorage first
+      try {
+        const stored = localStorage.getItem('ceolab_hook_results')
+        if (stored) {
+          const parsed = JSON.parse(stored)
+          setHookData({
+            lyScore: parsed.lyScore,
+            ltScore: parsed.ltScore,
+            loScore: parsed.loScore,
+            sharpestDimension: parsed.sharpestDimension,
+          })
+          // Clear localStorage — data is now in DB (claimed via auth callback)
+          localStorage.removeItem('ceolab_hook_results')
+          return
+        }
+      } catch {}
+
+      // 2. Fallback: query DB for this user's hook session
+      if (userId) {
+        try {
+          const supabase = createClient()
+          const { data } = await supabase
+            .from('hook_sessions')
+            .select('ly_score, lt_score, lo_score, sharpest_dimension')
+            .eq('ceo_id', userId)
+            .order('completed_at', { ascending: false })
+            .limit(1)
+            .single()
+
+          if (data) {
+            setHookData({
+              lyScore: data.ly_score,
+              ltScore: data.lt_score,
+              loScore: data.lo_score,
+              sharpestDimension: data.sharpest_dimension as DimensionId,
+            })
+          }
+        } catch {}
+      }
+    }
+
+    loadHookResults()
+  }, [userId])
+
+  if (!hookData) return null
+
+  const sharpestDim = getDimension(hookData.sharpestDimension)
+  const sharpestTerritoryColor = TERRITORY_COLORS[sharpestDim.territory]
+  const sharpestTerritoryLabel = TERRITORY_CONFIG[sharpestDim.territory].displayLabel
+
+  // Determine if low by checking the territory score for the sharpest dimension
+  const territoryScoreMap: Record<Territory, number> = {
+    leading_yourself: hookData.lyScore,
+    leading_teams: hookData.ltScore,
+    leading_organizations: hookData.loScore,
+  }
+  const isLow = territoryScoreMap[sharpestDim.territory] < 50
+
+  const territories = [
+    { label: 'Leading Yourself', score: hookData.lyScore, color: '#7FABC8' },
+    { label: 'Leading Teams', score: hookData.ltScore, color: '#A6BEA4' },
+    { label: 'Leading Organizations', score: hookData.loScore, color: '#E08F6A' },
+  ]
+
+  return (
+    <div className="bg-white rounded-2xl p-8 border border-black/5 mb-6">
+      <p className="text-sm font-semibold tracking-widest uppercase text-black/40 mb-1">
+        Your Leadership Snapshot
+      </p>
+      <p className="text-xs text-black/30 mb-6">From the 10-question hook assessment</p>
+
+      {/* Territory bars */}
+      <div className="space-y-4 mb-6">
+        {territories.map(t => (
+          <div key={t.label}>
+            <div className="flex items-center justify-between mb-1.5">
+              <div className="flex items-center gap-2">
+                <span
+                  className="w-2 h-2 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: t.color }}
+                />
+                <span className="text-sm font-medium text-black">{t.label}</span>
+              </div>
+              <span className="text-sm font-bold text-black">{Math.round(t.score)}%</span>
+            </div>
+            <div className="w-full bg-black/5 rounded-full h-2.5">
+              <div
+                className="h-2.5 rounded-full transition-all duration-1000 ease-out"
+                style={{
+                  width: `${Math.max(2, t.score)}%`,
+                  backgroundColor: t.color,
+                }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Sharpest dimension insight */}
+      <div className="bg-[#F7F3ED]/60 rounded-xl p-5 mb-6">
+        <div className="flex items-center gap-2 mb-2">
+          <span
+            className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold text-white"
+            style={{ backgroundColor: sharpestTerritoryColor }}
+          >
+            {sharpestTerritoryLabel}
+          </span>
+          <span className="text-sm font-semibold text-black">{sharpestDim.name}</span>
+        </div>
+        <p className="text-sm text-black/60 leading-relaxed">
+          {buildHookInsight(sharpestDim.name, isLow ? 1 : 4, isLow)}
+        </p>
+      </div>
+
+      <p className="text-sm text-black/50 leading-relaxed">
+        Take the full assessment for your complete leadership profile across all 15 dimensions.
+      </p>
+    </div>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════════
 // STATE 1: Free User — Conversion page with grayed ScoreRings
 // ═══════════════════════════════════════════════════════════════════
 
-function FreeUserView({ userName }: { userName: string }) {
+function FreeUserView({ userName, userId }: { userName: string; userId?: string }) {
   return (
     <AppShell>
       <div className="px-6 py-12">
         <div className="max-w-3xl mx-auto">
+          {/* Hook results banner */}
+          <HookResultsBanner userId={userId} />
+
           {/* Grayed-out score visualization */}
           <div className="text-center mb-12">
             <p className="text-sm font-semibold tracking-widest uppercase text-black/40 mb-6">CEO Lab</p>
@@ -441,7 +587,7 @@ function FreeUserView({ userName }: { userName: string }) {
 // STATE 2a: Subscribed, Baseline Not Started
 // ═══════════════════════════════════════════════════════════════════
 
-function BaselinePendingView({ userName }: { userName: string }) {
+function BaselinePendingView({ userName, userId }: { userName: string; userId?: string }) {
   return (
     <AppShell>
       <div className="px-6 py-12">
@@ -451,6 +597,11 @@ function BaselinePendingView({ userName }: { userName: string }) {
             <h1 className="text-3xl md:text-4xl font-bold text-black tracking-tight">
               Welcome, {userName}
             </h1>
+          </div>
+
+          {/* Hook results banner */}
+          <div className="max-w-2xl mx-auto">
+            <HookResultsBanner userId={userId} />
           </div>
 
           <div className="bg-white rounded-2xl p-10 md:p-14 border border-black/5 max-w-2xl mx-auto text-center">
