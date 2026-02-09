@@ -710,46 +710,50 @@ function OverviewTab({ data }: { data: DashboardData }) {
 
   return (
     <div>
-      {/* CLMI ScoreRing + Territory rings */}
+      {/* CLMI ScoreRing (left) + Territory cards stacked (right) */}
       <div className="bg-white rounded-2xl p-8 md:p-10 border border-black/5 mb-6">
-        <div className="flex flex-col items-center mb-8">
-          <p className="text-sm text-black/50 mb-4">CEO Leadership Maturity Index</p>
-          <ScoreRing
-            value={data.clmi}
-            size={180}
-            strokeWidth={12}
-            color="#000"
-            label={data.clmiLabel}
-          />
-          <p className="text-sm text-black/50 mt-4 max-w-md text-center">
-            {getClmiInterpretation(data.clmi)}
-          </p>
-          {data.lastAssessmentDate && (
-            <p className="text-xs text-black/30 mt-2">
-              Assessed {new Date(data.lastAssessmentDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+        <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
+          {/* Left: CLMI */}
+          <div className="flex flex-col items-center text-center flex-shrink-0">
+            <p className="text-sm text-black/50 mb-4">CEO Leadership Maturity Index</p>
+            <ScoreRing
+              value={data.clmi}
+              size={200}
+              strokeWidth={14}
+              color="#000"
+              label={data.clmiLabel}
+            />
+            <p className="text-sm text-black/50 mt-4 max-w-[240px]">
+              {getClmiInterpretation(data.clmi)}
             </p>
-          )}
-        </div>
+            {data.lastAssessmentDate && (
+              <p className="text-xs text-black/30 mt-2">
+                Assessed {new Date(data.lastAssessmentDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              </p>
+            )}
+          </div>
 
-        {/* 3 territory mini-cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {data.territories.map((t) => (
-            <div
-              key={t.territory}
-              className="flex items-center gap-4 p-4 rounded-xl bg-[#F7F3ED]/50"
-            >
-              <ScoreRing
-                value={t.score}
-                size={56}
-                strokeWidth={4}
-                color={t.color}
-              />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-black truncate">{t.name}</p>
-                <p className="text-xs text-black/40">{t.label}</p>
+          {/* Right: 3 territories stacked */}
+          <div className="flex-1 w-full space-y-3">
+            {data.territories.map((t) => (
+              <div
+                key={t.territory}
+                className="flex items-center gap-4 p-4 rounded-xl bg-[#F7F3ED]/50"
+              >
+                <ScoreRing
+                  value={t.score}
+                  size={56}
+                  strokeWidth={4}
+                  color={t.color}
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-black">{t.name}</p>
+                  <p className="text-xs text-black/40">{t.label}</p>
+                </div>
+                <span className="text-lg font-bold text-black">{Math.round(t.score)}</span>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
