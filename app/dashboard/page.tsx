@@ -800,22 +800,90 @@ function OverviewTab({ data }: { data: DashboardData }) {
 
 // ─── Dimension Insight Content ────────────────────────────────────
 
-const MICRO_ACTIONS: Record<string, string> = {
-  'LY.1': 'Before your next decision, write down what emotion is driving it.',
-  'LY.2': 'Next time you feel triggered, name the emotion out loud before responding.',
-  'LY.3': 'Start tomorrow with 2 minutes of silence before checking your phone.',
-  'LY.4': 'Block 90 minutes this week for your single highest-leverage task.',
-  'LY.5': 'Audit your calendar — cancel one meeting that doesn\'t need you.',
-  'LT.1': 'Ask one team member: "What\'s the thing no one is saying?"',
-  'LT.2': 'Have the conversation you\'ve been postponing. Today.',
-  'LT.3': 'For the next issue, ask "why" three times before jumping to solutions.',
-  'LT.4': 'Review your team\'s weekly rhythm — cut or shorten one meeting.',
-  'LT.5': 'Delegate one thing you usually do yourself. Fully. Don\'t check on it.',
-  'LO.1': 'Write your strategy in one sentence. If you can\'t, that\'s your signal.',
-  'LO.2': 'Name three behaviors you want to see more of. Are you modeling them?',
-  'LO.3': 'Draw your org chart for 12 months from now. What\'s different?',
-  'LO.4': 'Ask yourself: what got you here that won\'t get you there?',
-  'LO.5': 'Identify one thing that\'s working well and protect it from change.',
+function getTeamImpact(dimensionId: string, score: number): string {
+  const impacts: Record<string, Record<string, string>> = {
+    'LY.1': {
+      low: 'Your team is navigating around triggers you can\'t see. They\'re managing you instead of the work.',
+      mid: 'Your team notices when you\'re off but doesn\'t always trust that you see it too.',
+      high: 'Your team feels safe because you own your patterns openly. That gives them permission to do the same.',
+    },
+    'LY.2': {
+      low: 'Your emotional reactions are setting the weather for the entire team. People are walking on eggshells.',
+      mid: 'Your team reads your mood more than your words. Inconsistency creates hesitation.',
+      high: 'Your emotional steadiness is a stabilizing force. People bring you hard things because you won\'t react badly.',
+    },
+    'LY.3': {
+      low: 'Your reactivity is contagious — the team matches your urgency even when calm is needed.',
+      mid: 'The team can feel when you\'re centered vs. when you\'re not. They perform better when you are.',
+      high: 'Your calm under pressure creates a team that thinks before it reacts. That\'s compounding.',
+    },
+    'LY.4': {
+      low: 'Without a clear sense of your zone of genius, the team doesn\'t know what only you should be doing.',
+      mid: 'Your team sees your potential but also sees you spread too thin to fully realize it.',
+      high: 'You\'re operating in your zone of genius and your team is building around it. Everyone knows their role.',
+    },
+    'LY.5': {
+      low: 'Your burnout risk is visible to your team. They\'re worried about you even if they don\'t say it.',
+      mid: 'Your team sees you push through when you should rest. Some are copying that pattern.',
+      high: 'You model sustainable performance. Your team has permission to protect their own energy too.',
+    },
+    'LT.1': {
+      low: 'People filter what they tell you. Bad news arrives late and surprises are the norm.',
+      mid: 'Your team trusts you in easy moments but holds back when stakes are high.',
+      high: 'Your team shares bad news early. That\'s saving you from surprises and compounding problems.',
+    },
+    'LT.2': {
+      low: 'Unspoken issues are creating silent resentment. Your best people may be planning their exit.',
+      mid: 'The team knows you care but wishes you\'d address things sooner and more directly.',
+      high: 'People know where they stand. Tough feedback is expected, not feared. Relationships grow from it.',
+    },
+    'LT.3': {
+      low: 'Your team brings you symptoms and you\'re solving them. The same problems keep returning.',
+      mid: 'Your team respects your judgment but doesn\'t always see you dig deep enough on root causes.',
+      high: 'Your team brings you the hardest puzzles because you find what others miss. That builds loyalty.',
+    },
+    'LT.4': {
+      low: 'Your team wastes energy figuring out how to work together instead of doing the actual work.',
+      mid: 'Basic rhythms exist but people still feel uncertain about expectations and priorities.',
+      high: 'Your team runs like a well-tuned system. You\'ve freed everyone — including yourself — to think bigger.',
+    },
+    'LT.5': {
+      low: 'Your team can\'t tell if you\'re the player or the coach. That ambiguity stalls their growth.',
+      mid: 'Your team wants more autonomy but senses you\'re not quite ready to let go.',
+      high: 'Your team feels genuinely empowered. They own their work and you own the direction.',
+    },
+    'LO.1': {
+      low: 'Your organization makes inconsistent decisions because the strategy isn\'t clear enough to act on.',
+      mid: 'People get the vision but struggle to make trade-offs without you because the "what not to do" isn\'t sharp.',
+      high: 'Your team makes the same strategic decisions you would — even when you\'re not in the room.',
+    },
+    'LO.2': {
+      low: 'Culture is happening by accident. New hires pick up habits you didn\'t intend, and values stay on the wall.',
+      mid: 'People know what you value but the gap between stated culture and lived culture creates cynicism.',
+      high: 'Your culture is a competitive advantage. People self-select in and out based on clear behavioral norms.',
+    },
+    'LO.3': {
+      low: 'Your org structure creates bottlenecks and turf wars. People fight the system instead of working within it.',
+      mid: 'Structure mostly works today but is already creating friction for where the company is heading.',
+      high: 'Your org is built for the next stage. Teams collaborate across boundaries with minimal friction.',
+    },
+    'LO.4': {
+      low: 'The company has outgrown your current operating style. People see it even if you don\'t — yet.',
+      mid: 'You\'re evolving but legacy habits create friction. Your team needs the next version of you.',
+      high: 'You\'re actively becoming what the company needs. Your team trusts that you\'ll grow with them.',
+    },
+    'LO.5': {
+      low: 'Change either happens too abruptly or not at all. Your organization has whiplash or stagnation.',
+      mid: 'You drive change but sometimes sacrifice good things in the process. The team feels the cost.',
+      high: 'Change lands smoothly because you protect what works while building what\'s next. People trust the process.',
+    },
+  }
+
+  const dimImpacts = impacts[dimensionId]
+  if (!dimImpacts) return ''
+  if (score < 40) return dimImpacts.low
+  if (score < 65) return dimImpacts.mid
+  return dimImpacts.high
 }
 
 function getScoreInsight(dimensionId: string, score: number): string {
@@ -914,9 +982,9 @@ function getDimPriorities(scores: DimensionScoreData[]): Record<string, DimPrior
   sorted.slice(0, 3).forEach((d) => { result[d.dimensionId] = 'growth' })
   // Top 3 = strengths
   sorted.slice(-3).forEach((d) => { result[d.dimensionId] = 'strength' })
-  // Scores 55-72 not already tagged = quick wins (close to leveling up)
+  // Scores 45-60 not already tagged = near breakthrough (cusp of "Strong")
   sorted.forEach((d) => {
-    if (!result[d.dimensionId] && d.score >= 55 && d.score <= 72) {
+    if (!result[d.dimensionId] && d.score >= 45 && d.score <= 60) {
       result[d.dimensionId] = 'quick-win'
     }
   })
@@ -927,7 +995,7 @@ function getDimPriorities(scores: DimensionScoreData[]): Record<string, DimPrior
 const PRIORITY_CONFIG = {
   strength: { label: 'Strength', color: 'bg-[#A6BEA4]/15 text-[#6B8E6B]' },
   growth: { label: 'Growth Area', color: 'bg-[#E08F6A]/15 text-[#C0714E]' },
-  'quick-win': { label: 'Quick Win', color: 'bg-[#7FABC8]/15 text-[#5B8DAD]' },
+  'quick-win': { label: 'Near Breakthrough', color: 'bg-[#7FABC8]/15 text-[#5B8DAD]' },
 }
 
 function DimensionsTab({ data }: { data: DashboardData }) {
@@ -968,7 +1036,7 @@ function DimensionsTab({ data }: { data: DashboardData }) {
                 const score = Math.round(dim.score)
                 const priority = priorities[dim.dimensionId]
                 const insight = getScoreInsight(dim.dimensionId, score)
-                const action = MICRO_ACTIONS[dim.dimensionId]
+                const teamImpact = getTeamImpact(dim.dimensionId, score)
 
                 return (
                   <div key={dim.dimensionId}>
@@ -1024,16 +1092,16 @@ function DimensionsTab({ data }: { data: DashboardData }) {
                       </p>
                     </button>
 
-                    {/* Expanded: micro-action + link */}
+                    {/* Expanded: team impact + link */}
                     {isExpanded && (
                       <div className="mx-4 mb-3 pl-4 border-l-2 py-3 space-y-3" style={{ borderColor: color }}>
-                        {action && (
+                        {teamImpact && (
                           <div className="bg-[#F7F3ED] rounded-lg p-3">
                             <p className="text-[10px] font-bold uppercase tracking-wider text-black/40 mb-1">
-                              Try this week
+                              Impact on your team
                             </p>
                             <p className="text-xs text-black/70 leading-relaxed">
-                              {action}
+                              {teamImpact}
                             </p>
                           </div>
                         )}
