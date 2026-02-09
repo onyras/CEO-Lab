@@ -42,7 +42,7 @@ const TERRITORY_COLORS: Record<Territory, string> = {
   leading_organizations: '#E08F6A',
 }
 
-type ResultsTab = 'dimensions' | 'archetypes' | 'blind-spots' | 'roadmap'
+type ResultsTab = 'deep-dive' | 'dimensions' | 'archetypes' | 'blind-spots' | 'roadmap'
 
 function buildHeatmapData(dimensionScores: DimensionScore[]) {
   return dimensionScores.map((ds) => {
@@ -81,6 +81,201 @@ function buildRoadmapEntries(
       endDay: Math.min(endDay, 90),
     }
   })
+}
+
+// ---------------------------------------------------------------------------
+// Deep Dive: Score Insights, Team Impact, Priority Badges
+// ---------------------------------------------------------------------------
+
+type DimPriority = 'strength' | 'growth' | 'quick-win' | null
+
+function getDimPriorities(scores: { dimensionId: string; score: number }[]): Record<string, DimPriority> {
+  const sorted = [...scores].sort((a, b) => a.score - b.score)
+  const result: Record<string, DimPriority> = {}
+  sorted.slice(0, 3).forEach((d) => { result[d.dimensionId] = 'growth' })
+  sorted.slice(-3).forEach((d) => { result[d.dimensionId] = 'strength' })
+  sorted.forEach((d) => {
+    if (!result[d.dimensionId] && d.score >= 45 && d.score <= 60) {
+      result[d.dimensionId] = 'quick-win'
+    }
+  })
+  return result
+}
+
+const PRIORITY_CONFIG = {
+  strength: { label: 'Strength', color: 'bg-[#A6BEA4]/15 text-[#6B8E6B]' },
+  growth: { label: 'Growth Area', color: 'bg-[#E08F6A]/15 text-[#C0714E]' },
+  'quick-win': { label: 'Near Breakthrough', color: 'bg-[#7FABC8]/15 text-[#5B8DAD]' },
+}
+
+function getScoreInsight(dimensionId: string, score: number): string {
+  const insights: Record<string, Record<string, string>> = {
+    'LY.1': {
+      low: 'Patterns are running you — you\'re reacting before you realize it.',
+      mid: 'You see your patterns but they still drive you under pressure.',
+      high: 'Strong self-awareness. Now model it — help your team see their own.',
+    },
+    'LY.2': {
+      low: 'Emotions are either hijacking your decisions or being suppressed entirely.',
+      mid: 'You manage emotions in calm moments but lose precision under stress.',
+      high: 'You navigate emotions well. Your team reads your composure as safety.',
+    },
+    'LY.3': {
+      low: 'Constant reactivity is clouding your judgment. Stillness is a skill to build.',
+      mid: 'You can find calm but it\'s fragile. Pressure still pulls you off center.',
+      high: 'You stay grounded under fire. This is the foundation of everything else.',
+    },
+    'LY.4': {
+      low: 'You\'re spending time on things anyone could do. Your zone of genius is unprotected.',
+      mid: 'You know what matters but aren\'t fully committed to it yet.',
+      high: 'Clear purpose drives your decisions. You\'re building something only you can build.',
+    },
+    'LY.5': {
+      low: 'You\'re burning capacity that you\'ll need later. This is a sustainability risk.',
+      mid: 'You protect your energy sometimes but let urgency override your boundaries.',
+      high: 'You\'ve built systems to sustain performance. This is a competitive advantage.',
+    },
+    'LT.1': {
+      low: 'Truth is traveling slowly in your team. People are editing what they tell you.',
+      mid: 'Trust exists but isn\'t deep enough for real candor under pressure.',
+      high: 'Your team tells you the truth fast. That\'s the most valuable thing a leader can build.',
+    },
+    'LT.2': {
+      low: 'Avoided conversations are creating hidden debt. Problems are compounding.',
+      mid: 'You have hard conversations but sometimes too late or too softly.',
+      high: 'You address issues directly and early. Relationships grow from it, not despite it.',
+    },
+    'LT.3': {
+      low: 'You\'re solving symptoms. The real problems are one or two layers deeper.',
+      mid: 'You sense there\'s more beneath the surface but don\'t always dig deep enough.',
+      high: 'You consistently find the root cause. Your team brings you the hard puzzles.',
+    },
+    'LT.4': {
+      low: 'Your team lacks clear rhythms. People don\'t know what\'s expected or when.',
+      mid: 'Basic structures exist but aren\'t consistent enough to create momentum.',
+      high: 'Your team runs on clear systems. You\'ve freed yourself to think, not manage.',
+    },
+    'LT.5': {
+      low: 'You\'re either too involved or too absent. Boundaries need definition.',
+      mid: 'You know you should step back but struggle to let go of ownership.',
+      high: 'You\'ve found the line between leading and doing. Your team feels autonomous.',
+    },
+    'LO.1': {
+      low: 'Your strategy isn\'t clear enough for others to make decisions without you.',
+      mid: 'The vision is there but the choices about what NOT to do aren\'t sharp.',
+      high: 'Crisp strategy. Your team makes the same decisions you would in your absence.',
+    },
+    'LO.2': {
+      low: 'Culture is happening to you, not being designed by you. Values are aspirational, not lived.',
+      mid: 'You care about culture but haven\'t codified it into observable behaviors.',
+      high: 'You\'ve designed the invisible forces. Culture is a system, not a poster.',
+    },
+    'LO.3': {
+      low: 'Your org structure reflects your past, not your future. Restructure is overdue.',
+      mid: 'Structure mostly works but creates friction at the seams between teams.',
+      high: 'Your organization is built for where you\'re going. Structure enables, not constrains.',
+    },
+    'LO.4': {
+      low: 'The CEO your company needed last year isn\'t the one it needs next year. Time to evolve.',
+      mid: 'You\'re growing but parts of your old operating mode are holding you back.',
+      high: 'You\'re actively becoming who your company needs next. That\'s rare and valuable.',
+    },
+    'LO.5': {
+      low: 'Change is either too disruptive or not happening. Neither is sustainable.',
+      mid: 'You can drive change but sometimes break what was working in the process.',
+      high: 'You balance preservation and innovation. Change lands without casualties.',
+    },
+  }
+  const dimInsights = insights[dimensionId]
+  if (!dimInsights) return ''
+  if (score < 40) return dimInsights.low
+  if (score < 65) return dimInsights.mid
+  return dimInsights.high
+}
+
+function getTeamImpact(dimensionId: string, score: number): string {
+  const impacts: Record<string, Record<string, string>> = {
+    'LY.1': {
+      low: 'Your team is navigating around triggers you can\'t see. They\'re managing you instead of the work.',
+      mid: 'Your team notices when you\'re off but doesn\'t always trust that you see it too.',
+      high: 'Your team feels safe because you own your patterns openly. That gives them permission to do the same.',
+    },
+    'LY.2': {
+      low: 'Your emotional reactions are setting the weather for the entire team. People are walking on eggshells.',
+      mid: 'Your team reads your mood more than your words. Inconsistency creates hesitation.',
+      high: 'Your emotional steadiness is a stabilizing force. People bring you hard things because you won\'t react badly.',
+    },
+    'LY.3': {
+      low: 'Your reactivity is contagious — the team matches your urgency even when calm is needed.',
+      mid: 'The team can feel when you\'re centered vs. when you\'re not. They perform better when you are.',
+      high: 'Your calm under pressure creates a team that thinks before it reacts. That\'s compounding.',
+    },
+    'LY.4': {
+      low: 'Without a clear sense of your zone of genius, the team doesn\'t know what only you should be doing.',
+      mid: 'Your team sees your potential but also sees you spread too thin to fully realize it.',
+      high: 'You\'re operating in your zone of genius and your team is building around it. Everyone knows their role.',
+    },
+    'LY.5': {
+      low: 'Your burnout risk is visible to your team. They\'re worried about you even if they don\'t say it.',
+      mid: 'Your team sees you push through when you should rest. Some are copying that pattern.',
+      high: 'You model sustainable performance. Your team has permission to protect their own energy too.',
+    },
+    'LT.1': {
+      low: 'People filter what they tell you. Bad news arrives late and surprises are the norm.',
+      mid: 'Your team trusts you in easy moments but holds back when stakes are high.',
+      high: 'Your team shares bad news early. That\'s saving you from surprises and compounding problems.',
+    },
+    'LT.2': {
+      low: 'Unspoken issues are creating silent resentment. Your best people may be planning their exit.',
+      mid: 'The team knows you care but wishes you\'d address things sooner and more directly.',
+      high: 'People know where they stand. Tough feedback is expected, not feared. Relationships grow from it.',
+    },
+    'LT.3': {
+      low: 'Your team brings you symptoms and you\'re solving them. The same problems keep returning.',
+      mid: 'Your team respects your judgment but doesn\'t always see you dig deep enough on root causes.',
+      high: 'Your team brings you the hardest puzzles because you find what others miss. That builds loyalty.',
+    },
+    'LT.4': {
+      low: 'Your team wastes energy figuring out how to work together instead of doing the actual work.',
+      mid: 'Basic rhythms exist but people still feel uncertain about expectations and priorities.',
+      high: 'Your team runs like a well-tuned system. You\'ve freed everyone — including yourself — to think bigger.',
+    },
+    'LT.5': {
+      low: 'Your team can\'t tell if you\'re the player or the coach. That ambiguity stalls their growth.',
+      mid: 'Your team wants more autonomy but senses you\'re not quite ready to let go.',
+      high: 'Your team feels genuinely empowered. They own their work and you own the direction.',
+    },
+    'LO.1': {
+      low: 'Your organization makes inconsistent decisions because the strategy isn\'t clear enough to act on.',
+      mid: 'People get the vision but struggle to make trade-offs without you because the "what not to do" isn\'t sharp.',
+      high: 'Your team makes the same strategic decisions you would — even when you\'re not in the room.',
+    },
+    'LO.2': {
+      low: 'Culture is happening by accident. New hires pick up habits you didn\'t intend, and values stay on the wall.',
+      mid: 'People know what you value but the gap between stated culture and lived culture creates cynicism.',
+      high: 'Your culture is a competitive advantage. People self-select in and out based on clear behavioral norms.',
+    },
+    'LO.3': {
+      low: 'Your org structure creates bottlenecks and turf wars. People fight the system instead of working within it.',
+      mid: 'Structure mostly works today but is already creating friction for where the company is heading.',
+      high: 'Your org is built for the next stage. Teams collaborate across boundaries with minimal friction.',
+    },
+    'LO.4': {
+      low: 'The company has outgrown your current operating style. People see it even if you don\'t — yet.',
+      mid: 'You\'re evolving but legacy habits create friction. Your team needs the next version of you.',
+      high: 'You\'re actively becoming what the company needs. Your team trusts that you\'ll grow with them.',
+    },
+    'LO.5': {
+      low: 'Change either happens too abruptly or not at all. Your organization has whiplash or stagnation.',
+      mid: 'You drive change but sometimes sacrifice good things in the process. The team feels the cost.',
+      high: 'Change lands smoothly because you protect what works while building what\'s next. People trust the process.',
+    },
+  }
+  const dimImpacts = impacts[dimensionId]
+  if (!dimImpacts) return ''
+  if (score < 40) return dimImpacts.low
+  if (score < 65) return dimImpacts.mid
+  return dimImpacts.high
 }
 
 // ---------------------------------------------------------------------------
@@ -219,6 +414,146 @@ function ResultsHero({
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Tab: Deep Dive (rich dimension analysis with insights + team impact)
+// ---------------------------------------------------------------------------
+
+function DeepDiveTabContent({
+  dimensionScores,
+  territoryScores,
+}: {
+  dimensionScores: DimensionScore[]
+  territoryScores: TerritoryScore[]
+}) {
+  const [expanded, setExpanded] = useState<DimensionId | null>(null)
+
+  const enrichedScores = dimensionScores.map((ds) => {
+    const def = getDimension(ds.dimensionId)
+    return {
+      dimensionId: ds.dimensionId,
+      name: def.name,
+      score: Math.round(ds.percentage),
+      label: ds.verbalLabel,
+      territory: def.territory,
+    }
+  })
+
+  const priorities = getDimPriorities(enrichedScores)
+  const territories: Territory[] = ['leading_yourself', 'leading_teams', 'leading_organizations']
+
+  return (
+    <div className="space-y-6">
+      {territories.map((t) => {
+        const config = TERRITORY_CONFIG[t]
+        const color = TERRITORY_COLORS[t]
+        const terrScore = territoryScores.find((ts) => ts.territory === t)
+        const dims = enrichedScores.filter((d) => d.territory === t)
+
+        return (
+          <div key={t} className="bg-white rounded-lg p-6 md:p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+            {/* Territory header */}
+            <div className="flex items-center gap-4 mb-6">
+              <ScoreRing
+                value={terrScore?.score ?? 0}
+                size={56}
+                strokeWidth={4}
+                color={color}
+              />
+              <div>
+                <h2 className="text-lg font-semibold text-black">{config.displayLabel}</h2>
+                <p className="text-xs text-black/40">{terrScore?.verbalLabel ?? ''}</p>
+              </div>
+            </div>
+
+            {/* 5 dimension rows */}
+            <div className="space-y-1">
+              {dims.map((dim) => {
+                const isExpanded = expanded === dim.dimensionId
+                const score = dim.score
+                const priority = priorities[dim.dimensionId]
+                const insight = getScoreInsight(dim.dimensionId, score)
+                const teamImpact = getTeamImpact(dim.dimensionId, score)
+
+                return (
+                  <div key={dim.dimensionId}>
+                    <button
+                      onClick={() => setExpanded(isExpanded ? null : dim.dimensionId)}
+                      className="w-full p-4 rounded-xl hover:bg-[#F7F3ED]/50 transition-colors text-left"
+                    >
+                      {/* Name + priority badge + score */}
+                      <div className="flex items-start justify-between gap-3 mb-1">
+                        <div className="flex items-center gap-2 min-w-0 flex-wrap">
+                          <p className="text-sm font-semibold text-black">{dim.name}</p>
+                          {priority && (
+                            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${PRIORITY_CONFIG[priority].color}`}>
+                              {PRIORITY_CONFIG[priority].label}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <span className="text-lg font-bold text-black">{score}%</span>
+                          <svg
+                            className={`w-4 h-4 text-black/25 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                          </svg>
+                        </div>
+                      </div>
+
+                      {/* Score bar */}
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="flex-1 bg-black/[0.04] rounded-full h-2.5 overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-500 ease-out"
+                            style={{
+                              width: `${Math.max(2, score)}%`,
+                              backgroundColor: color,
+                            }}
+                          />
+                        </div>
+                        <span className={`text-[10px] font-semibold uppercase tracking-wide flex-shrink-0 ${
+                          score >= 80 ? 'text-[#A6BEA4]'
+                            : score >= 60 ? 'text-black/50'
+                            : score >= 40 ? 'text-[#E08F6A]'
+                            : 'text-red-400'
+                        }`}>
+                          {dim.label}
+                        </span>
+                      </div>
+
+                      {/* Score insight — always visible */}
+                      <p className="text-xs text-black/50 leading-relaxed">
+                        {insight}
+                      </p>
+                    </button>
+
+                    {/* Expanded: team impact */}
+                    {isExpanded && (
+                      <div className="mx-4 mb-3 pl-4 border-l-2 py-3 space-y-3" style={{ borderColor: color }}>
+                        {teamImpact && (
+                          <div className="bg-[#F7F3ED] rounded-lg p-3">
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-black/40 mb-1">
+                              Impact on your team
+                            </p>
+                            <p className="text-xs text-black/70 leading-relaxed">
+                              {teamImpact}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )
+      })}
     </div>
   )
 }
@@ -700,7 +1035,7 @@ export default function ResultsPage() {
   const [results, setResults] = useState<FullResults | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<ResultsTab>('dimensions')
+  const [activeTab, setActiveTab] = useState<ResultsTab>('deep-dive')
 
   useEffect(() => {
     async function loadResults() {
@@ -757,6 +1092,7 @@ export default function ResultsPage() {
   const imFlagged = results.session.imFlagged
 
   const tabs: { key: ResultsTab; label: string }[] = [
+    { key: 'deep-dive', label: 'Deep Dive' },
     { key: 'dimensions', label: 'Dimensions' },
     { key: 'archetypes', label: 'Archetypes' },
     { key: 'blind-spots', label: 'Blind Spots' },
@@ -802,6 +1138,12 @@ export default function ResultsPage() {
           </div>
 
           {/* Tab content */}
+          {activeTab === 'deep-dive' && (
+            <DeepDiveTabContent
+              dimensionScores={results.dimensionScores}
+              territoryScores={results.territoryScores}
+            />
+          )}
           {activeTab === 'dimensions' && (
             <DimensionsTabContent
               dimensionScores={results.dimensionScores}
