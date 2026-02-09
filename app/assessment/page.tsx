@@ -286,10 +286,17 @@ export default function AssessmentHubPage() {
             <div>
               <h2 className="text-lg font-semibold text-black mb-4">History</h2>
               <div className="bg-white rounded-xl border border-black/8 p-5">
-                {baselines.map((b) => (
+                {baselines
+                  .filter((b) => {
+                    // Hide abandoned sessions (incomplete) if a completed session exists
+                    if (b.completed_at) return true
+                    if (completedBaseline) return false
+                    return true
+                  })
+                  .map((b) => (
                   <HistoryRow
                     key={b.id}
-                    label={`Baseline Assessment ${b.completed_at ? '' : '(incomplete)'}`}
+                    label={`Baseline Assessment ${b.completed_at ? '' : '(in progress)'}`}
                     date={b.completed_at || b.created_at}
                     status={b.completed_at ? 'Completed' : `Stage ${b.stage_reached}/3`}
                     score={b.clmi}
