@@ -314,21 +314,48 @@ function LoadingSkeleton() {
 // Error State
 // ---------------------------------------------------------------------------
 
-function ErrorState({ message }: { message: string }) {
+function ErrorState({ message, noResults }: { message: string; noResults?: boolean }) {
   return (
     <AppShell>
       <div className="flex items-center justify-center px-6 min-h-[80vh]">
         <div className="bg-white rounded-lg p-10 max-w-md w-full text-center shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-          <h2 className="text-xl font-bold text-black mb-3">
-            Unable to Load Results
-          </h2>
-          <p className="text-sm text-black/60 mb-6 leading-relaxed">{message}</p>
-          <a
-            href="/dashboard"
-            className="inline-block bg-black text-white px-8 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
-          >
-            Return to Dashboard
-          </a>
+          {noResults ? (
+            <>
+              <h2 className="text-xl font-bold text-black mb-3">
+                No Results Yet
+              </h2>
+              <p className="text-sm text-black/60 mb-6 leading-relaxed">
+                Complete the full CEO Leadership Assessment to unlock your detailed leadership report across 15 dimensions.
+              </p>
+              <div className="flex flex-col gap-3">
+                <a
+                  href="/api/checkout"
+                  className="inline-block bg-black text-white px-8 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
+                >
+                  Subscribe — &euro;100/month
+                </a>
+                <a
+                  href="/dashboard"
+                  className="text-sm text-black/40 hover:text-black/70 transition-colors"
+                >
+                  Return to Dashboard
+                </a>
+              </div>
+            </>
+          ) : (
+            <>
+              <h2 className="text-xl font-bold text-black mb-3">
+                Unable to Load Results
+              </h2>
+              <p className="text-sm text-black/60 mb-6 leading-relaxed">{message}</p>
+              <a
+                href="/dashboard"
+                className="inline-block bg-black text-white px-8 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
+              >
+                Return to Dashboard
+              </a>
+            </>
+          )}
         </div>
       </div>
     </AppShell>
@@ -1056,7 +1083,7 @@ export default function ResultsPage() {
             return
           }
           if (response.status === 404) {
-            setError('No assessment results found. Complete the assessment first to view your results.')
+            setError('no-results')
             setLoading(false)
             return
           }
@@ -1079,9 +1106,11 @@ export default function ResultsPage() {
   if (loading) return <LoadingSkeleton />
 
   if (error || !results) {
+    const isNoResults = error === 'no-results' || !results
     return (
       <ErrorState
-        message={error ?? 'No assessment results found. Complete the assessment first to view your results.'}
+        message={error && error !== 'no-results' ? error : 'Something went wrong while loading your results.'}
+        noResults={isNoResults}
       />
     )
   }
