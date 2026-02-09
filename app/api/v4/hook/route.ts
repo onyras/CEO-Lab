@@ -1,9 +1,17 @@
 import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { hookItems } from '@/lib/hook-questions'
 import { calculateHookScores } from '@/lib/scoring'
 import type { DimensionId, Territory } from '@/types/assessment'
+
+// Service role client for insert (bypasses RLS — hook is designed for anonymous users)
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  { auth: { autoRefreshToken: false, persistSession: false } }
+)
 
 interface HookSaveRequest {
   responses: {
@@ -80,8 +88,8 @@ export async function POST(request: Request) {
     // Step 4: Calculate scores
     const scores = calculateHookScores(enrichedResponses)
 
-    // Step 5: Save to hook_sessions table
-    const { data: hookSession, error: insertError } = await supabase
+    // Step 5: Save to hook_sessions table (using admin client to bypass RLS)
+    const { data: hookSession, error: insertError } = await supabaseAdmin
       .from('hook_sessions')
       .insert({
         ceo_id: ceoId,
