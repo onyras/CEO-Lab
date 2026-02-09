@@ -29,7 +29,7 @@ interface StaggeredItemProps {
 }
 
 // Container animation variants
-const containerVariants = (stagger = 0.15, delayChildren = 0.3) => ({
+const containerVariants = (stagger = 0.2, delayChildren = 0.1) => ({
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -42,13 +42,13 @@ const containerVariants = (stagger = 0.15, delayChildren = 0.3) => ({
 
 // Item animation variants
 const itemVariants = (delay = 0) => ({
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 60 },
   show: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
-      ease: [0.25, 0.1, 0.25, 1],
+      duration: 1,
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
       delay: delay,
     }
   }
