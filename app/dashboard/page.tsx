@@ -21,7 +21,7 @@ const TERRITORY_COLORS: Record<Territory, string> = {
 
 type DashboardState = 'loading' | 'error' | 'free' | 'baseline-pending' | 'baseline-in-progress' | 'complete'
 
-type DashboardTab = 'overview' | 'assessment' | 'growth'
+type DashboardTab = 'overview' | 'assessment'
 
 interface DimensionScoreData {
   dimensionId: DimensionId
@@ -622,7 +622,6 @@ function FullDashboardView({ data }: { data: DashboardData }) {
             {([
               { key: 'overview', label: 'Overview' },
               { key: 'assessment', label: 'Assessment' },
-              { key: 'growth', label: 'Growth' },
             ] as { key: DashboardTab; label: string }[]).map((tab) => (
               <button
                 key={tab.key}
@@ -641,7 +640,6 @@ function FullDashboardView({ data }: { data: DashboardData }) {
           {/* ── Tab content ── */}
           {activeTab === 'overview' && <OverviewTab data={data} />}
           {activeTab === 'assessment' && <AssessmentTab data={data} />}
-          {activeTab === 'growth' && <GrowthTab data={data} />}
         </div>
       </div>
     </AppShell>
@@ -757,44 +755,108 @@ function OverviewTab({ data }: { data: DashboardData }) {
         </div>
       </div>
 
-      {/* What's Next card */}
-      {nudges.length > 0 && (
-        <div className="bg-white rounded-2xl p-6 border border-black/5 mb-6">
-          <h2 className="text-sm font-semibold text-black/40 uppercase tracking-wider mb-4">What&apos;s Next</h2>
-          <div className="space-y-3">
-            {nudges.slice(0, 2).map((nudge, i) => (
-              <div key={i} className="flex items-center justify-between gap-4 p-4 rounded-xl bg-[#F7F3ED]/50">
-                <p className="text-sm text-black/70 flex-1">{nudge.text}</p>
-                <a
-                  href={nudge.href}
-                  className="px-4 py-2 bg-black text-white rounded-lg text-xs font-medium hover:bg-black/90 transition-colors flex-shrink-0"
-                >
-                  {nudge.cta}
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Accountability Agent */}
+      <div className="bg-white rounded-2xl p-8 border border-black/5 mb-6">
+        <h2 className="text-lg font-semibold text-black mb-1">Accountability Agent</h2>
+        <p className="text-sm text-black/40 mb-6">Weekly leadership habit tracking</p>
 
-      {/* Activity summary strip */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-2xl p-5 border border-black/5 text-center">
-          <p className="text-2xl font-bold text-black">{data.weeklyPulseCount}</p>
-          <p className="text-xs text-black/40">Check-ins this quarter</p>
-        </div>
-        <div className="bg-white rounded-2xl p-5 border border-black/5 text-center">
-          <p className="text-2xl font-bold text-black">{data.mirrorCount}</p>
-          <p className="text-xs text-black/40">Mirror raters</p>
-        </div>
-        <div className="bg-white rounded-2xl p-5 border border-black/5 text-center">
-          <p className="text-2xl font-bold text-black">{daysSinceAssessment}d</p>
-          <p className="text-xs text-black/40">Since assessment</p>
-        </div>
-        <div className="bg-white rounded-2xl p-5 border border-black/5 text-center">
-          <p className="text-2xl font-bold text-black">{data.archetypes.length}</p>
-          <p className="text-xs text-black/40">Archetypes detected</p>
-        </div>
+        {hasWeeklyPulse ? (
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <p className="text-3xl font-bold text-black">{data.weeklyPulseCount}</p>
+                <p className="text-xs text-black/40">check-ins this quarter</p>
+              </div>
+              {data.lastPulseDate && (
+                <div className="text-right">
+                  <p className="text-xs text-black/40">Last check-in</p>
+                  <p className="text-sm font-medium text-black">
+                    {new Date(data.lastPulseDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Streak squares */}
+            <div className="flex gap-1.5 mb-5">
+              {Array.from({ length: 12 }, (_, i) => (
+                <div
+                  key={i}
+                  className={`w-6 h-6 rounded-sm ${
+                    i < data.weeklyPulseCount ? 'bg-black' : 'bg-black/5'
+                  }`}
+                />
+              ))}
+            </div>
+            <p className="text-[10px] text-black/30 mb-4">12-week quarter view</p>
+
+            <a
+              href="/assessment/weekly"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full inline-flex items-center justify-center px-6 py-3 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
+            >
+              Open Check-in
+            </a>
+          </div>
+        ) : (
+          <div className="text-center py-4">
+            <p className="text-sm text-black/50 mb-4 leading-relaxed">
+              Three questions every Monday on your priority dimensions. Track growth week over week.
+            </p>
+            <a
+              href="/assessment/weekly"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full inline-flex items-center justify-center px-6 py-3 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
+            >
+              Set Up Accountability Agent
+            </a>
+          </div>
+        )}
+      </div>
+
+      {/* Mirror Check */}
+      <div className="bg-white rounded-2xl p-8 border border-black/5">
+        <h2 className="text-lg font-semibold text-black mb-1">Mirror Check</h2>
+        <p className="text-sm text-black/40 mb-6">See how others experience your leadership</p>
+
+        {hasMirrorData ? (
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <p className="text-xs text-black/40 mb-1">Blind Spot Index</p>
+                <p className="text-3xl font-bold text-black">{data.bsi != null ? Math.round(data.bsi) : '--'}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-black/40 mb-1">Raters completed</p>
+                <p className="text-sm font-medium text-black">{data.mirrorCount}</p>
+              </div>
+            </div>
+            <a
+              href="/assessment/mirror"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full inline-flex items-center justify-center px-6 py-3 border border-black/10 text-black rounded-lg text-sm font-medium hover:border-black/20 hover:bg-black/[0.02] transition-all"
+            >
+              Invite Another Rater
+            </a>
+          </div>
+        ) : (
+          <div className="text-center py-4">
+            <p className="text-sm text-black/50 mb-4 leading-relaxed">
+              Invite a colleague to answer 15 items about your leadership. No account needed on their end.
+            </p>
+            <a
+              href="/assessment/mirror"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full inline-flex items-center justify-center px-6 py-3 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
+            >
+              Invite a Colleague
+            </a>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -1075,171 +1137,6 @@ function AssessmentTab({ data }: { data: DashboardData }) {
               />
             ))}
           </div>
-        </div>
-      )}
-    </div>
-  )
-}
-
-// ─── Growth Tab ───────────────────────────────────────────────────
-
-function GrowthTab({ data }: { data: DashboardData }) {
-  const hasWeeklyPulse = data.weeklyPulseCount > 0
-  const hasMirrorData = data.mirrorCount > 0
-  const daysSinceAssessment = data.lastAssessmentDate
-    ? Math.floor((Date.now() - new Date(data.lastAssessmentDate).getTime()) / (1000 * 60 * 60 * 24))
-    : 0
-  const showRetake = daysSinceAssessment > 90
-
-  return (
-    <div className="space-y-6">
-      {/* Accountability Agent card */}
-      <div className="bg-white rounded-2xl p-8 border border-black/5">
-        <h2 className="text-lg font-semibold text-black mb-1">Accountability Agent</h2>
-        <p className="text-sm text-black/40 mb-6">Weekly leadership habit tracking</p>
-
-        {hasWeeklyPulse ? (
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <p className="text-3xl font-bold text-black">{data.weeklyPulseCount}</p>
-                <p className="text-xs text-black/40">check-ins this quarter</p>
-              </div>
-              {data.lastPulseDate && (
-                <div className="text-right">
-                  <p className="text-xs text-black/40">Last check-in</p>
-                  <p className="text-sm font-medium text-black">
-                    {new Date(data.lastPulseDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* Streak squares */}
-            <div className="flex gap-1.5 mb-5">
-              {Array.from({ length: 12 }, (_, i) => (
-                <div
-                  key={i}
-                  className={`w-6 h-6 rounded-sm ${
-                    i < data.weeklyPulseCount ? 'bg-black' : 'bg-black/5'
-                  }`}
-                />
-              ))}
-            </div>
-            <p className="text-[10px] text-black/30 mb-4">12-week quarter view</p>
-
-            <a
-              href="/assessment/weekly"
-              className="w-full inline-flex items-center justify-center px-6 py-3 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
-            >
-              Open Check-in
-            </a>
-          </div>
-        ) : (
-          <div className="text-center py-4">
-            <p className="text-sm text-black/50 mb-4 leading-relaxed">
-              Three questions every Monday on your priority dimensions. Track growth week over week.
-            </p>
-            <a
-              href="/assessment/weekly"
-              className="w-full inline-flex items-center justify-center px-6 py-3 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
-            >
-              Set Up Accountability Agent
-            </a>
-          </div>
-        )}
-      </div>
-
-      {/* Mirror Check card */}
-      <div className="bg-white rounded-2xl p-8 border border-black/5">
-        <h2 className="text-lg font-semibold text-black mb-1">Mirror Check</h2>
-        <p className="text-sm text-black/40 mb-6">See how others experience your leadership</p>
-
-        {hasMirrorData ? (
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <p className="text-xs text-black/40 mb-1">Blind Spot Index</p>
-                <p className="text-3xl font-bold text-black">{data.bsi != null ? Math.round(data.bsi) : '--'}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-xs text-black/40 mb-1">Raters completed</p>
-                <p className="text-sm font-medium text-black">{data.mirrorCount}</p>
-              </div>
-            </div>
-            <a
-              href="/assessment/mirror"
-              className="w-full inline-flex items-center justify-center px-6 py-3 border border-black/10 text-black rounded-lg text-sm font-medium hover:border-black/20 hover:bg-black/[0.02] transition-all"
-            >
-              Invite Another Rater
-            </a>
-          </div>
-        ) : (
-          <div className="text-center py-4">
-            <p className="text-sm text-black/50 mb-4 leading-relaxed">
-              Invite a colleague to answer 15 items about your leadership. No account needed on their end.
-            </p>
-            <a
-              href="/assessment/mirror"
-              className="w-full inline-flex items-center justify-center px-6 py-3 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
-            >
-              Invite a Colleague
-            </a>
-          </div>
-        )}
-      </div>
-
-      {/* Archetypes section */}
-      {data.archetypes.length > 0 && (
-        <div className="bg-white rounded-2xl p-8 border border-black/5">
-          <h2 className="text-lg font-semibold text-black mb-1">Leadership Archetypes</h2>
-          <p className="text-sm text-black/40 mb-6">Patterns that define your leadership</p>
-
-          <div className="space-y-4">
-            {data.archetypes.map((arch) => (
-              <div key={arch.name} className="border border-black/5 rounded-lg p-4">
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#F7F3ED] text-[10px] font-semibold text-black">
-                      #{arch.displayRank}
-                    </span>
-                    <h3 className="text-sm font-semibold text-black leading-tight">{arch.name}</h3>
-                  </div>
-                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${
-                    arch.matchType === 'full'
-                      ? 'bg-black text-white'
-                      : 'bg-white text-black/60 border border-black/20'
-                  }`}>
-                    {arch.matchType === 'full' ? 'Full' : 'Partial'}
-                  </span>
-                </div>
-                <div className="h-1 w-full rounded-full bg-[#F7F3ED] overflow-hidden">
-                  <div
-                    className="h-full rounded-full bg-black transition-all duration-500 ease-out"
-                    style={{ width: `${Math.max(2, Math.min(100, arch.signatureStrength))}%` }}
-                  />
-                </div>
-                {arch.sjiConfirmed && (
-                  <p className="text-[10px] text-black/40 mt-2">Confirmed by situational responses</p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Retake assessment */}
-      {showRetake && (
-        <div className="bg-white rounded-2xl p-6 border border-black/5 text-center">
-          <p className="text-sm text-black/50 mb-3">
-            It&apos;s been {daysSinceAssessment} days since your last assessment. Time for a fresh baseline?
-          </p>
-          <a
-            href="/assessment/baseline"
-            className="inline-block px-6 py-2.5 border border-black/10 text-black rounded-lg text-sm font-medium hover:border-black/20 hover:bg-black/[0.02] transition-all"
-          >
-            Retake Assessment
-          </a>
         </div>
       )}
     </div>
