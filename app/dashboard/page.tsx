@@ -798,10 +798,132 @@ function OverviewTab({ data }: { data: DashboardData }) {
 
 // ─── Assessment Tab ──────────────────────────────────────────────
 
+interface HistoryBaseline {
+  id: string
+  completedAt: string | null
+  createdAt: string
+  stageReached: number
+  clmi: number | null
+}
+
+interface HistoryMirror {
+  id: string
+  raterName: string | null
+  completedAt: string | null
+  createdAt: string
+}
+
+interface HistoryWeekly {
+  id: string
+  quarter: string
+  respondedAt: string
+}
+
+function HistoryRow({
+  label,
+  date,
+  status,
+  score,
+}: {
+  label: string
+  date: string
+  status: string
+  score?: number | null
+}) {
+  return (
+    <div className="flex items-center justify-between py-3 border-b border-black/5 last:border-0">
+      <div>
+        <p className="text-sm font-medium text-black">{label}</p>
+        <p className="text-xs text-black/40">
+          {new Date(date).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+          })}
+        </p>
+      </div>
+      <div className="flex items-center gap-3">
+        {score != null && (
+          <span className="text-sm font-semibold text-black">{Math.round(score)}%</span>
+        )}
+        <span className="text-xs text-black/50">{status}</span>
+      </div>
+    </div>
+  )
+}
+
 function AssessmentTab({ data }: { data: DashboardData }) {
+  const [history, setHistory] = useState<{
+    baselines: HistoryBaseline[]
+    mirrors: HistoryMirror[]
+    weeklies: HistoryWeekly[]
+  } | null>(null)
+
+  useEffect(() => {
+    async function loadHistory() {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+
+      const [{ data: sessions }, { data: mirrorData }, { data: weeklyData }] = await Promise.all([
+        supabase
+          .from('assessment_sessions')
+          .select('id, stage_reached, completed_at, created_at, clmi')
+          .eq('ceo_id', user.id)
+          .eq('version', '4.0')
+          .order('created_at', { ascending: false }),
+        supabase
+          .from('mirror_sessions')
+          .select('id, rater_name, completed_at, created_at')
+          .eq('ceo_id', user.id)
+          .order('created_at', { ascending: false }),
+        supabase
+          .from('weekly_pulse')
+          .select('id, quarter, responded_at')
+          .eq('ceo_id', user.id)
+          .order('responded_at', { ascending: false })
+          .limit(12),
+      ])
+
+      const completedBaseline = (sessions || []).find((b: any) => b.completed_at)
+
+      setHistory({
+        baselines: (sessions || [])
+          .filter((b: any) => {
+            if (b.completed_at) return true
+            if (completedBaseline) return false
+            return true
+          })
+          .map((b: any) => ({
+            id: b.id,
+            completedAt: b.completed_at,
+            createdAt: b.created_at,
+            stageReached: b.stage_reached,
+            clmi: b.clmi,
+          })),
+        mirrors: (mirrorData || []).map((m: any) => ({
+          id: m.id,
+          raterName: m.rater_name,
+          completedAt: m.completed_at,
+          createdAt: m.created_at,
+        })),
+        weeklies: (weeklyData || []).map((w: any) => ({
+          id: w.id,
+          quarter: w.quarter,
+          respondedAt: w.responded_at,
+        })),
+      })
+    }
+    loadHistory()
+  }, [])
+
   const daysSinceAssessment = data.lastAssessmentDate
     ? Math.floor((Date.now() - new Date(data.lastAssessmentDate).getTime()) / (1000 * 60 * 60 * 24))
     : 0
+
+  const hasHistory = history && (history.baselines.length > 0 || history.mirrors.length > 0 || history.weeklies.length > 0)
 
   return (
     <div className="space-y-6">
@@ -908,6 +1030,40 @@ function AssessmentTab({ data }: { data: DashboardData }) {
           {data.mirrorCount > 0 ? 'Invite Another Rater' : 'Invite a Colleague'}
         </a>
       </div>
+
+      {/* History */}
+      {hasHistory && (
+        <div className="bg-white rounded-2xl border border-black/5 p-6">
+          <h2 className="text-sm font-semibold text-black/40 uppercase tracking-wider mb-4">History</h2>
+          <div>
+            {history.baselines.map((b) => (
+              <HistoryRow
+                key={b.id}
+                label={`Baseline Assessment ${b.completedAt ? '' : '(in progress)'}`}
+                date={b.completedAt || b.createdAt}
+                status={b.completedAt ? 'Completed' : `Stage ${b.stageReached}/3`}
+                score={b.clmi}
+              />
+            ))}
+            {history.mirrors.map((m) => (
+              <HistoryRow
+                key={m.id}
+                label={`Mirror Check${m.raterName ? ` — ${m.raterName}` : ''}`}
+                date={m.completedAt || m.createdAt}
+                status={m.completedAt ? 'Completed' : 'Pending'}
+              />
+            ))}
+            {history.weeklies.slice(0, 5).map((w) => (
+              <HistoryRow
+                key={w.id}
+                label={`Weekly Check-in (${w.quarter})`}
+                date={w.respondedAt}
+                status="Completed"
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
