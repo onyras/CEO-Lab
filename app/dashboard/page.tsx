@@ -828,49 +828,62 @@ function DimensionsTab({ data }: { data: DashboardData }) {
             </div>
 
             {/* 5 dimension rows */}
-            <div className="space-y-3">
+            <div className="space-y-1">
               {dims.map((dim) => {
                 const isExpanded = expanded === dim.dimensionId
+                const dimConfig = getDimension(dim.dimensionId)
+                const score = Math.round(dim.score)
 
                 return (
                   <div key={dim.dimensionId}>
                     <button
                       onClick={() => setExpanded(isExpanded ? null : dim.dimensionId)}
-                      className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-[#F7F3ED]/50 transition-colors text-left"
+                      className="w-full p-4 rounded-xl hover:bg-[#F7F3ED]/50 transition-colors text-left"
                     >
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-3 mb-1.5">
-                          <p className="text-sm font-medium text-black truncate">{dim.name}</p>
-                          <div className="flex items-center gap-2 flex-shrink-0">
-                            <span className="text-sm font-bold text-black">{Math.round(dim.score)}%</span>
-                            <span className="text-[10px] text-black/40 uppercase">{dim.label}</span>
-                          </div>
+                      {/* Name + description */}
+                      <div className="flex items-start justify-between gap-4 mb-2">
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-black">{dim.name}</p>
+                          <p className="text-xs text-black/45 mt-0.5 leading-relaxed">
+                            {dimConfig.coreQuestion}
+                          </p>
                         </div>
-                        <div className="w-full bg-black/5 rounded-full h-2">
+                        <div className="flex items-center gap-2 flex-shrink-0 pt-0.5">
+                          <span className="text-lg font-bold text-black">{score}%</span>
+                          <svg
+                            className={`w-4 h-4 text-black/25 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                          </svg>
+                        </div>
+                      </div>
+
+                      {/* Score bar + verbal label */}
+                      <div className="flex items-center gap-3">
+                        <div className="flex-1 bg-black/[0.04] rounded-full h-2.5 overflow-hidden">
                           <div
-                            className="h-2 rounded-full transition-all duration-500 ease-out"
+                            className="h-full rounded-full transition-all duration-500 ease-out"
                             style={{
-                              width: `${Math.max(2, dim.score)}%`,
+                              width: `${Math.max(2, score)}%`,
                               backgroundColor: color,
-                              opacity: 0.2 + (dim.score / 100) * 0.8,
                             }}
                           />
                         </div>
+                        <span className={`text-[10px] font-semibold uppercase tracking-wide flex-shrink-0 ${
+                          score >= 80 ? 'text-[#A6BEA4]'
+                            : score >= 60 ? 'text-black/50'
+                            : score >= 40 ? 'text-[#E08F6A]'
+                            : 'text-red-400'
+                        }`}>
+                          {dim.label}
+                        </span>
                       </div>
-                      <svg
-                        className={`w-4 h-4 text-black/30 flex-shrink-0 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                        fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                      </svg>
                     </button>
 
                     {/* Expanded detail */}
                     {isExpanded && (
-                      <div className="ml-3 pl-3 border-l-2 mt-2 mb-4 py-3 pr-3" style={{ borderColor: color }}>
-                        <p className="text-xs text-black/50 mb-2">
-                          {getDimension(dim.dimensionId).coreQuestion}
-                        </p>
+                      <div className="mx-4 mb-3 pl-4 border-l-2 py-3" style={{ borderColor: color }}>
                         <a
                           href="/results"
                           className="text-xs font-medium text-black/60 hover:text-black transition-colors"

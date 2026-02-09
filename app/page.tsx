@@ -15,7 +15,35 @@ import {
   LineChart,
   Star,
 } from 'lucide-react'
-import { StaggeredContainer, StaggeredItem } from '@/components/shared/StaggeredAnimation'
+
+// ─── Animation Variants ─────────────────────────────────────────
+
+const EASE = [0.25, 0.1, 0.25, 1] as [number, number, number, number]
+
+const stagger = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.3 },
+  },
+}
+
+const staggerScroll = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 },
+  },
+}
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: EASE },
+  },
+}
 
 // ─── Data ──────────────────────────────────────────────────────────
 
@@ -177,24 +205,29 @@ function Hero() {
       >
         <div className="w-full max-w-[1280px] mx-auto relative perspective-1000">
           {/* Header text */}
-          <StaggeredContainer className="relative w-full text-center">
-            <StaggeredItem>
+          <motion.div
+            className="relative w-full text-center"
+            variants={stagger}
+            initial="hidden"
+            animate="show"
+          >
+            <motion.div variants={fadeUp}>
               <h1 className="text-[48px] md:text-[52px] lg:text-[56px] font-bold text-black mb-6 leading-[1.1] tracking-tight">
                 A measurement system for your
                 <br />
                 leadership development
               </h1>
-            </StaggeredItem>
+            </motion.div>
 
-            <StaggeredItem>
+            <motion.div variants={fadeUp}>
               <p className="text-base md:text-lg text-black/60 leading-relaxed max-w-[42rem] mx-auto mb-10">
                 CEO Lab tracks your growth across 15 leadership dimensions. Get
                 instant scores, spot blind spots, and see what&apos;s really
                 driving or blocking your growth.
               </p>
-            </StaggeredItem>
+            </motion.div>
 
-            <StaggeredItem>
+            <motion.div variants={fadeUp}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
                 <Link
                   href="/assessment/hook"
@@ -222,18 +255,21 @@ function Hero() {
                   Learn more
                 </Link>
               </div>
-            </StaggeredItem>
+            </motion.div>
 
-            <StaggeredItem>
+            <motion.div variants={fadeUp}>
               <p className="text-sm text-black/40 mb-16">
                 Free assessment &middot; No credit card required
               </p>
-            </StaggeredItem>
-          </StaggeredContainer>
+            </motion.div>
+          </motion.div>
 
           {/* 3D Dashboard Card */}
           <motion.div
             className="w-full max-w-[1280px] mx-auto h-[25rem] md:h-[40rem] relative"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.9 }}
             style={{
               rotateX,
               scale,
@@ -263,19 +299,25 @@ function ProblemSection() {
     <section id="problem" className="bg-white py-32 md:py-40 px-8">
       <div className="max-w-[1100px] mx-auto">
         {/* Opening Contrast */}
-        <StaggeredContainer triggerOnScroll className="mb-24">
-          <StaggeredItem>
+        <motion.div
+          className="mb-24"
+          variants={staggerScroll}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-100px' }}
+        >
+          <motion.div variants={fadeUp}>
             <h2 className="text-[42px] font-bold leading-[1.1] text-center mb-12 max-w-[900px] mx-auto">
               Athletes Have Post-Game Analysis.
               <br />
               What Do CEOs Have?
             </h2>
-          </StaggeredItem>
+          </motion.div>
 
           {/* Comparison cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[56rem] mx-auto">
             {/* Athletes card */}
-            <StaggeredItem>
+            <motion.div variants={fadeUp}>
               <div className="bg-white border border-black/8 rounded-xl p-10 relative overflow-hidden">
                 <div className="accent-bar-blue absolute top-0 left-0 right-0 h-1" />
                 <h3 className="text-2xl font-bold mb-8 mt-2">Athletes</h3>
@@ -299,10 +341,10 @@ function ProblemSection() {
                   ))}
                 </ul>
               </div>
-            </StaggeredItem>
+            </motion.div>
 
             {/* CEOs card */}
-            <StaggeredItem>
+            <motion.div variants={fadeUp}>
               <div className="bg-white border border-black/8 rounded-xl p-10 relative overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-1 bg-black/6" />
                 <h3 className="text-2xl font-bold mb-8 mt-2">CEOs</h3>
@@ -324,13 +366,18 @@ function ProblemSection() {
                   ))}
                 </ul>
               </div>
-            </StaggeredItem>
+            </motion.div>
           </div>
-        </StaggeredContainer>
+        </motion.div>
 
         {/* Punchline */}
-        <StaggeredContainer triggerOnScroll>
-          <StaggeredItem>
+        <motion.div
+          variants={staggerScroll}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-100px' }}
+        >
+          <motion.div variants={fadeUp}>
             <div className="text-center max-w-[56rem] mx-auto">
               <h2 className="text-[32px] font-bold leading-[1.2] mb-4">
                 You can&apos;t improve what you don&apos;t measure.
@@ -339,8 +386,8 @@ function ProblemSection() {
                 CEO Lab gives you the scoreboard.
               </p>
             </div>
-          </StaggeredItem>
-        </StaggeredContainer>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )
@@ -354,24 +401,30 @@ function SolutionSection() {
       {/* Grid background */}
       <div className="absolute inset-0 opacity-50 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px)', backgroundSize: '50px 50px' }} />
 
-      <StaggeredContainer triggerOnScroll className="max-w-[1000px] mx-auto relative">
-        <StaggeredItem>
+      <motion.div
+        className="max-w-[1000px] mx-auto relative"
+        variants={staggerScroll}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: '-100px' }}
+      >
+        <motion.div variants={fadeUp}>
           <h2 className="text-[42px] font-bold leading-[1.1] text-center mb-8">
             Your Leadership Scoreboard
           </h2>
-        </StaggeredItem>
+        </motion.div>
 
-        <StaggeredItem>
+        <motion.div variants={fadeUp}>
           <p className="text-base text-black/60 leading-relaxed text-center max-w-[48rem] mx-auto mb-12">
             Built on the Konstantin Method — 60+ frameworks from 15 years
             working with Series A-C founders. We give you what athletes have:
             a baseline, systematic tracking, and objective feedback on whether
             you&apos;re actually improving.
           </p>
-        </StaggeredItem>
+        </motion.div>
 
         {/* Bento Grid */}
-        <StaggeredItem>
+        <motion.div variants={fadeUp}>
           <div className="bento-grid">
           {/* Baseline Assessment - span 3 */}
           <div className="bento-card span-3">
@@ -531,8 +584,8 @@ function SolutionSection() {
             </div>
           </div>
         </div>
-        </StaggeredItem>
-      </StaggeredContainer>
+        </motion.div>
+      </motion.div>
     </section>
   )
 }
@@ -545,17 +598,32 @@ function DimensionsSection() {
   return (
     <section className="bg-white py-16 px-8">
       <div className="max-w-[1000px] mx-auto">
-        <h2 className="text-[42px] font-bold leading-[1.1] text-center mb-4">
-          15 Leadership Dimensions
-        </h2>
-        <p className="text-base text-black/60 text-center mb-16 max-w-[48rem] mx-auto">
-          Three territories. Five dimensions each. The assessment reveals the depth.
-        </p>
+        <motion.div
+          variants={staggerScroll}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-100px' }}
+          className="mb-16"
+        >
+          <motion.h2 variants={fadeUp} className="text-[42px] font-bold leading-[1.1] text-center mb-4">
+            15 Leadership Dimensions
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-base text-black/60 text-center max-w-[48rem] mx-auto">
+            Three territories. Five dimensions each. The assessment reveals the depth.
+          </motion.p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          variants={staggerScroll}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-100px' }}
+        >
           {DIMENSIONS.map((section, idx) => (
-            <div
+            <motion.div
               key={section.territory}
+              variants={fadeUp}
               className="bg-white border border-black/8 rounded-xl p-8 relative overflow-hidden"
             >
               <div
@@ -577,9 +645,9 @@ function DimensionsSection() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )
@@ -612,14 +680,27 @@ function HowItWorks() {
   return (
     <section className="bg-white py-16 px-8">
       <div className="max-w-[1000px] mx-auto">
-        <h2 className="text-[42px] font-bold leading-[1.1] text-center mb-8">
+        <motion.h2
+          className="text-[42px] font-bold leading-[1.1] text-center mb-8"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.6, ease: EASE }}
+        >
           Three Steps to Measurable Growth
-        </h2>
+        </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8"
+          variants={staggerScroll}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-100px' }}
+        >
           {steps.map((step, i) => (
-            <div
+            <motion.div
               key={step.title}
+              variants={fadeUp}
               className="bg-white p-8 rounded-xl border border-black/10 text-center"
             >
               {/* Decorator */}
@@ -635,9 +716,9 @@ function HowItWorks() {
                 {step.subtitle}
               </p>
               <p className="text-black/70 leading-relaxed">{step.desc}</p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )
@@ -655,18 +736,33 @@ function CredentialsSection() {
   return (
     <section className="bg-white py-16 px-8">
       <div className="max-w-[1000px] mx-auto">
-        <h2 className="text-[42px] font-bold leading-[1.1] text-center mb-4">
-          Built on Real Experience
-        </h2>
-        <p className="text-base text-black/60 text-center mb-16 max-w-[48rem] mx-auto">
-          Not theory. Not AI-generated advice. A measurement system built from
-          thousands of hours coaching the people who build companies.
-        </p>
+        <motion.div
+          variants={staggerScroll}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-100px' }}
+          className="mb-16"
+        >
+          <motion.h2 variants={fadeUp} className="text-[42px] font-bold leading-[1.1] text-center mb-4">
+            Built on Real Experience
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-base text-black/60 text-center max-w-[48rem] mx-auto">
+            Not theory. Not AI-generated advice. A measurement system built from
+            thousands of hours coaching the people who build companies.
+          </motion.p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          variants={staggerScroll}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-100px' }}
+        >
           {stats.map((stat) => (
-            <div
+            <motion.div
               key={stat.label}
+              variants={fadeUp}
               className="bg-white border border-black/8 rounded-xl p-8 text-center"
             >
               <p className="text-[40px] font-bold text-black mb-1">{stat.value}</p>
@@ -674,9 +770,9 @@ function CredentialsSection() {
                 {stat.label}
               </p>
               <p className="text-sm text-black/60">{stat.desc}</p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )
@@ -688,15 +784,21 @@ function PricingSection() {
   return (
     <section className="bg-white py-16 px-8">
       <div className="max-w-[1000px] mx-auto">
-        <div className="text-center max-w-[900px] mx-auto">
-          <h2 className="text-[42px] font-bold leading-[1.2] mb-6">
+        <motion.div
+          className="text-center max-w-[900px] mx-auto"
+          variants={staggerScroll}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-100px' }}
+        >
+          <motion.h2 variants={fadeUp} className="text-[42px] font-bold leading-[1.2] mb-6">
             &euro;100/Month for Complete Leadership Tracking
-          </h2>
-          <p className="text-lg text-black/60 leading-[1.8] max-w-[800px] mx-auto mb-12">
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-lg text-black/60 leading-[1.8] max-w-[800px] mx-auto mb-12">
             Baseline assessment, weekly accountability, progress dashboard,
             prescribed frameworks, AI insights, and priority support.
-          </p>
-          <div className="flex gap-4 justify-center flex-wrap mb-4">
+          </motion.p>
+          <motion.div variants={fadeUp} className="flex gap-4 justify-center flex-wrap mb-4">
             <Link
               href="/assessment/hook"
               className="bg-black text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-black/90 transition-colors"
@@ -709,11 +811,11 @@ function PricingSection() {
             >
               Book a Demo Call
             </Link>
-          </div>
-          <p className="text-sm text-black/50">
+          </motion.div>
+          <motion.p variants={fadeUp} className="text-sm text-black/50">
             No credit card required &middot; Cancel anytime
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </div>
     </section>
   )
@@ -732,19 +834,34 @@ function FAQSection() {
     <section className="bg-white py-16 px-8">
       <div className="max-w-[1000px] mx-auto">
         <div className="max-w-[800px] mx-auto">
-          <p className="text-sm font-medium text-[#7FABC8] text-center mb-4 tracking-[0.1em] uppercase">
-            Questions
-          </p>
-          <h2 className="text-[48px] font-bold text-center mb-16 leading-[1.1]">
-            Frequently Asked
-          </h2>
+          <motion.div
+            variants={staggerScroll}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-100px' }}
+            className="mb-16"
+          >
+            <motion.p variants={fadeUp} className="text-sm font-medium text-[#7FABC8] text-center mb-4 tracking-[0.1em] uppercase">
+              Questions
+            </motion.p>
+            <motion.h2 variants={fadeUp} className="text-[48px] font-bold text-center leading-[1.1]">
+              Frequently Asked
+            </motion.h2>
+          </motion.div>
 
-          <div className="flex flex-col gap-4">
+          <motion.div
+            className="flex flex-col gap-4"
+            variants={staggerScroll}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-100px' }}
+          >
             {FAQ_ITEMS.map((item, idx) => {
               const isOpen = activeIndex === idx
               return (
-                <div
+                <motion.div
                   key={idx}
+                  variants={fadeUp}
                   className="bg-black/[0.02] rounded-xl overflow-hidden transition-all duration-300"
                 >
                   <button
@@ -771,10 +888,10 @@ function FAQSection() {
                       {item.a}
                     </div>
                   </div>
-                </div>
+                </motion.div>
               )
             })}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -788,8 +905,14 @@ function FinalCTA() {
     <section className="bg-white py-16 px-8">
       <div className="max-w-[1000px] mx-auto">
         {/* Comparison cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          <div className="p-12 rounded-xl border border-black/8 bg-black/[0.02]">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12"
+          variants={staggerScroll}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-100px' }}
+        >
+          <motion.div variants={fadeUp} className="p-12 rounded-xl border border-black/8 bg-black/[0.02]">
             <p className="text-xs font-semibold uppercase tracking-[0.1em] text-black/40 mb-4">
               Without Measurement
             </p>
@@ -801,8 +924,8 @@ function FinalCTA() {
               week of guessing. Competitors who measure are improving
               systematically while you operate blind.
             </p>
-          </div>
-          <div className="p-12 rounded-xl border-2 border-[#7FABC8] bg-gradient-to-br from-[#7FABC8]/8 to-[#A6BEA4]/8">
+          </motion.div>
+          <motion.div variants={fadeUp} className="p-12 rounded-xl border-2 border-[#7FABC8] bg-gradient-to-br from-[#7FABC8]/8 to-[#A6BEA4]/8">
             <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#7FABC8] mb-4">
               With CEO Lab
             </p>
@@ -814,15 +937,21 @@ function FinalCTA() {
               improve. You deserve the same systematic approach to leadership
               development.
             </p>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* CTA */}
-        <div className="text-center">
-          <h2 className="text-4xl font-bold mb-8">
+        <motion.div
+          className="text-center"
+          variants={staggerScroll}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-100px' }}
+        >
+          <motion.h2 variants={fadeUp} className="text-4xl font-bold mb-8">
             Ready to Measure What Matters?
-          </h2>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          </motion.h2>
+          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
               href="/assessment/hook"
               className="bg-black text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-black/90 transition-colors"
@@ -835,8 +964,8 @@ function FinalCTA() {
             >
               Book a Demo Call
             </Link>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )
