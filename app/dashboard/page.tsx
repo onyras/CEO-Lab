@@ -919,10 +919,6 @@ function AssessmentTab({ data }: { data: DashboardData }) {
     loadHistory()
   }, [])
 
-  const daysSinceAssessment = data.lastAssessmentDate
-    ? Math.floor((Date.now() - new Date(data.lastAssessmentDate).getTime()) / (1000 * 60 * 60 * 24))
-    : 0
-
   const hasHistory = history && (history.baselines.length > 0 || history.mirrors.length > 0 || history.weeklies.length > 0)
 
   return (
@@ -961,14 +957,17 @@ function AssessmentTab({ data }: { data: DashboardData }) {
           >
             View Results
           </a>
-          {daysSinceAssessment > 90 && (
-            <a
-              href="/assessment/baseline"
-              className="inline-flex items-center px-5 py-2.5 border border-black/10 text-black rounded-lg text-sm font-medium hover:border-black/20 hover:bg-black/[0.02] transition-all"
-            >
-              Retake Assessment
-            </a>
-          )}
+          <a
+            href="/assessment/baseline"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 border border-black/10 text-black rounded-lg text-sm font-medium hover:border-black/20 hover:bg-black/[0.02] transition-all"
+          >
+            Retake Assessment
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M6 3H3V13H13V10M9 3H13V7M13 3L7 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
         </div>
       </div>
 
@@ -994,9 +993,14 @@ function AssessmentTab({ data }: { data: DashboardData }) {
 
         <a
           href="/assessment/weekly"
-          className="inline-flex items-center px-5 py-2.5 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
         >
           {data.weeklyPulseCount > 0 ? 'Open Check-in' : 'Start Check-ins'}
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M6 3H3V13H13V10M9 3H13V7M13 3L7 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </a>
       </div>
 
@@ -1025,9 +1029,14 @@ function AssessmentTab({ data }: { data: DashboardData }) {
 
         <a
           href="/assessment/mirror"
-          className="inline-flex items-center px-5 py-2.5 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
         >
           {data.mirrorCount > 0 ? 'Invite Another Rater' : 'Invite a Colleague'}
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M6 3H3V13H13V10M9 3H13V7M13 3L7 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </a>
       </div>
 
