@@ -103,6 +103,18 @@ function getDimPriorities(scores: { dimensionId: string; score: number }[]): Rec
   return result
 }
 
+function getQuarterlyProjection(currentScore: number) {
+  const quarters = [{ q: 'Q1', score: currentScore, isNow: true }]
+  let prev = currentScore
+  for (let i = 2; i <= 4; i++) {
+    const growth = Math.round((100 - prev) * 0.2)
+    const next = Math.min(100, prev + Math.max(growth, 2))
+    quarters.push({ q: `Q${i}`, score: next, isNow: false })
+    prev = next
+  }
+  return quarters
+}
+
 const PRIORITY_CONFIG = {
   strength: { label: 'Strength', color: 'bg-[#A6BEA4]/15 text-[#6B8E6B]' },
   growth: { label: 'Growth Area', color: 'bg-[#E08F6A]/15 text-[#C0714E]' },
@@ -192,91 +204,6 @@ function getScoreInsight(dimensionId: string, score: number): string {
   if (score < 40) return dimInsights.low
   if (score < 65) return dimInsights.mid
   return dimInsights.high
-}
-
-function getTeamImpact(dimensionId: string, score: number): string {
-  const impacts: Record<string, Record<string, string>> = {
-    'LY.1': {
-      low: 'Your team is navigating around triggers you can\'t see. They\'re managing you instead of the work.',
-      mid: 'Your team notices when you\'re off but doesn\'t always trust that you see it too.',
-      high: 'Your team feels safe because you own your patterns openly. That gives them permission to do the same.',
-    },
-    'LY.2': {
-      low: 'Your emotional reactions are setting the weather for the entire team. People are walking on eggshells.',
-      mid: 'Your team reads your mood more than your words. Inconsistency creates hesitation.',
-      high: 'Your emotional steadiness is a stabilizing force. People bring you hard things because you won\'t react badly.',
-    },
-    'LY.3': {
-      low: 'Your reactivity is contagious — the team matches your urgency even when calm is needed.',
-      mid: 'The team can feel when you\'re centered vs. when you\'re not. They perform better when you are.',
-      high: 'Your calm under pressure creates a team that thinks before it reacts. That\'s compounding.',
-    },
-    'LY.4': {
-      low: 'Without a clear sense of your zone of genius, the team doesn\'t know what only you should be doing.',
-      mid: 'Your team sees your potential but also sees you spread too thin to fully realize it.',
-      high: 'You\'re operating in your zone of genius and your team is building around it. Everyone knows their role.',
-    },
-    'LY.5': {
-      low: 'Your burnout risk is visible to your team. They\'re worried about you even if they don\'t say it.',
-      mid: 'Your team sees you push through when you should rest. Some are copying that pattern.',
-      high: 'You model sustainable performance. Your team has permission to protect their own energy too.',
-    },
-    'LT.1': {
-      low: 'People filter what they tell you. Bad news arrives late and surprises are the norm.',
-      mid: 'Your team trusts you in easy moments but holds back when stakes are high.',
-      high: 'Your team shares bad news early. That\'s saving you from surprises and compounding problems.',
-    },
-    'LT.2': {
-      low: 'Unspoken issues are creating silent resentment. Your best people may be planning their exit.',
-      mid: 'The team knows you care but wishes you\'d address things sooner and more directly.',
-      high: 'People know where they stand. Tough feedback is expected, not feared. Relationships grow from it.',
-    },
-    'LT.3': {
-      low: 'Your team brings you symptoms and you\'re solving them. The same problems keep returning.',
-      mid: 'Your team respects your judgment but doesn\'t always see you dig deep enough on root causes.',
-      high: 'Your team brings you the hardest puzzles because you find what others miss. That builds loyalty.',
-    },
-    'LT.4': {
-      low: 'Your team wastes energy figuring out how to work together instead of doing the actual work.',
-      mid: 'Basic rhythms exist but people still feel uncertain about expectations and priorities.',
-      high: 'Your team runs like a well-tuned system. You\'ve freed everyone — including yourself — to think bigger.',
-    },
-    'LT.5': {
-      low: 'Your team can\'t tell if you\'re the player or the coach. That ambiguity stalls their growth.',
-      mid: 'Your team wants more autonomy but senses you\'re not quite ready to let go.',
-      high: 'Your team feels genuinely empowered. They own their work and you own the direction.',
-    },
-    'LO.1': {
-      low: 'Your organization makes inconsistent decisions because the strategy isn\'t clear enough to act on.',
-      mid: 'People get the vision but struggle to make trade-offs without you because the "what not to do" isn\'t sharp.',
-      high: 'Your team makes the same strategic decisions you would — even when you\'re not in the room.',
-    },
-    'LO.2': {
-      low: 'Culture is happening by accident. New hires pick up habits you didn\'t intend, and values stay on the wall.',
-      mid: 'People know what you value but the gap between stated culture and lived culture creates cynicism.',
-      high: 'Your culture is a competitive advantage. People self-select in and out based on clear behavioral norms.',
-    },
-    'LO.3': {
-      low: 'Your org structure creates bottlenecks and turf wars. People fight the system instead of working within it.',
-      mid: 'Structure mostly works today but is already creating friction for where the company is heading.',
-      high: 'Your org is built for the next stage. Teams collaborate across boundaries with minimal friction.',
-    },
-    'LO.4': {
-      low: 'The company has outgrown your current operating style. People see it even if you don\'t — yet.',
-      mid: 'You\'re evolving but legacy habits create friction. Your team needs the next version of you.',
-      high: 'You\'re actively becoming what the company needs. Your team trusts that you\'ll grow with them.',
-    },
-    'LO.5': {
-      low: 'Change either happens too abruptly or not at all. Your organization has whiplash or stagnation.',
-      mid: 'You drive change but sometimes sacrifice good things in the process. The team feels the cost.',
-      high: 'Change lands smoothly because you protect what works while building what\'s next. People trust the process.',
-    },
-  }
-  const dimImpacts = impacts[dimensionId]
-  if (!dimImpacts) return ''
-  if (score < 40) return dimImpacts.low
-  if (score < 65) return dimImpacts.mid
-  return dimImpacts.high
 }
 
 // ---------------------------------------------------------------------------
@@ -506,8 +433,6 @@ function DeepDiveTabContent({
   dimensionScores: DimensionScore[]
   territoryScores: TerritoryScore[]
 }) {
-  const [expanded, setExpanded] = useState<DimensionId | null>(null)
-
   const enrichedScores = dimensionScores.map((ds) => {
     const def = getDimension(ds.dimensionId)
     return {
@@ -549,18 +474,13 @@ function DeepDiveTabContent({
             {/* 5 dimension rows */}
             <div className="space-y-1">
               {dims.map((dim) => {
-                const isExpanded = expanded === dim.dimensionId
                 const score = dim.score
                 const priority = priorities[dim.dimensionId]
                 const insight = getScoreInsight(dim.dimensionId, score)
-                const teamImpact = getTeamImpact(dim.dimensionId, score)
 
                 return (
                   <div key={dim.dimensionId}>
-                    <button
-                      onClick={() => setExpanded(isExpanded ? null : dim.dimensionId)}
-                      className="w-full p-4 rounded-xl hover:bg-[#F7F3ED]/50 transition-colors text-left"
-                    >
+                    <div className="p-4 rounded-xl">
                       {/* Name + priority badge + score */}
                       <div className="flex items-start justify-between gap-3 mb-1">
                         <div className="flex items-center gap-2 min-w-0 flex-wrap">
@@ -573,12 +493,6 @@ function DeepDiveTabContent({
                         </div>
                         <div className="flex items-center gap-2 flex-shrink-0">
                           <span className="text-lg font-bold text-black">{score}%</span>
-                          <svg
-                            className={`w-4 h-4 text-black/25 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                          </svg>
                         </div>
                       </div>
 
@@ -603,38 +517,66 @@ function DeepDiveTabContent({
                         </span>
                       </div>
 
-                      {/* Growth timeline */}
-                      <div className="flex items-end gap-0 mt-1 mb-2 h-10">
-                        {['Q1', 'Q2', 'Q3', 'Q4'].map((q, qi) => {
-                          const isNow = qi === 0
-                          // Q1 height based on actual score, future quarters show aspirational growth
-                          const barHeight = isNow
-                            ? Math.max(8, (score / 100) * 32)
-                            : 0
+                      {/* Quarterly growth trajectory */}
+                      <div className="flex gap-2 mt-3 mb-2">
+                        {getQuarterlyProjection(score).map((qd, qi, arr) => {
+                          const vLabel = getVerbalLabel(qd.score)
+                          const delta = qi > 0 ? qd.score - arr[qi - 1].score : 0
+
+                          if (qd.isNow) {
+                            return (
+                              <div
+                                key={qd.q}
+                                className="flex-1 rounded-[10px] py-3 px-2 text-center"
+                                style={{ backgroundColor: color }}
+                              >
+                                <div className="text-[9px] font-bold text-white/70 uppercase tracking-wide mb-1">
+                                  Q1 — Now
+                                </div>
+                                <div className="text-[22px] font-bold text-white leading-tight">{qd.score}%</div>
+                                <div className="text-[9px] text-white/60 mt-0.5">{vLabel}</div>
+                              </div>
+                            )
+                          }
+
+                          const borderOpacity = qi === 1 ? 0.1 : qi === 2 ? 0.08 : 0.06
+                          const textOpacity = qi === 1 ? 0.25 : qi === 2 ? 0.2 : 0.15
+                          const scoreOpacity = qi === 1 ? 0.2 : qi === 2 ? 0.15 : 0.1
+                          const labelOpacity = qi === 1 ? 0.15 : qi === 2 ? 0.12 : 0.08
+                          const deltaOpacity = qi === 1 ? 1 : qi === 2 ? 0.5 : 0.35
 
                           return (
-                            <div key={q} className="flex-1 flex flex-col items-center justify-end h-full">
-                              {isNow ? (
+                            <div
+                              key={qd.q}
+                              className="flex-1 rounded-[10px] py-3 px-2 text-center relative"
+                              style={{ border: `1.5px dashed rgba(0,0,0,${borderOpacity})` }}
+                            >
+                              <div
+                                className="text-[9px] font-semibold uppercase tracking-wide mb-1"
+                                style={{ color: `rgba(0,0,0,${textOpacity})` }}
+                              >
+                                {qd.q}
+                              </div>
+                              <div
+                                className="text-[22px] font-bold leading-tight"
+                                style={{ color: `rgba(0,0,0,${scoreOpacity})` }}
+                              >
+                                {qd.score}%
+                              </div>
+                              <div
+                                className="text-[9px] mt-0.5"
+                                style={{ color: `rgba(0,0,0,${labelOpacity})` }}
+                              >
+                                {vLabel}
+                              </div>
+                              {delta > 0 && (
                                 <div
-                                  className="w-full max-w-[28px] rounded-sm transition-all duration-500 ease-out"
-                                  style={{
-                                    height: barHeight,
-                                    backgroundColor: color,
-                                    opacity: 0.7,
-                                  }}
-                                />
-                              ) : (
-                                <div
-                                  className="w-full max-w-[28px] rounded-sm border border-dashed"
-                                  style={{
-                                    height: 32,
-                                    borderColor: 'rgba(0,0,0,0.08)',
-                                  }}
-                                />
+                                  className="absolute -top-2.5 right-2 text-[9px] font-semibold"
+                                  style={{ color, opacity: deltaOpacity }}
+                                >
+                                  +{delta}
+                                </div>
                               )}
-                              <span className={`text-[9px] mt-1 ${isNow ? 'font-semibold text-black/60' : 'text-black/20'}`}>
-                                {q}
-                              </span>
                             </div>
                           )
                         })}
@@ -644,23 +586,7 @@ function DeepDiveTabContent({
                       <p className="text-xs text-black/50 leading-relaxed">
                         {insight}
                       </p>
-                    </button>
-
-                    {/* Expanded: team impact */}
-                    {isExpanded && (
-                      <div className="mx-4 mb-3 pl-4 border-l-2 py-3 space-y-3" style={{ borderColor: color }}>
-                        {teamImpact && (
-                          <div className="bg-[#F7F3ED] rounded-lg p-3">
-                            <p className="text-[10px] font-bold uppercase tracking-wider text-black/40 mb-1">
-                              Impact on your team
-                            </p>
-                            <p className="text-xs text-black/70 leading-relaxed">
-                              {teamImpact}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    )}
+                    </div>
                   </div>
                 )
               })}
