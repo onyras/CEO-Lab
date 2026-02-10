@@ -21,6 +21,7 @@ import { TerritoryBars } from '@/components/visualizations/TerritoryBars'
 import { DimensionHeatmap } from '@/components/visualizations/DimensionHeatmap'
 import { ArchetypeBadge } from '@/components/visualizations/ArchetypeBadge'
 import { MirrorDotPlot } from '@/components/visualizations/MirrorDotPlot'
+import { RadarChart } from '@/components/visualizations/RadarChart'
 import { RoadmapTimeline } from '@/components/visualizations/RoadmapTimeline'
 import type {
   FullResults,
@@ -371,12 +372,14 @@ function ResultsHero({
   bsi,
   hasMirrorData,
   territoryScores,
+  dimensionScores,
   imFlagged,
 }: {
   clmi: number
   bsi?: number
   hasMirrorData: boolean
   territoryScores: TerritoryScore[]
+  dimensionScores: DimensionScore[]
   imFlagged: boolean
 }) {
   const label = getVerbalLabel(clmi)
@@ -415,6 +418,23 @@ function ResultsHero({
               label={TERRITORY_CONFIG[ts.territory].displayLabel}
             />
           ))}
+        </div>
+
+        {/* Radar Chart — leadership profile shape */}
+        <div className="w-full flex justify-center my-6">
+          <RadarChart
+            dimensions={dimensionScores.map((ds) => {
+              const def = getDimension(ds.dimensionId)
+              return {
+                dimensionId: ds.dimensionId,
+                name: def.name,
+                territory: def.territory,
+                percentage: Math.round(ds.percentage),
+              }
+            })}
+            size={400}
+            className="max-w-full"
+          />
         </div>
 
         {/* Interpretation text */}
@@ -1146,6 +1166,7 @@ export default function ResultsPage() {
             bsi={bsi}
             hasMirrorData={hasMirrorData}
             territoryScores={results.territoryScores}
+            dimensionScores={results.dimensionScores}
             imFlagged={imFlagged}
           />
 
