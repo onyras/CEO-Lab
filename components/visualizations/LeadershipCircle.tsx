@@ -29,19 +29,29 @@ const TERRITORY_LABELS: Record<Territory, string> = {
 const SHORT_NAMES: Record<string, string> = {
   'Diagnosing the Real Problem': 'Diagnosis',
   'Team Operating System': 'Team OS',
-  'Organizational Architecture': 'Org Architecture',
+  'Organizational Architecture': 'Org Arch.',
   'Hard Conversations': 'Hard Convos',
+  'Grounded Presence': 'Grounded Pres.',
+  'Purpose & Mastery': 'Purpose',
+  'Peak Performance': 'Peak Perf.',
+  'Emotional Mastery': 'Emotional M.',
+  'Self-Awareness': 'Self-Awareness',
+  'Building Trust': 'Building Trust',
+  'Leader Identity': 'Leader Identity',
+  'Strategic Clarity': 'Strategic Clarity',
+  'Culture Design': 'Culture Design',
+  'CEO Evolution': 'CEO Evolution',
+  'Leading Change': 'Leading Change',
 }
 
-const VB = 700
+const VB = 800
 const CENTER = VB / 2
-const INNER_RADIUS = 60
-const MAX_RADIUS = 250
-const LABEL_RADIUS = MAX_RADIUS + 35
+const INNER_RADIUS = 55
+const MAX_RADIUS = 230
+const LABEL_RADIUS = MAX_RADIUS + 22
 const RING_COUNT = 5
-const TOTAL_DIMS = 15
-const GAP_DEG = 1.5 // gap between dimension wedges
-const TERRITORY_GAP_DEG = 4 // gap between territories
+const GAP_DEG = 1.5
+const TERRITORY_GAP_DEG = 5
 
 function polarToXY(angleDeg: number, radius: number): [number, number] {
   const rad = ((angleDeg - 90) * Math.PI) / 180
@@ -79,13 +89,10 @@ export function LeadershipCircle({ dimensions, clmiScore, className = '' }: Lead
 
   const territories: Territory[] = ['leading_yourself', 'leading_teams', 'leading_organizations']
 
-  // Each territory gets 120° minus gaps
   const territorySpan = 360 / 3
   const dimSpanBase = (territorySpan - TERRITORY_GAP_DEG - (5 - 1) * GAP_DEG) / 5
 
-  // Build dimension angles
   const dimAngles: { startAngle: number; endAngle: number; midAngle: number }[] = []
-  let currentAngle = 0
 
   territories.forEach((_, tIdx) => {
     const tStart = tIdx * territorySpan + TERRITORY_GAP_DEG / 2
@@ -94,8 +101,30 @@ export function LeadershipCircle({ dimensions, clmiScore, className = '' }: Lead
       const end = start + dimSpanBase
       dimAngles.push({ startAngle: start, endAngle: end, midAngle: (start + end) / 2 })
     }
-    currentAngle = tStart + 5 * (dimSpanBase + GAP_DEG)
   })
+
+  // Determine text anchor based on position around circle
+  function getTextAnchor(angleDeg: number): 'start' | 'middle' | 'end' {
+    const norm = ((angleDeg % 360) + 360) % 360
+    if (norm < 15 || norm > 345) return 'middle' // top
+    if (norm > 165 && norm < 195) return 'middle' // bottom
+    if (norm >= 15 && norm <= 165) return 'start' // right half
+    return 'end' // left half
+  }
+
+  function getLabelOffset(angleDeg: number): [number, number] {
+    const norm = ((angleDeg % 360) + 360) % 360
+    // nudge labels away from chart edge based on quadrant
+    let dx = 0
+    let dy = 0
+    if (norm < 15 || norm > 345) dy = -4 // top
+    else if (norm > 165 && norm < 195) dy = 4 // bottom
+    if (norm >= 15 && norm <= 90) { dx = 4; dy = -2 }
+    if (norm > 90 && norm <= 165) { dx = 4; dy = 2 }
+    if (norm > 195 && norm <= 270) { dx = -4; dy = 2 }
+    if (norm > 270 && norm <= 345) { dx = -4; dy = -2 }
+    return [dx, dy]
+  }
 
   return (
     <div className={`w-full ${className}`}>
@@ -181,7 +210,7 @@ export function LeadershipCircle({ dimensions, clmiScore, className = '' }: Lead
           )
         })}
 
-        {/* Dimension score bar outlines (full extent, subtle) */}
+        {/* Dimension score bar outlines */}
         {dimensions.map((dim, i) => {
           const { startAngle, endAngle } = dimAngles[i]
           return (
@@ -195,69 +224,48 @@ export function LeadershipCircle({ dimensions, clmiScore, className = '' }: Lead
           )
         })}
 
-        {/* Dimension labels */}
+        {/* Dimension labels — horizontal, no rotation */}
         {dimensions.map((dim, i) => {
           const { midAngle } = dimAngles[i]
           const [x, y] = polarToXY(midAngle, LABEL_RADIUS)
+          const [dx, dy] = getLabelOffset(midAngle)
           const shortName = SHORT_NAMES[dim.name] ?? dim.name
-
-          // Text rotation: keep labels readable
-          const normalizedAngle = ((midAngle - 90 + 360) % 360)
-          const isRightSide = normalizedAngle >= 0 && normalizedAngle <= 180
-          const rotation = isRightSide ? midAngle - 90 : midAngle + 90
+          const anchor = getTextAnchor(midAngle)
 
           return (
-            <text
-              key={`label-${dim.dimensionId}`}
-              x={x}
-              y={y}
-              textAnchor={isRightSide ? 'start' : 'end'}
-              dominantBaseline="central"
-              fill="rgba(0,0,0,0.7)"
-              fontSize={13}
-              fontWeight={600}
-              fontFamily="Inter, sans-serif"
-              transform={`rotate(${rotation}, ${x}, ${y})`}
-            >
-              {shortName}
-            </text>
+            <g key={`label-${dim.dimensionId}`}>
+              <text
+                x={x + dx}
+                y={y + dy}
+                textAnchor={anchor}
+                dominantBaseline="central"
+                fill="rgba(0,0,0,0.7)"
+                fontSize={12}
+                fontWeight={600}
+                fontFamily="Inter, sans-serif"
+              >
+                {shortName}
+              </text>
+              <text
+                x={x + dx}
+                y={y + dy + 14}
+                textAnchor={anchor}
+                dominantBaseline="central"
+                fill="rgba(0,0,0,0.4)"
+                fontSize={10}
+                fontWeight={700}
+                fontFamily="Inter, sans-serif"
+              >
+                {Math.round(dim.percentage)}%
+              </text>
+            </g>
           )
         })}
 
-        {/* Dimension percentage labels (inside bar) */}
-        {dimensions.map((dim, i) => {
-          const { midAngle } = dimAngles[i]
-          const pct = Math.max(0, Math.min(100, dim.percentage))
-          const labelR = INNER_RADIUS + (Math.max(pct, 15) / 100) * (MAX_RADIUS - INNER_RADIUS) - 14
-          const [x, y] = polarToXY(midAngle, mounted ? labelR : INNER_RADIUS)
-
-          const normalizedAngle = ((midAngle - 90 + 360) % 360)
-          const isRightSide = normalizedAngle >= 0 && normalizedAngle <= 180
-          const rotation = isRightSide ? midAngle - 90 : midAngle + 90
-
-          return (
-            <text
-              key={`pct-${dim.dimensionId}`}
-              x={x}
-              y={y}
-              textAnchor="middle"
-              dominantBaseline="central"
-              fill="rgba(0,0,0,0.5)"
-              fontSize={11}
-              fontWeight={700}
-              fontFamily="Inter, sans-serif"
-              transform={`rotate(${rotation}, ${x}, ${y})`}
-              className="transition-all duration-700 ease-out"
-            >
-              {Math.round(pct)}%
-            </text>
-          )
-        })}
-
-        {/* Territory labels (outer arc) */}
+        {/* Territory labels — horizontal, positioned at mid-territory outside chart */}
         {territories.map((territory, tIdx) => {
           const midAngle = tIdx * territorySpan + territorySpan / 2
-          const [x, y] = polarToXY(midAngle, MAX_RADIUS + 72)
+          const [x, y] = polarToXY(midAngle, MAX_RADIUS + 85)
 
           return (
             <text
@@ -267,17 +275,17 @@ export function LeadershipCircle({ dimensions, clmiScore, className = '' }: Lead
               textAnchor="middle"
               dominantBaseline="central"
               fill={TERRITORY_COLORS[territory]}
-              fontSize={13}
+              fontSize={11}
               fontWeight={700}
               fontFamily="Inter, sans-serif"
-              letterSpacing="0.1em"
+              letterSpacing="0.12em"
             >
               {TERRITORY_LABELS[territory]}
             </text>
           )
         })}
 
-        {/* Center: CLMI score or label */}
+        {/* Center: CLMI score */}
         <circle
           cx={CENTER}
           cy={CENTER}
@@ -298,7 +306,7 @@ export function LeadershipCircle({ dimensions, clmiScore, className = '' }: Lead
               textAnchor="middle"
               dominantBaseline="central"
               fill="rgba(0,0,0,0.85)"
-              fontSize={26}
+              fontSize={24}
               fontWeight={700}
               fontFamily="Inter, sans-serif"
             >
@@ -310,7 +318,7 @@ export function LeadershipCircle({ dimensions, clmiScore, className = '' }: Lead
               textAnchor="middle"
               dominantBaseline="central"
               fill="rgba(0,0,0,0.4)"
-              fontSize={10}
+              fontSize={9}
               fontWeight={600}
               fontFamily="Inter, sans-serif"
               letterSpacing="0.1em"
