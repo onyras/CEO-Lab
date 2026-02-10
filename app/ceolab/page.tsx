@@ -412,7 +412,7 @@ function ResultsHero({
       <div className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-6">
         <h2 className="text-xl font-bold text-black mb-1">Leadership Profile</h2>
         <p className="text-sm text-black/50 mb-4">Your shape across 15 dimensions</p>
-        <div className="grid md:grid-cols-2 gap-6 items-start">
+        <div className="space-y-8">
           <LeadershipCircle
             dimensions={radarData}
             clmiScore={clmi}
