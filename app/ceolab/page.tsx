@@ -462,16 +462,22 @@ function DeepDiveTabContent({
               key={ts.territory}
               className="bg-white rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden"
             >
+              {/* Headline */}
+              <div className="px-6 pt-6 pb-0">
+                <h3 className="text-lg font-bold text-black">{config.displayLabel}</h3>
+                <p className="text-xs text-black/40 mt-0.5">{config.arcDescription}</p>
+              </div>
               {/* Score area */}
-              <div className="px-6 pt-8 pb-6 text-center">
-                <p
-                  className="text-xs font-semibold tracking-wider uppercase mb-4"
-                  style={{ color }}
-                >
-                  {config.displayLabel}
-                </p>
-                <p className="text-5xl font-bold text-black leading-none">{score}%</p>
-                <p className="text-sm text-black/40 mt-2">{ts.verbalLabel}</p>
+              <div className="px-6 pt-4 pb-6 flex flex-col items-center">
+                <ScoreRing
+                  value={score}
+                  size={100}
+                  strokeWidth={6}
+                  color={color}
+                  valueSuffix="%"
+                  showValue={true}
+                />
+                <p className="text-sm text-black/40 mt-3">{ts.verbalLabel}</p>
               </div>
               {/* Narrative */}
               <div className="px-6 pb-6">
