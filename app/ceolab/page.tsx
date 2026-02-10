@@ -43,7 +43,7 @@ const TERRITORY_COLORS: Record<Territory, string> = {
   leading_organizations: '#E08F6A',
 }
 
-type ResultsTab = 'deep-dive' | 'dimensions' | 'archetypes' | 'blind-spots' | 'roadmap'
+type ResultsTab = 'overview' | 'deep-dive' | 'dimensions' | 'archetypes' | 'blind-spots' | 'roadmap'
 
 function buildHeatmapData(dimensionScores: DimensionScore[]) {
   return dimensionScores.map((ds) => {
@@ -1110,7 +1110,7 @@ export default function ResultsPage() {
   const [results, setResults] = useState<FullResults | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<ResultsTab>('deep-dive')
+  const [activeTab, setActiveTab] = useState<ResultsTab>('overview')
 
   useEffect(() => {
     async function loadResults() {
@@ -1169,6 +1169,7 @@ export default function ResultsPage() {
   const imFlagged = results.session.imFlagged
 
   const tabs: { key: ResultsTab; label: string }[] = [
+    { key: 'overview', label: 'Overview' },
     { key: 'deep-dive', label: 'Deep Dive' },
     { key: 'dimensions', label: 'Impact Areas' },
     { key: 'archetypes', label: 'Archetypes' },
@@ -1188,16 +1189,6 @@ export default function ResultsPage() {
         </header>
 
         <main className="max-w-4xl mx-auto px-6 pb-20">
-          {/* Hero (always visible) */}
-          <ResultsHero
-            clmi={clmi}
-            bsi={bsi}
-            hasMirrorData={hasMirrorData}
-            territoryScores={results.territoryScores}
-            dimensionScores={results.dimensionScores}
-            imFlagged={imFlagged}
-          />
-
           {/* Tab bar */}
           <div className="flex gap-1 p-1.5 bg-black/[0.04] rounded-xl mb-8">
             {tabs.map((tab) => (
@@ -1216,6 +1207,16 @@ export default function ResultsPage() {
           </div>
 
           {/* Tab content */}
+          {activeTab === 'overview' && (
+            <ResultsHero
+              clmi={clmi}
+              bsi={bsi}
+              hasMirrorData={hasMirrorData}
+              territoryScores={results.territoryScores}
+              dimensionScores={results.dimensionScores}
+              imFlagged={imFlagged}
+            />
+          )}
           {activeTab === 'deep-dive' && (
             <DeepDiveTabContent
               dimensionScores={results.dimensionScores}
