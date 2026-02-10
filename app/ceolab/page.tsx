@@ -603,6 +603,29 @@ function DeepDiveTabContent({
                         </span>
                       </div>
 
+                      {/* Quarterly timeline */}
+                      <div className="flex items-center gap-1 mb-2">
+                        {['Q1', 'Q2', 'Q3', 'Q4'].map((q, qi) => (
+                          <div key={q} className="flex items-center">
+                            <div className="flex flex-col items-center">
+                              <div
+                                className="w-3 h-3 rounded-full border-2 flex-shrink-0"
+                                style={{
+                                  borderColor: qi === 0 ? color : 'rgba(0,0,0,0.1)',
+                                  backgroundColor: qi === 0 ? color : 'transparent',
+                                }}
+                              />
+                              <span className={`text-[9px] mt-0.5 ${qi === 0 ? 'font-semibold text-black/60' : 'text-black/25'}`}>
+                                {q}
+                              </span>
+                            </div>
+                            {qi < 3 && (
+                              <div className="w-8 h-px bg-black/10 mx-1 -mt-3" />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+
                       {/* Score insight — always visible */}
                       <p className="text-xs text-black/50 leading-relaxed">
                         {insight}
