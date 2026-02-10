@@ -449,6 +449,41 @@ function DeepDiveTabContent({
 
   return (
     <div className="space-y-6">
+      {/* Three Territories overview */}
+      <div className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <h2 className="text-xl font-bold text-black mb-1">Three Territories</h2>
+        <p className="text-sm text-black/50 mb-6">Your leadership profile across three domains</p>
+        <TerritoryBars
+          territories={territoryScores.map((ts) => ({
+            territory: ts.territory,
+            score: Math.round(ts.score),
+            verbalLabel: ts.verbalLabel,
+          }))}
+        />
+        <div className="mt-6 grid md:grid-cols-3 gap-4">
+          {territoryScores.map((ts) => {
+            const config = TERRITORY_CONFIG[ts.territory]
+            const narrative = getTerritoryArcNarrative(ts.territory, ts.score)
+            return (
+              <div key={ts.territory} className="py-4 px-5 rounded-lg bg-[#F7F3ED]">
+                <p className="text-xs font-semibold tracking-wider uppercase mb-2" style={{ color: TERRITORY_COLORS[ts.territory] }}>
+                  {config.displayLabel}
+                </p>
+                <p className="text-sm text-black/70 leading-relaxed">{narrative}</p>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* 15 Dimensions Heatmap */}
+      <div className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <h2 className="text-xl font-bold text-black mb-1">15 Dimensions</h2>
+        <p className="text-sm text-black/50 mb-6">All dimensions color-coded by your score range</p>
+        <DimensionHeatmap dimensions={buildHeatmapData(dimensionScores)} />
+      </div>
+
+      {/* Per-territory dimension rows */}
       {territories.map((t) => {
         const config = TERRITORY_CONFIG[t]
         const color = TERRITORY_COLORS[t]
@@ -1135,7 +1170,7 @@ export default function ResultsPage() {
 
   const tabs: { key: ResultsTab; label: string }[] = [
     { key: 'deep-dive', label: 'Deep Dive' },
-    { key: 'dimensions', label: 'Dimensions' },
+    { key: 'dimensions', label: 'Impact Areas' },
     { key: 'archetypes', label: 'Archetypes' },
     { key: 'blind-spots', label: 'Blind Spots' },
     { key: 'roadmap', label: 'Roadmap' },
