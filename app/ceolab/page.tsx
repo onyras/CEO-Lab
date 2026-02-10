@@ -449,31 +449,37 @@ function DeepDiveTabContent({
 
   return (
     <div className="space-y-6">
-      {/* Three Territories overview */}
-      <div className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-        <h2 className="text-xl font-bold text-black mb-1">Three Territories</h2>
-        <p className="text-sm text-black/50 mb-6">Your leadership profile across three domains</p>
-        <TerritoryBars
-          territories={territoryScores.map((ts) => ({
-            territory: ts.territory,
-            score: Math.round(ts.score),
-            verbalLabel: ts.verbalLabel,
-          }))}
-        />
-        <div className="mt-6 grid md:grid-cols-3 gap-4">
-          {territoryScores.map((ts) => {
-            const config = TERRITORY_CONFIG[ts.territory]
-            const narrative = getTerritoryArcNarrative(ts.territory, ts.score)
-            return (
-              <div key={ts.territory} className="py-4 px-5 rounded-lg bg-[#F7F3ED]">
-                <p className="text-xs font-semibold tracking-wider uppercase mb-2" style={{ color: TERRITORY_COLORS[ts.territory] }}>
+      {/* Three Territories — bento cards */}
+      <div className="grid md:grid-cols-3 gap-4">
+        {territoryScores.map((ts) => {
+          const config = TERRITORY_CONFIG[ts.territory]
+          const color = TERRITORY_COLORS[ts.territory]
+          const narrative = getTerritoryArcNarrative(ts.territory, ts.score)
+          const score = Math.round(ts.score)
+
+          return (
+            <div
+              key={ts.territory}
+              className="bg-white rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden"
+            >
+              {/* Score area */}
+              <div className="px-6 pt-8 pb-6 text-center">
+                <p
+                  className="text-xs font-semibold tracking-wider uppercase mb-4"
+                  style={{ color }}
+                >
                   {config.displayLabel}
                 </p>
-                <p className="text-sm text-black/70 leading-relaxed">{narrative}</p>
+                <p className="text-5xl font-bold text-black leading-none">{score}%</p>
+                <p className="text-sm text-black/40 mt-2">{ts.verbalLabel}</p>
               </div>
-            )
-          })}
-        </div>
+              {/* Narrative */}
+              <div className="px-6 pb-6">
+                <p className="text-sm text-black/60 leading-relaxed">{narrative}</p>
+              </div>
+            </div>
+          )
+        })}
       </div>
 
       {/* 15 Dimensions Heatmap */}
@@ -640,52 +646,14 @@ function DeepDiveTabContent({
 function DimensionsTabContent({
   dimensionScores,
   priorityDimensions,
-  territoryScores,
   imFlagged,
 }: {
   dimensionScores: DimensionScore[]
   priorityDimensions: DimensionId[]
-  territoryScores: TerritoryScore[]
   imFlagged: boolean
 }) {
   return (
     <div className="space-y-6">
-      {/* Territory Bars */}
-      <div className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-        <h2 className="text-xl font-bold text-black mb-1">Three Territories</h2>
-        <p className="text-sm text-black/50 mb-6">Your leadership profile across three domains</p>
-        <TerritoryBars
-          territories={territoryScores.map((ts) => ({
-            territory: ts.territory,
-            score: Math.round(ts.score),
-            verbalLabel: ts.verbalLabel,
-          }))}
-        />
-
-        {/* Arc narratives */}
-        <div className="mt-6 grid md:grid-cols-3 gap-4">
-          {territoryScores.map((ts) => {
-            const config = TERRITORY_CONFIG[ts.territory]
-            const narrative = getTerritoryArcNarrative(ts.territory, ts.score)
-            return (
-              <div key={ts.territory} className="py-4 px-5 rounded-lg bg-[#F7F3ED]">
-                <p className="text-xs font-semibold tracking-wider uppercase mb-2" style={{ color: TERRITORY_COLORS[ts.territory] }}>
-                  {config.displayLabel}
-                </p>
-                <p className="text-sm text-black/70 leading-relaxed">{narrative}</p>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* 15 Dimensions Heatmap */}
-      <div className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-        <h2 className="text-xl font-bold text-black mb-1">15 Dimensions</h2>
-        <p className="text-sm text-black/50 mb-6">All dimensions color-coded by your score range</p>
-        <DimensionHeatmap dimensions={buildHeatmapData(dimensionScores)} />
-      </div>
-
       {/* Priority Dimensions (Mirror/Meaning/Move) */}
       <div className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
         <h2 className="text-xl font-bold text-black mb-1">Priority Dimensions</h2>
@@ -1227,7 +1195,6 @@ export default function ResultsPage() {
             <DimensionsTabContent
               dimensionScores={results.dimensionScores}
               priorityDimensions={results.priorityDimensions}
-              territoryScores={results.territoryScores}
               imFlagged={imFlagged}
             />
           )}
