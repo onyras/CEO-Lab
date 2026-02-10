@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Territory } from '@/types/assessment'
 
 interface RadarChartProps {
@@ -10,7 +10,6 @@ interface RadarChartProps {
     territory: Territory
     percentage: number
   }[]
-  size?: number
   className?: string
 }
 
@@ -21,13 +20,26 @@ const TERRITORY_COLORS: Record<Territory, string> = {
 }
 
 const TERRITORY_LABELS: Record<Territory, string> = {
-  leading_yourself: 'Leading Yourself',
-  leading_teams: 'Leading Teams',
-  leading_organizations: 'Leading Orgs',
+  leading_yourself: 'LEADING YOURSELF',
+  leading_teams: 'LEADING TEAMS',
+  leading_organizations: 'LEADING ORGS',
+}
+
+// Short display names to prevent label overlap
+const SHORT_NAMES: Record<string, string> = {
+  'Diagnosing the Real Problem': 'Diagnosis',
+  'Team Operating System': 'Team OS',
+  'Organizational Architecture': 'Org Architecture',
+  'Hard Conversations': 'Hard Convos',
 }
 
 const RING_COUNT = 5
 const AXIS_COUNT = 15
+
+// Internal viewBox size — the SVG scales to fill its container
+const VB = 700
+const LABEL_MARGIN = 120
+const MAX_RADIUS = VB / 2 - LABEL_MARGIN
 
 function polarToCartesian(cx: number, cy: number, radius: number, angleDeg: number) {
   const angleRad = ((angleDeg - 90) * Math.PI) / 180
@@ -45,78 +57,83 @@ function buildPolygonPoints(cx: number, cy: number, radius: number, count: numbe
   }).join(' ')
 }
 
-export function RadarChart({ dimensions, size = 400, className = '' }: RadarChartProps) {
+export function RadarChart({ dimensions, className = '' }: RadarChartProps) {
   const [mounted, setMounted] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 50)
     return () => clearTimeout(timer)
   }, [])
 
-  const labelPadding = 80
-  const maxRadius = size / 2 - labelPadding
-  const cx = size / 2
-  const cy = size / 2
+  const cx = VB / 2
+  const cy = VB / 2
   const step = 360 / AXIS_COUNT
 
-  // Build score polygon points
+  // Score polygon
   const scorePoints = dimensions.map((dim, i) => {
     const pct = Math.max(0, Math.min(100, dim.percentage))
-    const r = mounted ? (pct / 100) * maxRadius : 0
+    const r = mounted ? (pct / 100) * MAX_RADIUS : 0
     return polarToCartesian(cx, cy, r, i * step)
   })
-
   const scorePolygon = scorePoints.map((p) => `${p.x},${p.y}`).join(' ')
-
-  // Center polygon (for animation start)
   const centerPolygon = dimensions.map(() => `${cx},${cy}`).join(' ')
 
-  // Territory wedge paths (subtle background)
   const territories: Territory[] = ['leading_yourself', 'leading_teams', 'leading_organizations']
+
+  // Territory wedge backgrounds
   const wedgePaths = territories.map((territory, tIdx) => {
-    const startIdx = tIdx * 5
-    const endIdx = startIdx + 4
-    const startAngle = startIdx * step
-    const endAngle = (endIdx + 1) * step
-
-    // Build wedge as a filled polygon from center through the arc
-    const wedgePoints: string[] = [`${cx},${cy}`]
-    for (let angle = startAngle; angle <= endAngle; angle += step / 2) {
-      const { x, y } = polarToCartesian(cx, cy, maxRadius + 4, angle)
-      wedgePoints.push(`${x},${y}`)
+    const startAngle = tIdx * 5 * step
+    const endAngle = (tIdx * 5 + 5) * step
+    const pts: string[] = [`${cx},${cy}`]
+    for (let a = startAngle; a <= endAngle; a += step / 4) {
+      const { x, y } = polarToCartesian(cx, cy, MAX_RADIUS, a)
+      pts.push(`${x},${y}`)
     }
-    // Ensure we hit the exact end angle
-    const last = polarToCartesian(cx, cy, maxRadius + 4, endAngle)
-    wedgePoints.push(`${last.x},${last.y}`)
-
+    const last = polarToCartesian(cx, cy, MAX_RADIUS, endAngle)
+    pts.push(`${last.x},${last.y}`)
     return (
       <polygon
         key={territory}
-        points={wedgePoints.join(' ')}
+        points={pts.join(' ')}
         fill={TERRITORY_COLORS[territory]}
-        opacity={0.04}
+        opacity={0.07}
       />
     )
   })
 
-  // Territory group labels at midpoint of each 5-axis segment
-  const territoryLabels = territories.map((territory, tIdx) => {
-    const midIdx = tIdx * 5 + 2
-    const angle = midIdx * step
-    const labelR = maxRadius + 56
-    const { x, y } = polarToCartesian(cx, cy, labelR, angle)
+  // Territory boundary lines
+  const boundaryLines = territories.map((_, tIdx) => {
+    const angle = tIdx * 5 * step
+    const { x, y } = polarToCartesian(cx, cy, MAX_RADIUS, angle)
+    return (
+      <line
+        key={`boundary-${tIdx}`}
+        x1={cx} y1={cy} x2={x} y2={y}
+        stroke="rgba(0,0,0,0.08)"
+        strokeWidth={1}
+        strokeDasharray="6 4"
+      />
+    )
+  })
 
+  // Territory group labels inside the chart
+  const territoryLabelElements = territories.map((territory, tIdx) => {
+    const midAngle = (tIdx * 5 + 2) * step
+    const labelR = MAX_RADIUS * 0.38
+    const { x, y } = polarToCartesian(cx, cy, labelR, midAngle)
     return (
       <text
         key={territory}
-        x={x}
-        y={y}
+        x={x} y={y}
         textAnchor="middle"
         dominantBaseline="central"
         fill={TERRITORY_COLORS[territory]}
-        fontSize={11}
-        fontWeight={600}
+        opacity={0.5}
+        fontSize={13}
+        fontWeight={700}
         fontFamily="Inter, sans-serif"
+        letterSpacing="0.06em"
       >
         {TERRITORY_LABELS[territory]}
       </text>
@@ -124,19 +141,19 @@ export function RadarChart({ dimensions, size = 400, className = '' }: RadarChar
   })
 
   return (
-    <div className={`inline-flex justify-center ${className}`}>
+    <div ref={containerRef} className={`w-full ${className}`}>
       <svg
-        width={size}
-        height={size}
-        viewBox={`0 0 ${size} ${size}`}
-        className="overflow-visible"
+        viewBox={`0 0 ${VB} ${VB}`}
+        className="w-full h-auto overflow-visible"
+        preserveAspectRatio="xMidYMid meet"
       >
-        {/* Territory background wedges */}
+        {/* Territory wedges */}
         {wedgePaths}
+        {boundaryLines}
 
-        {/* Concentric grid rings (15-sided polygons) */}
+        {/* Concentric grid rings */}
         {Array.from({ length: RING_COUNT }, (_, i) => {
-          const r = ((i + 1) / RING_COUNT) * maxRadius
+          const r = ((i + 1) / RING_COUNT) * MAX_RADIUS
           return (
             <polygon
               key={i}
@@ -148,21 +165,22 @@ export function RadarChart({ dimensions, size = 400, className = '' }: RadarChar
           )
         })}
 
-        {/* Axis lines from center to each vertex */}
+        {/* Axis lines colored by territory */}
         {dimensions.map((dim, i) => {
-          const { x, y } = polarToCartesian(cx, cy, maxRadius, i * step)
+          const { x, y } = polarToCartesian(cx, cy, MAX_RADIUS, i * step)
           return (
             <line
               key={dim.dimensionId}
-              x1={cx}
-              y1={cy}
-              x2={x}
-              y2={y}
-              stroke="rgba(0,0,0,0.08)"
+              x1={cx} y1={cy} x2={x} y2={y}
+              stroke={TERRITORY_COLORS[dim.territory]}
               strokeWidth={1}
+              opacity={0.2}
             />
           )
         })}
+
+        {/* Territory labels inside */}
+        {territoryLabelElements}
 
         {/* Score polygon */}
         <polygon
@@ -177,14 +195,14 @@ export function RadarChart({ dimensions, size = 400, className = '' }: RadarChar
         {/* Data point dots */}
         {dimensions.map((dim, i) => {
           const pct = Math.max(0, Math.min(100, dim.percentage))
-          const r = mounted ? (pct / 100) * maxRadius : 0
+          const r = mounted ? (pct / 100) * MAX_RADIUS : 0
           const { x, y } = polarToCartesian(cx, cy, r, i * step)
           return (
             <circle
               key={`dot-${dim.dimensionId}`}
               cx={mounted ? x : cx}
               cy={mounted ? y : cy}
-              r={3}
+              r={4}
               fill={TERRITORY_COLORS[dim.territory]}
               className="transition-all duration-700 ease-out"
             />
@@ -194,33 +212,30 @@ export function RadarChart({ dimensions, size = 400, className = '' }: RadarChar
         {/* Dimension labels around perimeter */}
         {dimensions.map((dim, i) => {
           const angle = i * step
-          const labelR = maxRadius + 18
+          const labelR = MAX_RADIUS + 20
           const { x, y } = polarToCartesian(cx, cy, labelR, angle)
+          const shortName = SHORT_NAMES[dim.name] ?? dim.name
 
-          // Determine text anchor based on position
           const normalizedAngle = ((angle - 90 + 360) % 360)
           let anchor: 'start' | 'middle' | 'end' = 'middle'
-          if (normalizedAngle > 20 && normalizedAngle < 160) anchor = 'start'
-          else if (normalizedAngle > 200 && normalizedAngle < 340) anchor = 'end'
+          if (normalizedAngle > 15 && normalizedAngle < 165) anchor = 'start'
+          else if (normalizedAngle > 195 && normalizedAngle < 345) anchor = 'end'
 
           return (
             <text
               key={`label-${dim.dimensionId}`}
-              x={x}
-              y={y}
+              x={x} y={y}
               textAnchor={anchor}
               dominantBaseline="central"
-              fill="rgba(0,0,0,0.5)"
-              fontSize={10}
+              fill={TERRITORY_COLORS[dim.territory]}
+              fontSize={13}
+              fontWeight={500}
               fontFamily="Inter, sans-serif"
             >
-              {dim.name}
+              {shortName}
             </text>
           )
         })}
-
-        {/* Territory group labels */}
-        {territoryLabels}
       </svg>
     </div>
   )

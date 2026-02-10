@@ -394,64 +394,82 @@ function ResultsHero({
     }))
   )
 
+  function getClmiInterpretation(score: number): string {
+    if (score <= 20) return 'Foundational stage — significant growth opportunities ahead'
+    if (score <= 40) return 'Early foundations are forming across your leadership territories'
+    if (score <= 60) return 'Solid mid-range capability with clear areas to develop further'
+    if (score <= 80) return 'Strong leadership maturity across your three territories'
+    return 'Exceptional leadership maturity — focus on sustaining and mentoring'
+  }
+
+  const radarData = dimensionScores.map((ds) => {
+    const def = getDimension(ds.dimensionId)
+    return {
+      dimensionId: ds.dimensionId,
+      name: def.name,
+      territory: def.territory,
+      percentage: Math.round(ds.percentage),
+    }
+  })
+
   return (
-    <div className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-6">
-      <div className="flex flex-col items-center text-center">
-        {/* CLMI ScoreRing */}
-        <ScoreRing
-          value={clmi}
-          size={160}
-          strokeWidth={10}
-          color="#000"
-          label={label}
-        />
-
-        {/* 3 territory rings */}
-        <div className="flex justify-center gap-6 mt-6 mb-6">
-          {territoryScores.map((ts) => (
+    <>
+      {/* CLMI Score + Territory Breakdown */}
+      <div className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-6">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
+          {/* Left: CLMI */}
+          <div className="flex flex-col items-center text-center flex-shrink-0">
+            <p className="text-sm text-black/50 mb-4">CEO Leadership Maturity Index</p>
             <ScoreRing
-              key={ts.territory}
-              value={ts.score}
-              size={64}
-              strokeWidth={4}
-              color={TERRITORY_COLORS[ts.territory]}
-              label={TERRITORY_CONFIG[ts.territory].displayLabel}
+              value={clmi}
+              size={200}
+              strokeWidth={14}
+              color="#000"
+              label={label}
             />
-          ))}
+            <p className="text-sm text-black/50 mt-4 max-w-[240px]">
+              {getClmiInterpretation(clmi)}
+            </p>
+          </div>
+
+          {/* Right: 3 territories stacked */}
+          <div className="flex-1 w-full space-y-3">
+            {territoryScores.map((ts) => (
+              <div
+                key={ts.territory}
+                className="flex items-center gap-4 p-4 rounded-xl bg-[#F7F3ED]/50"
+              >
+                <ScoreRing
+                  value={ts.score}
+                  size={56}
+                  strokeWidth={4}
+                  color={TERRITORY_COLORS[ts.territory]}
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-black">{TERRITORY_CONFIG[ts.territory].displayLabel}</p>
+                  <p className="text-xs text-black/40">{ts.verbalLabel}</p>
+                </div>
+                <span className="text-lg font-bold text-black">{Math.round(ts.score)}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Radar Chart — leadership profile shape */}
-        <div className="w-full flex justify-center my-6">
-          <RadarChart
-            dimensions={dimensionScores.map((ds) => {
-              const def = getDimension(ds.dimensionId)
-              return {
-                dimensionId: ds.dimensionId,
-                name: def.name,
-                territory: def.territory,
-                percentage: Math.round(ds.percentage),
-              }
-            })}
-            size={400}
-            className="max-w-full"
-          />
-        </div>
-
-        {/* Interpretation text */}
-        <p className="text-base text-black/60 max-w-xl mx-auto leading-relaxed">
+        {/* Interpretation */}
+        <p className="text-base text-black/60 max-w-xl mx-auto leading-relaxed text-center mt-6">
           {headlineText}
         </p>
 
         {/* BSI */}
         {hasMirrorData && bsi != null && (
-          <p className="text-sm text-black/50 mt-3 max-w-xl mx-auto">
+          <p className="text-sm text-black/50 mt-3 max-w-xl mx-auto text-center">
             {buildBsiHeadlineText(bsi)}
           </p>
         )}
 
         {/* IM advisory */}
         {imFlagged && (
-          <div className="mt-4 bg-[#F7F3ED] rounded-lg p-4 max-w-xl text-left">
+          <div className="mt-4 bg-[#F7F3ED] rounded-lg p-4 max-w-xl mx-auto text-left">
             <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-1">
               A Note on Your Responses
             </p>
@@ -461,7 +479,19 @@ function ResultsHero({
           </div>
         )}
       </div>
-    </div>
+
+      {/* Leadership Profile — Radar Chart */}
+      <div className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-6">
+        <h2 className="text-xl font-bold text-black mb-1">Leadership Profile</h2>
+        <p className="text-sm text-black/50 mb-4">Your shape across 15 dimensions</p>
+        <div className="w-full flex justify-center">
+          <RadarChart
+            dimensions={radarData}
+            className="max-w-full"
+          />
+        </div>
+      </div>
+    </>
   )
 }
 

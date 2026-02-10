@@ -807,14 +807,6 @@ function OverviewTab({ data }: { data: DashboardData }) {
   const hasWeeklyPulse = data.weeklyPulseCount > 0
   const hasMirrorData = data.mirrorCount > 0
 
-  function getClmiInterpretation(score: number): string {
-    if (score <= 20) return 'Foundational stage — significant growth opportunities ahead'
-    if (score <= 40) return 'Early foundations are forming across your leadership territories'
-    if (score <= 60) return 'Solid mid-range capability with clear areas to develop further'
-    if (score <= 80) return 'Strong leadership maturity across your three territories'
-    return 'Exceptional leadership maturity — focus on sustaining and mentoring'
-  }
-
   // Determine nudges for "What's Next"
   const nudges: { text: string; cta: string; href: string }[] = []
 
@@ -853,59 +845,12 @@ function OverviewTab({ data }: { data: DashboardData }) {
     nudges.push({
       text: `Focus area: ${lowest.name} (${Math.round(lowest.score)}%). Check your full results for framework prescriptions.`,
       cta: 'View Results',
-      href: '/results',
+      href: '/ceolab',
     })
   }
 
   return (
     <div>
-      {/* CLMI ScoreRing (left) + Territory cards stacked (right) */}
-      <div className="bg-white rounded-2xl p-8 md:p-10 border border-black/5 mb-6">
-        <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
-          {/* Left: CLMI */}
-          <div className="flex flex-col items-center text-center flex-shrink-0">
-            <p className="text-sm text-black/50 mb-4">CEO Leadership Maturity Index</p>
-            <ScoreRing
-              value={data.clmi}
-              size={200}
-              strokeWidth={14}
-              color="#000"
-              label={data.clmiLabel}
-            />
-            <p className="text-sm text-black/50 mt-4 max-w-[240px]">
-              {getClmiInterpretation(data.clmi)}
-            </p>
-            {data.lastAssessmentDate && (
-              <p className="text-xs text-black/30 mt-2">
-                Assessed {new Date(data.lastAssessmentDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-              </p>
-            )}
-          </div>
-
-          {/* Right: 3 territories stacked */}
-          <div className="flex-1 w-full space-y-3">
-            {data.territories.map((t) => (
-              <div
-                key={t.territory}
-                className="flex items-center gap-4 p-4 rounded-xl bg-[#F7F3ED]/50"
-              >
-                <ScoreRing
-                  value={t.score}
-                  size={56}
-                  strokeWidth={4}
-                  color={t.color}
-                />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-black">{t.name}</p>
-                  <p className="text-xs text-black/40">{t.label}</p>
-                </div>
-                <span className="text-lg font-bold text-black">{Math.round(t.score)}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Accountability Agent */}
       <div className="bg-white rounded-2xl p-8 border border-black/5 mb-6">
         <h2 className="text-lg font-semibold text-black mb-1">Accountability Agent</h2>
@@ -1169,7 +1114,7 @@ function AssessmentTab({ data }: { data: DashboardData }) {
 
         <div className="flex gap-3">
           <a
-            href="/results"
+            href="/ceolab"
             className="inline-flex items-center px-5 py-2.5 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
           >
             View Results

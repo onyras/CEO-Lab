@@ -151,7 +151,7 @@ export default function BaselineAssessment() {
         // All items in this stage already answered
         if (stage >= 3) {
           setPhase('done')
-          router.push('/results')
+          router.push('/ceolab')
         } else {
           setPhase('stage-complete')
         }

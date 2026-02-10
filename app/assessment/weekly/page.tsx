@@ -278,7 +278,7 @@ export default function WeeklyPulsePage() {
                 Back to Dashboard
               </a>
               <a
-                href="/results"
+                href="/ceolab"
                 className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-white text-black border border-black/15 rounded-lg text-sm font-medium hover:border-black/30 transition-colors"
               >
                 View Full Report

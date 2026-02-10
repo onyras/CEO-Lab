@@ -393,7 +393,7 @@ export default function PreviewResultsPage() {
         // If the session is fully completed (all 3 stages), redirect to
         // the full results page instead of showing the preview.
         if (fetchedResults.session.stageReached === 3 && fetchedResults.session.completedAt) {
-          router.replace('/results')
+          router.replace('/ceolab')
           return
         }
 
