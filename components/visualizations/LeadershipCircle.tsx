@@ -36,8 +36,8 @@ const SHORT_NAMES: Record<string, string> = {
 const VB = 700
 const CENTER = VB / 2
 const INNER_RADIUS = 60
-const MAX_RADIUS = 260
-const LABEL_RADIUS = MAX_RADIUS + 30
+const MAX_RADIUS = 250
+const LABEL_RADIUS = MAX_RADIUS + 35
 const RING_COUNT = 5
 const TOTAL_DIMS = 15
 const GAP_DEG = 1.5 // gap between dimension wedges
@@ -213,9 +213,9 @@ export function LeadershipCircle({ dimensions, clmiScore, className = '' }: Lead
               y={y}
               textAnchor={isRightSide ? 'start' : 'end'}
               dominantBaseline="central"
-              fill="rgba(0,0,0,0.5)"
-              fontSize={11}
-              fontWeight={500}
+              fill="rgba(0,0,0,0.7)"
+              fontSize={13}
+              fontWeight={600}
               fontFamily="Inter, sans-serif"
               transform={`rotate(${rotation}, ${x}, ${y})`}
             >
@@ -242,14 +242,14 @@ export function LeadershipCircle({ dimensions, clmiScore, className = '' }: Lead
               y={y}
               textAnchor="middle"
               dominantBaseline="central"
-              fill="rgba(0,0,0,0.35)"
-              fontSize={9}
-              fontWeight={600}
+              fill="rgba(0,0,0,0.5)"
+              fontSize={11}
+              fontWeight={700}
               fontFamily="Inter, sans-serif"
               transform={`rotate(${rotation}, ${x}, ${y})`}
               className="transition-all duration-700 ease-out"
             >
-              {Math.round(pct)}
+              {Math.round(pct)}%
             </text>
           )
         })}
@@ -257,7 +257,7 @@ export function LeadershipCircle({ dimensions, clmiScore, className = '' }: Lead
         {/* Territory labels (outer arc) */}
         {territories.map((territory, tIdx) => {
           const midAngle = tIdx * territorySpan + territorySpan / 2
-          const [x, y] = polarToXY(midAngle, MAX_RADIUS + 65)
+          const [x, y] = polarToXY(midAngle, MAX_RADIUS + 72)
 
           return (
             <text
@@ -267,10 +267,10 @@ export function LeadershipCircle({ dimensions, clmiScore, className = '' }: Lead
               textAnchor="middle"
               dominantBaseline="central"
               fill={TERRITORY_COLORS[territory]}
-              fontSize={11}
+              fontSize={13}
               fontWeight={700}
               fontFamily="Inter, sans-serif"
-              letterSpacing="0.08em"
+              letterSpacing="0.1em"
             >
               {TERRITORY_LABELS[territory]}
             </text>
@@ -297,8 +297,8 @@ export function LeadershipCircle({ dimensions, clmiScore, className = '' }: Lead
               y={CENTER - 8}
               textAnchor="middle"
               dominantBaseline="central"
-              fill="rgba(0,0,0,0.8)"
-              fontSize={22}
+              fill="rgba(0,0,0,0.85)"
+              fontSize={26}
               fontWeight={700}
               fontFamily="Inter, sans-serif"
             >
@@ -309,8 +309,8 @@ export function LeadershipCircle({ dimensions, clmiScore, className = '' }: Lead
               y={CENTER + 12}
               textAnchor="middle"
               dominantBaseline="central"
-              fill="rgba(0,0,0,0.3)"
-              fontSize={8}
+              fill="rgba(0,0,0,0.4)"
+              fontSize={10}
               fontWeight={600}
               fontFamily="Inter, sans-serif"
               letterSpacing="0.1em"
