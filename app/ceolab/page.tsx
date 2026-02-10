@@ -22,6 +22,7 @@ import { DimensionHeatmap } from '@/components/visualizations/DimensionHeatmap'
 import { ArchetypeBadge } from '@/components/visualizations/ArchetypeBadge'
 import { MirrorDotPlot } from '@/components/visualizations/MirrorDotPlot'
 import { RadarChart } from '@/components/visualizations/RadarChart'
+import { LeadershipCircle } from '@/components/visualizations/LeadershipCircle'
 import { RoadmapTimeline } from '@/components/visualizations/RoadmapTimeline'
 import type {
   FullResults,
@@ -407,11 +408,15 @@ function ResultsHero({
         )}
       </div>
 
-      {/* Leadership Profile — Radar Chart */}
+      {/* Leadership Profile — Circle + Radar */}
       <div className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-6">
         <h2 className="text-xl font-bold text-black mb-1">Leadership Profile</h2>
         <p className="text-sm text-black/50 mb-4">Your shape across 15 dimensions</p>
-        <div className="w-full flex justify-center">
+        <div className="grid md:grid-cols-2 gap-6 items-start">
+          <LeadershipCircle
+            dimensions={radarData}
+            clmiScore={clmi}
+          />
           <RadarChart
             dimensions={radarData}
             className="max-w-full"
