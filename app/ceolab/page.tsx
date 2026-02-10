@@ -603,27 +603,41 @@ function DeepDiveTabContent({
                         </span>
                       </div>
 
-                      {/* Quarterly timeline */}
-                      <div className="flex items-center gap-1 mb-2">
-                        {['Q1', 'Q2', 'Q3', 'Q4'].map((q, qi) => (
-                          <div key={q} className="flex items-center">
-                            <div className="flex flex-col items-center">
-                              <div
-                                className="w-3 h-3 rounded-full border-2 flex-shrink-0"
-                                style={{
-                                  borderColor: qi === 0 ? color : 'rgba(0,0,0,0.1)',
-                                  backgroundColor: qi === 0 ? color : 'transparent',
-                                }}
-                              />
-                              <span className={`text-[9px] mt-0.5 ${qi === 0 ? 'font-semibold text-black/60' : 'text-black/25'}`}>
+                      {/* Growth timeline */}
+                      <div className="flex items-end gap-0 mt-1 mb-2 h-10">
+                        {['Q1', 'Q2', 'Q3', 'Q4'].map((q, qi) => {
+                          const isNow = qi === 0
+                          // Q1 height based on actual score, future quarters show aspirational growth
+                          const barHeight = isNow
+                            ? Math.max(8, (score / 100) * 32)
+                            : 0
+
+                          return (
+                            <div key={q} className="flex-1 flex flex-col items-center justify-end h-full">
+                              {isNow ? (
+                                <div
+                                  className="w-full max-w-[28px] rounded-sm transition-all duration-500 ease-out"
+                                  style={{
+                                    height: barHeight,
+                                    backgroundColor: color,
+                                    opacity: 0.7,
+                                  }}
+                                />
+                              ) : (
+                                <div
+                                  className="w-full max-w-[28px] rounded-sm border border-dashed"
+                                  style={{
+                                    height: 32,
+                                    borderColor: 'rgba(0,0,0,0.08)',
+                                  }}
+                                />
+                              )}
+                              <span className={`text-[9px] mt-1 ${isNow ? 'font-semibold text-black/60' : 'text-black/20'}`}>
                                 {q}
                               </span>
                             </div>
-                            {qi < 3 && (
-                              <div className="w-8 h-px bg-black/10 mx-1 -mt-3" />
-                            )}
-                          </div>
-                        ))}
+                          )
+                        })}
                       </div>
 
                       {/* Score insight — always visible */}
