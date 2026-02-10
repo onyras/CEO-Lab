@@ -488,6 +488,54 @@ function DeepDiveTabContent({
         })}
       </div>
 
+      {/* Territory Deep Dives — 5 dimensions per territory */}
+      {territories.map((t) => {
+        const config = TERRITORY_CONFIG[t]
+        const color = TERRITORY_COLORS[t]
+        const terrScore = territoryScores.find((ts) => ts.territory === t)
+        const dims = enrichedScores.filter((d) => d.territory === t)
+
+        return (
+          <div key={`deep-${t}`} className="bg-white rounded-lg p-6 md:p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+            {/* Territory header */}
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-lg font-bold text-black">{config.displayLabel}</h2>
+                <p className="text-xs text-black/40 mt-0.5">{config.arcDescription}</p>
+              </div>
+              <div className="text-right">
+                <span className="text-2xl font-bold text-black">{Math.round(terrScore?.score ?? 0)}%</span>
+                <p className="text-xs text-black/40">{terrScore?.verbalLabel ?? ''}</p>
+              </div>
+            </div>
+
+            {/* 5 dimension bars */}
+            <div className="space-y-4">
+              {dims.map((dim) => {
+                const score = dim.score
+                return (
+                  <div key={dim.dimensionId}>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <p className="text-sm font-medium text-black">{dim.name}</p>
+                      <span className="text-sm font-bold text-black">{score}%</span>
+                    </div>
+                    <div className="bg-black/[0.04] rounded-full h-2 overflow-hidden">
+                      <div
+                        className="h-full rounded-full transition-all duration-500 ease-out"
+                        style={{
+                          width: `${Math.max(2, score)}%`,
+                          backgroundColor: color,
+                        }}
+                      />
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )
+      })}
+
       {/* 15 Dimensions Heatmap */}
       <div className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
         <h2 className="text-xl font-bold text-black mb-1">15 Dimensions</h2>
