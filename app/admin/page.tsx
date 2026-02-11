@@ -60,6 +60,7 @@ interface ActivityEvent {
   type: string
   userId: string
   userName: string
+  userEmail: string
   timestamp: string
   details: string
 }
@@ -654,7 +655,7 @@ function FeedbackTab({ feedback }: { feedback: FeedbackItem[] }) {
 function ActivityTab({ events }: { events: ActivityEvent[] }) {
   if (events.length === 0) {
     return (
-      <div className="bg-white rounded-lg p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
+      <div className="bg-white rounded-2xl p-12 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
         <p className="text-sm text-black/40">No activity yet</p>
       </div>
     )
@@ -663,13 +664,28 @@ function ActivityTab({ events }: { events: ActivityEvent[] }) {
   return (
     <div className="space-y-2">
       {events.map((event, i) => (
-        <div key={i} className="bg-white rounded-lg px-5 py-3.5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-start gap-3">
-          <EventTypeBadge type={event.type} />
-          <div className="flex-1 min-w-0">
-            <span className="text-sm font-medium text-black">{event.userName}</span>
-            <p className="text-sm text-black/60 mt-0.5">{event.details}</p>
+        <div key={i} className="bg-white rounded-2xl px-5 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <div className="flex items-start gap-3">
+            {/* Avatar */}
+            <div className="w-9 h-9 rounded-full bg-black/[0.06] flex items-center justify-center text-xs font-bold text-black/40 shrink-0 mt-0.5">
+              {(event.userName !== 'Unknown' ? event.userName : event.userEmail).charAt(0).toUpperCase()}
+            </div>
+            {/* Content */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-sm font-semibold text-black">
+                  {event.userName !== 'Unknown' ? event.userName : event.userEmail.split('@')[0]}
+                </span>
+                <span className="text-xs text-black/30">{event.userEmail}</span>
+              </div>
+              <div className="flex items-center gap-2 mt-1">
+                <EventTypeBadge type={event.type} />
+                <p className="text-sm text-black/60">{event.details}</p>
+              </div>
+            </div>
+            {/* Time */}
+            <span className="text-xs text-black/30 shrink-0 mt-1">{formatDateTime(event.timestamp)}</span>
           </div>
-          <span className="text-xs text-black/30 shrink-0">{formatDateTime(event.timestamp)}</span>
         </div>
       ))}
     </div>

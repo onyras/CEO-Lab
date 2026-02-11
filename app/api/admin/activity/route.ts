@@ -8,6 +8,7 @@ interface ActivityEvent {
   type: string
   userId: string
   userName: string
+  userEmail: string
   timestamp: string
   details: string
 }
@@ -36,12 +37,17 @@ export async function GET(request: Request) {
     const url = new URL(request.url)
     const limit = parseInt(url.searchParams.get('limit') || '50')
 
-    // Build user name/email maps
-    const { data: profiles } = await supabaseAdmin
-      .from('user_profiles')
-      .select('id, full_name, created_at')
+    // Build user name/email maps from profiles + auth metadata
+    const [profilesRes, authUsersRes] = await Promise.all([
+      supabaseAdmin.from('user_profiles').select('id, full_name, created_at'),
+      supabaseAdmin.auth.admin.listUsers({ perPage: 1000 }),
+    ])
+    const profiles = profilesRes.data || []
+    const authUsers = authUsersRes.data?.users || []
 
-    const nameMap = new Map((profiles || []).map(p => [p.id, p.full_name || 'Unknown']))
+    const authNameMap = new Map(authUsers.map(u => [u.id, u.user_metadata?.full_name || u.user_metadata?.name || null]))
+    const emailMap = new Map(authUsers.map(u => [u.id, u.email || 'Unknown']))
+    const nameMap = new Map(profiles.map(p => [p.id, p.full_name || authNameMap.get(p.id) || 'Unknown']))
 
     const events: ActivityEvent[] = []
 
@@ -59,6 +65,7 @@ export async function GET(request: Request) {
           type: 'baseline_completed',
           userId: s.ceo_id,
           userName: nameMap.get(s.ceo_id) || 'Unknown',
+          userEmail: emailMap.get(s.ceo_id) || 'Unknown',
           timestamp: s.completed_at,
           details: `Completed baseline assessment (CLMI: ${s.clmi ? Math.round(Number(s.clmi)) : 'N/A'}%)`,
         })
@@ -67,6 +74,7 @@ export async function GET(request: Request) {
         type: 'baseline_started',
         userId: s.ceo_id,
         userName: nameMap.get(s.ceo_id) || 'Unknown',
+        userEmail: emailMap.get(s.ceo_id) || 'Unknown',
         timestamp: s.started_at,
         details: `Started baseline assessment (Stage ${s.stage_reached}/3)`,
       })
@@ -97,6 +105,7 @@ export async function GET(request: Request) {
         type: 'weekly_checkin',
         userId: g.ceo_id,
         userName: nameMap.get(g.ceo_id) || 'Unknown',
+        userEmail: emailMap.get(g.ceo_id) || 'Unknown',
         timestamp: g.date,
         details: `Completed weekly check-in (${g.count} dimensions)`,
       })
@@ -117,6 +126,7 @@ export async function GET(request: Request) {
           type: 'mirror_completed',
           userId: ceoId,
           userName: nameMap.get(ceoId) || 'Unknown',
+          userEmail: emailMap.get(ceoId) || 'Unknown',
           timestamp: m.completed_at!,
           details: `Mirror feedback received from ${m.rater_relationship || 'rater'}`,
         })
@@ -135,6 +145,7 @@ export async function GET(request: Request) {
         type: 'feedback_submitted',
         userId: f.ceo_id,
         userName: nameMap.get(f.ceo_id) || 'Unknown',
+        userEmail: emailMap.get(f.ceo_id) || 'Unknown',
         timestamp: f.created_at,
         details: `Submitted feedback on ${f.page_url}: "${f.feedback_text.substring(0, 80)}${f.feedback_text.length > 80 ? '...' : ''}"`,
       })
@@ -145,8 +156,9 @@ export async function GET(request: Request) {
       events.push({
         type: 'signup',
         userId: p.id,
-        userName: p.full_name || 'Unknown',
-        timestamp: (p as any).created_at || new Date().toISOString(),
+        userName: nameMap.get(p.id) || 'Unknown',
+        userEmail: emailMap.get(p.id) || 'Unknown',
+        timestamp: p.created_at || new Date().toISOString(),
         details: 'New user signed up',
       })
     }

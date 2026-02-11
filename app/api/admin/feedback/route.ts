@@ -48,7 +48,8 @@ export async function GET(request: Request) {
 
     const { data: { users: authUsers } } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 })
 
-    const nameMap = new Map((profiles || []).map(p => [p.id, p.full_name]))
+    const authNameMap = new Map(authUsers.map(u => [u.id, u.user_metadata?.full_name || u.user_metadata?.name || null]))
+    const nameMap = new Map((profiles || []).map(p => [p.id, p.full_name || authNameMap.get(p.id) || 'Unknown']))
     const emailMap = new Map(authUsers.map(u => [u.id, u.email]))
 
     const feedbackWithUsers = (feedback || []).map(f => ({
