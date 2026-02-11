@@ -198,7 +198,7 @@ export default function AccountabilitySetupPage() {
         sjiScaled: ds.sji_scaled ?? undefined,
         composite: ds.composite ?? 0,
         percentage: ds.percentage ?? 0,
-        verbalLabel: (ds.verbal_label as VerbalLabel) ?? 'Building',
+        verbalLabel: (ds.verbal_label as VerbalLabel) ?? 'Practicing',
         confidence: 'full' as const,
       }))
 
@@ -214,7 +214,7 @@ export default function AccountabilitySetupPage() {
           name: dim.name,
           territory: dim.territory,
           percentage: score?.percentage ?? 0,
-          verbalLabel: (score?.verbal_label as VerbalLabel) ?? 'Building',
+          verbalLabel: (score?.verbal_label as VerbalLabel) ?? 'Practicing',
         }
       })
 

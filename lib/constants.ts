@@ -114,11 +114,11 @@ export const STAGE_ITEMS: Record<number, string[]> = {
 // ─── Verbal Label Thresholds ─────────────────────────────────────
 
 export const VERBAL_LABELS: { max: number; label: VerbalLabel }[] = [
-  { max: 20, label: 'Critical gap' },
-  { max: 40, label: 'Early development' },
-  { max: 60, label: 'Building' },
-  { max: 80, label: 'Strong' },
-  { max: 100, label: 'Mastery' },
+  { max: 20, label: 'Reactive' },
+  { max: 40, label: 'Awakening' },
+  { max: 60, label: 'Practicing' },
+  { max: 80, label: 'Consistent' },
+  { max: 100, label: 'Mastered' },
 ]
 
 // ─── BSI Thresholds ──────────────────────────────────────────────

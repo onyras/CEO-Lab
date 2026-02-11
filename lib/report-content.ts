@@ -362,9 +362,9 @@ export function getToneGuidance(percentage: number): string {
 // From Report Design Spec, Section 3
 
 export function getDimensionColor(percentage: number): string {
-  if (percentage <= 20) return '#E57373'  // Red — Critical gap
-  if (percentage <= 40) return '#E57373'  // Red — Early development
-  if (percentage <= 60) return '#FFB74D'  // Amber — Building
-  if (percentage <= 80) return '#81C784'  // Green — Strong
-  return '#7FABC8'                        // Blue — Mastery
+  if (percentage <= 20) return '#E57373'  // Red — Reactive
+  if (percentage <= 40) return '#E57373'  // Red — Awakening
+  if (percentage <= 60) return '#FFB74D'  // Amber — Practicing
+  if (percentage <= 80) return '#81C784'  // Green — Consistent
+  return '#7FABC8'                        // Blue — Mastered
 }

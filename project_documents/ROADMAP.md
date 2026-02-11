@@ -33,6 +33,14 @@
 - [x] **Visualization Components** — 6 components: TerritoryBars, DimensionHeatmap, ArchetypeBadge, MirrorDotPlot, TrendLines, RoadmapTimeline
 - [x] **Weekly & Mirror UI** — Weekly pulse page (509 lines), Mirror check page (689 lines)
 
+### Interpretation Layer (2026-02-11)
+- [x] Verbal labels reframed: Reactive / Awakening / Practicing / Consistent / Mastered
+- [x] Capacity framing: scores displayed as "X% capacity" throughout
+- [x] Per-territory shape radar with balanced/developing/spiky analysis
+- [x] Creative/reactive tension display (side-by-side high/low indicators)
+- [x] Shape analysis helper (`lib/shape-analysis.ts`)
+- [x] TerritoryRadar component (`components/visualizations/TerritoryRadar.tsx`)
+
 ### Pre-V4
 - [x] Coupon code system (Stripe promotion codes)
 - [x] WhatsApp Business API setup

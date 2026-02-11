@@ -293,6 +293,11 @@
 9. Two next steps: (a) Set up Accountability Agent, (b) Invite Mirror Check
 10. Ongoing: AA every Monday (3 questions) + Mirror results appear when rater completes
 
+### 2026-02-11: Interpretation Reframe
+**Decision:** Reframe score presentation from raw percentages to capacity utilization; add per-territory shape radar; add creative/reactive tension display.
+**Rationale:** Inspired by Leadership Circle Profile. Raw percentages meaningless to CEOs. Capacity framing implies potential exists. Shape analysis adds diagnostic value per territory. Creative/reactive duality helps CEOs see themselves in descriptions.
+**Impact:** New verbal labels (Reactive/Awakening/Practicing/Consistent/Mastered), new TerritoryRadar component, new shape-analysis helper, creative/reactive section replaces single-sided MEANING. No scoring math changes.
+
 ---
 
 **How to use this file:**

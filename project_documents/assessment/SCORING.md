@@ -53,11 +53,11 @@ For each of the 15 dimensions:
 
 | Score | Label | Meaning |
 |---|---|---|
-| 0-20% | Critical gap | This dimension is likely causing visible problems now |
-| 21-40% | Early development | Awareness exists but behavior hasn't shifted consistently |
-| 41-60% | Building | Active development; inconsistent but trending upward |
-| 61-80% | Strong | Consistent behavior; room for refinement |
-| 81-100% | Mastery | Rare; consistent excellence others can observe |
+| 0-20% | Reactive | Operating reactively; this dimension is likely causing visible problems now |
+| 21-40% | Awakening | Awareness exists but behavior hasn't shifted consistently |
+| 41-60% | Practicing | Showing up but not yet reliable; inconsistent but trending upward |
+| 61-80% | Consistent | A genuine strength; consistent behavior with room for refinement |
+| 81-100% | Mastered | Rare; consistent excellence others can observe |
 
 ---
 

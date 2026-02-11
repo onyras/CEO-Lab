@@ -99,11 +99,11 @@ export function DimensionHeatmap({ dimensions }: DimensionHeatmapProps) {
       <div className="flex flex-wrap items-center gap-4 pt-3 border-t border-black/10">
         <span className="text-[10px] text-black/40">Opacity indicates score level:</span>
         {[
-          { range: '0-20%', label: 'Critical gap' },
-          { range: '21-40%', label: 'Early development' },
-          { range: '41-60%', label: 'Building' },
-          { range: '61-80%', label: 'Strong' },
-          { range: '81-100%', label: 'Mastery' },
+          { range: '0-20%', label: 'Reactive' },
+          { range: '21-40%', label: 'Awakening' },
+          { range: '41-60%', label: 'Practicing' },
+          { range: '61-80%', label: 'Consistent' },
+          { range: '81-100%', label: 'Mastered' },
         ].map((item) => (
           <span key={item.range} className="text-[10px] text-black/50">
             {item.range} {item.label}

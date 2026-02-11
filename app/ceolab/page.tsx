@@ -24,6 +24,8 @@ import { DimensionHeatmap } from '@/components/visualizations/DimensionHeatmap'
 import { ArchetypeBadge } from '@/components/visualizations/ArchetypeBadge'
 import { MirrorDotPlot } from '@/components/visualizations/MirrorDotPlot'
 import { RadarChart } from '@/components/visualizations/RadarChart'
+import { TerritoryRadar } from '@/components/visualizations/TerritoryRadar'
+import { analyzeTerritoryShape } from '@/lib/shape-analysis'
 import { LeadershipCircle } from '@/components/visualizations/LeadershipCircle'
 import { RoadmapTimeline } from '@/components/visualizations/RoadmapTimeline'
 import type {
@@ -487,9 +489,40 @@ function DeepDiveTabContent({
               </div>
               <div className="text-right">
                 <span className="text-2xl font-bold text-black">{Math.round(terrScore?.score ?? 0)}%</span>
-                <p className="text-xs text-black/40">{terrScore?.verbalLabel ?? ''}</p>
+                <p className="text-xs text-black/40">{terrScore?.verbalLabel ?? ''} capacity</p>
               </div>
             </div>
+
+            {/* Territory Shape Radar + Narrative */}
+            {(() => {
+              const radarDims = dims.map(d => ({ name: d.name, percentage: d.score }))
+              const shape = analyzeTerritoryShape(radarDims, config.displayLabel)
+              const shapeLabel = shape.shape === 'balanced' ? 'Balanced Profile'
+                : shape.shape === 'developing' ? 'Developing Profile'
+                : 'Spiky Profile'
+
+              return (
+                <div className="flex flex-col md:flex-row gap-6 mb-6">
+                  <div className="md:w-1/2">
+                    <TerritoryRadar dimensions={radarDims} territory={t} />
+                  </div>
+                  <div className="md:w-1/2 flex flex-col justify-center space-y-3">
+                    <p className="text-xs font-semibold text-black/40 uppercase tracking-wider">{shapeLabel}</p>
+                    <p className="text-sm text-black/60 leading-relaxed">{shape.narrative}</p>
+                    <div className="flex gap-4">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: color }} />
+                        <span className="text-xs text-black/50">Anchor: <span className="font-medium text-black/70">{shape.anchor.name} ({shape.anchor.percentage}%)</span></span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-black/20" />
+                        <span className="text-xs text-black/50">Bottleneck: <span className="font-medium text-black/70">{shape.bottleneck.name} ({shape.bottleneck.percentage}%)</span></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )
+            })()}
 
             {/* 5 dimension bars */}
             <div className="space-y-4">
@@ -727,8 +760,8 @@ function DimensionsTabContent({
                     <h3 className="text-lg font-semibold text-black">{def.name}</h3>
                   </div>
                   <div className="text-right shrink-0 ml-4">
-                    <span className="text-2xl font-bold text-black">{percentage}%</span>
-                    <p className="text-xs text-black/50 mt-0.5">{score.verbalLabel}</p>
+                    <span className="text-2xl font-bold text-black">{score.verbalLabel}</span>
+                    <p className="text-xs text-black/50 mt-0.5">{percentage}% capacity</p>
                   </div>
                 </div>
 
@@ -750,20 +783,32 @@ function DimensionsTabContent({
                     <span className="font-semibold text-black">{def.name}</span>: {content.behavioralDefinition}
                   </p>
                   <p className="text-sm text-black/60 leading-relaxed">
-                    Your score of {percentage}% ({score.verbalLabel}) means this is{' '}
-                    {percentage <= 40 ? 'a critical development area'
-                      : percentage <= 60 ? 'an area still being built'
-                      : percentage <= 80 ? 'a solid foundation with room to deepen'
-                      : 'a genuine strength'}.
+                    At {percentage}% capacity ({score.verbalLabel}), this dimension is{' '}
+                    {percentage <= 40 ? 'operating reactively'
+                      : percentage <= 60 ? 'being practiced — showing up, not yet reliable'
+                      : percentage <= 80 ? 'consistent — a genuine strength'
+                      : 'mastered — rare and visible to others'}.
                   </p>
                 </div>
 
-                {/* MEANING */}
+                {/* CREATIVE / REACTIVE */}
                 <div className="mb-6">
-                  <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-2">Meaning</p>
-                  <p className="text-sm text-black/70 leading-relaxed mb-3">
-                    {isLow ? content.lowIndicator : content.highIndicator}
-                  </p>
+                  <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-3">Creative / Reactive</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="rounded-lg p-4" style={{ backgroundColor: 'rgba(166, 190, 164, 0.08)' }}>
+                      <p className="text-xs font-semibold text-[#6B8E6B] uppercase tracking-wider mb-1.5">When this is working</p>
+                      <p className="text-sm text-black/70 leading-relaxed">{content.highIndicator}</p>
+                    </div>
+                    <div className="rounded-lg p-4" style={{ backgroundColor: 'rgba(224, 143, 106, 0.08)' }}>
+                      <p className="text-xs font-semibold text-[#C0714E] uppercase tracking-wider mb-1.5">When this isn&apos;t</p>
+                      <p className="text-sm text-black/70 leading-relaxed">{content.lowIndicator}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* WHY THIS MATTERS */}
+                <div className="mb-6">
+                  <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-2">Why This Matters</p>
                   <p className="text-sm text-black/70 leading-relaxed mb-3">{content.costOfIgnoring}</p>
                   <div className="bg-[#F7F3ED] rounded-lg p-4">
                     <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-1">The Question to Sit With</p>
@@ -1213,7 +1258,7 @@ function GrowthPlanTabContent({
                   {isQuarterlyFocus ? 'Quarterly Focus' : 'Priority Area'}
                 </span>
                 <span className="text-xs text-black/40">
-                  {Math.round(card.percentage)}% — {card.verbalLabel}
+                  {card.verbalLabel} · {Math.round(card.percentage)}% capacity
                 </span>
               </div>
 
@@ -1285,7 +1330,7 @@ function GrowthPlanTabContent({
                       <div key={dim.dimensionId} className="pl-5 border-l-2" style={{ borderColor: `${group.color}30` }}>
                         <div className="flex items-center justify-between mb-1.5">
                           <p className="text-sm font-medium text-black">{dimDef.name}</p>
-                          <span className="text-xs text-black/40">{percentage}% — {dim.verbalLabel}</span>
+                          <span className="text-xs text-black/40">{dim.verbalLabel} · {percentage}% capacity</span>
                         </div>
                         <div className="flex flex-wrap gap-1.5">
                           {frameworks.map(fw => {

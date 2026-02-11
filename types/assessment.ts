@@ -18,7 +18,7 @@ export type ScaleType = 'frequency' | 'degree' | 'confidence' | 'custom'
 
 export type SjiBehavioralTag = 'Controller' | 'Avoider' | 'Rescuer' | 'Facilitator'
 
-export type VerbalLabel = 'Critical gap' | 'Early development' | 'Building' | 'Strong' | 'Mastery'
+export type VerbalLabel = 'Reactive' | 'Awakening' | 'Practicing' | 'Consistent' | 'Mastered'
 
 export type MatchType = 'full' | 'partial'
 

@@ -527,7 +527,7 @@ export function getVerbalLabel(percentage: number): VerbalLabel {
   for (const { max, label } of VERBAL_LABELS) {
     if (percentage <= max) return label
   }
-  return 'Mastery'
+  return 'Mastered'
 }
 
 /**
