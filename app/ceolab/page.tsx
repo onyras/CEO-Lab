@@ -788,6 +788,9 @@ function DimensionsTabContent({
                       : percentage <= 60 ? 'being practiced — showing up, not yet reliable'
                       : percentage <= 80 ? 'consistent — a genuine strength'
                       : 'mastered — rare and visible to others'}.
+                    {' '}In practice: {isLow
+                      ? content.lowIndicator.split('.')[0] + '.'
+                      : content.highIndicator.split('.')[0] + '.'}
                   </p>
                 </div>
 
