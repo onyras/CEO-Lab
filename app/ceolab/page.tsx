@@ -46,7 +46,7 @@ const TERRITORY_COLORS: Record<Territory, string> = {
   leading_organizations: '#E08F6A',
 }
 
-type ResultsTab = 'overview' | 'deep-dive' | 'dimensions' | 'archetypes' | 'blind-spots' | 'frameworks' | 'roadmap'
+type ResultsTab = 'overview' | 'deep-dive' | 'dimensions' | 'archetypes' | 'blind-spots' | 'growth-plan' | 'roadmap'
 
 function buildHeatmapData(dimensionScores: DimensionScore[]) {
   return dimensionScores.map((ds) => {
@@ -1106,70 +1106,103 @@ function RoadmapTabContent({
 }
 
 // ---------------------------------------------------------------------------
-// Tab: Frameworks
+// Tab: Growth Plan
 // ---------------------------------------------------------------------------
 
-function FrameworksTabContent({
+function GrowthPlanTabContent({
   dimensionScores,
   priorityDimensions,
 }: {
   dimensionScores: DimensionScore[]
   priorityDimensions: DimensionId[]
 }) {
-  // Get priority frameworks based on user's scores
-  const priorityFrameworks = priorityDimensions.slice(0, 5).map(dimId => {
+  // Determine primary focus: quarterly focus from localStorage, or fallback to top 3 priorities
+  const [focusDimensions, setFocusDimensions] = useState<DimensionId[]>([])
+  const [isQuarterlyFocus, setIsQuarterlyFocus] = useState(false)
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('aa_focus_dimensions')
+      if (stored) {
+        const parsed = JSON.parse(stored) as DimensionId[]
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setFocusDimensions(parsed.slice(0, 3))
+          setIsQuarterlyFocus(true)
+          return
+        }
+      }
+    } catch {
+      // ignore parse errors
+    }
+    setFocusDimensions(priorityDimensions.slice(0, 3))
+    setIsQuarterlyFocus(false)
+  }, [priorityDimensions])
+
+  // Build primary focus cards data
+  const primaryCards = focusDimensions.map(dimId => {
     const dim = getDimension(dimId)
     const score = dimensionScores.find(ds => ds.dimensionId === dimId)
     const percentage = score?.percentage ?? 0
+    const verbalLabel = score?.verbalLabel ?? getVerbalLabel(percentage)
     const frameworks = getFrameworkPrescription(dimId, percentage)
-    const primaryFramework = frameworks[0] || null
-    const frameworkContent = primaryFramework ? getFrameworkByName(primaryFramework) : null
+    const content = DIMENSION_CONTENT[dimId]
+    const costOfIgnoring = content?.costOfIgnoring ?? ''
+    // Extract first sentence for "Why This Matters"
+    const firstSentence = costOfIgnoring.split(/(?<=\.)\s/)[0] || costOfIgnoring
 
     return {
       dimensionId: dimId,
       dimensionName: dim.name,
-      score: percentage,
-      label: score?.verbalLabel ?? getVerbalLabel(percentage),
       territory: dim.territory,
-      frameworkName: primaryFramework,
-      frameworkContent,
+      coreQuestion: dim.coreQuestion,
+      percentage,
+      verbalLabel,
+      firstSentence,
+      frameworks: frameworks.map(fw => ({
+        name: fw,
+        content: getFrameworkByName(fw),
+      })),
     }
-  }).filter(f => f.frameworkName)
+  })
 
+  // Build "Other Growth Areas" — remaining dimensions grouped by territory
+  const focusSet = new Set(focusDimensions)
   const territories: Territory[] = ['leading_yourself', 'leading_teams', 'leading_organizations']
+  const otherByTerritory = territories.map(t => {
+    const config = TERRITORY_CONFIG[t]
+    const color = TERRITORY_COLORS[t]
+    const dims = dimensionScores
+      .filter(ds => !focusSet.has(ds.dimensionId) && getDimension(ds.dimensionId).territory === t)
+    return { territory: t, label: config.displayLabel, color, dims }
+  }).filter(g => g.dims.length > 0)
 
   return (
     <div className="space-y-6">
       {/* Hero */}
       <div className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
         <h2 className="text-xl font-bold text-black mb-2">
-          Your Frameworks
+          Your Growth Plan
         </h2>
         <p className="text-sm text-black/50 leading-relaxed max-w-lg">
-          Based on your assessment scores, these are the Konstantin Method frameworks most relevant to your growth right now.
+          {isQuarterlyFocus
+            ? 'Based on your quarterly focus — the dimensions you chose to prioritize this quarter.'
+            : 'Based on your assessment priorities — the areas with the most room for growth.'}
         </p>
       </div>
 
-      {/* Priority frameworks */}
+      {/* Primary Focus Cards */}
       <div className="space-y-4">
-        <p className="text-xs font-semibold text-black/40 uppercase tracking-wider px-1">Priority Frameworks</p>
-        {priorityFrameworks.map(pf => {
-          const color = TERRITORY_COLORS[pf.territory]
+        <p className="text-xs font-semibold text-black/40 uppercase tracking-wider px-1">Primary Focus</p>
+        {primaryCards.map(card => {
+          const color = TERRITORY_COLORS[card.territory]
           return (
             <div
-              key={pf.dimensionId}
+              key={card.dimensionId}
               className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
               style={{ borderLeftWidth: 3, borderLeftColor: color }}
             >
+              {/* Badge + score */}
               <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <span
-                    className="w-2 h-2 rounded-full flex-shrink-0"
-                    style={{ backgroundColor: color }}
-                  />
-                  <span className="text-xs text-black/40">{pf.dimensionName}</span>
-                  <span className="text-xs text-black/30">{Math.round(pf.score)}%</span>
-                </div>
                 <span
                   className="text-[10px] font-medium px-2 py-0.5 rounded-full"
                   style={{
@@ -1177,72 +1210,90 @@ function FrameworksTabContent({
                     color,
                   }}
                 >
-                  {pf.label}
+                  {isQuarterlyFocus ? 'Quarterly Focus' : 'Priority Area'}
+                </span>
+                <span className="text-xs text-black/40">
+                  {Math.round(card.percentage)}% — {card.verbalLabel}
                 </span>
               </div>
 
-              <h3 className="text-lg font-semibold text-black mb-1">{pf.frameworkName}</h3>
-              {pf.frameworkContent && (
-                <p className="text-sm text-black/50 leading-relaxed mb-4">{pf.frameworkContent.tagline}</p>
-              )}
+              {/* Dimension name */}
+              <h3 className="text-lg font-semibold text-black mb-1">{card.dimensionName}</h3>
 
-              {pf.frameworkContent ? (
-                <a
-                  href={`/frameworks/${pf.frameworkContent.id}`}
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-black hover:text-black/70 transition-colors"
-                >
-                  Learn more
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                </a>
-              ) : (
-                <p className="text-xs text-black/30">Detailed content coming soon</p>
+              {/* Core question */}
+              <p className="text-sm italic text-black/40 mb-4">{card.coreQuestion}</p>
+
+              {/* Why this matters */}
+              <div className="mb-4">
+                <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-1">Why This Matters</p>
+                <p className="text-sm text-black/60 leading-relaxed">{card.firstSentence}</p>
+              </div>
+
+              {/* Prescribed frameworks */}
+              {card.frameworks.length > 0 && (
+                <div className="space-y-2">
+                  {card.frameworks.map(fw => (
+                    <div key={fw.name} className="flex items-center justify-between">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-black">{fw.name}</p>
+                        {fw.content && (
+                          <p className="text-xs text-black/40 truncate">{fw.content.tagline}</p>
+                        )}
+                      </div>
+                      {fw.content ? (
+                        <a
+                          href={`/frameworks/${fw.content.id}`}
+                          className="flex-shrink-0 ml-4 inline-flex items-center gap-1 text-xs font-medium text-black hover:text-black/70 transition-colors"
+                        >
+                          Learn more
+                          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                          </svg>
+                        </a>
+                      ) : (
+                        <span className="flex-shrink-0 ml-4 text-[10px] text-black/30">Coming soon</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           )
         })}
       </div>
 
-      {/* All frameworks by territory */}
-      <div className="bg-white rounded-lg p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-        <h3 className="text-sm font-semibold text-black/40 uppercase tracking-wider mb-6">All Frameworks by Territory</h3>
+      {/* Other Growth Areas */}
+      {otherByTerritory.length > 0 && (
+        <div className="bg-white rounded-lg p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <h3 className="text-sm font-semibold text-black/40 uppercase tracking-wider mb-6">Other Growth Areas</h3>
 
-        <div className="space-y-8">
-          {territories.map(t => {
-            const config = TERRITORY_CONFIG[t]
-            const color = TERRITORY_COLORS[t]
-            const dims = dimensionScores.filter(d => getDimension(d.dimensionId).territory === t)
-
-            return (
-              <div key={t}>
+          <div className="space-y-8">
+            {otherByTerritory.map(group => (
+              <div key={group.territory}>
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color }} />
-                  <h4 className="text-sm font-semibold text-black">{config.displayLabel}</h4>
+                  <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: group.color }} />
+                  <h4 className="text-sm font-semibold text-black">{group.label}</h4>
                 </div>
 
                 <div className="space-y-3">
-                  {dims.map(dim => {
-                    const prescriptions = FRAMEWORK_PRESCRIPTIONS[dim.dimensionId]
-                    if (!prescriptions) return null
-                    const score = Math.round(dim.percentage)
-                    const tier = score <= 40 ? 'critical' : score <= 70 ? 'developing' : 'strong'
-                    const activeFrameworks = prescriptions[tier]
+                  {group.dims.map(dim => {
                     const dimDef = getDimension(dim.dimensionId)
+                    const percentage = Math.round(dim.percentage)
+                    const frameworks = getFrameworkPrescription(dim.dimensionId, percentage)
 
                     return (
-                      <div key={dim.dimensionId} className="pl-5 border-l-2" style={{ borderColor: `${color}30` }}>
+                      <div key={dim.dimensionId} className="pl-5 border-l-2" style={{ borderColor: `${group.color}30` }}>
                         <div className="flex items-center justify-between mb-1.5">
                           <p className="text-sm font-medium text-black">{dimDef.name}</p>
-                          <span className="text-xs text-black/40">{score}% — {tier}</span>
+                          <span className="text-xs text-black/40">{percentage}% — {dim.verbalLabel}</span>
                         </div>
                         <div className="flex flex-wrap gap-1.5">
-                          {activeFrameworks.map(fw => {
-                            const content = getFrameworkByName(fw)
-                            return content ? (
+                          {frameworks.map(fw => {
+                            const fwContent = getFrameworkByName(fw)
+                            return fwContent ? (
                               <a
                                 key={fw}
-                                href={`/frameworks/${content.id}`}
+                                href={`/frameworks/${fwContent.id}`}
                                 className="inline-block px-2.5 py-1 text-xs font-medium text-black bg-[#F7F3ED] rounded-full hover:bg-[#F7F3ED]/80 transition-colors"
                               >
                                 {fw}
@@ -1262,16 +1313,16 @@ function FrameworksTabContent({
                   })}
                 </div>
               </div>
-            )
-          })}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Coaching CTA */}
       <div className="bg-white rounded-lg p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
         <h3 className="text-lg font-semibold text-black mb-2">Want Guided Support?</h3>
         <p className="text-sm text-black/50 mb-6 max-w-sm mx-auto">
-          Work through these frameworks with Niko in a focused coaching session.
+          Work through your growth plan with Niko in a focused coaching session.
         </p>
         <a
           href="https://cal.com/nikolaskonstantin"
@@ -1701,7 +1752,7 @@ function CompleteResultsView({ results }: { results: FullResults }) {
     { key: 'dimensions', label: 'Impact Areas' },
     { key: 'archetypes', label: 'Archetypes' },
     { key: 'blind-spots', label: 'Blind Spots' },
-    { key: 'frameworks', label: 'Frameworks' },
+    { key: 'growth-plan', label: 'Growth Plan' },
     { key: 'roadmap', label: 'Growth Path' },
   ]
 
@@ -1761,8 +1812,8 @@ function CompleteResultsView({ results }: { results: FullResults }) {
           {activeTab === 'blind-spots' && (
             <BlindSpotsTabContent mirrorGaps={results.mirrorGaps} hasMirrorData={hasMirrorData} imFlagged={imFlagged} />
           )}
-          {activeTab === 'frameworks' && (
-            <FrameworksTabContent dimensionScores={results.dimensionScores} priorityDimensions={results.priorityDimensions} />
+          {activeTab === 'growth-plan' && (
+            <GrowthPlanTabContent dimensionScores={results.dimensionScores} priorityDimensions={results.priorityDimensions} />
           )}
           {activeTab === 'roadmap' && (
             <RoadmapTabContent priorityDimensions={results.priorityDimensions} dimensionScores={results.dimensionScores} />
