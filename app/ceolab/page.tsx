@@ -356,7 +356,7 @@ function ResultsHero({
                   <p className="text-sm font-semibold text-black">{TERRITORY_CONFIG[ts.territory].displayLabel}</p>
                   <p className="text-xs text-black/40">{ts.verbalLabel}</p>
                 </div>
-                <span className="text-lg font-bold text-black">{Math.round(ts.score)}</span>
+                <span className="text-lg font-bold text-black">{Math.round(ts.score)}%<span className="text-xs font-medium text-black/40 ml-1">capacity</span></span>
               </div>
             ))}
           </div>
@@ -461,7 +461,7 @@ function DeepDiveTabContent({
                   valueSuffix="%"
                   showValue={true}
                 />
-                <p className="text-sm text-black/40 mt-3">{ts.verbalLabel}</p>
+                <p className="text-sm text-black/40 mt-3">{ts.verbalLabel} capacity</p>
               </div>
               {/* Narrative */}
               <div className="px-6 pb-6">
@@ -577,7 +577,7 @@ function DeepDiveTabContent({
               />
               <div>
                 <h2 className="text-lg font-semibold text-black">{config.displayLabel}</h2>
-                <p className="text-xs text-black/40">{terrScore?.verbalLabel ?? ''}</p>
+                <p className="text-xs text-black/40">{terrScore?.verbalLabel ?? ''} · {Math.round(terrScore?.score ?? 0)}% capacity</p>
               </div>
             </div>
 
