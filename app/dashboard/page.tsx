@@ -327,7 +327,7 @@ export default function AdminPage() {
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-8">
             <div>
-              <p className="text-sm font-semibold tracking-widest uppercase text-black/40 mb-2">Admin</p>
+              <p className="text-sm font-semibold tracking-widest uppercase text-black/40 mb-2">Plan</p>
               <h1 className="text-3xl md:text-4xl font-bold text-black tracking-tight">
                 Workshop Management
               </h1>

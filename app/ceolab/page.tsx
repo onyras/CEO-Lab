@@ -1097,7 +1097,7 @@ function RoadmapTabContent({
             href="/dashboard"
             className="inline-block bg-black text-white px-8 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
           >
-            Go to Admin
+            Go to Plan
           </a>
         </div>
       </div>
