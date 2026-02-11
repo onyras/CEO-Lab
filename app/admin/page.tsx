@@ -16,7 +16,9 @@ interface AdminUser {
   stripeCustomerId: string | null
   clmi: number | null
   baselineCompletedAt: string | null
+  baselineStartedAt: string | null
   stageReached: number
+  totalTimeSeconds: number | null
   weeklyCount: number
   lastPulseDate: string | null
   mirrorCount: number
@@ -62,7 +64,17 @@ interface ActivityEvent {
   details: string
 }
 
-type Tab = 'users' | 'feedback' | 'activity'
+interface ReportData {
+  overview: { totalUsers: number; activeSubscribers: number; inactiveUsers: number; subscriptionConversionRate: number }
+  baseline: { startRate: number; completionRate: number; avgDurationHours: number | null; avgAssessmentMinutes: number | null; avgTimePerStage: Record<string, number | null>; avgResponseTimeSeconds: number | null; avgSignupToStartDays: number | null }
+  engagement: { avgCheckinsPerUser: number; activeUsers7d: number; activeUsers30d: number; churnRiskCount: number; totalCheckins: number }
+  mirror: { totalInvites: number; completed: number; responseRate: number | null }
+  hook: { total: number; converted: number; conversionRate: number | null }
+  scores: { avgClmi: number | null; clmiDistribution: Record<string, number> }
+  trends: { signupWeeks: Record<string, number> }
+}
+
+type Tab = 'users' | 'feedback' | 'activity' | 'report'
 
 // Territory dimension groupings
 const TERRITORY_DIMENSIONS: Record<string, { label: string; color: string; dimensions: string[] }> = {
@@ -664,6 +676,188 @@ function ActivityTab({ events }: { events: ActivityEvent[] }) {
   )
 }
 
+// ─── Report Tab ───
+function ReportTab({ report }: { report: ReportData | null }) {
+  if (!report) {
+    return (
+      <div className="bg-white rounded-2xl p-12 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
+        <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin mx-auto mb-3" />
+        <p className="text-sm text-black/40">Loading report data...</p>
+      </div>
+    )
+  }
+
+  const { overview, baseline, engagement, mirror, hook, scores, trends } = report
+
+  // Mini bar chart helper
+  function MiniBar({ value, max, color = 'bg-black/15' }: { value: number; max: number; color?: string }) {
+    const pct = max > 0 ? Math.min(100, Math.round((value / max) * 100)) : 0
+    return (
+      <div className="h-2 bg-black/[0.04] rounded-full overflow-hidden">
+        <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
+      </div>
+    )
+  }
+
+  // Stat card helper
+  function StatCard({ label, value, sub, wide }: { label: string; value: string | number; sub?: string; wide?: boolean }) {
+    return (
+      <div className={`bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] ${wide ? 'md:col-span-2' : ''}`}>
+        <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-2">{label}</p>
+        <p className="text-2xl font-bold text-black tracking-tight">{value}</p>
+        {sub && <p className="text-xs text-black/30 mt-1">{sub}</p>}
+      </div>
+    )
+  }
+
+  // Rate card with donut-style indicator
+  function RateCard({ label, rate, numerator, denominator }: { label: string; rate: number | null; numerator?: number; denominator?: number }) {
+    const pct = rate ?? 0
+    return (
+      <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-3">{label}</p>
+        <div className="flex items-end gap-3">
+          <p className="text-3xl font-bold text-black tracking-tight">{rate !== null ? `${pct}%` : '—'}</p>
+          {numerator !== undefined && denominator !== undefined && (
+            <p className="text-xs text-black/30 mb-1">{numerator}/{denominator}</p>
+          )}
+        </div>
+        <div className="mt-3">
+          <MiniBar value={pct} max={100} color={pct >= 60 ? 'bg-green-400' : pct >= 30 ? 'bg-amber-400' : 'bg-red-300'} />
+        </div>
+      </div>
+    )
+  }
+
+  const signupWeekEntries = Object.entries(trends.signupWeeks).reverse()
+  const maxSignups = Math.max(...signupWeekEntries.map(([, v]) => v), 1)
+
+  return (
+    <div className="space-y-4">
+      {/* ── Section 1: Funnel ── */}
+      <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider">Conversion Funnel</p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <StatCard label="Total Users" value={overview.totalUsers} sub="all signups" />
+        <RateCard label="Subscription Rate" rate={overview.subscriptionConversionRate} numerator={overview.activeSubscribers} denominator={overview.totalUsers} />
+        <RateCard label="Baseline Start" rate={baseline.startRate} />
+        <RateCard label="Baseline Complete" rate={baseline.completionRate} />
+      </div>
+
+      {/* ── Section 2: Assessment Timing ── */}
+      <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mt-6">Assessment Timing</p>
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <StatCard
+          label="Signup → Start"
+          value={baseline.avgSignupToStartDays !== null ? `${baseline.avgSignupToStartDays}d` : '—'}
+          sub="avg days to begin"
+        />
+        <StatCard
+          label="Total Duration"
+          value={baseline.avgDurationHours !== null ? `${baseline.avgDurationHours}h` : '—'}
+          sub="start to finish"
+        />
+        <StatCard
+          label="Active Time"
+          value={baseline.avgAssessmentMinutes !== null ? `${baseline.avgAssessmentMinutes}m` : '—'}
+          sub="answering questions"
+        />
+        <StatCard
+          label="Per Question"
+          value={baseline.avgResponseTimeSeconds !== null ? `${baseline.avgResponseTimeSeconds}s` : '—'}
+          sub="avg response time"
+        />
+        <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-3">Per Stage</p>
+          <div className="space-y-2">
+            {[1, 2, 3].map(stage => (
+              <div key={stage} className="flex items-center gap-2">
+                <span className="text-xs text-black/40 w-14">Stage {stage}</span>
+                <span className="text-sm font-medium text-black">
+                  {baseline.avgTimePerStage[stage] !== null ? `${baseline.avgTimePerStage[stage]}m` : '—'}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Section 3: Engagement ── */}
+      <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mt-6">Engagement</p>
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <StatCard label="Active (7d)" value={engagement.activeUsers7d} sub={`of ${overview.activeSubscribers} subscribers`} />
+        <StatCard label="Active (30d)" value={engagement.activeUsers30d} sub={`of ${overview.activeSubscribers} subscribers`} />
+        <StatCard label="Churn Risk" value={engagement.churnRiskCount} sub="inactive 14+ days" />
+        <StatCard label="Avg Check-ins" value={engagement.avgCheckinsPerUser} sub="per user total" />
+        <StatCard label="Total Check-ins" value={engagement.totalCheckins} sub="all pulse entries" />
+      </div>
+
+      {/* ── Section 4: Mirror + Hook ── */}
+      <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mt-6">Mirror & Hook</p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <RateCard label="Mirror Response" rate={mirror.responseRate} numerator={mirror.completed} denominator={mirror.totalInvites} />
+        <StatCard label="Mirror Invites" value={mirror.totalInvites} sub={`${mirror.completed} completed`} />
+        <RateCard label="Hook Conversion" rate={hook.conversionRate} numerator={hook.converted} denominator={hook.total} />
+        <StatCard label="Hook Sessions" value={hook.total} sub={`${hook.converted} converted`} />
+      </div>
+
+      {/* ── Section 5: Scores + Trends ── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+        {/* CLMI Distribution */}
+        <div className="bg-white rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider">CLMI Distribution</p>
+            <p className="text-sm font-bold text-black">{scores.avgClmi !== null ? `Avg ${scores.avgClmi}%` : '—'}</p>
+          </div>
+          <div className="space-y-3">
+            {Object.entries(scores.clmiDistribution).map(([range, count]) => {
+              const total = Object.values(scores.clmiDistribution).reduce((a, b) => a + b, 0)
+              const colors: Record<string, string> = {
+                '0-25': 'bg-red-300',
+                '26-50': 'bg-amber-300',
+                '51-75': 'bg-blue-300',
+                '76-100': 'bg-green-400',
+              }
+              return (
+                <div key={range}>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs text-black/50">{range}%</span>
+                    <span className="text-xs font-medium text-black/40">{count} users</span>
+                  </div>
+                  <div className="h-2 bg-black/[0.04] rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full ${colors[range] || 'bg-black/15'}`} style={{ width: `${total > 0 ? (count / total) * 100 : 0}%` }} />
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Signup trend */}
+        <div className="bg-white rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-4">Signups (Last 8 Weeks)</p>
+          <div className="flex items-end gap-2 h-32">
+            {signupWeekEntries.map(([week, count]) => (
+              <div key={week} className="flex-1 flex flex-col items-center gap-1">
+                <span className="text-[10px] font-medium text-black/50">{count}</span>
+                <div className="w-full bg-black/[0.04] rounded-t-md overflow-hidden" style={{ height: '100px' }}>
+                  <div
+                    className="w-full bg-black/15 rounded-t-md mt-auto"
+                    style={{
+                      height: `${maxSignups > 0 ? (count / maxSignups) * 100 : 0}%`,
+                      marginTop: `${maxSignups > 0 ? 100 - (count / maxSignups) * 100 : 100}%`,
+                    }}
+                  />
+                </div>
+                <span className="text-[9px] text-black/30">{week}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── Main Admin Page ───
 export default function AdminPage() {
   const [state, setState] = useState<'loading' | 'forbidden' | 'error' | 'loaded'>('loading')
@@ -673,6 +867,7 @@ export default function AdminPage() {
   const [events, setEvents] = useState<ActivityEvent[]>([])
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
   const [userDetail, setUserDetail] = useState<UserDetail | null>(null)
+  const [report, setReport] = useState<ReportData | null>(null)
   const [loadingDetail, setLoadingDetail] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
 
@@ -687,10 +882,11 @@ export default function AdminPage() {
       }
 
       // Load all data in parallel
-      const [usersRes, feedbackRes, activityRes] = await Promise.all([
+      const [usersRes, feedbackRes, activityRes, reportRes] = await Promise.all([
         fetch('/api/admin/users'),
         fetch('/api/admin/feedback'),
         fetch('/api/admin/activity'),
+        fetch('/api/admin/report'),
       ])
 
       if (usersRes.status === 403) {
@@ -711,6 +907,11 @@ export default function AdminPage() {
       if (activityRes.ok) {
         const activityData = await activityRes.json()
         setEvents(activityData.events || [])
+      }
+
+      if (reportRes.ok) {
+        const reportData = await reportRes.json()
+        setReport(reportData)
       }
 
       setState('loaded')
@@ -825,6 +1026,7 @@ export default function AdminPage() {
     { id: 'users', label: 'Users', count: users.length },
     { id: 'feedback', label: 'Feedback', count: feedback.length },
     { id: 'activity', label: 'Activity' },
+    { id: 'report', label: 'Report' },
   ]
 
   return (
@@ -870,6 +1072,7 @@ export default function AdminPage() {
           {tab === 'users' && <UsersTab users={users} onSelectUser={loadUserDetail} />}
           {tab === 'feedback' && <FeedbackTab feedback={feedback} />}
           {tab === 'activity' && <ActivityTab events={events} />}
+          {tab === 'report' && <ReportTab report={report} />}
         </div>
       </div>
     </AppShell>
