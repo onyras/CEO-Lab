@@ -788,6 +788,13 @@ function DimensionsTabContent({
                       : percentage <= 60 ? 'being practiced — showing up, not yet reliable'
                       : percentage <= 80 ? 'consistent — a genuine strength'
                       : 'mastered — rare and visible to others'}.
+                    {' '}{percentage <= 40
+                      ? 'That means this is likely creating friction you can feel — and your team can too.'
+                      : percentage <= 60
+                        ? `That means the awareness is there, but under pressure it doesn't hold. ${percentage}% is the gap between knowing and doing.`
+                        : percentage <= 80
+                          ? `At ${percentage}%, this is working. The question is whether it's deliberate or just natural talent that hasn't been tested yet.`
+                          : `${percentage}% puts you in rare territory. The opportunity now is modelling this for others.`}
                   </p>
                 </div>
 
