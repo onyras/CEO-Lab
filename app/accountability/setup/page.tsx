@@ -166,7 +166,7 @@ export default function AccountabilitySetupPage() {
 
       if (!session) {
         // No completed assessment -- redirect to dashboard
-        router.push('/dashboard')
+        router.push('/ceolab')
         return
       }
 
@@ -262,7 +262,7 @@ export default function AccountabilitySetupPage() {
 
     setShowConfirmation(true)
     setTimeout(() => {
-      router.push('/dashboard')
+      router.push('/ceolab')
     }, 2000)
   }
 
@@ -280,7 +280,7 @@ export default function AccountabilitySetupPage() {
             <h2 className="text-xl font-semibold text-black mb-3">Something went wrong</h2>
             <p className="text-black/60 text-sm mb-6">{error}</p>
             <button
-              onClick={() => router.push('/dashboard')}
+              onClick={() => router.push('/ceolab')}
               className="px-6 py-2.5 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
             >
               Back to Dashboard

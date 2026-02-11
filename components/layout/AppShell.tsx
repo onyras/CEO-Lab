@@ -4,8 +4,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const NAV_ITEMS = [
-  { href: '/dashboard', label: 'Dashboard', icon: DashboardIcon },
   { href: '/ceolab', label: 'CEO Lab', icon: ResultsIcon },
+  { href: '/dashboard', label: 'Admin', icon: DashboardIcon },
 ]
 
 function DashboardIcon({ active }: { active: boolean }) {
@@ -32,7 +32,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* Desktop top bar */}
       <nav className="hidden md:block fixed top-0 left-0 right-0 z-50 bg-white border-b border-black/5">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/dashboard" className="flex items-center gap-2">
+          <Link href="/ceolab" className="flex items-center gap-2">
             <span className="text-lg font-bold text-black">nk</span>
             <span className="text-lg font-light text-black">CEO Lab</span>
           </Link>

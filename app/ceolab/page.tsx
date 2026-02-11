@@ -9,6 +9,7 @@ import { FRAMEWORK_CONTENT, getFrameworkByName } from '@/lib/framework-content'
 import {
   buildHeadlineText,
   buildBsiHeadlineText,
+  buildHookInsight,
   IM_HANDLING,
   getTerritoryArcNarrative,
   DIMENSION_CONTENT,
@@ -244,47 +245,22 @@ function LoadingSkeleton() {
 // Error State
 // ---------------------------------------------------------------------------
 
-function ErrorState({ message, noResults }: { message: string; noResults?: boolean }) {
+function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
     <AppShell>
       <div className="flex items-center justify-center px-6 min-h-[80vh]">
         <div className="bg-white rounded-lg p-10 max-w-md w-full text-center shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-          {noResults ? (
-            <>
-              <h2 className="text-xl font-bold text-black mb-3">
-                No Results Yet
-              </h2>
-              <p className="text-sm text-black/60 mb-6 leading-relaxed">
-                Complete the full CEO Leadership Assessment to unlock your detailed leadership report across 15 dimensions.
-              </p>
-              <div className="flex flex-col gap-3">
-                <a
-                  href="/api/checkout"
-                  className="inline-block bg-black text-white px-8 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
-                >
-                  Subscribe — &euro;100/month
-                </a>
-                <a
-                  href="/dashboard"
-                  className="text-sm text-black/40 hover:text-black/70 transition-colors"
-                >
-                  Return to Dashboard
-                </a>
-              </div>
-            </>
-          ) : (
-            <>
-              <h2 className="text-xl font-bold text-black mb-3">
-                Unable to Load Results
-              </h2>
-              <p className="text-sm text-black/60 mb-6 leading-relaxed">{message}</p>
-              <a
-                href="/dashboard"
-                className="inline-block bg-black text-white px-8 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
-              >
-                Return to Dashboard
-              </a>
-            </>
+          <h2 className="text-xl font-bold text-black mb-3">
+            Something went wrong
+          </h2>
+          <p className="text-sm text-black/60 mb-6 leading-relaxed">{message}</p>
+          {onRetry && (
+            <button
+              onClick={onRetry}
+              className="inline-block bg-black text-white px-8 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
+            >
+              Try Again
+            </button>
           )}
         </div>
       </div>
@@ -1121,7 +1097,7 @@ function RoadmapTabContent({
             href="/dashboard"
             className="inline-block bg-black text-white px-8 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
           >
-            Go to Dashboard
+            Go to Admin
           </a>
         </div>
       </div>
@@ -1311,66 +1287,408 @@ function FrameworksTabContent({
 }
 
 // ---------------------------------------------------------------------------
-// Main Page Component
+// Hook Results Banner
 // ---------------------------------------------------------------------------
 
-export default function ResultsPage() {
-  const router = useRouter()
-  const [results, setResults] = useState<FullResults | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<ResultsTab>('overview')
+interface HookResultsData {
+  lyScore: number
+  ltScore: number
+  loScore: number
+  sharpestDimension: DimensionId
+}
+
+function HookResultsBanner({ userId }: { userId?: string }) {
+  const [hookData, setHookData] = useState<HookResultsData | null>(null)
 
   useEffect(() => {
-    async function loadResults() {
+    async function loadHookResults() {
       try {
-        const supabase = createClient()
-        const { data: { session } } = await supabase.auth.getSession()
-
-        if (!session) {
-          router.replace('/auth')
+        const stored = localStorage.getItem('ceolab_hook_results')
+        if (stored) {
+          const parsed = JSON.parse(stored)
+          setHookData({
+            lyScore: parsed.lyScore,
+            ltScore: parsed.ltScore,
+            loScore: parsed.loScore,
+            sharpestDimension: parsed.sharpestDimension,
+          })
+          localStorage.removeItem('ceolab_hook_results')
           return
         }
+      } catch {}
 
-        const response = await fetch('/api/v4/results')
+      if (userId) {
+        try {
+          const supabase = createClient()
+          const { data } = await supabase
+            .from('hook_sessions')
+            .select('ly_score, lt_score, lo_score, sharpest_dimension')
+            .eq('ceo_id', userId)
+            .order('completed_at', { ascending: false })
+            .limit(1)
+            .single()
 
-        if (!response.ok) {
-          if (response.status === 401) {
-            router.replace('/auth')
-            return
+          if (data) {
+            setHookData({
+              lyScore: data.ly_score,
+              ltScore: data.lt_score,
+              loScore: data.lo_score,
+              sharpestDimension: data.sharpest_dimension as DimensionId,
+            })
           }
-          if (response.status === 404) {
-            setError('no-results')
-            setLoading(false)
-            return
-          }
-          throw new Error(`Failed to load results (${response.status})`)
-        }
-
-        const data = await response.json()
-        setResults(data.results)
-      } catch (err) {
-        console.error('Error loading results:', err)
-        setError('Something went wrong while loading your results. Please try again.')
-      } finally {
-        setLoading(false)
+        } catch {}
       }
     }
 
-    loadResults()
-  }, [router])
+    loadHookResults()
+  }, [userId])
 
-  if (loading) return <LoadingSkeleton />
+  if (!hookData) return null
 
-  if (error || !results) {
-    const isNoResults = error === 'no-results' || !results
-    return (
-      <ErrorState
-        message={error && error !== 'no-results' ? error : 'Something went wrong while loading your results.'}
-        noResults={isNoResults}
-      />
-    )
+  const sharpestDim = getDimension(hookData.sharpestDimension)
+  const sharpestTerritoryColor = TERRITORY_COLORS[sharpestDim.territory]
+  const sharpestTerritoryLabel = TERRITORY_CONFIG[sharpestDim.territory].displayLabel
+
+  const territoryScoreMap: Record<Territory, number> = {
+    leading_yourself: hookData.lyScore,
+    leading_teams: hookData.ltScore,
+    leading_organizations: hookData.loScore,
   }
+  const isLow = territoryScoreMap[sharpestDim.territory] < 50
+
+  const territories = [
+    { label: 'Leading Yourself', score: hookData.lyScore, color: '#7FABC8' },
+    { label: 'Leading Teams', score: hookData.ltScore, color: '#A6BEA4' },
+    { label: 'Leading Organizations', score: hookData.loScore, color: '#E08F6A' },
+  ]
+
+  return (
+    <div className="bg-white rounded-lg p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-6">
+      <p className="text-sm font-semibold tracking-widest uppercase text-black/40 mb-1">
+        Your Leadership Snapshot
+      </p>
+      <p className="text-xs text-black/30 mb-6">From the 10-question hook assessment</p>
+
+      <div className="space-y-4 mb-6">
+        {territories.map(t => (
+          <div key={t.label}>
+            <div className="flex items-center justify-between mb-1.5">
+              <div className="flex items-center gap-2">
+                <span
+                  className="w-2 h-2 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: t.color }}
+                />
+                <span className="text-sm font-medium text-black">{t.label}</span>
+              </div>
+              <span className="text-sm font-bold text-black">{Math.round(t.score)}%</span>
+            </div>
+            <div className="w-full bg-black/5 rounded-full h-2.5">
+              <div
+                className="h-2.5 rounded-full transition-all duration-1000 ease-out"
+                style={{
+                  width: `${Math.max(2, t.score)}%`,
+                  backgroundColor: t.color,
+                }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-[#F7F3ED]/60 rounded-xl p-5 mb-6">
+        <div className="flex items-center gap-2 mb-2">
+          <span
+            className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold text-white"
+            style={{ backgroundColor: sharpestTerritoryColor }}
+          >
+            {sharpestTerritoryLabel}
+          </span>
+          <span className="text-sm font-semibold text-black">{sharpestDim.name}</span>
+        </div>
+        <p className="text-sm text-black/60 leading-relaxed">
+          {buildHookInsight(sharpestDim.name, isLow ? 1 : 4, isLow)}
+        </p>
+      </div>
+
+      <p className="text-sm text-black/50 leading-relaxed">
+        Take the full assessment for your complete leadership profile across all 15 dimensions.
+      </p>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Free User View
+// ---------------------------------------------------------------------------
+
+function FreeUserView({ userName, userId }: { userName: string; userId?: string }) {
+  return (
+    <AppShell>
+      <div className="px-6 py-12">
+        <div className="max-w-3xl mx-auto">
+          <HookResultsBanner userId={userId} />
+
+          <div className="text-center mb-12">
+            <p className="text-sm font-semibold tracking-widest uppercase text-black/40 mb-6">CEO Lab</p>
+
+            <div className="flex justify-center mb-6">
+              <ScoreRing
+                value={0}
+                size={160}
+                strokeWidth={10}
+                color="rgba(0,0,0,0.08)"
+                trackColor="rgba(0,0,0,0.03)"
+                showValue={false}
+              />
+            </div>
+
+            <p className="text-6xl font-bold text-black/10 -mt-[108px] mb-[52px]">?</p>
+
+            <div className="flex justify-center gap-8 mb-10">
+              {[
+                { label: 'Leading Yourself', color: '#7FABC8' },
+                { label: 'Leading Teams', color: '#A6BEA4' },
+                { label: 'Leading Organizations', color: '#E08F6A' },
+              ].map((t) => (
+                <div key={t.label} className="flex flex-col items-center">
+                  <ScoreRing
+                    value={0}
+                    size={64}
+                    strokeWidth={5}
+                    color={`${t.color}20`}
+                    trackColor="rgba(0,0,0,0.03)"
+                    showValue={false}
+                  />
+                  <span className="text-[10px] text-black/30 mt-1.5 max-w-[80px] text-center leading-tight">{t.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-center mb-10">
+            <h1 className="text-3xl md:text-4xl font-bold text-black tracking-tight mb-3">
+              Unlock your leadership profile
+            </h1>
+            <p className="text-base text-black/50 max-w-lg mx-auto">
+              The Konstantin Method measures 15 dimensions of leadership maturity. See where you lead from, spot your blind spots, and know exactly what to work on.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+            {[
+              {
+                title: 'See where you lead from',
+                desc: 'Your CLMI score across three territories reveals your leadership center of gravity.',
+              },
+              {
+                title: 'Spot blind spots',
+                desc: 'Mirror feedback from colleagues shows you what you can\'t see yourself.',
+              },
+              {
+                title: 'Know what to work on',
+                desc: 'Priority dimensions and framework prescriptions tell you exactly where to focus.',
+              },
+            ].map((card) => (
+              <div key={card.title} className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+                <h3 className="text-sm font-semibold text-black mb-1.5">{card.title}</h3>
+                <p className="text-sm text-black/50 leading-relaxed">{card.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-white rounded-lg p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
+            <a
+              href="/api/checkout"
+              className="inline-block bg-black text-white px-10 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors mb-3"
+            >
+              Subscribe — &euro;100/month
+            </a>
+            <p className="text-xs text-black/30">
+              Full assessment, weekly accountability, mirror feedback, and a personalized roadmap.
+            </p>
+          </div>
+        </div>
+      </div>
+    </AppShell>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Baseline Pending View
+// ---------------------------------------------------------------------------
+
+function BaselinePendingView({ userName, userId }: { userName: string; userId?: string }) {
+  return (
+    <AppShell>
+      <div className="px-6 py-12">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-12">
+            <p className="text-sm font-semibold tracking-widest uppercase text-black/40 mb-2">CEO Lab</p>
+            <h1 className="text-3xl md:text-4xl font-bold text-black tracking-tight">
+              Welcome, {userName}
+            </h1>
+          </div>
+
+          <div className="max-w-2xl mx-auto">
+            <HookResultsBanner userId={userId} />
+          </div>
+
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#7FABC8]/15 text-sm font-bold text-[#7FABC8] mb-3">1</span>
+                <h3 className="text-sm font-semibold text-black mb-1">Measure</h3>
+                <p className="text-xs text-black/50 leading-relaxed">96 questions map your leadership across 15 dimensions in three territories.</p>
+              </div>
+              <div className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#A6BEA4]/15 text-sm font-bold text-[#A6BEA4] mb-3">2</span>
+                <h3 className="text-sm font-semibold text-black mb-1">Understand</h3>
+                <p className="text-xs text-black/50 leading-relaxed">Your scores reveal which frameworks will have the most impact on your growth.</p>
+              </div>
+              <div className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#E08F6A]/15 text-sm font-bold text-[#E08F6A] mb-3">3</span>
+                <h3 className="text-sm font-semibold text-black mb-1">Grow</h3>
+                <p className="text-xs text-black/50 leading-relaxed">Weekly check-ins track whether the frameworks are working. Real data, real progress.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg p-10 md:p-14 shadow-[0_1px_3px_rgba(0,0,0,0.04)] max-w-2xl mx-auto text-center">
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#7FABC8' }} />
+              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#A6BEA4' }} />
+              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#E08F6A' }} />
+            </div>
+
+            <h2 className="text-2xl md:text-3xl font-bold text-black mb-3">
+              Start Your Baseline Assessment
+            </h2>
+            <p className="text-base text-black/60 leading-relaxed mb-2 max-w-md mx-auto">
+              96 questions across 3 stages. Takes about 25 minutes total.
+            </p>
+            <p className="text-sm text-black/40 mb-10 max-w-md mx-auto">
+              You can complete it in one sitting or take breaks between stages.
+            </p>
+
+            <div className="flex items-center justify-center gap-8 mb-10">
+              {[
+                { label: 'Stage 1', items: '32 items', time: '~8 min' },
+                { label: 'Stage 2', items: '34 items', time: '~9 min' },
+                { label: 'Stage 3', items: '30 items', time: '~8 min' },
+              ].map((stage, i) => (
+                <div key={i} className="text-center">
+                  <ScoreRing
+                    value={0}
+                    size={48}
+                    strokeWidth={3}
+                    color="rgba(0,0,0,0.08)"
+                    trackColor="rgba(0,0,0,0.03)"
+                    showValue={false}
+                  />
+                  <p className="text-[10px] text-black/30 mt-0.5">{i + 1}</p>
+                  <p className="text-xs font-medium text-black/40 mt-1">{stage.label}</p>
+                  <p className="text-[10px] text-black/25">{stage.time}</p>
+                </div>
+              ))}
+            </div>
+
+            <a
+              href="/assessment/baseline"
+              className="inline-block bg-black text-white px-10 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
+            >
+              Begin Assessment
+            </a>
+          </div>
+        </div>
+      </div>
+    </AppShell>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Baseline In Progress View
+// ---------------------------------------------------------------------------
+
+function BaselineInProgressView({ userName, stageReached }: { userName: string; stageReached: number }) {
+  return (
+    <AppShell>
+      <div className="px-6 py-12">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-12">
+            <p className="text-sm font-semibold tracking-widest uppercase text-black/40 mb-2">CEO Lab</p>
+            <h1 className="text-3xl md:text-4xl font-bold text-black tracking-tight">
+              Welcome back, {userName}
+            </h1>
+          </div>
+
+          <div className="bg-white rounded-lg p-10 md:p-14 shadow-[0_1px_3px_rgba(0,0,0,0.04)] max-w-2xl mx-auto text-center">
+            <p className="text-sm font-medium text-black/40 uppercase tracking-wider mb-6">Assessment in progress</p>
+
+            <h2 className="text-2xl md:text-3xl font-bold text-black mb-3">
+              Stage {stageReached} of 3 complete
+            </h2>
+            <p className="text-base text-black/50 mb-10">
+              Pick up where you left off.
+            </p>
+
+            <div className="flex items-center justify-center gap-4 mb-10">
+              {[1, 2, 3].map((stage) => {
+                const isComplete = stage <= stageReached
+                const isCurrent = stage === stageReached + 1
+                const pct = isComplete ? 100 : 0
+
+                return (
+                  <div key={stage} className="flex items-center gap-4">
+                    <div className="text-center">
+                      <ScoreRing
+                        value={pct}
+                        size={56}
+                        strokeWidth={4}
+                        color={isComplete ? '#000' : 'rgba(0,0,0,0.08)'}
+                        trackColor="rgba(0,0,0,0.03)"
+                        showValue={false}
+                      />
+                      <div className="-mt-[42px] mb-[18px]">
+                        {isComplete ? (
+                          <svg className="w-5 h-5 mx-auto text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                          </svg>
+                        ) : (
+                          <span className={`text-sm font-semibold ${isCurrent ? 'text-black' : 'text-black/25'}`}>{stage}</span>
+                        )}
+                      </div>
+                      <p className={`text-xs font-medium ${isComplete ? 'text-black' : isCurrent ? 'text-black/70' : 'text-black/25'}`}>
+                        Stage {stage}
+                      </p>
+                    </div>
+
+                    {stage < 3 && (
+                      <div className={`w-12 h-0.5 mb-5 ${stage <= stageReached ? 'bg-black' : 'bg-black/10'}`} />
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+
+            <a
+              href="/assessment/baseline"
+              className="inline-block bg-black text-white px-10 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
+            >
+              Continue Assessment
+            </a>
+          </div>
+        </div>
+      </div>
+    </AppShell>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Complete Results View
+// ---------------------------------------------------------------------------
+
+function CompleteResultsView({ results }: { results: FullResults }) {
+  const [activeTab, setActiveTab] = useState<ResultsTab>('overview')
 
   const clmi = results.session.clmi ?? 0
   const hasMirrorData = results.mirrorGaps != null && results.mirrorGaps.length > 0
@@ -1390,7 +1708,6 @@ export default function ResultsPage() {
   return (
     <AppShell>
       <div className="print:bg-white">
-        {/* Page header */}
         <header className="pt-12 pb-4 px-6">
           <div className="max-w-4xl mx-auto text-center">
             <p className="text-xs font-medium text-black/40 uppercase tracking-wider mb-2">CEO Lab Assessment</p>
@@ -1399,7 +1716,6 @@ export default function ResultsPage() {
         </header>
 
         <main className="max-w-4xl mx-auto px-6 pb-20">
-          {/* Tab bar */}
           <div className="flex gap-1 p-1.5 bg-black/[0.04] rounded-xl mb-8">
             {tabs.map((tab) => (
               <button
@@ -1416,7 +1732,6 @@ export default function ResultsPage() {
             ))}
           </div>
 
-          {/* Tab content */}
           {activeTab === 'overview' && (
             <ResultsHero
               clmi={clmi}
@@ -1454,7 +1769,6 @@ export default function ResultsPage() {
           )}
         </main>
 
-        {/* Print styles */}
         <style jsx global>{`
           @media print {
             body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -1465,4 +1779,121 @@ export default function ResultsPage() {
       </div>
     </AppShell>
   )
+}
+
+// ---------------------------------------------------------------------------
+// Main Page Component
+// ---------------------------------------------------------------------------
+
+type CeoLabState = 'loading' | 'error' | 'free' | 'baseline-pending' | 'baseline-in-progress' | 'complete'
+
+export default function CeoLabPage() {
+  const router = useRouter()
+  const [pageState, setPageState] = useState<CeoLabState>('loading')
+  const [error, setError] = useState<string | null>(null)
+  const [results, setResults] = useState<FullResults | null>(null)
+  const [userName, setUserName] = useState('CEO')
+  const [userId, setUserId] = useState<string | undefined>(undefined)
+  const [stageReached, setStageReached] = useState(0)
+
+  const loadPage = React.useCallback(async () => {
+    try {
+      setPageState('loading')
+      setError(null)
+
+      const supabase = createClient()
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+      if (authError || !user) {
+        router.push('/auth')
+        return
+      }
+
+      setUserId(user.id)
+
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('subscription_status, full_name')
+        .eq('id', user.id)
+        .single()
+
+      const name = profile?.full_name
+        || user.user_metadata?.full_name
+        || user.user_metadata?.name
+        || user.email?.split('@')[0]
+        || 'CEO'
+      setUserName(name)
+
+      const isSubscribed = profile?.subscription_status === 'active'
+
+      if (!isSubscribed) {
+        setPageState('free')
+        return
+      }
+
+      // Check for completed session
+      const { data: completedSession } = await supabase
+        .from('assessment_sessions')
+        .select('id, completed_at, stage_reached, clmi, bsi')
+        .eq('ceo_id', user.id)
+        .eq('version', '4.0')
+        .not('completed_at', 'is', null)
+        .order('completed_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+
+      if (!completedSession) {
+        // Check for in-progress session
+        const { data: latestSession } = await supabase
+          .from('assessment_sessions')
+          .select('id, completed_at, stage_reached')
+          .eq('ceo_id', user.id)
+          .eq('version', '4.0')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle()
+
+        if (!latestSession) {
+          setPageState('baseline-pending')
+          return
+        }
+
+        setStageReached(latestSession.stage_reached || 0)
+        setPageState('baseline-in-progress')
+        return
+      }
+
+      // Has completed session — load full results
+      const response = await fetch('/api/v4/results')
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          router.replace('/auth')
+          return
+        }
+        throw new Error(`Failed to load results (${response.status})`)
+      }
+
+      const data = await response.json()
+      setResults(data.results)
+      setPageState('complete')
+    } catch (err: any) {
+      console.error('CEO Lab load error:', err)
+      setError(err.message || 'Failed to load CEO Lab')
+      setPageState('error')
+    }
+  }, [router])
+
+  useEffect(() => {
+    loadPage()
+  }, [loadPage])
+
+  if (pageState === 'loading') return <LoadingSkeleton />
+  if (pageState === 'error') return <ErrorState message={error || 'Something went wrong'} onRetry={loadPage} />
+  if (pageState === 'free') return <FreeUserView userName={userName} userId={userId} />
+  if (pageState === 'baseline-pending') return <BaselinePendingView userName={userName} userId={userId} />
+  if (pageState === 'baseline-in-progress') return <BaselineInProgressView userName={userName} stageReached={stageReached} />
+  if (pageState === 'complete' && results) return <CompleteResultsView results={results} />
+
+  return null
 }

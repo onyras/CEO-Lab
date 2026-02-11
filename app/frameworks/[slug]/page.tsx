@@ -67,10 +67,10 @@ export default function FrameworkDetailPage() {
             <h2 className="text-xl font-bold text-black mb-3">Framework Not Found</h2>
             <p className="text-sm text-black/50 mb-6">This framework doesn&apos;t have detailed content yet.</p>
             <a
-              href="/dashboard"
+              href="/ceolab"
               className="inline-block bg-black text-white px-6 py-3 rounded-lg text-sm font-semibold hover:bg-black/90 transition-colors"
             >
-              Back to Dashboard
+              Back to CEO Lab
             </a>
           </div>
         </div>
@@ -88,7 +88,7 @@ export default function FrameworkDetailPage() {
         <div className="max-w-2xl mx-auto">
           {/* Back link */}
           <a
-            href="/dashboard"
+            href="/ceolab"
             className="inline-flex items-center gap-1 text-sm text-black/40 hover:text-black/70 transition-colors mb-8"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

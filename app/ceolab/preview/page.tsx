@@ -335,7 +335,7 @@ function ErrorState({ message }: { message: string }) {
         </h2>
         <p className="text-sm text-black/60 mb-6 leading-relaxed">{message}</p>
         <a
-          href="/dashboard"
+          href="/ceolab"
           className="inline-block bg-black text-white px-8 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
         >
           Return to Dashboard

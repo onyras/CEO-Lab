@@ -43,8 +43,8 @@ async function createCheckoutSession(request: Request) {
     ],
     mode: 'subscription',
     allow_promotion_codes: true,
-    success_url: `${origin}/dashboard?success=true`,
-    cancel_url: `${origin}/dashboard?canceled=true`,
+    success_url: `${origin}/ceolab?success=true`,
+    cancel_url: `${origin}/ceolab?canceled=true`,
     metadata: {
       user_id: user.id,
     },
@@ -63,7 +63,7 @@ export async function GET(request: Request) {
     return NextResponse.redirect(session.url!)
   } catch (error: any) {
     console.error('Checkout error:', error)
-    return NextResponse.redirect(new URL('/dashboard?error=checkout', request.url))
+    return NextResponse.redirect(new URL('/ceolab?error=checkout', request.url))
   }
 }
 

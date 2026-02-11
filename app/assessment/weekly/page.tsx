@@ -277,10 +277,10 @@ export default function WeeklyPulsePage() {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <a
-                href="/dashboard"
+                href="/ceolab"
                 className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
               >
-                Back to Dashboard
+                Back to CEO Lab
               </a>
               <a
                 href="/ceolab"
@@ -325,7 +325,7 @@ export default function WeeklyPulsePage() {
         {/* Header */}
         <div className="mb-10">
           <a
-            href="/dashboard"
+            href="/ceolab"
             className="inline-flex items-center gap-1 text-sm text-black/40 hover:text-black/70 transition-colors mb-4"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

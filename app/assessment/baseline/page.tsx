@@ -424,7 +424,7 @@ export default function BaselineAssessment() {
         variant="stage-complete"
         stageNumber={currentStage}
         onContinue={handleContinueToNextStage}
-        onBreak={() => router.push('/dashboard')}
+        onBreak={() => router.push('/ceolab')}
       />
     )
   }
@@ -436,7 +436,7 @@ export default function BaselineAssessment() {
       <BreathingAnimation
         variant="assessment-complete"
         stageNumber={3}
-        onContinue={() => router.push('/dashboard')}
+        onContinue={() => router.push('/ceolab')}
       />
     )
   }

@@ -7,7 +7,7 @@ export default function TermsOfService() {
             <h1 className="font-serif text-3xl font-semibold">
               <a href="/" style={{ color: 'var(--nk-black)' }}>CEO Lab</a>
             </h1>
-            <a href="/dashboard" className="px-6 py-3 rounded-lg font-medium" style={{ background: 'var(--nk-black)', color: 'white' }}>
+            <a href="/ceolab" className="px-6 py-3 rounded-lg font-medium" style={{ background: 'var(--nk-black)', color: 'white' }}>
               Dashboard
             </a>
           </div>

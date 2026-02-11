@@ -1,0 +1,767 @@
+'use client'
+
+import { useEffect, useState, useCallback } from 'react'
+import { createClient } from '@/lib/supabase-browser'
+import { AppShell } from '@/components/layout/AppShell'
+
+// Types
+interface AdminUser {
+  id: string
+  name: string
+  email: string
+  subscriptionStatus: string
+  baselineCompleted: boolean
+  hookCompleted: boolean
+  joinedAt: string
+  stripeCustomerId: string | null
+  clmi: number | null
+  baselineCompletedAt: string | null
+  stageReached: number
+  weeklyCount: number
+  lastPulseDate: string | null
+  mirrorCount: number
+}
+
+interface UserDetail {
+  user: {
+    id: string
+    name: string
+    email: string
+    subscriptionStatus: string
+    stripeCustomerId: string | null
+    stripeSubscriptionId: string | null
+    baselineCompleted: boolean
+    hookCompleted: boolean
+    joinedAt: string
+  }
+  sessions: any[]
+  dimensionScores: any[]
+  territoryScores: any[]
+  archetypeMatches: any[]
+  pulses: any[]
+  mirrorSessions: any[]
+  bsi: number | null
+  hookSession: any | null
+}
+
+interface FeedbackItem {
+  id: string
+  userId: string
+  userName: string
+  userEmail: string
+  pageUrl: string
+  text: string
+  createdAt: string
+}
+
+interface ActivityEvent {
+  type: string
+  userId: string
+  userName: string
+  timestamp: string
+  details: string
+}
+
+type Tab = 'users' | 'feedback' | 'activity'
+
+// Territory dimension groupings
+const TERRITORY_DIMENSIONS: Record<string, { label: string; color: string; dimensions: string[] }> = {
+  leading_yourself: {
+    label: 'Leading Yourself',
+    color: '#7FABC8',
+    dimensions: ['self_awareness', 'emotional_mastery', 'grounded_presence', 'purpose_mastery', 'peak_performance'],
+  },
+  leading_teams: {
+    label: 'Leading Teams',
+    color: '#A6BEA4',
+    dimensions: ['building_trust', 'hard_conversations', 'diagnosing_real_problem', 'team_operating_system', 'leader_identity'],
+  },
+  leading_organizations: {
+    label: 'Leading Organizations',
+    color: '#E08F6A',
+    dimensions: ['strategic_clarity', 'culture_design', 'organizational_architecture', 'ceo_evolution', 'leading_change'],
+  },
+}
+
+function formatDate(dateStr: string | null) {
+  if (!dateStr) return '—'
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}
+
+function formatDateTime(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit',
+  })
+}
+
+function formatDimensionName(dim: string) {
+  return dim.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+}
+
+function StatusBadge({ status }: { status: string }) {
+  const colors: Record<string, string> = {
+    active: 'bg-green-100 text-green-700',
+    inactive: 'bg-gray-100 text-gray-500',
+    canceled: 'bg-red-100 text-red-600',
+    past_due: 'bg-yellow-100 text-yellow-700',
+  }
+  return (
+    <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${colors[status] || colors.inactive}`}>
+      {status}
+    </span>
+  )
+}
+
+function EventTypeBadge({ type }: { type: string }) {
+  const config: Record<string, { label: string; className: string }> = {
+    baseline_completed: { label: 'Baseline', className: 'bg-green-100 text-green-700' },
+    baseline_started: { label: 'Started', className: 'bg-blue-100 text-blue-700' },
+    weekly_checkin: { label: 'Weekly', className: 'bg-purple-100 text-purple-700' },
+    mirror_completed: { label: 'Mirror', className: 'bg-orange-100 text-orange-700' },
+    feedback_submitted: { label: 'Feedback', className: 'bg-yellow-100 text-yellow-700' },
+    signup: { label: 'Signup', className: 'bg-gray-100 text-gray-600' },
+  }
+  const c = config[type] || { label: type, className: 'bg-gray-100 text-gray-600' }
+  return (
+    <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${c.className}`}>
+      {c.label}
+    </span>
+  )
+}
+
+// ─── Users Tab ───
+function UsersTab({ users, onSelectUser }: { users: AdminUser[]; onSelectUser: (id: string) => void }) {
+  const [sortBy, setSortBy] = useState<keyof AdminUser>('joinedAt')
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
+  const [filter, setFilter] = useState('')
+
+  const handleSort = (key: keyof AdminUser) => {
+    if (sortBy === key) {
+      setSortDir(d => d === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortBy(key)
+      setSortDir('desc')
+    }
+  }
+
+  const filtered = users.filter(u =>
+    u.name.toLowerCase().includes(filter.toLowerCase()) ||
+    u.email.toLowerCase().includes(filter.toLowerCase())
+  )
+
+  const sorted = [...filtered].sort((a, b) => {
+    const aVal = a[sortBy]
+    const bVal = b[sortBy]
+    if (aVal === null && bVal === null) return 0
+    if (aVal === null) return 1
+    if (bVal === null) return -1
+    if (typeof aVal === 'string' && typeof bVal === 'string') {
+      return sortDir === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal)
+    }
+    if (typeof aVal === 'number' && typeof bVal === 'number') {
+      return sortDir === 'asc' ? aVal - bVal : bVal - aVal
+    }
+    return 0
+  })
+
+  const SortHeader = ({ label, field }: { label: string; field: keyof AdminUser }) => (
+    <th
+      className="text-left text-xs font-medium text-black/40 uppercase tracking-wider py-3 px-3 cursor-pointer hover:text-black/60 select-none"
+      onClick={() => handleSort(field)}
+    >
+      {label} {sortBy === field ? (sortDir === 'asc' ? '↑' : '↓') : ''}
+    </th>
+  )
+
+  return (
+    <div>
+      {/* Summary stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="bg-white rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <p className="text-xs text-black/40 mb-1">Total Users</p>
+          <p className="text-2xl font-bold">{users.length}</p>
+        </div>
+        <div className="bg-white rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <p className="text-xs text-black/40 mb-1">Active Subscribers</p>
+          <p className="text-2xl font-bold">{users.filter(u => u.subscriptionStatus === 'active').length}</p>
+        </div>
+        <div className="bg-white rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <p className="text-xs text-black/40 mb-1">Baseline Complete</p>
+          <p className="text-2xl font-bold">{users.filter(u => u.baselineCompleted).length}</p>
+        </div>
+        <div className="bg-white rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <p className="text-xs text-black/40 mb-1">Avg CLMI</p>
+          <p className="text-2xl font-bold">
+            {users.filter(u => u.clmi).length > 0
+              ? Math.round(users.filter(u => u.clmi).reduce((sum, u) => sum + u.clmi!, 0) / users.filter(u => u.clmi).length)
+              : '—'}%
+          </p>
+        </div>
+      </div>
+
+      {/* Search */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search by name or email..."
+          value={filter}
+          onChange={e => setFilter(e.target.value)}
+          className="w-full md:w-80 px-4 py-2.5 rounded-lg border border-black/10 text-sm focus:outline-none focus:border-black/30 bg-white"
+        />
+      </div>
+
+      {/* Table */}
+      <div className="bg-white rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-x-auto">
+        <table className="w-full min-w-[800px]">
+          <thead className="border-b border-black/5">
+            <tr>
+              <SortHeader label="Name" field="name" />
+              <SortHeader label="Status" field="subscriptionStatus" />
+              <SortHeader label="Baseline" field="baselineCompleted" />
+              <SortHeader label="CLMI" field="clmi" />
+              <SortHeader label="Weekly" field="weeklyCount" />
+              <SortHeader label="Mirror" field="mirrorCount" />
+              <SortHeader label="Joined" field="joinedAt" />
+              <th className="py-3 px-3"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {sorted.map(user => (
+              <tr
+                key={user.id}
+                className="border-b border-black/5 last:border-0 hover:bg-black/[0.02] cursor-pointer transition-colors"
+                onClick={() => onSelectUser(user.id)}
+              >
+                <td className="py-3 px-3">
+                  <p className="text-sm font-medium text-black">{user.name}</p>
+                  <p className="text-xs text-black/40">{user.email}</p>
+                </td>
+                <td className="py-3 px-3">
+                  <StatusBadge status={user.subscriptionStatus} />
+                </td>
+                <td className="py-3 px-3">
+                  {user.baselineCompleted ? (
+                    <span className="text-xs text-green-600 font-medium">Complete</span>
+                  ) : user.stageReached > 0 ? (
+                    <span className="text-xs text-amber-600 font-medium">Stage {user.stageReached}/3</span>
+                  ) : (
+                    <span className="text-xs text-black/30">Not started</span>
+                  )}
+                </td>
+                <td className="py-3 px-3">
+                  <span className="text-sm font-medium">{user.clmi ? `${Math.round(user.clmi)}%` : '—'}</span>
+                </td>
+                <td className="py-3 px-3">
+                  <span className="text-sm">{user.weeklyCount || '—'}</span>
+                </td>
+                <td className="py-3 px-3">
+                  <span className="text-sm">{user.mirrorCount || '—'}</span>
+                </td>
+                <td className="py-3 px-3">
+                  <span className="text-xs text-black/40">{formatDate(user.joinedAt)}</span>
+                </td>
+                <td className="py-3 px-3">
+                  <button className="text-xs text-black/30 hover:text-black/60">View →</button>
+                </td>
+              </tr>
+            ))}
+            {sorted.length === 0 && (
+              <tr>
+                <td colSpan={8} className="py-8 text-center text-sm text-black/40">
+                  {filter ? 'No users match your search' : 'No users found'}
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
+
+// ─── User Detail View ───
+function UserDetailView({
+  detail,
+  onBack,
+}: {
+  detail: UserDetail
+  onBack: () => void
+}) {
+  const { user, sessions, dimensionScores, territoryScores, archetypeMatches, pulses, mirrorSessions, bsi, hookSession } = detail
+  const completedSession = sessions.find((s: any) => s.completed_at)
+
+  return (
+    <div>
+      <button
+        onClick={onBack}
+        className="inline-flex items-center gap-1 text-sm text-black/40 hover:text-black/70 transition-colors mb-6"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+        Back to Users
+      </button>
+
+      {/* User header */}
+      <div className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-4">
+        <div className="flex items-start justify-between flex-wrap gap-4">
+          <div>
+            <h2 className="text-xl font-bold text-black">{user.name || 'Unknown'}</h2>
+            <p className="text-sm text-black/50 mt-0.5">{user.email}</p>
+            <div className="flex items-center gap-3 mt-3">
+              <StatusBadge status={user.subscriptionStatus} />
+              <span className="text-xs text-black/30">Joined {formatDate(user.joinedAt)}</span>
+            </div>
+          </div>
+
+          {/* Action buttons */}
+          <div className="flex flex-wrap gap-2">
+            {user.stripeCustomerId && (
+              <a
+                href={`https://dashboard.stripe.com/customers/${user.stripeCustomerId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium bg-[#635BFF]/10 text-[#635BFF] hover:bg-[#635BFF]/20 transition-colors"
+              >
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3H3V13H13V10M9 3H13V7M13 3L7 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                Stripe
+              </a>
+            )}
+            <a
+              href={`mailto:${user.email}`}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium bg-black/5 text-black/60 hover:bg-black/10 transition-colors"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+              Email
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Assessment overview */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <p className="text-xs text-black/40 mb-1">CLMI Score</p>
+          <p className="text-3xl font-bold">
+            {completedSession?.clmi ? `${Math.round(Number(completedSession.clmi))}%` : '—'}
+          </p>
+          {completedSession?.completed_at && (
+            <p className="text-xs text-black/30 mt-1">Completed {formatDate(completedSession.completed_at)}</p>
+          )}
+        </div>
+        <div className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <p className="text-xs text-black/40 mb-1">Weekly Check-ins</p>
+          <p className="text-3xl font-bold">{pulses.length > 0 ? new Set(pulses.map((p: any) => p.responded_at?.substring(0, 10))).size : 0}</p>
+          {pulses.length > 0 && (
+            <p className="text-xs text-black/30 mt-1">Last: {formatDate(pulses[0]?.responded_at)}</p>
+          )}
+        </div>
+        <div className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <p className="text-xs text-black/40 mb-1">BSI (Blind Spot Index)</p>
+          <p className="text-3xl font-bold">{bsi !== null ? `${Math.round(Number(bsi))}%` : '—'}</p>
+          <p className="text-xs text-black/30 mt-1">
+            {mirrorSessions.filter((m: any) => m.completed_at).length} mirror responses
+          </p>
+        </div>
+      </div>
+
+      {/* Dimension scores by territory */}
+      {dimensionScores.length > 0 && (
+        <div className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-4">
+          <h3 className="text-sm font-semibold text-black/40 uppercase tracking-wider mb-4">Dimension Scores</h3>
+          {Object.entries(TERRITORY_DIMENSIONS).map(([key, territory]) => (
+            <div key={key} className="mb-5 last:mb-0">
+              <p className="text-xs font-medium mb-2" style={{ color: territory.color }}>
+                {territory.label}
+              </p>
+              <div className="space-y-2">
+                {territory.dimensions.map(dim => {
+                  const score = dimensionScores.find((s: any) => s.dimension === dim)
+                  return (
+                    <div key={dim} className="flex items-center gap-3">
+                      <span className="text-xs text-black/50 w-40 shrink-0">{formatDimensionName(dim)}</span>
+                      <div className="flex-1 h-2 bg-black/5 rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all"
+                          style={{
+                            width: `${score?.percentage || 0}%`,
+                            backgroundColor: territory.color,
+                          }}
+                        />
+                      </div>
+                      <span className="text-xs font-medium text-black/60 w-10 text-right">
+                        {score?.percentage ? `${Math.round(Number(score.percentage))}%` : '—'}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Archetype matches */}
+      {archetypeMatches.length > 0 && (
+        <div className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-4">
+          <h3 className="text-sm font-semibold text-black/40 uppercase tracking-wider mb-3">Archetype Matches</h3>
+          <div className="space-y-2">
+            {archetypeMatches.map((a: any, i: number) => (
+              <div key={i} className="flex items-center justify-between py-2 border-b border-black/5 last:border-0">
+                <div>
+                  <span className="text-sm font-medium text-black">{a.archetype_name}</span>
+                  <span className="text-xs text-black/30 ml-2">{a.match_type}</span>
+                </div>
+                <span className="text-sm font-medium">{a.signature_strength ? `${Math.round(Number(a.signature_strength))}%` : '—'}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Hook session */}
+      {hookSession && (
+        <div className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-4">
+          <h3 className="text-sm font-semibold text-black/40 uppercase tracking-wider mb-3">Hook Assessment</h3>
+          <div className="grid grid-cols-3 gap-4">
+            <div>
+              <p className="text-xs text-black/40">Leading Yourself</p>
+              <p className="text-lg font-bold">{hookSession.ly_score ? `${Math.round(Number(hookSession.ly_score))}%` : '—'}</p>
+            </div>
+            <div>
+              <p className="text-xs text-black/40">Leading Teams</p>
+              <p className="text-lg font-bold">{hookSession.lt_score ? `${Math.round(Number(hookSession.lt_score))}%` : '—'}</p>
+            </div>
+            <div>
+              <p className="text-xs text-black/40">Leading Organizations</p>
+              <p className="text-lg font-bold">{hookSession.lo_score ? `${Math.round(Number(hookSession.lo_score))}%` : '—'}</p>
+            </div>
+          </div>
+          <p className="text-xs text-black/30 mt-2">
+            Completed {formatDate(hookSession.completed_at)} · Converted: {hookSession.converted ? 'Yes' : 'No'}
+          </p>
+        </div>
+      )}
+
+      {/* Mirror sessions */}
+      {mirrorSessions.length > 0 && (
+        <div className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-4">
+          <h3 className="text-sm font-semibold text-black/40 uppercase tracking-wider mb-3">Mirror Feedback</h3>
+          <div className="space-y-2">
+            {mirrorSessions.map((m: any) => (
+              <div key={m.id} className="flex items-center justify-between py-2 border-b border-black/5 last:border-0">
+                <div>
+                  <span className="text-sm text-black">{m.rater_email || 'Unknown rater'}</span>
+                  <span className="text-xs text-black/30 ml-2">{m.rater_relationship || ''}</span>
+                </div>
+                <span className={`text-xs font-medium ${m.completed_at ? 'text-green-600' : 'text-amber-500'}`}>
+                  {m.completed_at ? `Completed ${formatDate(m.completed_at)}` : 'Pending'}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Weekly pulse history */}
+      {pulses.length > 0 && (
+        <div className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <h3 className="text-sm font-semibold text-black/40 uppercase tracking-wider mb-3">Weekly Pulse History</h3>
+          <div className="max-h-60 overflow-y-auto">
+            {(() => {
+              // Group by date
+              const grouped = new Map<string, any[]>()
+              for (const p of pulses) {
+                const date = p.responded_at?.substring(0, 10) || 'unknown'
+                const arr = grouped.get(date) || []
+                arr.push(p)
+                grouped.set(date, arr)
+              }
+              return Array.from(grouped.entries()).map(([date, items]) => (
+                <div key={date} className="py-2 border-b border-black/5 last:border-0">
+                  <p className="text-xs text-black/40 mb-1">{formatDate(date)}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {items.map((item: any, i: number) => (
+                      <span key={i} className="text-xs bg-black/5 rounded px-2 py-0.5">
+                        {formatDimensionName(item.dimension)}: {item.score ? Math.round(Number(item.score) * 100) / 100 : '—'}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))
+            })()}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── Feedback Tab ───
+function FeedbackTab({ feedback }: { feedback: FeedbackItem[] }) {
+  if (feedback.length === 0) {
+    return (
+      <div className="bg-white rounded-lg p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
+        <p className="text-sm text-black/40">No feedback submitted yet</p>
+        <p className="text-xs text-black/30 mt-1">Make sure the user_feedback migration has been run</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-black/40 mb-2">{feedback.length} feedback submissions</p>
+      {feedback.map(f => (
+        <div key={f.id} className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <div className="flex items-start justify-between gap-4 mb-2">
+            <div>
+              <span className="text-sm font-medium text-black">{f.userName}</span>
+              <span className="text-xs text-black/30 ml-2">{f.userEmail}</span>
+            </div>
+            <span className="text-xs text-black/30 shrink-0">{formatDateTime(f.createdAt)}</span>
+          </div>
+          <p className="text-sm text-black/70 mb-2">{f.text}</p>
+          <p className="text-xs text-black/30">Page: {f.pageUrl}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ─── Activity Tab ───
+function ActivityTab({ events }: { events: ActivityEvent[] }) {
+  if (events.length === 0) {
+    return (
+      <div className="bg-white rounded-lg p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
+        <p className="text-sm text-black/40">No activity yet</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-2">
+      {events.map((event, i) => (
+        <div key={i} className="bg-white rounded-lg px-5 py-3.5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-start gap-3">
+          <EventTypeBadge type={event.type} />
+          <div className="flex-1 min-w-0">
+            <span className="text-sm font-medium text-black">{event.userName}</span>
+            <p className="text-sm text-black/60 mt-0.5">{event.details}</p>
+          </div>
+          <span className="text-xs text-black/30 shrink-0">{formatDateTime(event.timestamp)}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ─── Main Admin Page ───
+export default function AdminPage() {
+  const [state, setState] = useState<'loading' | 'forbidden' | 'error' | 'loaded'>('loading')
+  const [tab, setTab] = useState<Tab>('users')
+  const [users, setUsers] = useState<AdminUser[]>([])
+  const [feedback, setFeedback] = useState<FeedbackItem[]>([])
+  const [events, setEvents] = useState<ActivityEvent[]>([])
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
+  const [userDetail, setUserDetail] = useState<UserDetail | null>(null)
+  const [loadingDetail, setLoadingDetail] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
+
+  const loadData = useCallback(async () => {
+    try {
+      // Check admin access client-side first
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        setState('forbidden')
+        return
+      }
+
+      // Load all data in parallel
+      const [usersRes, feedbackRes, activityRes] = await Promise.all([
+        fetch('/api/admin/users'),
+        fetch('/api/admin/feedback'),
+        fetch('/api/admin/activity'),
+      ])
+
+      if (usersRes.status === 403) {
+        setState('forbidden')
+        return
+      }
+
+      if (!usersRes.ok) throw new Error('Failed to load users')
+
+      const usersData = await usersRes.json()
+      setUsers(usersData.users || [])
+
+      if (feedbackRes.ok) {
+        const feedbackData = await feedbackRes.json()
+        setFeedback(feedbackData.feedback || [])
+      }
+
+      if (activityRes.ok) {
+        const activityData = await activityRes.json()
+        setEvents(activityData.events || [])
+      }
+
+      setState('loaded')
+    } catch (err: any) {
+      console.error('Admin load error:', err)
+      setErrorMsg(err.message)
+      setState('error')
+    }
+  }, [])
+
+  useEffect(() => {
+    loadData()
+  }, [loadData])
+
+  const loadUserDetail = useCallback(async (userId: string) => {
+    setLoadingDetail(true)
+    try {
+      const res = await fetch(`/api/admin/users/${userId}`)
+      if (!res.ok) throw new Error('Failed to load user detail')
+      const data = await res.json()
+      setUserDetail(data)
+      setSelectedUserId(userId)
+    } catch (err) {
+      console.error('User detail error:', err)
+    } finally {
+      setLoadingDetail(false)
+    }
+  }, [])
+
+  if (state === 'loading') {
+    return (
+      <AppShell>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="flex items-center gap-3">
+            <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+            <span className="text-sm text-black/50">Loading admin panel...</span>
+          </div>
+        </div>
+      </AppShell>
+    )
+  }
+
+  if (state === 'forbidden') {
+    return (
+      <AppShell>
+        <div className="flex items-center justify-center min-h-[60vh] px-6">
+          <div className="bg-white rounded-lg p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)] max-w-md w-full text-center">
+            <h2 className="text-xl font-bold text-black mb-2">Access Denied</h2>
+            <p className="text-sm text-black/50 mb-6">You don&apos;t have permission to access the admin panel.</p>
+            <a
+              href="/ceolab"
+              className="inline-block bg-black text-white px-6 py-3 rounded-lg text-sm font-semibold hover:bg-black/90 transition-colors"
+            >
+              Go to CEO Lab
+            </a>
+          </div>
+        </div>
+      </AppShell>
+    )
+  }
+
+  if (state === 'error') {
+    return (
+      <AppShell>
+        <div className="flex items-center justify-center min-h-[60vh] px-6">
+          <div className="bg-white rounded-lg p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)] max-w-md w-full text-center">
+            <h2 className="text-xl font-bold text-black mb-2">Error</h2>
+            <p className="text-sm text-black/50 mb-6">{errorMsg || 'Something went wrong loading the admin panel.'}</p>
+            <button
+              onClick={() => { setState('loading'); loadData() }}
+              className="inline-block bg-black text-white px-6 py-3 rounded-lg text-sm font-semibold hover:bg-black/90 transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </AppShell>
+    )
+  }
+
+  // User detail view
+  if (selectedUserId && userDetail) {
+    return (
+      <AppShell>
+        <div className="px-6 py-8">
+          <div className="max-w-4xl mx-auto">
+            <UserDetailView
+              detail={userDetail}
+              onBack={() => { setSelectedUserId(null); setUserDetail(null) }}
+            />
+          </div>
+        </div>
+      </AppShell>
+    )
+  }
+
+  // Loading detail overlay
+  if (loadingDetail) {
+    return (
+      <AppShell>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="flex items-center gap-3">
+            <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+            <span className="text-sm text-black/50">Loading user detail...</span>
+          </div>
+        </div>
+      </AppShell>
+    )
+  }
+
+  const TABS: { id: Tab; label: string; count?: number }[] = [
+    { id: 'users', label: 'Users', count: users.length },
+    { id: 'feedback', label: 'Feedback', count: feedback.length },
+    { id: 'activity', label: 'Activity' },
+  ]
+
+  return (
+    <AppShell>
+      <div className="px-6 py-8">
+        <div className="max-w-5xl mx-auto">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-2xl font-bold text-black">Admin Panel</h1>
+              <p className="text-sm text-black/40 mt-0.5">User management and platform overview</p>
+            </div>
+            <button
+              onClick={() => { setState('loading'); loadData() }}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium bg-black/5 text-black/60 hover:bg-black/10 transition-colors"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" /></svg>
+              Refresh
+            </button>
+          </div>
+
+          {/* Tab bar */}
+          <div className="flex gap-1 mb-6 bg-black/[0.03] rounded-lg p-1 w-fit">
+            {TABS.map(t => (
+              <button
+                key={t.id}
+                onClick={() => setTab(t.id)}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  tab === t.id
+                    ? 'bg-white text-black shadow-sm'
+                    : 'text-black/40 hover:text-black/60'
+                }`}
+              >
+                {t.label}
+                {t.count !== undefined && (
+                  <span className="ml-1.5 text-xs text-black/30">{t.count}</span>
+                )}
+              </button>
+            ))}
+          </div>
+
+          {/* Tab content */}
+          {tab === 'users' && <UsersTab users={users} onSelectUser={loadUserDetail} />}
+          {tab === 'feedback' && <FeedbackTab feedback={feedback} />}
+          {tab === 'activity' && <ActivityTab events={events} />}
+        </div>
+      </div>
+    </AppShell>
+  )
+}
