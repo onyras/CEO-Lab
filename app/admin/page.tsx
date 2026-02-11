@@ -195,7 +195,7 @@ function UsersTab({ users, onSelectUser }: { users: AdminUser[]; onSelectUser: (
           <p className="text-2xl font-bold">{users.length}</p>
         </div>
         <div className="bg-white rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-          <p className="text-xs text-black/40 mb-1">Active Subscribers</p>
+          <p className="text-xs text-black/40 mb-1">Paid Subscribers</p>
           <p className="text-2xl font-bold">{users.filter(u => u.subscriptionStatus === 'active').length}</p>
         </div>
         <div className="bg-white rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
