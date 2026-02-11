@@ -18,7 +18,7 @@ const SCALE_LABELS: Record<string, string[]> = {
 
 // ─── Types ────────────────────────────────────────────────────────
 
-type Phase = 'loading' | 'assessment' | 'stage-complete' | 'saving' | 'done'
+type Phase = 'loading' | 'intro' | 'assessment' | 'stage-complete' | 'saving' | 'done'
 
 interface ItemResponse {
   rawResponse: number
@@ -61,6 +61,43 @@ function shuffle<T>(array: T[]): T[] {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
     ;[arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
+}
+
+/** Get the dimension for an item ID (B→behavioral, SJ→sji, IM→null) */
+function getItemDimension(itemId: string): string | null {
+  if (itemId.startsWith('B')) {
+    const item = behavioralItems.find(b => b.id === itemId)
+    return item?.dimensionId ?? null
+  }
+  if (itemId.startsWith('SJ')) {
+    const item = sjiItems.find(s => s.id === itemId)
+    return item?.dimensionId ?? null
+  }
+  return null
+}
+
+/**
+ * Post-shuffle: ensure no two adjacent items share the same dimension.
+ * Swap-based: if items[i] and items[i+1] share a dimension,
+ * find the next item with a different dimension and swap it in.
+ */
+function spaceDimensions(items: string[]): string[] {
+  const arr = [...items]
+  for (let i = 0; i < arr.length - 1; i++) {
+    const dimA = getItemDimension(arr[i])
+    const dimB = getItemDimension(arr[i + 1])
+    if (dimA && dimB && dimA === dimB) {
+      // Find next item from a different dimension to swap with
+      for (let j = i + 2; j < arr.length; j++) {
+        const dimJ = getItemDimension(arr[j])
+        if (dimJ !== dimA) {
+          ;[arr[i + 1], arr[j]] = [arr[j], arr[i + 1]]
+          break
+        }
+      }
+    }
   }
   return arr
 }
@@ -140,7 +177,7 @@ export default function BaselineAssessment() {
 
       // Build shuffled queue, filter out already answered items
       const unanswered = stageItemIds.filter((id: string) => !answeredSet.has(id))
-      const shuffled = shuffle(unanswered)
+      const shuffled = spaceDimensions(shuffle(unanswered))
       setStageItems(shuffled)
       setCurrentIndex(0)
 
@@ -155,6 +192,10 @@ export default function BaselineAssessment() {
         } else {
           setPhase('stage-complete')
         }
+      } else if (stage === 1 && answeredSet.size === 0) {
+        // Fresh start on Stage 1 — show intro
+        setDisplayedAt(Date.now())
+        setPhase('intro')
       } else {
         setDisplayedAt(Date.now())
         setPhase('assessment')
@@ -261,7 +302,7 @@ export default function BaselineAssessment() {
 
     // Get items for next stage and shuffle
     const nextItems = STAGE_ITEMS[nextStage] || []
-    const shuffled = shuffle(nextItems)
+    const shuffled = spaceDimensions(shuffle(nextItems))
     setStageItems(shuffled)
     setCurrentIndex(0)
     setResponses(new Map())
@@ -326,6 +367,50 @@ export default function BaselineAssessment() {
         <div className="flex flex-col items-center gap-4">
           <div className="h-8 w-8 border-2 border-black/20 border-t-black rounded-full animate-spin" />
           <p className="text-black/50 text-sm font-medium">Saving your responses...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // ─── Render: Intro ─────────────────────────────────────────
+
+  if (phase === 'intro') {
+    return (
+      <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6">
+        <div className="max-w-lg w-full">
+          <div className="bg-white rounded-2xl p-10 border border-black/5">
+            <p className="text-sm font-semibold tracking-widest uppercase text-black/40 mb-6">Before You Begin</p>
+
+            <div className="space-y-6 mb-10">
+              <div className="flex items-start gap-4">
+                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#7FABC8]/15 flex items-center justify-center text-sm font-bold text-[#7FABC8]">1</span>
+                <p className="text-sm text-black/70 leading-relaxed pt-1">
+                  This is about honestly taking stock of reality, not quizzing you on right answers.
+                </p>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#A6BEA4]/15 flex items-center justify-center text-sm font-bold text-[#A6BEA4]">2</span>
+                <p className="text-sm text-black/70 leading-relaxed pt-1">
+                  This takes ~25 minutes across 3 stages. Schedule it and give it your full attention.
+                </p>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#E08F6A]/15 flex items-center justify-center text-sm font-bold text-[#E08F6A]">3</span>
+                <p className="text-sm text-black/70 leading-relaxed pt-1">
+                  Don&apos;t leave this open to come back to later. Your answers are most accurate in the moment.
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setPhase('assessment')}
+              className="w-full px-8 py-4 bg-black text-white rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
+            >
+              I&apos;m Ready
+            </button>
+          </div>
         </div>
       </div>
     )

@@ -211,7 +211,7 @@ export default function WeeklyPulsePage() {
       improving: 'Improving',
       stable: 'Stable',
       declining: 'Declining',
-      insufficient_data: 'Building data',
+      insufficient_data: 'Needs 8+ weeks',
     }
 
     const trendColors: Record<string, string> = {
@@ -231,7 +231,7 @@ export default function WeeklyPulsePage() {
               </svg>
             </div>
 
-            <h1 className="text-2xl font-bold text-black mb-2">Accountability Check-in Complete</h1>
+            <h1 className="text-2xl font-bold text-black mb-2">Check-in Logged</h1>
             <p className="text-black/50 text-sm mb-8">
               {savedCount} response{savedCount !== 1 ? 's' : ''} saved for {getCurrentQuarter()}
             </p>
@@ -269,6 +269,11 @@ export default function WeeklyPulsePage() {
                 </div>
               </div>
             )}
+
+            {/* Trend explanation */}
+            <p className="text-xs text-black/40 leading-relaxed mb-8">
+              Trends appear after 8 weekly check-ins. Keep going — each week sharpens the picture.
+            </p>
 
             <div className="flex flex-col sm:flex-row gap-3">
               <a

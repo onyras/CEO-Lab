@@ -1049,8 +1049,8 @@ function RoadmapTabContent({
     <div className="space-y-6">
       {/* Roadmap timeline */}
       <div className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-        <h2 className="text-xl font-bold text-black mb-1">Development Roadmap</h2>
-        <p className="text-sm text-black/50 mb-6">Your 90-day plan based on priority dimensions</p>
+        <h2 className="text-xl font-bold text-black mb-1">Your Growth Path</h2>
+        <p className="text-sm text-black/50 mb-6">Your 90-day leadership growth plan</p>
         <RoadmapTimeline priorityDimensions={entries} />
 
         {/* First moves */}
@@ -1201,7 +1201,7 @@ export default function ResultsPage() {
     { key: 'dimensions', label: 'Impact Areas' },
     { key: 'archetypes', label: 'Archetypes' },
     { key: 'blind-spots', label: 'Blind Spots' },
-    { key: 'roadmap', label: 'Roadmap' },
+    { key: 'roadmap', label: 'Growth Path' },
   ]
 
   return (

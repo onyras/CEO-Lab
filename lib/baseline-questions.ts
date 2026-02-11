@@ -101,7 +101,7 @@ export const behavioralItems: BehavioralItem[] = [
   {
     id: 'B11',
     dimensionId: 'LY.3',
-    text: 'How often do you currently practice deliberate stillness, meditation, or structured reflection?',
+    text: 'I currently practice deliberate stillness, meditation, or structured reflection.',
     scoringDirection: 'forward',
     scaleType: 'custom',
     stage: 1,
@@ -192,7 +192,7 @@ export const behavioralItems: BehavioralItem[] = [
   {
     id: 'B21',
     dimensionId: 'LY.5',
-    text: 'In a typical week, how many hours of uninterrupted, deep-focus work do you complete on your highest-priority tasks?',
+    text: 'In a typical week, I complete significant hours of uninterrupted, deep-focus work on my highest-priority tasks.',
     scoringDirection: 'forward',
     scaleType: 'custom',
     stage: 1,
@@ -371,7 +371,7 @@ export const behavioralItems: BehavioralItem[] = [
   {
     id: 'B41',
     dimensionId: 'LT.4',
-    text: 'Does your leadership team have a consistent weekly meeting that reliably produces clear decisions and accountability?',
+    text: 'My leadership team has a consistent weekly meeting that reliably produces clear decisions and accountability.',
     scoringDirection: 'forward',
     scaleType: 'custom',
     stage: 1,

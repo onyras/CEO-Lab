@@ -3,9 +3,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
-import { getDimension, TERRITORY_CONFIG } from '@/lib/constants'
-import { getVerbalLabel } from '@/lib/scoring'
+import { getDimension, TERRITORY_CONFIG, FRAMEWORK_PRESCRIPTIONS } from '@/lib/constants'
+import { getVerbalLabel, getFrameworkPrescription } from '@/lib/scoring'
 import { buildHookInsight } from '@/lib/report-content'
+import { FRAMEWORK_CONTENT, getFrameworkByName } from '@/lib/framework-content'
 import { AppShell } from '@/components/layout/AppShell'
 import { ScoreRing } from '@/components/visualizations/ScoreRing'
 import type { DimensionId, Territory, VerbalLabel } from '@/types/assessment'
@@ -31,7 +32,7 @@ interface HookResultsData {
 
 type DashboardState = 'loading' | 'error' | 'free' | 'baseline-pending' | 'baseline-in-progress' | 'complete'
 
-type DashboardTab = 'overview' | 'assessment'
+type DashboardTab = 'overview' | 'assessment' | 'frameworks'
 
 interface DimensionScoreData {
   dimensionId: DimensionId
@@ -125,16 +126,17 @@ export default function DashboardPage() {
 
       setUserId(user.id)
 
-      const userName = user.user_metadata?.full_name
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('subscription_status, full_name')
+        .eq('id', user.id)
+        .single()
+
+      const userName = profile?.full_name
+        || user.user_metadata?.full_name
         || user.user_metadata?.name
         || user.email?.split('@')[0]
         || 'CEO'
-
-      const { data: profile } = await supabase
-        .from('user_profiles')
-        .select('subscription_status')
-        .eq('id', user.id)
-        .single()
 
       const isSubscribed = profile?.subscription_status === 'active'
 
@@ -258,11 +260,13 @@ export default function DashboardPage() {
       const now = new Date()
       const currentQuarter = `${now.getFullYear()}-Q${Math.ceil((now.getMonth() + 1) / 3)}`
 
-      const { count: weeklyPulseCount } = await supabase
+      const { data: pulseRows } = await supabase
         .from('weekly_pulse')
-        .select('id', { count: 'exact', head: true })
+        .select('responded_at')
         .eq('ceo_id', user.id)
         .eq('quarter', currentQuarter)
+
+      const weeklyPulseCount = new Set((pulseRows || []).map((r: { responded_at: string }) => r.responded_at)).size
 
       const { data: lastPulse } = await supabase
         .from('weekly_pulse')
@@ -604,6 +608,27 @@ function BaselinePendingView({ userName, userId }: { userName: string; userId?: 
             <HookResultsBanner userId={userId} />
           </div>
 
+          {/* How CEO Lab Works */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white rounded-2xl p-6 border border-black/5">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#7FABC8]/15 text-sm font-bold text-[#7FABC8] mb-3">1</span>
+                <h3 className="text-sm font-semibold text-black mb-1">Measure</h3>
+                <p className="text-xs text-black/50 leading-relaxed">96 questions map your leadership across 15 dimensions in three territories.</p>
+              </div>
+              <div className="bg-white rounded-2xl p-6 border border-black/5">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#A6BEA4]/15 text-sm font-bold text-[#A6BEA4] mb-3">2</span>
+                <h3 className="text-sm font-semibold text-black mb-1">Understand</h3>
+                <p className="text-xs text-black/50 leading-relaxed">Your scores reveal which frameworks will have the most impact on your growth.</p>
+              </div>
+              <div className="bg-white rounded-2xl p-6 border border-black/5">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#E08F6A]/15 text-sm font-bold text-[#E08F6A] mb-3">3</span>
+                <h3 className="text-sm font-semibold text-black mb-1">Grow</h3>
+                <p className="text-xs text-black/50 leading-relaxed">Weekly check-ins track whether the frameworks are working. Real data, real progress.</p>
+              </div>
+            </div>
+          </div>
+
           <div className="bg-white rounded-2xl p-10 md:p-14 border border-black/5 max-w-2xl mx-auto text-center">
             {/* Territory dots */}
             <div className="flex items-center justify-center gap-3 mb-8">
@@ -773,6 +798,7 @@ function FullDashboardView({ data }: { data: DashboardData }) {
             {([
               { key: 'overview', label: 'Overview' },
               { key: 'assessment', label: 'Assessment' },
+              { key: 'frameworks', label: 'Your Frameworks' },
             ] as { key: DashboardTab; label: string }[]).map((tab) => (
               <button
                 key={tab.key}
@@ -789,8 +815,9 @@ function FullDashboardView({ data }: { data: DashboardData }) {
           </div>
 
           {/* ── Tab content ── */}
-          {activeTab === 'overview' && <OverviewTab data={data} />}
+          {activeTab === 'overview' && <OverviewTab data={data} onSwitchTab={setActiveTab} />}
           {activeTab === 'assessment' && <AssessmentTab data={data} />}
+          {activeTab === 'frameworks' && <FrameworksTab data={data} />}
         </div>
       </div>
     </AppShell>
@@ -799,7 +826,7 @@ function FullDashboardView({ data }: { data: DashboardData }) {
 
 // ─── Overview Tab ─────────────────────────────────────────────────
 
-function OverviewTab({ data }: { data: DashboardData }) {
+function OverviewTab({ data, onSwitchTab }: { data: DashboardData; onSwitchTab: (tab: DashboardTab) => void }) {
   const daysSinceAssessment = data.lastAssessmentDate
     ? Math.floor((Date.now() - new Date(data.lastAssessmentDate).getTime()) / (1000 * 60 * 60 * 24))
     : 0
@@ -912,6 +939,57 @@ function OverviewTab({ data }: { data: DashboardData }) {
         )}
       </div>
 
+      {/* Your Top Framework — teaser */}
+      {(() => {
+        const topPriority = data.priorityDimensions[0]
+        if (!topPriority) return null
+        const frameworks = getFrameworkPrescription(topPriority.dimensionId, topPriority.score)
+        const primaryFramework = frameworks[0]
+        if (!primaryFramework) return null
+        const content = getFrameworkByName(primaryFramework)
+        const dim = getDimension(topPriority.dimensionId)
+        const color = TERRITORY_COLORS[dim.territory]
+
+        return (
+          <div
+            className="bg-white rounded-2xl p-8 border border-black/5"
+            style={{ borderLeftWidth: 3, borderLeftColor: color }}
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div>
+                <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-1">Your Top Framework</p>
+                <h2 className="text-lg font-semibold text-black">{primaryFramework}</h2>
+              </div>
+              <span
+                className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold text-white flex-shrink-0"
+                style={{ backgroundColor: color }}
+              >
+                {TERRITORY_CONFIG[dim.territory].displayLabel}
+              </span>
+            </div>
+            {content && (
+              <p className="text-sm text-black/50 leading-relaxed mb-4">{content.tagline}</p>
+            )}
+            <div className="flex items-center gap-4">
+              {content && (
+                <a
+                  href={`/frameworks/${content.id}`}
+                  className="text-sm font-medium text-black hover:text-black/70 transition-colors"
+                >
+                  Learn more
+                </a>
+              )}
+              <button
+                onClick={() => onSwitchTab('frameworks')}
+                className="text-sm font-medium text-black/40 hover:text-black/60 transition-colors"
+              >
+                See all your frameworks &rarr;
+              </button>
+            </div>
+          </div>
+        )
+      })()}
+
       {/* Mirror Check */}
       <div className="bg-white rounded-2xl p-8 border border-black/5">
         <h2 className="text-lg font-semibold text-black mb-1">Mirror Check</h2>
@@ -953,6 +1031,178 @@ function OverviewTab({ data }: { data: DashboardData }) {
             </a>
           </div>
         )}
+      </div>
+    </div>
+  )
+}
+
+// ─── Frameworks Tab ─────────────────────────────────────────────
+
+function FrameworksTab({ data }: { data: DashboardData }) {
+  // Get priority frameworks based on user's scores
+  const priorityFrameworks = data.priorityDimensions.slice(0, 5).map(pd => {
+    const dim = getDimension(pd.dimensionId)
+    const frameworks = getFrameworkPrescription(pd.dimensionId, pd.score)
+    const primaryFramework = frameworks[0] || null
+    const frameworkContent = primaryFramework ? getFrameworkByName(primaryFramework) : null
+
+    return {
+      dimensionId: pd.dimensionId,
+      dimensionName: pd.name,
+      score: pd.score,
+      label: pd.label,
+      territory: dim.territory,
+      frameworkName: primaryFramework,
+      frameworkContent,
+    }
+  }).filter(f => f.frameworkName)
+
+  // Group all frameworks by territory
+  const territories: Territory[] = ['leading_yourself', 'leading_teams', 'leading_organizations']
+
+  return (
+    <div className="space-y-6">
+      {/* Hero */}
+      <div className="bg-white rounded-2xl p-8 md:p-10 border border-black/5">
+        <h2 className="text-xl font-bold text-black mb-2">
+          Your Frameworks
+        </h2>
+        <p className="text-sm text-black/50 leading-relaxed max-w-lg">
+          Based on your assessment scores, these are the Konstantin Method frameworks most relevant to your growth right now.
+        </p>
+      </div>
+
+      {/* Priority frameworks */}
+      <div className="space-y-4">
+        <p className="text-xs font-semibold text-black/40 uppercase tracking-wider px-1">Priority Frameworks</p>
+        {priorityFrameworks.map(pf => {
+          const color = TERRITORY_COLORS[pf.territory]
+          return (
+            <div
+              key={pf.dimensionId}
+              className="bg-white rounded-2xl p-6 border border-black/5"
+              style={{ borderLeftWidth: 3, borderLeftColor: color }}
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <span
+                    className="w-2 h-2 rounded-full flex-shrink-0"
+                    style={{ backgroundColor: color }}
+                  />
+                  <span className="text-xs text-black/40">{pf.dimensionName}</span>
+                  <span className="text-xs text-black/30">{Math.round(pf.score)}%</span>
+                </div>
+                <span
+                  className="text-[10px] font-medium px-2 py-0.5 rounded-full"
+                  style={{
+                    backgroundColor: `${color}15`,
+                    color,
+                  }}
+                >
+                  {pf.label}
+                </span>
+              </div>
+
+              <h3 className="text-lg font-semibold text-black mb-1">{pf.frameworkName}</h3>
+              {pf.frameworkContent && (
+                <p className="text-sm text-black/50 leading-relaxed mb-4">{pf.frameworkContent.tagline}</p>
+              )}
+
+              {pf.frameworkContent ? (
+                <a
+                  href={`/frameworks/${pf.frameworkContent.id}`}
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-black hover:text-black/70 transition-colors"
+                >
+                  Learn more
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              ) : (
+                <p className="text-xs text-black/30">Detailed content coming soon</p>
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      {/* All frameworks by territory */}
+      <div className="bg-white rounded-2xl p-8 border border-black/5">
+        <h3 className="text-sm font-semibold text-black/40 uppercase tracking-wider mb-6">All Frameworks by Territory</h3>
+
+        <div className="space-y-8">
+          {territories.map(t => {
+            const config = TERRITORY_CONFIG[t]
+            const color = TERRITORY_COLORS[t]
+            const dims = data.dimensionScores.filter(d => d.territory === t)
+
+            return (
+              <div key={t}>
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color }} />
+                  <h4 className="text-sm font-semibold text-black">{config.displayLabel}</h4>
+                </div>
+
+                <div className="space-y-3">
+                  {dims.map(dim => {
+                    const prescriptions = FRAMEWORK_PRESCRIPTIONS[dim.dimensionId]
+                    if (!prescriptions) return null
+                    const score = dim.score
+                    const tier = score <= 40 ? 'critical' : score <= 70 ? 'developing' : 'strong'
+                    const activeFrameworks = prescriptions[tier]
+                    const dimDef = getDimension(dim.dimensionId)
+
+                    return (
+                      <div key={dim.dimensionId} className="pl-5 border-l-2" style={{ borderColor: `${color}30` }}>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <p className="text-sm font-medium text-black">{dimDef.name}</p>
+                          <span className="text-xs text-black/40">{Math.round(score)}% — {tier}</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {activeFrameworks.map(fw => {
+                            const content = getFrameworkByName(fw)
+                            return content ? (
+                              <a
+                                key={fw}
+                                href={`/frameworks/${content.id}`}
+                                className="inline-block px-2.5 py-1 text-xs font-medium text-black bg-[#F7F3ED] rounded-full hover:bg-[#F7F3ED]/80 transition-colors"
+                              >
+                                {fw}
+                              </a>
+                            ) : (
+                              <span
+                                key={fw}
+                                className="inline-block px-2.5 py-1 text-xs text-black/50 border border-black/10 rounded-full"
+                              >
+                                {fw}
+                              </span>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Coaching CTA */}
+      <div className="bg-white rounded-2xl p-8 border border-black/5 text-center">
+        <h3 className="text-lg font-semibold text-black mb-2">Want Guided Support?</h3>
+        <p className="text-sm text-black/50 mb-6 max-w-sm mx-auto">
+          Work through these frameworks with Niko in a focused coaching session.
+        </p>
+        <a
+          href="https://cal.com/nikolaskonstantin"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block bg-black text-white px-8 py-3.5 rounded-lg text-sm font-semibold hover:bg-black/90 transition-colors"
+        >
+          Book a Session
+        </a>
       </div>
     </div>
   )

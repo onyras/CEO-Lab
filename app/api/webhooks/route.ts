@@ -70,6 +70,9 @@ export async function POST(request: Request) {
 
         console.log('Updating user profile for user:', userId)
 
+        // Extract customer name from Stripe checkout
+        const customerName = session.customer_details?.name || null
+
         // Update user profile with subscription info
         const { data, error } = await supabase
           .from('user_profiles')
@@ -77,6 +80,7 @@ export async function POST(request: Request) {
             subscription_status: 'active',
             stripe_customer_id: session.customer as string,
             stripe_subscription_id: session.subscription as string,
+            ...(customerName ? { full_name: customerName } : {}),
           })
           .eq('id', userId)
 

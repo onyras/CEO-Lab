@@ -80,15 +80,6 @@ export function BreathingAnimation({
           </p>
 
           <div className="mt-4 flex items-center gap-4">
-            <button
-              onClick={onContinue}
-              className="rounded-lg bg-black px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-black/85"
-            >
-              {isStageComplete
-                ? `Continue to Stage ${nextStage}`
-                : 'See Your Results'}
-            </button>
-
             {isStageComplete && onBreak && (
               <button
                 onClick={onBreak}
@@ -97,6 +88,14 @@ export function BreathingAnimation({
                 Take a break
               </button>
             )}
+            <button
+              onClick={onContinue}
+              className="rounded-lg bg-black px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-black/85"
+            >
+              {isStageComplete
+                ? `Continue to Stage ${nextStage}`
+                : 'See Your Results'}
+            </button>
           </div>
         </div>
       </div>
