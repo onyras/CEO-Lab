@@ -501,29 +501,139 @@ function UserDetailView({
 function FeedbackTab({ feedback }: { feedback: FeedbackItem[] }) {
   if (feedback.length === 0) {
     return (
-      <div className="bg-white rounded-lg p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
-        <p className="text-sm text-black/40">No feedback submitted yet</p>
-        <p className="text-xs text-black/30 mt-1">Make sure the user_feedback migration has been run</p>
+      <div className="bg-white rounded-2xl p-12 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
+        <div className="w-12 h-12 rounded-full bg-black/[0.03] flex items-center justify-center mx-auto mb-4">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-black/20">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+          </svg>
+        </div>
+        <p className="text-sm font-medium text-black/50">No feedback yet</p>
+        <p className="text-xs text-black/30 mt-1">Feedback will appear here once users submit it</p>
       </div>
     )
   }
 
+  // Compute stats
+  const uniqueUsers = new Set(feedback.map(f => f.userId)).size
+  const pages = feedback.reduce((acc, f) => {
+    const page = f.pageUrl.replace(/^https?:\/\/[^/]+/, '').split('?')[0] || '/'
+    acc[page] = (acc[page] || 0) + 1
+    return acc
+  }, {} as Record<string, number>)
+  const topPages = Object.entries(pages).sort((a, b) => b[1] - a[1]).slice(0, 4)
+  const now = new Date()
+  const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+  const thisWeek = feedback.filter(f => new Date(f.createdAt) > weekAgo).length
+  const latest = feedback[0]
+
+  // Relative time helper
+  function timeAgo(dateStr: string) {
+    const diff = now.getTime() - new Date(dateStr).getTime()
+    const mins = Math.floor(diff / 60000)
+    if (mins < 60) return `${mins}m ago`
+    const hours = Math.floor(mins / 60)
+    if (hours < 24) return `${hours}h ago`
+    const days = Math.floor(hours / 24)
+    if (days < 7) return `${days}d ago`
+    return formatDate(dateStr)
+  }
+
   return (
-    <div className="space-y-3">
-      <p className="text-sm text-black/40 mb-2">{feedback.length} feedback submissions</p>
-      {feedback.map(f => (
-        <div key={f.id} className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-          <div className="flex items-start justify-between gap-4 mb-2">
-            <div>
-              <span className="text-sm font-medium text-black">{f.userName}</span>
-              <span className="text-xs text-black/30 ml-2">{f.userEmail}</span>
-            </div>
-            <span className="text-xs text-black/30 shrink-0">{formatDateTime(f.createdAt)}</span>
-          </div>
-          <p className="text-sm text-black/70 mb-2">{f.text}</p>
-          <p className="text-xs text-black/30">Page: {f.pageUrl}</p>
+    <div className="space-y-4">
+      {/* Bento grid — stats row */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-2">Total</p>
+          <p className="text-3xl font-bold text-black tracking-tight">{feedback.length}</p>
+          <p className="text-xs text-black/30 mt-1">submissions</p>
         </div>
-      ))}
+        <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-2">This Week</p>
+          <p className="text-3xl font-bold text-black tracking-tight">{thisWeek}</p>
+          <p className="text-xs text-black/30 mt-1">new entries</p>
+        </div>
+        <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-2">Users</p>
+          <p className="text-3xl font-bold text-black tracking-tight">{uniqueUsers}</p>
+          <p className="text-xs text-black/30 mt-1">gave feedback</p>
+        </div>
+        <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-2">Top Page</p>
+          <p className="text-lg font-bold text-black tracking-tight truncate">{topPages[0]?.[0] || '—'}</p>
+          <p className="text-xs text-black/30 mt-1">{topPages[0]?.[1] || 0} mentions</p>
+        </div>
+      </div>
+
+      {/* Bento grid — main content */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {/* Latest highlight — spans 2 cols */}
+        {latest && (
+          <div className="md:col-span-2 bg-white rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col">
+            <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-3">Latest Feedback</p>
+            <div className="flex-1">
+              <p className="text-base text-black/80 leading-relaxed">&ldquo;{latest.text}&rdquo;</p>
+            </div>
+            <div className="flex items-center justify-between mt-4 pt-4 border-t border-black/5">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-full bg-black/[0.06] flex items-center justify-center text-xs font-bold text-black/40">
+                  {latest.userName.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-black">{latest.userName}</p>
+                  <p className="text-[10px] text-black/30">{latest.pageUrl.replace(/^https?:\/\/[^/]+/, '').split('?')[0]}</p>
+                </div>
+              </div>
+              <span className="text-xs text-black/30">{timeAgo(latest.createdAt)}</span>
+            </div>
+          </div>
+        )}
+
+        {/* Pages breakdown */}
+        <div className="bg-white rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+          <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-3">By Page</p>
+          <div className="space-y-2.5">
+            {topPages.map(([page, count]) => {
+              const pct = Math.round((count / feedback.length) * 100)
+              return (
+                <div key={page}>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs text-black/60 truncate max-w-[140px]">{page}</span>
+                    <span className="text-xs font-medium text-black/40">{count}</span>
+                  </div>
+                  <div className="h-1.5 bg-black/[0.04] rounded-full overflow-hidden">
+                    <div className="h-full bg-black/15 rounded-full" style={{ width: `${pct}%` }} />
+                  </div>
+                </div>
+              )
+            })}
+            {topPages.length === 0 && (
+              <p className="text-xs text-black/30">No data</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* All feedback — card grid */}
+      <div>
+        <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-3">All Feedback</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {feedback.map(f => (
+            <div key={f.id} className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col">
+              <p className="text-sm text-black/70 leading-relaxed flex-1">{f.text}</p>
+              <div className="flex items-center justify-between mt-3 pt-3 border-t border-black/5">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-6 h-6 rounded-full bg-black/[0.06] flex items-center justify-center text-[10px] font-bold text-black/40 shrink-0">
+                    {f.userName.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="text-xs font-medium text-black truncate">{f.userName}</span>
+                  <span className="text-[10px] text-black/25 truncate hidden sm:inline">{f.pageUrl.replace(/^https?:\/\/[^/]+/, '').split('?')[0]}</span>
+                </div>
+                <span className="text-[11px] text-black/30 shrink-0 ml-2">{timeAgo(f.createdAt)}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
