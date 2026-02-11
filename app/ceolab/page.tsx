@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
-import { TERRITORY_CONFIG, getDimension } from '@/lib/constants'
+import { TERRITORY_CONFIG, getDimension, FRAMEWORK_PRESCRIPTIONS } from '@/lib/constants'
 import { getFrameworkPrescription, getVerbalLabel } from '@/lib/scoring'
+import { FRAMEWORK_CONTENT, getFrameworkByName } from '@/lib/framework-content'
 import {
   buildHeadlineText,
   buildBsiHeadlineText,
@@ -44,7 +45,7 @@ const TERRITORY_COLORS: Record<Territory, string> = {
   leading_organizations: '#E08F6A',
 }
 
-type ResultsTab = 'overview' | 'deep-dive' | 'dimensions' | 'archetypes' | 'blind-spots' | 'roadmap'
+type ResultsTab = 'overview' | 'deep-dive' | 'dimensions' | 'archetypes' | 'blind-spots' | 'frameworks' | 'roadmap'
 
 function buildHeatmapData(dimensionScores: DimensionScore[]) {
   return dimensionScores.map((ds) => {
@@ -1129,6 +1130,187 @@ function RoadmapTabContent({
 }
 
 // ---------------------------------------------------------------------------
+// Tab: Frameworks
+// ---------------------------------------------------------------------------
+
+function FrameworksTabContent({
+  dimensionScores,
+  priorityDimensions,
+}: {
+  dimensionScores: DimensionScore[]
+  priorityDimensions: DimensionId[]
+}) {
+  // Get priority frameworks based on user's scores
+  const priorityFrameworks = priorityDimensions.slice(0, 5).map(dimId => {
+    const dim = getDimension(dimId)
+    const score = dimensionScores.find(ds => ds.dimensionId === dimId)
+    const percentage = score?.percentage ?? 0
+    const frameworks = getFrameworkPrescription(dimId, percentage)
+    const primaryFramework = frameworks[0] || null
+    const frameworkContent = primaryFramework ? getFrameworkByName(primaryFramework) : null
+
+    return {
+      dimensionId: dimId,
+      dimensionName: dim.name,
+      score: percentage,
+      label: score?.verbalLabel ?? getVerbalLabel(percentage),
+      territory: dim.territory,
+      frameworkName: primaryFramework,
+      frameworkContent,
+    }
+  }).filter(f => f.frameworkName)
+
+  const territories: Territory[] = ['leading_yourself', 'leading_teams', 'leading_organizations']
+
+  return (
+    <div className="space-y-6">
+      {/* Hero */}
+      <div className="bg-white rounded-lg p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <h2 className="text-xl font-bold text-black mb-2">
+          Your Frameworks
+        </h2>
+        <p className="text-sm text-black/50 leading-relaxed max-w-lg">
+          Based on your assessment scores, these are the Konstantin Method frameworks most relevant to your growth right now.
+        </p>
+      </div>
+
+      {/* Priority frameworks */}
+      <div className="space-y-4">
+        <p className="text-xs font-semibold text-black/40 uppercase tracking-wider px-1">Priority Frameworks</p>
+        {priorityFrameworks.map(pf => {
+          const color = TERRITORY_COLORS[pf.territory]
+          return (
+            <div
+              key={pf.dimensionId}
+              className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
+              style={{ borderLeftWidth: 3, borderLeftColor: color }}
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <span
+                    className="w-2 h-2 rounded-full flex-shrink-0"
+                    style={{ backgroundColor: color }}
+                  />
+                  <span className="text-xs text-black/40">{pf.dimensionName}</span>
+                  <span className="text-xs text-black/30">{Math.round(pf.score)}%</span>
+                </div>
+                <span
+                  className="text-[10px] font-medium px-2 py-0.5 rounded-full"
+                  style={{
+                    backgroundColor: `${color}15`,
+                    color,
+                  }}
+                >
+                  {pf.label}
+                </span>
+              </div>
+
+              <h3 className="text-lg font-semibold text-black mb-1">{pf.frameworkName}</h3>
+              {pf.frameworkContent && (
+                <p className="text-sm text-black/50 leading-relaxed mb-4">{pf.frameworkContent.tagline}</p>
+              )}
+
+              {pf.frameworkContent ? (
+                <a
+                  href={`/frameworks/${pf.frameworkContent.id}`}
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-black hover:text-black/70 transition-colors"
+                >
+                  Learn more
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              ) : (
+                <p className="text-xs text-black/30">Detailed content coming soon</p>
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      {/* All frameworks by territory */}
+      <div className="bg-white rounded-lg p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <h3 className="text-sm font-semibold text-black/40 uppercase tracking-wider mb-6">All Frameworks by Territory</h3>
+
+        <div className="space-y-8">
+          {territories.map(t => {
+            const config = TERRITORY_CONFIG[t]
+            const color = TERRITORY_COLORS[t]
+            const dims = dimensionScores.filter(d => getDimension(d.dimensionId).territory === t)
+
+            return (
+              <div key={t}>
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color }} />
+                  <h4 className="text-sm font-semibold text-black">{config.displayLabel}</h4>
+                </div>
+
+                <div className="space-y-3">
+                  {dims.map(dim => {
+                    const prescriptions = FRAMEWORK_PRESCRIPTIONS[dim.dimensionId]
+                    if (!prescriptions) return null
+                    const score = Math.round(dim.percentage)
+                    const tier = score <= 40 ? 'critical' : score <= 70 ? 'developing' : 'strong'
+                    const activeFrameworks = prescriptions[tier]
+                    const dimDef = getDimension(dim.dimensionId)
+
+                    return (
+                      <div key={dim.dimensionId} className="pl-5 border-l-2" style={{ borderColor: `${color}30` }}>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <p className="text-sm font-medium text-black">{dimDef.name}</p>
+                          <span className="text-xs text-black/40">{score}% — {tier}</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {activeFrameworks.map(fw => {
+                            const content = getFrameworkByName(fw)
+                            return content ? (
+                              <a
+                                key={fw}
+                                href={`/frameworks/${content.id}`}
+                                className="inline-block px-2.5 py-1 text-xs font-medium text-black bg-[#F7F3ED] rounded-full hover:bg-[#F7F3ED]/80 transition-colors"
+                              >
+                                {fw}
+                              </a>
+                            ) : (
+                              <span
+                                key={fw}
+                                className="inline-block px-2.5 py-1 text-xs text-black/50 border border-black/10 rounded-full"
+                              >
+                                {fw}
+                              </span>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Coaching CTA */}
+      <div className="bg-white rounded-lg p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
+        <h3 className="text-lg font-semibold text-black mb-2">Want Guided Support?</h3>
+        <p className="text-sm text-black/50 mb-6 max-w-sm mx-auto">
+          Work through these frameworks with Niko in a focused coaching session.
+        </p>
+        <a
+          href="https://cal.com/nikolaskonstantin"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block bg-black text-white px-8 py-3.5 rounded-lg text-sm font-semibold hover:bg-black/90 transition-colors"
+        >
+          Book a Session
+        </a>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Main Page Component
 // ---------------------------------------------------------------------------
 
@@ -1201,6 +1383,7 @@ export default function ResultsPage() {
     { key: 'dimensions', label: 'Impact Areas' },
     { key: 'archetypes', label: 'Archetypes' },
     { key: 'blind-spots', label: 'Blind Spots' },
+    { key: 'frameworks', label: 'Frameworks' },
     { key: 'roadmap', label: 'Growth Path' },
   ]
 
@@ -1262,6 +1445,9 @@ export default function ResultsPage() {
           )}
           {activeTab === 'blind-spots' && (
             <BlindSpotsTabContent mirrorGaps={results.mirrorGaps} hasMirrorData={hasMirrorData} imFlagged={imFlagged} />
+          )}
+          {activeTab === 'frameworks' && (
+            <FrameworksTabContent dimensionScores={results.dimensionScores} priorityDimensions={results.priorityDimensions} />
           )}
           {activeTab === 'roadmap' && (
             <RoadmapTabContent priorityDimensions={results.priorityDimensions} dimensionScores={results.dimensionScores} />
