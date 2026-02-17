@@ -98,10 +98,11 @@ export default function WeeklyPulsePage() {
   const [responses, setResponses] = useState<Map<string, string | number>>(new Map())
   const [trends, setTrends] = useState<TrendResult | null>(null)
   const [savedCount, setSavedCount] = useState(0)
+  const [focusItems, setFocusItems] = useState<WeeklyItem[]>([])
 
-  // Auth check on mount
+  // Auth check + load focus dimensions on mount
   useEffect(() => {
-    async function checkAuth() {
+    async function init() {
       const supabase = createClient()
       const { data: { user }, error: authError } = await supabase.auth.getUser()
 
@@ -110,10 +111,30 @@ export default function WeeklyPulsePage() {
         return
       }
 
+      // Load focus dimensions from API
+      try {
+        const res = await fetch('/api/v4/focus')
+        const json = await res.json()
+
+        if (json.success && json.dimensions && json.dimensions.length > 0) {
+          // Filter weekly items to only focus dimensions
+          const focusDimSet = new Set(json.dimensions as DimensionId[])
+          const filtered = weeklyItems.filter(w => focusDimSet.has(w.dimensionId))
+          setFocusItems(filtered)
+        } else {
+          // No focus dimensions set — redirect to setup
+          router.push('/accountability/setup')
+          return
+        }
+      } catch {
+        // Fallback: show all items if API fails
+        setFocusItems(weeklyItems)
+      }
+
       setPhase('checkin')
     }
 
-    checkAuth()
+    init()
   }, [router])
 
   // ─── Handlers ──────────────────────────────────────────────────
@@ -129,9 +150,9 @@ export default function WeeklyPulsePage() {
   const handleSubmit = useCallback(async () => {
     setError(null)
 
-    // Check minimum 3 responses
-    if (responses.size < 3) {
-      setError('Please answer at least 3 questions before submitting.')
+    // All focus questions must be answered
+    if (responses.size < focusItems.length) {
+      setError('Please answer all questions before submitting.')
       return
     }
 
@@ -298,26 +319,27 @@ export default function WeeklyPulsePage() {
   // ─── Check-in Form ──────────────────────────────────────────────
 
   const answeredCount = responses.size
-  const canSubmit = answeredCount >= 3
+  const canSubmit = answeredCount >= focusItems.length
 
-  // Group items by territory
-  const itemsByTerritory: { territory: Territory; label: string; items: WeeklyItem[] }[] = [
+  // Group focus items by territory
+  const allGroups: { territory: Territory; label: string; items: WeeklyItem[] }[] = [
     {
-      territory: 'leading_yourself',
+      territory: 'leading_yourself' as Territory,
       label: 'Leading Yourself',
-      items: weeklyItems.filter(w => getDimension(w.dimensionId).territory === 'leading_yourself'),
+      items: focusItems.filter(w => getDimension(w.dimensionId).territory === 'leading_yourself'),
     },
     {
-      territory: 'leading_teams',
+      territory: 'leading_teams' as Territory,
       label: 'Leading Teams',
-      items: weeklyItems.filter(w => getDimension(w.dimensionId).territory === 'leading_teams'),
+      items: focusItems.filter(w => getDimension(w.dimensionId).territory === 'leading_teams'),
     },
     {
-      territory: 'leading_organizations',
+      territory: 'leading_organizations' as Territory,
       label: 'Leading Organizations',
-      items: weeklyItems.filter(w => getDimension(w.dimensionId).territory === 'leading_organizations'),
+      items: focusItems.filter(w => getDimension(w.dimensionId).territory === 'leading_organizations'),
     },
   ]
+  const itemsByTerritory = allGroups.filter(g => g.items.length > 0)
 
   return (
     <div className="min-h-screen bg-[#F7F3ED] px-6 py-12">
@@ -333,9 +355,9 @@ export default function WeeklyPulsePage() {
             </svg>
             Dashboard
           </a>
-          <h1 className="text-3xl font-bold text-black tracking-tight mb-2">Accountability Agent</h1>
+          <h1 className="text-3xl font-bold text-black tracking-tight mb-2">Weekly Check-In</h1>
           <p className="text-black/50">
-            Answer the questions relevant to your focus this week. Minimum 3 required.
+            {focusItems.length} questions on your focus areas
           </p>
         </div>
 
@@ -349,13 +371,12 @@ export default function WeeklyPulsePage() {
         {/* Progress indicator */}
         <div className="flex items-center justify-between mb-6">
           <p className="text-sm text-black/40">
-            {answeredCount} of {weeklyItems.length} answered
-            {answeredCount < 3 && <span className="text-black/30"> (min 3)</span>}
+            {answeredCount} of {focusItems.length} answered
           </p>
           <div className="w-32 bg-black/5 rounded-full h-1.5">
             <div
               className="h-1.5 bg-black rounded-full transition-all duration-300 ease-out"
-              style={{ width: `${(answeredCount / weeklyItems.length) * 100}%` }}
+              style={{ width: `${focusItems.length > 0 ? (answeredCount / focusItems.length) * 100 : 0}%` }}
             />
           </div>
         </div>
@@ -405,7 +426,7 @@ export default function WeeklyPulsePage() {
           </button>
           {!canSubmit && (
             <p className="text-center text-xs text-black/30 mt-3">
-              Answer at least 3 questions to submit
+              Answer all {focusItems.length} questions to submit
             </p>
           )}
         </div>

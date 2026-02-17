@@ -1,6 +1,5 @@
-import { createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
+import { createServerSupabase } from '@/lib/supabase-server'
 import { DIMENSIONS } from '@/lib/constants'
 import { selectPriorityDimensions } from '@/lib/scoring'
 import type { FullResults, DimensionId, Territory } from '@/types/assessment'
@@ -10,24 +9,7 @@ import type { FullResults, DimensionId, Territory } from '@/types/assessment'
 export async function GET(request: Request) {
   try {
     // Initialize Supabase
-    const cookieStore = await cookies()
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value
-          },
-          set(name: string, value: string, options: any) {
-            cookieStore.set({ name, value, ...options })
-          },
-          remove(name: string, options: any) {
-            cookieStore.set({ name, value: '', ...options })
-          },
-        },
-      }
-    )
+    const supabase = await createServerSupabase()
 
     // STEP 1: Auth check
     const { data: { user }, error: authError } = await supabase.auth.getUser()

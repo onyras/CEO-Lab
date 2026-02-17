@@ -7,14 +7,14 @@ import { createClient } from '@/lib/supabase-browser'
 import { isAdminEmail } from '@/lib/admin'
 
 const NAV_ITEMS = [
-  { href: '/ceolab', label: 'CEO Lab', icon: ResultsIcon },
-  { href: '/dashboard', label: 'Plan', icon: DashboardIcon },
+  { href: '/ceolab', label: 'Home', icon: HomeIcon },
+  { href: '/ceolab/results', label: 'Results', icon: ResultsIcon },
 ]
 
-function DashboardIcon({ active }: { active: boolean }) {
+function HomeIcon({ active }: { active: boolean }) {
   return (
     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={active ? 2 : 1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
     </svg>
   )
 }
@@ -67,7 +67,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center gap-1">
             {navItems.map((item) => {
-              const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
+              const isActive = item.href === '/ceolab'
+                ? pathname === '/ceolab'
+                : pathname === item.href || pathname.startsWith(item.href + '/')
               return (
                 <Link
                   key={item.href}
@@ -96,7 +98,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-black/5 safe-area-bottom">
         <div className="flex items-center justify-around h-16 px-2">
           {navItems.map((item) => {
-            const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
+            const isActive = item.href === '/ceolab'
+              ? pathname === '/ceolab'
+              : pathname === item.href || pathname.startsWith(item.href + '/')
             return (
               <Link
                 key={item.href}

@@ -254,8 +254,23 @@ export default function AccountabilitySetupPage() {
 
   // ── Save and complete ──
 
-  const handleComplete = () => {
-    // Save focus dimensions to localStorage
+  const handleComplete = async () => {
+    // Save focus dimensions to DB
+    try {
+      const res = await fetch('/api/v4/focus', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dimensions: selectedIds }),
+      })
+      const json = await res.json()
+      if (!res.ok || !json.success) {
+        console.error('Failed to save focus dimensions:', json.error)
+      }
+    } catch (err) {
+      console.error('Failed to save focus dimensions:', err)
+    }
+
+    // Keep localStorage as cache/fallback
     localStorage.setItem('aa_focus_dimensions', JSON.stringify(selectedIds))
     localStorage.setItem('aa_icebreaker_completed', 'true')
     localStorage.setItem('aa_setup_completed_at', new Date().toISOString())

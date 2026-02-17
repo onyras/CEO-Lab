@@ -114,8 +114,8 @@ export default function HookAssessmentPage() {
         sharpestDimension: json.scores.sharpestDimension,
       }))
 
-      // Redirect to auth — results will show on dashboard after sign-in
-      window.location.href = '/auth'
+      // Redirect to hook results page (pre-auth)
+      window.location.href = '/assessment/hook/results'
     } catch (err: any) {
       console.error('Hook submission error:', err)
       setError(err.message || 'Something went wrong. Please try again.')

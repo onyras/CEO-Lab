@@ -65,22 +65,23 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-4">
       <div className="max-w-md w-full">
         {/* Logo/Header */}
         <div className="text-center mb-8">
-          <Link href="/">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">CEO Lab</h1>
+          <Link href="/" className="inline-flex items-center gap-2">
+            <span className="text-lg font-bold text-black">nk</span>
+            <span className="text-lg font-light text-black">CEO Lab</span>
           </Link>
-          <p className="text-gray-600">Sign in to continue</p>
+          <p className="text-black/50 mt-2">Sign in to continue</p>
         </div>
 
         {/* Auth Card */}
-        <div className="bg-white border-2 border-gray-200 rounded-lg p-8">
+        <div className="bg-white rounded-lg p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           {/* Google Sign In */}
           <button
             onClick={handleGoogleSignIn}
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-md hover:border-gray-300 flex items-center justify-center gap-3 mb-6 font-medium text-gray-900 transition-all"
+            className="w-full px-4 py-3 border border-black/10 rounded-lg hover:border-black/20 flex items-center justify-center gap-3 mb-6 font-medium text-black transition-all"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M19.6 10.227c0-.709-.064-1.39-.182-2.045H10v3.868h5.382a4.6 4.6 0 01-1.996 3.018v2.51h3.232c1.891-1.742 2.982-4.305 2.982-7.35z" fill="#4285F4"/>
@@ -94,17 +95,17 @@ export default function AuthPage() {
           {/* Divider */}
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200"></div>
+              <div className="w-full border-t border-black/10"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-500">or</span>
+              <span className="px-4 bg-white text-black/40">or</span>
             </div>
           </div>
 
           {/* Magic Link */}
           <form onSubmit={handleMagicLink}>
             <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-black mb-2">
                 Email address
               </label>
               <input
@@ -113,21 +114,21 @@ export default function AuthPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-md focus:border-black focus:outline-none text-gray-900"
+                className="w-full px-4 py-3 border border-black/10 rounded-lg focus:border-black focus:outline-none text-black"
                 placeholder="you@example.com"
               />
             </div>
 
             {/* Success Message */}
             {message && (
-              <div className="bg-green-50 border-2 border-green-200 rounded-md p-4 mb-4">
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
                 <p className="text-sm text-green-800">{message}</p>
               </div>
             )}
 
             {/* Error Message */}
             {error && (
-              <div className="bg-red-50 border-2 border-red-200 rounded-md p-4 mb-4">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
                 <p className="text-sm text-red-800">{error}</p>
               </div>
             )}
@@ -135,21 +136,21 @@ export default function AuthPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full px-4 py-3 bg-black text-white rounded-md hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              className="w-full px-4 py-3 bg-black text-white rounded-lg hover:bg-black/90 disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-colors"
             >
               {loading ? 'Sending link...' : 'Continue with Email'}
             </button>
           </form>
 
-          <p className="text-xs text-gray-500 mt-6 text-center">
+          <p className="text-xs text-black/40 mt-6 text-center">
             By continuing, you agree to our Terms of Service and Privacy Policy
           </p>
         </div>
 
         {/* Back to home */}
         <div className="mt-6 text-center">
-          <Link href="/" className="text-gray-600 hover:text-gray-900">
-            ← Back to home
+          <Link href="/" className="text-black/40 hover:text-black transition-colors text-sm">
+            Back to home
           </Link>
         </div>
       </div>
