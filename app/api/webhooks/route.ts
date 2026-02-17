@@ -96,11 +96,17 @@ export async function POST(request: Request) {
       case 'customer.subscription.updated': {
         const subscription = event.data.object as Stripe.Subscription
 
+        // Normalize Stripe status: 'active' and 'trialing' both grant access
+        const normalizedStatus =
+          subscription.status === 'active' || subscription.status === 'trialing'
+            ? 'active'
+            : subscription.status
+
         // Update subscription status
         await supabase
-            .from('user_profiles')
+          .from('user_profiles')
           .update({
-            subscription_status: subscription.status,
+            subscription_status: normalizedStatus,
           })
           .eq('stripe_subscription_id', subscription.id)
         break

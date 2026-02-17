@@ -317,15 +317,15 @@ export default function SettingsPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-black">
-                {profile.subscription_status === 'active' ? 'Active' : 'Inactive'}
+                {profile.subscription_status === 'active' || profile.subscription_status === 'trialing' ? 'Active' : 'Inactive'}
               </p>
               <p className="text-xs text-black/40 mt-0.5">
-                {profile.subscription_status === 'active'
+                {profile.subscription_status === 'active' || profile.subscription_status === 'trialing'
                   ? 'CEO Lab Premium'
                   : 'No active subscription'}
               </p>
             </div>
-            {profile.subscription_status === 'active' ? (
+            {profile.subscription_status === 'active' || profile.subscription_status === 'trialing' ? (
               <button
                 onClick={openBillingPortal}
                 disabled={portalLoading}

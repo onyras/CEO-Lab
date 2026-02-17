@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CEO Lab — Deep Dive v2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ECEAE6;
+      --surface: #E3E0DC;
+      --knob: #2C2C2C;
+      --knob-light: #3A3A3A;
+      --text: #1a1a1a;
+      --text-mid: rgba(26,26,26,0.5);
+      --text-dim: rgba(26,26,26,0.28);
+      --green: #2DB84B;
+      --red-dot: #E04A3A;
+      --warm-grad: linear-gradient(160deg, rgba(224,160,90,0.25) 0%, rgba(224,120,70,0.15) 40%, rgba(200,180,160,0.05) 100%);
+      --mono: 'Space Mono', monospace;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ─── Layout ─── */
+    .app {
+      display: grid;
+      grid-template-columns: 480px 1fr;
+      min-height: 100vh;
+    }
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+      .gradient-panel { display: none; }
+    }
+
+    .panel {
+      padding: 40px 36px 48px;
+      overflow-y: auto;
+    }
+
+    .gradient-panel {
+      background: var(--warm-grad);
+      position: relative;
+    }
+    .gradient-panel::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      opacity: 0.5;
+    }
+
+    /* ─── Section spacing ─── */
+    .section + .section { margin-top: 44px; }
+    .group + .group { margin-top: 32px; }
+    .row + .row { margin-top: 16px; }
+
+    /* ─── Separator line ─── */
+    .sep {
+      height: 1px;
+      background: rgba(26,26,26,0.08);
+      margin: 36px 0;
+    }
+
+    /* ─── Typography: all lowercase ─── */
+    .page-title {
+      font-family: var(--sans);
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      text-transform: lowercase;
+      line-height: 1.25;
+    }
+    .page-subtitle {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-mid);
+      text-transform: lowercase;
+      margin-top: 4px;
+    }
+
+    .section-title {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-mid);
+      text-transform: lowercase;
+      letter-spacing: 0.01em;
+      margin-bottom: 20px;
+    }
+
+    .label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-mid);
+      text-transform: lowercase;
+      text-align: center;
+    }
+
+    .mono-value {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-mid);
+    }
+
+    .mono-bold {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .narrative {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--text-mid);
+      text-transform: lowercase;
+    }
+
+    /* ─── Status dot ─── */
+    .status-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green);
+      display: inline-block;
+    }
+    .status-dot.red { background: var(--red-dot); }
+
+    /* ─── Knob / Dial ─── */
+    .knob-wrap { display: inline-flex; flex-direction: column; align-items: center; gap: 8px; }
+
+    .knob {
+      position: relative;
+      border-radius: 50%;
+      background: var(--knob);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow:
+        0 2px 8px rgba(0,0,0,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    /* White indicator needle */
+    .knob .needle {
+      position: absolute;
+      width: 2px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 1px;
+      transform-origin: bottom center;
+    }
+
+    /* Green indicator */
+    .knob .needle-green {
+      position: absolute;
+      width: 2px;
+      background: var(--green);
+      border-radius: 1px;
+      transform-origin: bottom center;
+    }
+
+    /* Small indicator dots around knob */
+    .knob-dots {
+      position: absolute;
+      inset: -4px;
+    }
+
+    /* Center text inside knob */
+    .knob-center {
+      font-family: var(--mono);
+      font-weight: 700;
+      color: rgba(255,255,255,0.7);
+      z-index: 1;
+    }
+
+    /* ─── Knob row (4 small) ─── */
+    .knob-row-4 {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    /* ─── Knob row (2 large) ─── */
+    .knob-row-2 {
+      display: flex;
+      justify-content: flex-start;
+      gap: 24px;
+    }
+
+    /* ─── Graduated dots (level meter) ─── */
+    .level-dots {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 0;
+    }
+    .level-dot {
+      border-radius: 50%;
+      background: var(--text);
+      transition: opacity 0.3s;
+    }
+
+    /* ─── Dimension list row ─── */
+    .dim-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+    }
+    .dim-row + .dim-row {
+      border-top: 1px solid rgba(26,26,26,0.05);
+    }
+    .dim-name {
+      flex: 1;
+      font-size: 12px;
+      font-weight: 400;
+      text-transform: lowercase;
+    }
+    .dim-bar {
+      width: 120px;
+      height: 2px;
+      background: rgba(26,26,26,0.08);
+      position: relative;
+      flex-shrink: 0;
+    }
+    .dim-bar-fill {
+      position: absolute;
+      top: -1px; left: 0;
+      height: 4px;
+      background: var(--knob);
+      transition: width 500ms ease-out;
+    }
+    .dim-bar-fill.alert { background: var(--red-dot); }
+    .dim-score {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      width: 32px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* ─── Quarterly ─── */
+    .q-row { display: flex; gap: 2px; }
+    .q-cell {
+      flex: 1; text-align: center; padding: 12px 6px;
+    }
+    .q-now {
+      background: var(--knob);
+      color: rgba(255,255,255,0.85);
+    }
+    .q-future {
+      background: transparent;
+      border: 1px dashed rgba(26,26,26,0.12);
+    }
+    .q-label {
+      font-family: var(--mono);
+      font-size: 8px; font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+    .q-score {
+      font-family: var(--mono);
+      font-size: 16px; font-weight: 700;
+      line-height: 1;
+    }
+    .q-verbal {
+      font-family: var(--mono);
+      font-size: 8px; font-weight: 400;
+      margin-top: 3px;
+    }
+    .q-delta {
+      font-family: var(--mono);
+      font-size: 8px; font-weight: 700;
+      color: var(--green);
+      position: absolute;
+      top: 3px; right: 5px;
+    }
+    .q-cell { position: relative; }
+
+    /* ─── Badge ─── */
+    .badge-sm {
+      font-family: var(--mono);
+      font-size: 8px; font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 2px 6px;
+      border-radius: 0;
+    }
+    .badge-growth { background: rgba(224,74,58,0.1); color: var(--red-dot); }
+    .badge-strength { background: rgba(45,184,75,0.1); color: var(--green); }
+    .badge-quickwin { background: rgba(26,26,26,0.06); color: var(--text-mid); }
+
+    /* ─── Insight block ─── */
+    .insight-block {
+      padding: 10px 0 4px;
+      font-size: 11px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--text-mid);
+      text-transform: lowercase;
+    }
+
+    /* ─── Detail item ─── */
+    .detail-item {
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(26,26,26,0.06);
+    }
+    .detail-item:last-child { border-bottom: none; }
+    .detail-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .detail-name {
+      font-size: 13px; font-weight: 500; text-transform: lowercase;
+    }
+    .detail-score {
+      font-family: var(--mono);
+      font-size: 16px; font-weight: 700;
+    }
+
+    /* ─── Stat grid ─── */
+    .stat-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 32px;
+      margin-top: 12px;
+    }
+    .stat-label {
+      font-size: 12px; font-weight: 500; text-transform: lowercase;
+    }
+    .stat-val {
+      font-family: var(--mono);
+      font-size: 11px; font-weight: 400;
+      color: var(--text-mid);
+      text-transform: lowercase;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <div class="panel" id="panel"></div>
+  <div class="gradient-panel"></div>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────
+
+const TERRITORY_CONFIG = {
+  leading_yourself: { label: 'leading yourself', arc: 'see → feel → ground → direct → sustain' },
+  leading_teams: { label: 'leading teams', arc: 'trust → truth → diagnosis → system → identity' },
+  leading_organizations: { label: 'leading organizations', arc: 'see → shape → build → evolve → change' },
+};
+
+const DIMENSIONS = [
+  { id: 'LY.1', name: 'self-awareness', territory: 'leading_yourself' },
+  { id: 'LY.2', name: 'emotional mastery', territory: 'leading_yourself' },
+  { id: 'LY.3', name: 'grounded presence', territory: 'leading_yourself' },
+  { id: 'LY.4', name: 'purpose & mastery', territory: 'leading_yourself' },
+  { id: 'LY.5', name: 'peak performance', territory: 'leading_yourself' },
+  { id: 'LT.1', name: 'building trust', territory: 'leading_teams' },
+  { id: 'LT.2', name: 'hard conversations', territory: 'leading_teams' },
+  { id: 'LT.3', name: 'diagnosing the real problem', territory: 'leading_teams' },
+  { id: 'LT.4', name: 'team operating system', territory: 'leading_teams' },
+  { id: 'LT.5', name: 'leader identity', territory: 'leading_teams' },
+  { id: 'LO.1', name: 'strategic clarity', territory: 'leading_organizations' },
+  { id: 'LO.2', name: 'culture design', territory: 'leading_organizations' },
+  { id: 'LO.3', name: 'organizational architecture', territory: 'leading_organizations' },
+  { id: 'LO.4', name: 'ceo evolution', territory: 'leading_organizations' },
+  { id: 'LO.5', name: 'leading change', territory: 'leading_organizations' },
+];
+
+const BENCHMARKS = {
+  'LY.1': { p25: 38, p50: 52, p75: 68 }, 'LY.2': { p25: 35, p50: 48, p75: 64 },
+  'LY.3': { p25: 30, p50: 44, p75: 60 }, 'LY.4': { p25: 42, p50: 56, p75: 72 },
+  'LY.5': { p25: 32, p50: 46, p75: 62 }, 'LT.1': { p25: 40, p50: 54, p75: 70 },
+  'LT.2': { p25: 33, p50: 47, p75: 63 }, 'LT.3': { p25: 36, p50: 50, p75: 66 },
+  'LT.4': { p25: 30, p50: 44, p75: 60 }, 'LT.5': { p25: 34, p50: 48, p75: 64 },
+  'LO.1': { p25: 44, p50: 58, p75: 74 }, 'LO.2': { p25: 32, p50: 46, p75: 62 },
+  'LO.3': { p25: 28, p50: 42, p75: 58 }, 'LO.4': { p25: 30, p50: 44, p75: 60 },
+  'LO.5': { p25: 34, p50: 48, p75: 64 },
+};
+
+const ARC_NARRATIVES = {
+  leading_yourself: {
+    critical: 'the inner foundation needs attention. without this, everything else is built on shifting ground.',
+    building: "you're building self-knowledge, but it hasn't yet become consistent practice under pressure.",
+    strong: 'solid inner foundation. the opportunity is deepening it into presence your team can feel.',
+    mastery: 'your inner work is genuinely strong. rare among ceos — it shows in how people experience you.',
+  },
+  leading_teams: {
+    critical: 'your team likely feels the gap between your intentions and their daily experience.',
+    building: "you care about your team, but the systems and conversations that make teams great aren't yet in place.",
+    strong: "well-led team. next level is the difference between a team that performs and one that thrives without you.",
+    mastery: "you've built something rare: a team that functions as a genuine leadership collective.",
+  },
+  leading_organizations: {
+    critical: "your organization has outgrown its operating system. the structure that got you here won't take you there.",
+    building: "you're beginning to think like an organizational architect, but the blueprints are still incomplete.",
+    strong: "real infrastructure. the opportunity is where strategy, culture, and structure don't yet align.",
+    mastery: "building an organization that can outlast any individual, including you. that's the ultimate test.",
+  },
+};
+
+const INSIGHTS = {
+  'LY.1': { low: "patterns are running you — reacting before you realize it.", mid: 'you see your patterns but they still drive you under pressure.', high: 'strong self-awareness. now model it — help your team see their own.' },
+  'LY.2': { low: 'emotions are either hijacking decisions or being suppressed entirely.', mid: 'you manage emotions in calm moments but lose precision under stress.', high: 'you navigate emotions well. your team reads your composure as safety.' },
+  'LY.3': { low: 'constant reactivity clouding judgment. stillness is a skill to build.', mid: "calm is fragile. pressure still pulls you off center.", high: 'grounded under fire. this is the foundation of everything else.' },
+  'LY.4': { low: "spending time on things anyone could do. zone of genius is unprotected.", mid: "you know what matters but aren't fully committed yet.", high: "clear purpose drives decisions. building something only you can build." },
+  'LY.5': { low: "burning capacity you'll need later. sustainability risk.", mid: 'you protect energy sometimes but let urgency override boundaries.', high: "systems to sustain performance. this is a competitive advantage." },
+  'LT.1': { low: 'truth is traveling slowly. people are editing what they tell you.', mid: "trust exists but isn't deep enough for real candor under pressure.", high: "your team tells you the truth fast. most valuable thing a leader can build." },
+  'LT.2': { low: 'avoided conversations creating hidden debt. problems compounding.', mid: 'hard conversations happen but sometimes too late or too softly.', high: 'issues addressed directly and early. relationships grow from it.' },
+  'LT.3': { low: "solving symptoms. real problems are one or two layers deeper.", mid: "you sense more beneath the surface but don't always dig deep enough.", high: 'consistently finding root cause. your team brings you the hard puzzles.' },
+  'LT.4': { low: "team lacks clear rhythms. people don't know what's expected.", mid: "basic structures exist but aren't consistent enough for momentum.", high: "team runs on clear systems. you've freed yourself to think, not manage." },
+  'LT.5': { low: "either too involved or too absent. boundaries need definition.", mid: 'you know you should step back but struggle to let go.', high: "found the line between leading and doing. team feels autonomous." },
+  'LO.1': { low: "strategy isn't clear enough for others to decide without you.", mid: "vision is there but choices about what not to do aren't sharp.", high: 'crisp strategy. team makes the same decisions you would.' },
+  'LO.2': { low: "culture is happening to you, not being designed by you.", mid: "you care about culture but haven't codified it into behaviors.", high: "you've designed the invisible forces. culture is a system, not a poster." },
+  'LO.3': { low: "org structure reflects your past, not your future.", mid: 'structure mostly works but creates friction at the seams.', high: "built for where you're going. structure enables, not constrains." },
+  'LO.4': { low: "the ceo your company needed last year isn't the one it needs next.", mid: "growing but parts of your old mode are holding you back.", high: "actively becoming who your company needs next. that's rare." },
+  'LO.5': { low: "change is either too disruptive or not happening.", mid: 'you drive change but sometimes break what was working.', high: 'preservation and innovation balanced. change lands without casualties.' },
+};
+
+// ─── SAMPLE SCORES ──────────────────────────────────────────────────
+
+const SCORES = {
+  'LY.1': 62, 'LY.2': 48, 'LY.3': 35, 'LY.4': 71, 'LY.5': 44,
+  'LT.1': 58, 'LT.2': 39, 'LT.3': 67, 'LT.4': 42, 'LT.5': 53,
+  'LO.1': 73, 'LO.2': 38, 'LO.3': 29, 'LO.4': 55, 'LO.5': 46,
+};
+
+// ─── HELPERS ────────────────────────────────────────────────────────
+
+function verbal(pct) {
+  if (pct <= 20) return 'reactive';
+  if (pct <= 40) return 'awakening';
+  if (pct <= 60) return 'practicing';
+  if (pct <= 80) return 'consistent';
+  return 'mastered';
+}
+
+function arcNarrative(t, s) {
+  const n = ARC_NARRATIVES[t];
+  if (s <= 40) return n.critical;
+  if (s <= 60) return n.building;
+  if (s <= 80) return n.strong;
+  return n.mastery;
+}
+
+function insight(id, s) {
+  const d = INSIGHTS[id];
+  if (!d) return '';
+  if (s < 40) return d.low;
+  if (s < 65) return d.mid;
+  return d.high;
+}
+
+function benchCtx(id, s) {
+  const b = BENCHMARKS[id];
+  if (s >= b.p75) return 'above typical';
+  if (s >= b.p50) return 'above median';
+  if (s >= b.p25) return 'typical range';
+  return 'below typical';
+}
+
+function priorities(dims) {
+  const sorted = [...dims].sort((a, b) => a.score - b.score);
+  const r = {};
+  sorted.slice(0, 3).forEach(d => { r[d.id] = 'growth'; });
+  sorted.slice(-3).forEach(d => { r[d.id] = 'strength'; });
+  sorted.forEach(d => {
+    if (!r[d.id] && d.score >= 45 && d.score <= 60) r[d.id] = 'quick-win';
+  });
+  return r;
+}
+
+function quarterly(score) {
+  const q = [{ q: 'q1', score, isNow: true }];
+  let prev = score;
+  for (let i = 2; i <= 4; i++) {
+    const g = Math.round((100 - prev) * 0.2);
+    const next = Math.min(100, prev + Math.max(g, 2));
+    q.push({ q: `q${i}`, score: next, isNow: false });
+    prev = next;
+  }
+  return q;
+}
+
+function shapeAnalysis(dims, label) {
+  const sorted = [...dims].sort((a, b) => b.score - a.score);
+  const hi = sorted[0], lo = sorted[sorted.length - 1];
+  const range = hi.score - lo.score;
+  const shape = range < 15 ? 'balanced' : range <= 30 ? 'developing' : 'spiky';
+  return { shape, anchor: hi, bottleneck: lo, range };
+}
+
+// ─── SVG: Knob dial ─────────────────────────────────────────────────
+// Value 0-100 maps to needle angle from ~225° (7 o'clock) to ~315° (5 o'clock) = 270° sweep
+// 0% = -135° from top, 100% = +135° from top
+
+function knobSVG(value, size, opts = {}) {
+  const r = size / 2;
+  const needleLen = r * 0.45;
+  const needleTop = r - needleLen;
+  // Map 0-100 to -135 to +135 degrees
+  const angle = -135 + (value / 100) * 270;
+
+  const isGreen = opts.green;
+  const needleClass = isGreen ? 'needle-green' : 'needle';
+  const fontSize = opts.fontSize || Math.round(size * 0.22);
+  const showValue = opts.showValue !== false;
+
+  // Indicator dots (small dots at min/max positions)
+  let dots = '';
+  if (opts.showDots) {
+    const dotR = r + 6;
+    [-135, -90, -45, 0, 45, 90, 135].forEach((a, i) => {
+      const rad = (a - 90) * Math.PI / 180;
+      const x = r + dotR * Math.cos(rad);
+      const y = r + dotR * Math.sin(rad);
+      const isActive = (-135 + (value / 100) * 270) >= a;
+      dots += `<circle cx="${x}" cy="${y}" r="1.5" fill="${isActive ? 'rgba(26,26,26,0.4)' : 'rgba(26,26,26,0.1)'}"/>`;
+    });
+  }
+
+  return `
+    <div class="knob-wrap">
+      <div style="position:relative;width:${size}px;height:${size}px">
+        ${opts.showDots ? `<svg width="${size + 16}" height="${size + 16}" viewBox="${-8} ${-8} ${size + 16} ${size + 16}" style="position:absolute;top:-8px;left:-8px">${dots}</svg>` : ''}
+        <div class="knob" style="width:${size}px;height:${size}px">
+          ${showValue ? `<span class="knob-center" style="font-size:${fontSize}px">${Math.round(value)}</span>` : ''}
+          <div class="${needleClass}" style="
+            height:${needleLen}px;
+            top:${needleTop}px;
+            left:${r - 1}px;
+            transform: rotate(${angle}deg);
+          "></div>
+        </div>
+      </div>
+      ${opts.label ? `<span class="label">${opts.label}</span>` : ''}
+    </div>`;
+}
+
+// ─── SVG: Level dots (graduated size) ───────────────────────────────
+
+function levelDots(value, steps = 5) {
+  let html = '<div class="level-dots">';
+  for (let i = steps; i >= 1; i--) {
+    const sz = 4 + i * 2.5;
+    const threshold = (i / steps) * 100;
+    const active = value >= threshold;
+    html += `<div class="level-dot" style="width:${sz}px;height:${sz}px;opacity:${active ? 0.8 : 0.12}"></div>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+// ─── BUILD DATA ─────────────────────────────────────────────────────
+
+const dims = DIMENSIONS.map(d => ({
+  ...d, score: SCORES[d.id], label: verbal(SCORES[d.id]),
+}));
+
+const terrs = ['leading_yourself', 'leading_teams', 'leading_organizations'];
+
+const terrScores = terrs.map(t => {
+  const td = dims.filter(d => d.territory === t);
+  const avg = td.reduce((s, d) => s + d.score, 0) / td.length;
+  return { territory: t, score: Math.round(avg), label: verbal(avg) };
+});
+
+const clmi = Math.round(dims.reduce((s, d) => s + d.score, 0) / dims.length);
+const prios = priorities(dims);
+
+// ─── RENDER ─────────────────────────────────────────────────────────
+
+function render() {
+  const panel = document.getElementById('panel');
+  let h = '';
+
+  // ── Header ──
+  h += `
+    <div style="margin-bottom:8px">
+      <div class="page-title">ceo lab<br>deep dive.results</div>
+      <div class="page-subtitle">by nikolas konstantin</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin:20px 0">
+      <span class="status-dot"></span>
+      <span class="mono-value">assessment complete</span>
+      <span style="color:var(--green);margin:0 4px">→</span>
+      <span class="mono-value">clmi: ${clmi}%</span>
+    </div>`;
+
+  // ── SECTION: Territory knobs (like custom settings A B C D) ──
+  h += `<div class="sep"></div>`;
+  h += `<div class="section">
+    <div class="section-title">territory scores</div>
+    <div class="knob-row-4" style="justify-content:flex-start;gap:20px">`;
+
+  terrScores.forEach(ts => {
+    h += knobSVG(ts.score, 80, { label: TERRITORY_CONFIG[ts.territory].label.split(' ').pop(), showDots: true });
+  });
+
+  h += `</div></div>`;
+
+  // ── SECTION: Per-territory deep dive (large knobs like wet/dry) ──
+  terrs.forEach((t, ti) => {
+    const cfg = TERRITORY_CONFIG[t];
+    const ts = terrScores.find(x => x.territory === t);
+    const tDims = dims.filter(d => d.territory === t);
+    const shape = shapeAnalysis(tDims, cfg.label);
+
+    h += `<div class="sep"></div>`;
+    h += `<div class="section">
+      <div class="section-title">${cfg.arc}</div>
+
+      <div style="display:flex;align-items:flex-start;gap:24px;margin-bottom:24px">
+        ${knobSVG(ts.score, 140, {
+          label: cfg.label,
+          green: ts.score >= 60,
+          showDots: true,
+          fontSize: 32
+        })}
+        ${levelDots(ts.score)}
+        <div style="padding-top:20px;flex:1">
+          <div class="mono-bold" style="margin-bottom:8px">${shape.shape} profile</div>
+          <div class="narrative">${arcNarrative(t, ts.score)}</div>
+          <div class="stat-pair">
+            <div>
+              <div class="stat-label">anchor</div>
+              <div class="stat-val">${shape.anchor.name}, ${shape.anchor.score}%</div>
+            </div>
+            <div>
+              <div class="stat-label">bottleneck</div>
+              <div class="stat-val">${shape.bottleneck.name}, ${shape.bottleneck.score}%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 small dimension knobs -->
+      <div class="knob-row-4" style="gap:8px;flex-wrap:wrap">
+        ${tDims.map(d => knobSVG(d.score, 56, {
+          label: d.name.split(' ').slice(0, 2).join(' '),
+          fontSize: 13,
+          green: d.score >= 65
+        })).join('')}
+      </div>
+
+      <!-- Dimension bars -->
+      <div style="margin-top:24px">
+        ${tDims.map(d => {
+          const isLow = d.score < 40;
+          return `<div class="dim-row">
+            <span class="dim-name">${d.name}</span>
+            <div class="dim-bar">
+              <div class="dim-bar-fill${isLow ? ' alert' : ''}" style="width:${Math.max(2, d.score)}%"></div>
+            </div>
+            <span class="dim-score">${d.score}%</span>
+            <span class="mono-value" style="width:64px;text-align:right;font-size:10px">${benchCtx(d.id, d.score)}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  });
+
+  // ── SECTION: 15 dimensions heatmap ──
+  h += `<div class="sep"></div>`;
+  h += `<div class="section">
+    <div class="section-title">all 15 dimensions</div>`;
+
+  terrs.forEach(t => {
+    const cfg = TERRITORY_CONFIG[t];
+    const tDims = dims.filter(d => d.territory === t);
+
+    h += `<div class="group">
+      <div class="mono-bold" style="margin-bottom:10px">${cfg.label}</div>
+      ${tDims.map(d => {
+        const opacity = 0.12 + (d.score / 100) * 0.88;
+        return `<div class="dim-row">
+          <span class="dim-name">${d.name}</span>
+          <div style="flex:1;height:16px;position:relative">
+            <div style="position:absolute;inset:0;background:rgba(44,44,44,${opacity * 0.15});"></div>
+            <div style="position:absolute;top:0;left:0;height:100%;width:${d.score}%;background:rgba(44,44,44,${opacity});transition:width 500ms ease-out"></div>
+          </div>
+          <span class="dim-score">${d.score}%</span>
+          <span class="mono-value" style="width:56px;text-align:right;font-size:9px">${d.label}</span>
+        </div>`;
+      }).join('')}
+    </div>`;
+  });
+
+  h += `</div>`;
+
+  // ── SECTION: Dimension details with quarterly ──
+  terrs.forEach(t => {
+    const cfg = TERRITORY_CONFIG[t];
+    const ts = terrScores.find(x => x.territory === t);
+    const tDims = dims.filter(d => d.territory === t);
+
+    h += `<div class="sep"></div>`;
+    h += `<div class="section">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+        ${knobSVG(ts.score, 44, { fontSize: 12 })}
+        <div>
+          <div style="font-size:14px;font-weight:500;text-transform:lowercase">${cfg.label}</div>
+          <div class="mono-value">${ts.label} · ${ts.score}% capacity</div>
+        </div>
+      </div>
+
+      ${tDims.map(d => {
+        const p = prios[d.id];
+        const ins = insight(d.id, d.score);
+        const qs = quarterly(d.score);
+        const isLow = d.score < 40;
+
+        let badge = '';
+        if (p === 'growth') badge = '<span class="badge-sm badge-growth">growth</span>';
+        else if (p === 'strength') badge = '<span class="badge-sm badge-strength">strength</span>';
+        else if (p === 'quick-win') badge = '<span class="badge-sm badge-quickwin">near breakthrough</span>';
+
+        const qHTML = qs.map((qd, qi) => {
+          const vl = verbal(qd.score);
+          const delta = qi > 0 ? qd.score - qs[qi - 1].score : 0;
+          if (qd.isNow) {
+            return `<div class="q-cell q-now">
+              <div class="q-label" style="opacity:0.5">q1 — now</div>
+              <div class="q-score">${qd.score}%</div>
+              <div class="q-verbal" style="opacity:0.4">${vl}</div>
+            </div>`;
+          }
+          const fade = qi === 1 ? 0.35 : qi === 2 ? 0.22 : 0.12;
+          return `<div class="q-cell q-future" style="border-color:rgba(26,26,26,${fade})">
+            <div class="q-label" style="opacity:${fade}">${qd.q}</div>
+            <div class="q-score" style="opacity:${fade}">${qd.score}%</div>
+            <div class="q-verbal" style="opacity:${fade * 0.7}">${vl}</div>
+            ${delta > 0 ? `<div class="q-delta">+${delta}</div>` : ''}
+          </div>`;
+        }).join('');
+
+        return `<div class="detail-item">
+          <div class="detail-head">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              ${isLow ? '<span class="status-dot red" style="width:6px;height:6px"></span>' : ''}
+              <span class="detail-name">${d.name}</span>
+              ${badge}
+            </div>
+            <span class="detail-score">${d.score}%</span>
+          </div>
+          <div style="height:2px;background:rgba(26,26,26,0.06);position:relative;margin-bottom:14px">
+            <div style="position:absolute;top:-1px;left:0;height:4px;width:${Math.max(1, d.score)}%;background:${isLow ? 'var(--red-dot)' : 'var(--knob)'};transition:width 500ms ease-out"></div>
+          </div>
+          <div class="q-row" style="margin-bottom:10px">${qHTML}</div>
+          <div class="insight-block">${ins}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  });
+
+  // ── Footer ──
+  h += `<div class="sep"></div>`;
+  h += `<div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:24px">
+    <span class="mono-value" style="text-transform:lowercase">oversampling: &nbsp; x1</span>
+    <span class="mono-value" style="text-transform:lowercase">v4.0</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:16px;padding-bottom:40px">
+    <span style="font-size:13px;font-weight:500;text-transform:lowercase">preset</span>
+    <span style="font-size:13px;color:var(--text-dim)">▾</span>
+    <span style="font-size:13px;color:var(--text-dim);text-transform:lowercase;margin-left:12px">save</span>
+  </div>`;
+
+  panel.innerHTML = h;
+}
+
+render();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CEO Lab — Deep Dive v4</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #08090C;
+      --card: #0F1116;
+      --card-border: rgba(255,255,255,0.04);
+      --text: #F0F0F2;
+      --text-mid: rgba(240,240,242,0.5);
+      --text-dim: rgba(240,240,242,0.22);
+      --ly: #5BA0F5;
+      --lt: #4DE8A0;
+      --lo: #F5915B;
+      --ly-dim: rgba(91,160,245,0.08);
+      --lt-dim: rgba(77,232,160,0.08);
+      --lo-dim: rgba(245,145,91,0.08);
+      --red: #F55B6A;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 0 100px;
+    }
+
+    /* ─── Top bar ─── */
+    .top {
+      padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .top-title { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; }
+    .top-sub { font-size: 10px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* ─── Section ─── */
+    .sec { padding: 0 24px; }
+    .sec + .sec { margin-top: 32px; }
+    .sec-label {
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+
+    /* ─── Hero radial ─── */
+    .hero-wrap {
+      padding: 24px 0;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .hero-svg { width: 100%; max-width: 560px; }
+
+    /* ─── Stat strip ─── */
+    .stats {
+      display: flex;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .stat {
+      flex: 1; text-align: center; padding: 18px 8px;
+    }
+    .stat + .stat { border-left: 1px solid var(--card-border); }
+    .stat-val { font-size: 26px; font-weight: 800; line-height: 1; }
+    .stat-lbl {
+      font-size: 9px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--text-dim); margin-top: 4px;
+    }
+
+    /* ─── Territory card ─── */
+    .tcard {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 2px;
+      padding: 24px;
+      margin-bottom: 8px;
+    }
+    .tcard-head {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .tcard-name { font-size: 18px; font-weight: 700; }
+    .tcard-arc { font-size: 10px; color: var(--text-dim); margin-top: 2px; letter-spacing: 0.03em; }
+    .tcard-score { font-size: 36px; font-weight: 800; line-height: 1; }
+    .tcard-score span { font-size: 16px; font-weight: 500; color: var(--text-mid); }
+
+    .tcard-narrative {
+      font-size: 14px; font-weight: 300;
+      color: var(--text-mid); line-height: 1.65;
+      margin-bottom: 18px;
+      max-width: 420px;
+    }
+
+    .tcard-meta {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      margin-bottom: 20px;
+    }
+    .tcard-meta-item {
+      padding: 10px 14px;
+      border: 1px solid var(--card-border);
+    }
+    .tcard-meta-label {
+      font-size: 9px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 3px;
+    }
+    .tcard-meta-value {
+      font-size: 12px; font-weight: 500; color: var(--text);
+    }
+
+    /* ─── Dimension row ─── */
+    .drow {
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 0;
+      border-top: 1px solid var(--card-border);
+    }
+    .drow:first-child { border-top: none; }
+
+    .drow-bar-wrap {
+      width: 44px; height: 44px;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .drow-bar-bg {
+      position: absolute; inset: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.04);
+    }
+    .drow-bar-val {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+    }
+
+    .drow-info { flex: 1; min-width: 0; }
+    .drow-name { font-size: 14px; font-weight: 600; }
+    .drow-sub { font-size: 10px; color: var(--text-dim); margin-top: 1px; }
+
+    .drow-right { flex-shrink: 0; text-align: right; }
+    .drow-score { font-size: 22px; font-weight: 800; }
+    .drow-verbal {
+      font-size: 9px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+
+    /* ─── Badge ─── */
+    .badge {
+      display: inline-block;
+      font-size: 8px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 2px 7px;
+      border: 1px solid;
+    }
+
+    /* ─── Heatmap ─── */
+    .heat {
+      display: flex; align-items: center; gap: 8px;
+      padding: 5px 0;
+    }
+    .heat-name {
+      width: 130px; flex-shrink: 0;
+      font-size: 11px; font-weight: 400;
+      color: var(--text-mid);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .heat-track {
+      flex: 1; height: 18px;
+      background: rgba(255,255,255,0.02);
+    }
+    .heat-fill { height: 100%; transition: width 500ms ease-out; }
+    .heat-val {
+      width: 28px; flex-shrink: 0; text-align: right;
+      font-size: 12px; font-weight: 700;
+    }
+    .heat-lbl {
+      width: 60px; flex-shrink: 0; text-align: right;
+      font-size: 8px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--text-dim);
+    }
+
+    /* ─── Detail card ─── */
+    .detail {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      padding: 20px 24px;
+      margin-bottom: 6px;
+    }
+    .detail-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .detail-name {
+      font-size: 16px; font-weight: 700;
+    }
+    .detail-score {
+      font-size: 32px; font-weight: 800; line-height: 1;
+    }
+
+    .detail-bar {
+      height: 3px; background: rgba(255,255,255,0.04);
+      margin-bottom: 16px;
+    }
+    .detail-bar-fill { height: 100%; transition: width 600ms ease-out; }
+
+    /* ─── Quarterly ─── */
+    .qstrip { display: flex; gap: 4px; margin-bottom: 14px; }
+    .qcell {
+      flex: 1; text-align: center; padding: 12px 4px;
+      position: relative;
+    }
+    .qcell-now { background: var(--text); color: var(--bg); }
+    .qcell-future { border: 1px solid var(--card-border); }
+    .qcell-label {
+      font-size: 8px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 3px;
+    }
+    .qcell-score { font-size: 18px; font-weight: 800; line-height: 1; }
+    .qcell-verbal { font-size: 8px; font-weight: 500; margin-top: 2px; }
+    .qcell-delta {
+      position: absolute; top: 3px; right: 5px;
+      font-size: 8px; font-weight: 700;
+    }
+
+    /* ─── Insight ─── */
+    .insight {
+      font-size: 13px; font-weight: 300;
+      color: var(--text-mid); line-height: 1.6;
+      padding-left: 14px;
+      border-left: 2px solid;
+    }
+
+    /* ─── Bottom brand ─── */
+    .bottom {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--bg);
+      border-top: 1px solid var(--card-border);
+      padding: 12px 20px 22px;
+      text-align: center;
+      font-size: 11px; font-weight: 800;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-dim);
+    }
+  </style>
+</head>
+<body>
+
+<div class="app" id="app"></div>
+<div class="bottom">CEO Lab</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────
+
+const TCFG = {
+  leading_yourself:      { name:'Leading Yourself',      arc:'See → Feel → Ground → Direct → Sustain',            color:'var(--ly)', hex:'#5BA0F5', dim:'var(--ly-dim)' },
+  leading_teams:         { name:'Leading Teams',         arc:'Trust → Truth → Diagnosis → System → Identity',     color:'var(--lt)', hex:'#4DE8A0', dim:'var(--lt-dim)' },
+  leading_organizations: { name:'Leading Organizations', arc:'See → Shape → Build → Evolve → Change',             color:'var(--lo)', hex:'#F5915B', dim:'var(--lo-dim)' },
+};
+
+const DIMS = [
+  {id:'LY.1',name:'Self-Awareness',t:'leading_yourself'},
+  {id:'LY.2',name:'Emotional Mastery',t:'leading_yourself'},
+  {id:'LY.3',name:'Grounded Presence',t:'leading_yourself'},
+  {id:'LY.4',name:'Purpose & Mastery',t:'leading_yourself'},
+  {id:'LY.5',name:'Peak Performance',t:'leading_yourself'},
+  {id:'LT.1',name:'Building Trust',t:'leading_teams'},
+  {id:'LT.2',name:'Hard Conversations',t:'leading_teams'},
+  {id:'LT.3',name:'Diagnosing the Real Problem',t:'leading_teams'},
+  {id:'LT.4',name:'Team Operating System',t:'leading_teams'},
+  {id:'LT.5',name:'Leader Identity',t:'leading_teams'},
+  {id:'LO.1',name:'Strategic Clarity',t:'leading_organizations'},
+  {id:'LO.2',name:'Culture Design',t:'leading_organizations'},
+  {id:'LO.3',name:'Organizational Architecture',t:'leading_organizations'},
+  {id:'LO.4',name:'CEO Evolution',t:'leading_organizations'},
+  {id:'LO.5',name:'Leading Change',t:'leading_organizations'},
+];
+
+const BENCH = {
+  'LY.1':{p25:38,p75:68},'LY.2':{p25:35,p75:64},'LY.3':{p25:30,p75:60},
+  'LY.4':{p25:42,p75:72},'LY.5':{p25:32,p75:62},'LT.1':{p25:40,p75:70},
+  'LT.2':{p25:33,p75:63},'LT.3':{p25:36,p75:66},'LT.4':{p25:30,p75:60},
+  'LT.5':{p25:34,p75:64},'LO.1':{p25:44,p75:74},'LO.2':{p25:32,p75:62},
+  'LO.3':{p25:28,p75:58},'LO.4':{p25:30,p75:60},'LO.5':{p25:34,p75:64},
+};
+
+const NARR = {
+  leading_yourself:{0:'The inner foundation needs attention.',40:"Building self-knowledge, but not yet consistent under pressure.",60:'Solid inner foundation. Deepen it into presence your team can feel.',80:'Inner work is genuinely strong. Rare among CEOs.'},
+  leading_teams:{0:'Your team feels the gap between intentions and experience.',40:"You care, but the systems that make teams great aren't in place.",60:"Well-led. Next level: a team that thrives without you.",80:"Something rare: a genuine leadership collective."},
+  leading_organizations:{0:"Organization has outgrown its operating system.",40:"Thinking like an architect, but blueprints are incomplete.",60:"Real infrastructure. Opportunity where strategy and structure don't align.",80:"Building something that outlasts any individual."},
+};
+
+const INS = {
+  'LY.1':{l:"Patterns are running you.",m:'You see patterns but they still drive you under pressure.',h:'Strong self-awareness. Help your team see their own.'},
+  'LY.2':{l:'Emotions hijacking decisions or suppressed.',m:'Manage emotions in calm but lose precision under stress.',h:'Navigate emotions well. Composure reads as safety.'},
+  'LY.3':{l:'Constant reactivity clouding judgment.',m:"Calm is fragile. Pressure pulls you off center.",h:'Grounded under fire. Foundation of everything.'},
+  'LY.4':{l:"Zone of genius unprotected.",m:"Know what matters but not fully committed.",h:"Purpose drives decisions."},
+  'LY.5':{l:"Burning capacity you'll need later.",m:'Urgency overrides boundaries.',h:"Systems to sustain performance."},
+  'LT.1':{l:'People editing what they tell you.',m:"Trust not deep enough for real candor.",h:"Team tells truth fast."},
+  'LT.2':{l:'Avoided conversations creating hidden debt.',m:'Hard conversations too late or too soft.',h:'Issues addressed directly and early.'},
+  'LT.3':{l:"Solving symptoms. Real problems deeper.",m:"Don't always dig deep enough.",h:'Consistently finding root cause.'},
+  'LT.4':{l:"Team lacks clear rhythms.",m:"Structures not consistent enough.",h:"Team runs on clear systems."},
+  'LT.5':{l:"Too involved or too absent.",m:'Struggle to let go.',h:"Found the line between leading and doing."},
+  'LO.1':{l:"Strategy not clear enough for others.",m:"Choices about what NOT to do aren't sharp.",h:'Team decides as you would.'},
+  'LO.2':{l:"Culture happening to you.",m:"Haven't codified into behaviors.",h:"Culture is a system, not a poster."},
+  'LO.3':{l:"Structure reflects past, not future.",m:'Friction at seams between teams.',h:"Built for where you're going."},
+  'LO.4':{l:"Time to evolve as CEO.",m:"Old mode holding you back.",h:"Becoming who company needs next."},
+  'LO.5':{l:"Change too disruptive or not happening.",m:'Sometimes break what was working.',h:'Change lands without casualties.'},
+};
+
+const SCORES = {
+  'LY.1':62,'LY.2':48,'LY.3':35,'LY.4':71,'LY.5':44,
+  'LT.1':58,'LT.2':39,'LT.3':67,'LT.4':42,'LT.5':53,
+  'LO.1':73,'LO.2':38,'LO.3':29,'LO.4':55,'LO.5':46,
+};
+
+// ─── HELPERS ────────────────────────────────────────────────────────
+
+const vb = p=>p<=20?'Reactive':p<=40?'Awakening':p<=60?'Practicing':p<=80?'Consistent':'Mastered';
+const nr = (t,s)=>{const n=NARR[t];if(s<=40)return n[0];if(s<=60)return n[40];if(s<=80)return n[60];return n[80];};
+const gi = (id,s)=>{const d=INS[id];if(!d)return'';if(s<40)return d.l;if(s<65)return d.m;return d.h;};
+const dc = (s,t)=>TCFG[t].hex;
+
+function prios(dims){
+  const s=[...dims].sort((a,b)=>a.score-b.score),r={};
+  s.slice(0,3).forEach(d=>{r[d.id]='growth'});
+  s.slice(-3).forEach(d=>{r[d.id]='strength'});
+  s.forEach(d=>{if(!r[d.id]&&d.score>=45&&d.score<=60)r[d.id]='quick-win'});
+  return r;
+}
+
+function qproj(s){
+  const q=[{q:'Q1',s,now:true}];let p=s;
+  for(let i=2;i<=4;i++){const g=Math.round((100-p)*0.2);const n=Math.min(100,p+Math.max(g,2));q.push({q:`Q${i}`,s:n,now:false});p=n;}
+  return q;
+}
+
+// ─── BUILD DATA ─────────────────────────────────────────────────────
+
+const dims=DIMS.map(d=>({...d,score:SCORES[d.id],lbl:vb(SCORES[d.id])}));
+const terrs=['leading_yourself','leading_teams','leading_organizations'];
+const tsc=terrs.map(t=>{const td=dims.filter(d=>d.t===t);const a=td.reduce((s,d)=>s+d.score,0)/td.length;return{t,score:Math.round(a),lbl:vb(a)};});
+const clmi=Math.round(dims.reduce((s,d)=>s+d.score,0)/dims.length);
+const pr=prios(dims);
+
+// ─── SVG: RADIAL CHART ──────────────────────────────────────────────
+
+function radialChart() {
+  const W = 560, H = 560;
+  const cx = W / 2, cy = H / 2;
+  const innerR = 12;
+  const maxR = 230;
+  const labelR = maxR + 18;
+
+  // Each territory gets 110° with 10° gap between
+  const tAngles = [
+    { t: 'leading_yourself', start: -55, sweep: 110 },      // top
+    { t: 'leading_teams', start: 65, sweep: 110 },           // bottom-right
+    { t: 'leading_organizations', start: 185, sweep: 110 },  // bottom-left
+  ];
+
+  // Ring thresholds
+  const rings = [
+    { pct: 20, label: 'Reactive' },
+    { pct: 40, label: 'Awakening' },
+    { pct: 60, label: 'Practicing' },
+    { pct: 80, label: 'Consistent' },
+    { pct: 100, label: 'Mastered' },
+  ];
+
+  function pol(angle, r) {
+    const rad = (angle - 90) * Math.PI / 180;
+    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+  }
+
+  function arc(r, startAngle, endAngle) {
+    const s = pol(startAngle, r);
+    const e = pol(endAngle, r);
+    const large = (endAngle - startAngle) > 180 ? 1 : 0;
+    return `M ${s.x} ${s.y} A ${r} ${r} 0 ${large} 1 ${e.x} ${e.y}`;
+  }
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" class="hero-svg" xmlns="http://www.w3.org/2000/svg">`;
+
+  // Ring arcs (concentric, per territory)
+  tAngles.forEach(ta => {
+    const cfg = TCFG[ta.t];
+    rings.forEach((ring, ri) => {
+      const r = innerR + (ring.pct / 100) * (maxR - innerR);
+      svg += `<path d="${arc(r, ta.start, ta.start + ta.sweep)}"
+        fill="none" stroke="${cfg.hex}" stroke-width="0.5" opacity="0.15"/>`;
+    });
+  });
+
+  // Dimension lines (radial spokes)
+  tAngles.forEach(ta => {
+    const cfg = TCFG[ta.t];
+    const tDims = dims.filter(d => d.t === ta.t);
+    const step = ta.sweep / (tDims.length + 1);
+
+    tDims.forEach((d, i) => {
+      const angle = ta.start + step * (i + 1);
+      const lineR = innerR + (d.score / 100) * (maxR - innerR);
+      const s = pol(angle, innerR);
+      const e = pol(angle, lineR);
+
+      svg += `<line x1="${s.x}" y1="${s.y}" x2="${e.x}" y2="${e.y}"
+        stroke="${cfg.hex}" stroke-width="1.5" opacity="0.7"/>`;
+
+      // End dot
+      svg += `<circle cx="${e.x}" cy="${e.y}" r="2.5" fill="${cfg.hex}"/>`;
+
+      // Label
+      const lp = pol(angle, lineR + 14);
+      const norm = ((angle + 360) % 360);
+      let anchor = 'middle';
+      let dy = '0';
+      if (norm > 20 && norm < 160) { anchor = 'start'; }
+      else if (norm > 200 && norm < 340) { anchor = 'end'; }
+      if (norm > 350 || norm < 10) dy = '-2';
+      if (norm > 170 && norm < 190) dy = '4';
+
+      const short = d.name.length > 18 ? d.name.split(' ').slice(0, 2).join(' ') : d.name;
+      svg += `<text x="${lp.x}" y="${lp.y}" text-anchor="${anchor}" dominant-baseline="central"
+        fill="${cfg.hex}" font-size="9" font-weight="500" font-family="Inter,sans-serif" opacity="0.7"
+        dy="${dy}">${short} · ${d.score}%</text>`;
+    });
+  });
+
+  // Territory outer arcs (thicker boundary)
+  tAngles.forEach(ta => {
+    const cfg = TCFG[ta.t];
+    const ts = tsc.find(x => x.t === ta.t);
+    const arcR = innerR + (ts.score / 100) * (maxR - innerR);
+
+    // Score arc (thick)
+    svg += `<path d="${arc(arcR, ta.start, ta.start + ta.sweep)}"
+      fill="none" stroke="${cfg.hex}" stroke-width="2.5" opacity="0.5"/>`;
+
+    // Outer boundary arc
+    svg += `<path d="${arc(maxR + 4, ta.start, ta.start + ta.sweep)}"
+      fill="none" stroke="${cfg.hex}" stroke-width="1" opacity="0.2"/>`;
+
+    // Territory label on outer edge
+    const midAngle = ta.start + ta.sweep / 2;
+    const tp = pol(midAngle, maxR + 36);
+    const norm = ((midAngle + 360) % 360);
+    let anchor = 'middle';
+    if (norm > 30 && norm < 150) anchor = 'start';
+    else if (norm > 210 && norm < 330) anchor = 'end';
+
+    svg += `<text x="${tp.x}" y="${tp.y}" text-anchor="${anchor}" dominant-baseline="central"
+      fill="${cfg.hex}" font-size="11" font-weight="700" font-family="Inter,sans-serif"
+      letter-spacing="0.06em">${cfg.name}</text>`;
+
+    // Score next to territory label
+    const sp = pol(midAngle, maxR + 50);
+    svg += `<text x="${sp.x}" y="${sp.y}" text-anchor="${anchor}" dominant-baseline="central"
+      fill="${cfg.hex}" font-size="10" font-weight="500" font-family="Inter,sans-serif"
+      opacity="0.5">${ts.score}% ${ts.lbl}</text>`;
+  });
+
+  // Ring labels (just on the first territory sector)
+  rings.forEach(ring => {
+    const r = innerR + (ring.pct / 100) * (maxR - innerR);
+    const lp = pol(-60, r);
+    svg += `<text x="${lp.x}" y="${lp.y}" text-anchor="end" dominant-baseline="central"
+      fill="rgba(240,240,242,0.18)" font-size="8" font-weight="500"
+      font-family="Inter,sans-serif">${ring.pct}%</text>`;
+  });
+
+  // Center dot
+  svg += `<circle cx="${cx}" cy="${cy}" r="${innerR}" fill="${'#F0F0F2'}" opacity="0.08"/>`;
+  svg += `<circle cx="${cx}" cy="${cy}" r="5" fill="#F0F0F2"/>`;
+
+  // CLMI center label
+  svg += `<text x="${cx}" y="${cy + 28}" text-anchor="middle" dominant-baseline="central"
+    fill="rgba(240,240,242,0.4)" font-size="10" font-weight="600"
+    font-family="Inter,sans-serif" letter-spacing="0.08em">CLMI ${clmi}%</text>`;
+
+  svg += '</svg>';
+  return svg;
+}
+
+// ─── RENDER ─────────────────────────────────────────────────────────
+
+function render() {
+  const app = document.getElementById('app');
+  let h = '';
+
+  // Top bar
+  h += `<div class="top">
+    <div>
+      <div class="top-title">Deep Dive</div>
+      <div class="top-sub">CEO Leadership Maturity Index</div>
+    </div>
+    <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em">v4.0</div>
+  </div>`;
+
+  // ══════════════════════════════════════════════════════════
+  // HERO: Radial chart
+  // ══════════════════════════════════════════════════════════
+
+  h += `<div class="hero-wrap">${radialChart()}</div>`;
+
+  // Stat strip
+  h += `<div class="stats">
+    <div class="stat">
+      <div class="stat-val" style="color:var(--text)">${clmi}<span style="font-size:14px;color:var(--text-mid)">%</span></div>
+      <div class="stat-lbl">CLMI</div>
+    </div>`;
+  tsc.forEach(ts => {
+    const cfg = TCFG[ts.t];
+    const short = cfg.name.split(' ').pop();
+    h += `<div class="stat">
+      <div class="stat-val" style="color:${cfg.hex}">${ts.score}<span style="font-size:14px;color:var(--text-mid)">%</span></div>
+      <div class="stat-lbl">${short}</div>
+    </div>`;
+  });
+  h += `</div>`;
+
+  // ══════════════════════════════════════════════════════════
+  // TERRITORY CARDS
+  // ══════════════════════════════════════════════════════════
+
+  h += `<div class="sec" style="margin-top:32px">`;
+
+  terrs.forEach(t => {
+    const cfg = TCFG[t];
+    const ts = tsc.find(x => x.t === t);
+    const tDims = dims.filter(d => d.t === t);
+    const sorted = [...tDims].sort((a,b) => b.score - a.score);
+    const anchor = sorted[0], bottle = sorted[sorted.length - 1];
+
+    h += `<div class="tcard">
+      <div class="tcard-head">
+        <div>
+          <div class="tcard-name" style="color:${cfg.hex}">${cfg.name}</div>
+          <div class="tcard-arc">${cfg.arc}</div>
+        </div>
+        <div class="tcard-score" style="color:${cfg.hex}">${ts.score}<span>%</span></div>
+      </div>
+
+      <div class="tcard-narrative">${nr(t, ts.score)}</div>
+
+      <div class="tcard-meta">
+        <div class="tcard-meta-item">
+          <div class="tcard-meta-label" style="color:${cfg.hex}">Anchor</div>
+          <div class="tcard-meta-value">${anchor.name} · ${anchor.score}%</div>
+        </div>
+        <div class="tcard-meta-item">
+          <div class="tcard-meta-label" style="color:var(--text-dim)">Bottleneck</div>
+          <div class="tcard-meta-value">${bottle.name} · ${bottle.score}%</div>
+        </div>
+      </div>
+
+      ${tDims.map(d => {
+        const b = BENCH[d.id];
+        return `<div class="drow">
+          <div class="drow-bar-wrap">
+            <svg width="44" height="44" viewBox="0 0 44 44" style="transform:rotate(-90deg)">
+              <circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="3"/>
+              <circle cx="22" cy="22" r="19" fill="none" stroke="${cfg.hex}" stroke-width="3"
+                stroke-linecap="round"
+                stroke-dasharray="${2*Math.PI*19}"
+                stroke-dashoffset="${2*Math.PI*19 - (d.score/100)*2*Math.PI*19}"
+                class="ring-progress"/>
+            </svg>
+            <div class="drow-bar-val">${d.score}</div>
+          </div>
+          <div class="drow-info">
+            <div class="drow-name">${d.name}</div>
+            <div class="drow-sub">Typical ${b.p25}–${b.p75}%</div>
+          </div>
+          <div class="drow-right">
+            <div class="drow-verbal" style="color:${cfg.hex}">${d.lbl}</div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  });
+
+  h += `</div>`;
+
+  // ══════════════════════════════════════════════════════════
+  // HEATMAP
+  // ══════════════════════════════════════════════════════════
+
+  h += `<div class="sec">
+    <div class="sec-label">All 15 Dimensions</div>`;
+
+  terrs.forEach(t => {
+    const cfg = TCFG[t];
+    const tDims = dims.filter(d => d.t === t);
+    h += `<div style="margin-bottom:16px">
+      <div style="font-size:10px;font-weight:700;color:${cfg.hex};text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">${cfg.name}</div>
+      ${tDims.map(d => {
+        const op = 0.25 + (d.score / 100) * 0.75;
+        return `<div class="heat">
+          <div class="heat-name">${d.name}</div>
+          <div class="heat-track">
+            <div class="heat-fill" style="width:${d.score}%;background:${cfg.hex};opacity:${op}"></div>
+          </div>
+          <div class="heat-val">${d.score}</div>
+          <div class="heat-lbl">${d.lbl}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  });
+
+  h += `</div>`;
+
+  // ══════════════════════════════════════════════════════════
+  // DIMENSION DETAILS
+  // ══════════════════════════════════════════════════════════
+
+  terrs.forEach(t => {
+    const cfg = TCFG[t];
+    const ts = tsc.find(x => x.t === t);
+    const tDims = dims.filter(d => d.t === t);
+
+    h += `<div class="sec">
+      <div class="sec-label" style="color:${cfg.hex}">${cfg.name} · ${ts.score}%</div>
+
+      ${tDims.map(d => {
+        const p = pr[d.id];
+        const insight = gi(d.id, d.score);
+        const qs = qproj(d.score);
+
+        let badge = '';
+        if(p==='growth') badge=`<span class="badge" style="border-color:var(--lo);color:var(--lo)">Growth</span>`;
+        else if(p==='strength') badge=`<span class="badge" style="border-color:var(--lt);color:var(--lt)">Strength</span>`;
+        else if(p==='quick-win') badge=`<span class="badge" style="border-color:var(--ly);color:var(--ly)">Near Breakthrough</span>`;
+
+        const qHTML = qs.map((q,i) => {
+          const v = vb(q.s);
+          const delta = i>0?q.s-qs[i-1].s:0;
+          if(q.now) return `<div class="qcell qcell-now">
+            <div class="qcell-label" style="opacity:0.5">Q1 Now</div>
+            <div class="qcell-score">${q.s}%</div>
+            <div class="qcell-verbal" style="opacity:0.4">${v}</div>
+          </div>`;
+          const fade=i===1?0.5:i===2?0.3:0.15;
+          return `<div class="qcell qcell-future">
+            <div class="qcell-label" style="opacity:${fade}">${q.q}</div>
+            <div class="qcell-score" style="opacity:${fade}">${q.s}%</div>
+            <div class="qcell-verbal" style="opacity:${fade*0.6}">${v}</div>
+            ${delta>0?`<div class="qcell-delta" style="color:${cfg.hex}">+${delta}</div>`:''}
+          </div>`;
+        }).join('');
+
+        return `<div class="detail">
+          <div class="detail-head">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <span class="detail-name">${d.name}</span>
+              ${badge}
+            </div>
+            <span class="detail-score" style="color:${cfg.hex}">${d.score}<span style="font-size:14px;color:var(--text-mid)">%</span></span>
+          </div>
+          <div class="detail-bar">
+            <div class="detail-bar-fill" style="width:${Math.max(2,d.score)}%;background:${cfg.hex}"></div>
+          </div>
+          <div class="qstrip">${qHTML}</div>
+          ${insight?`<div class="insight" style="border-color:${cfg.hex}">${insight}</div>`:''}
+        </div>`;
+      }).join('')}
+    </div>`;
+  });
+
+  app.innerHTML = h;
+}
+
+render();
+</script>
+
+</body>
+</html>

@@ -32,7 +32,9 @@ const TERRITORY_COLORS: Record<Territory, string> = {
   leading_organizations: '#E08F6A',
 }
 
-const STEPS = ['Your Score', 'Your Archetype', 'Three Territories', 'Where to Focus', "What's Next"] as const
+const TERRITORIES_ORDER: Territory[] = ['leading_yourself', 'leading_teams', 'leading_organizations']
+
+const STEPS = ['Your Score', 'Your Archetype', 'Leading Yourself', 'Leading Teams', 'Leading Organizations', 'Where to Grow', "What's Next"] as const
 type Step = (typeof STEPS)[number]
 
 // ---------------------------------------------------------------------------
@@ -159,41 +161,56 @@ function StepArchetype({ results }: { results: FullResults }) {
 }
 
 // ---------------------------------------------------------------------------
-// Step 3: Three Territories
+// Steps 3-5: Individual Territory
 // ---------------------------------------------------------------------------
 
-function StepTerritories({ results }: { results: FullResults }) {
-  const territories = results.territoryScores
+function StepTerritory({ results, territory }: { results: FullResults; territory: Territory }) {
+  const t = results.territoryScores.find((ts) => ts.territory === territory)
+  if (!t) return null
+
+  const label = TERRITORY_LABELS[territory]
+  const color = TERRITORY_COLORS[territory]
+  const narrative = getTerritoryArcNarrative(territory, t.score)
+  const dims = DIMENSIONS.filter((d) => d.territory === territory)
 
   return (
     <div className="flex flex-col items-center">
-      <p className="text-sm text-black/40 uppercase tracking-wider mb-8 text-center">
-        The Three Territories of Leadership
+      <p className="text-sm uppercase tracking-wider mb-2 text-center" style={{ color }}>
+        {label}
       </p>
-      <div className="w-full max-w-lg space-y-4">
-        {territories.map((t) => {
-          const label = TERRITORY_LABELS[t.territory]
-          const color = TERRITORY_COLORS[t.territory]
-          const narrative = getTerritoryArcNarrative(t.territory, t.score)
+      <p className="text-xs text-black/40 mb-8 text-center">
+        {territory === 'leading_yourself' && 'The inner foundation everything else is built on'}
+        {territory === 'leading_teams' && 'How you lead the people closest to you'}
+        {territory === 'leading_organizations' && 'How you shape the system beyond your team'}
+      </p>
 
+      <AnimatedScoreRing score={t.score} size={140} />
+
+      <p className="mt-6 text-sm text-black/70 max-w-md text-center leading-relaxed">
+        {narrative}
+      </p>
+
+      <div className="w-full max-w-lg mt-8 space-y-2">
+        {dims.map((dim) => {
+          const ds = t.dimensions.find((d) => d.dimensionId === dim.id)
+          if (!ds) return null
           return (
             <div
-              key={t.territory}
-              className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
+              key={dim.id}
+              className="bg-white rounded-lg px-5 py-3.5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center justify-between"
             >
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-semibold text-black">{label}</span>
-                <span className="text-sm font-bold" style={{ color }}>
-                  {Math.round(t.score)}%
+              <span className="text-sm text-black">{dim.name}</span>
+              <div className="flex items-center gap-3">
+                <div className="w-24 h-1.5 bg-black/5 rounded-full">
+                  <div
+                    className="h-full rounded-full transition-all duration-1000"
+                    style={{ width: `${ds.percentage}%`, backgroundColor: color }}
+                  />
+                </div>
+                <span className="text-sm font-semibold text-black/60 w-10 text-right">
+                  {Math.round(ds.percentage)}%
                 </span>
               </div>
-              <div className="w-full h-2 bg-black/5 rounded-full mb-3">
-                <div
-                  className="h-full rounded-full transition-all duration-1000"
-                  style={{ width: `${t.score}%`, backgroundColor: color }}
-                />
-              </div>
-              <p className="text-xs text-black/60 leading-relaxed">{narrative}</p>
             </div>
           )
         })}
@@ -212,10 +229,10 @@ function StepFocus({ results }: { results: FullResults }) {
   return (
     <div className="flex flex-col items-center">
       <p className="text-sm text-black/40 uppercase tracking-wider mb-3 text-center">
-        Your Priority Dimensions
+        Where You Need to Grow
       </p>
       <p className="text-sm text-black/60 max-w-md text-center mb-8 leading-relaxed">
-        These are the areas where focused work will have the greatest impact on your leadership right now.
+        These are the areas holding your leadership back. Focused work here will have the greatest impact.
       </p>
       <div className="w-full max-w-lg space-y-4">
         {priorityIds.map((dimId, i) => {
@@ -392,7 +409,9 @@ export default function RevealPage() {
   const stepComponents = [
     <StepScore key="score" results={results} />,
     <StepArchetype key="archetype" results={results} />,
-    <StepTerritories key="territories" results={results} />,
+    <StepTerritory key="ly" results={results} territory="leading_yourself" />,
+    <StepTerritory key="lt" results={results} territory="leading_teams" />,
+    <StepTerritory key="lo" results={results} territory="leading_organizations" />,
     <StepFocus key="focus" results={results} />,
     <StepNext key="next" />,
   ]

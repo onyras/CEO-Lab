@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CEO Lab — Deep Dive v3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0D1117;
+      --bg-card: #161B22;
+      --bg-card-hover: #1C2129;
+      --bg-elevated: #21262D;
+      --border: rgba(255,255,255,0.06);
+      --text: #ECEDEE;
+      --text-secondary: rgba(236,237,238,0.55);
+      --text-dim: rgba(236,237,238,0.28);
+      --blue: #0099FF;
+      --blue-glow: rgba(0,153,255,0.25);
+      --blue-dim: rgba(0,153,255,0.12);
+      --green: #00D26A;
+      --green-glow: rgba(0,210,106,0.25);
+      --green-dim: rgba(0,210,106,0.12);
+      --orange: #FF8C42;
+      --orange-glow: rgba(255,140,66,0.2);
+      --orange-dim: rgba(255,140,66,0.1);
+      --red: #FF4757;
+      --red-glow: rgba(255,71,87,0.2);
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── App shell ─── */
+    .app {
+      max-width: 520px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    /* ─── Top bar ─── */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 10;
+      background: var(--bg);
+    }
+    .topbar-title {
+      font-size: 14px; font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .topbar-sub {
+      font-size: 11px; color: var(--text-secondary);
+    }
+
+    /* ─── Section ─── */
+    .section { padding: 0 20px; }
+    .section + .section { margin-top: 28px; }
+
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+    }
+    .section-action {
+      font-size: 11px; font-weight: 600;
+      color: var(--blue);
+      cursor: pointer;
+    }
+
+    /* ─── Big hero ring ─── */
+    .hero {
+      text-align: center;
+      padding: 36px 20px 20px;
+    }
+    .hero-ring { position: relative; display: inline-block; }
+    .hero-ring svg { transform: rotate(-90deg); filter: drop-shadow(0 0 20px var(--blue-glow)); }
+    .hero-center {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    .hero-score {
+      font-size: 72px; font-weight: 800;
+      letter-spacing: -0.04em; line-height: 1;
+      color: #fff;
+    }
+    .hero-label-top {
+      font-size: 12px; font-weight: 600;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 4px;
+    }
+    .hero-label-bottom {
+      font-size: 13px; font-weight: 500;
+      color: var(--text-secondary);
+      margin-top: 6px;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 5px 16px;
+      border: 1.5px solid var(--blue);
+      border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+      color: var(--blue);
+      margin-top: 12px;
+    }
+    .hero-narrative {
+      font-size: 14px; font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 360px;
+      margin: 16px auto 0;
+    }
+
+    /* ─── Ring helper ─── */
+    .ring-progress { transition: stroke-dashoffset 800ms ease-out; }
+
+    /* ─── Stat strip ─── */
+    .stat-strip {
+      display: flex;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-cell {
+      flex: 1;
+      text-align: center;
+      padding: 16px 8px;
+    }
+    .stat-cell + .stat-cell {
+      border-left: 1px solid var(--border);
+    }
+    .stat-value {
+      font-size: 22px; font-weight: 700;
+      color: #fff;
+      line-height: 1;
+    }
+    .stat-value .stat-pct { font-size: 14px; font-weight: 600; }
+    .stat-label {
+      font-size: 10px; font-weight: 500;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+    }
+
+    /* ─── Territory card (large ring) ─── */
+    .terr-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 28px 24px;
+      margin-bottom: 12px;
+    }
+    .terr-card-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .terr-name {
+      font-size: 18px; font-weight: 700;
+      color: #fff;
+    }
+    .terr-arc {
+      font-size: 10px; font-weight: 500;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+    .terr-score-badge {
+      font-size: 28px; font-weight: 800;
+      color: #fff;
+    }
+    .terr-score-badge span {
+      font-size: 14px; font-weight: 600;
+      color: var(--text-secondary);
+      margin-left: 2px;
+    }
+
+    .terr-ring-row {
+      display: flex; align-items: center; gap: 24px;
+      margin-bottom: 20px;
+    }
+    .terr-ring-info { flex: 1; }
+    .terr-ring-info .narrative {
+      font-size: 13px; font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .terr-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+    .terr-stat-item {
+      background: var(--bg-elevated);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .terr-stat-label {
+      font-size: 10px; font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 2px;
+    }
+    .terr-stat-label.anchor { color: var(--green); }
+    .terr-stat-label.bottleneck { color: var(--orange); }
+    .terr-stat-value {
+      font-size: 12px; font-weight: 500;
+      color: var(--text);
+    }
+
+    /* ─── Dimension row (activity list style) ─── */
+    .dim-list { }
+    .dim-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .dim-item:last-child { border-bottom: none; }
+
+    .dim-ring-small { flex-shrink: 0; position: relative; }
+    .dim-ring-small svg { transform: rotate(-90deg); }
+    .dim-ring-center {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: #fff;
+    }
+
+    .dim-info { flex: 1; min-width: 0; }
+    .dim-name {
+      font-size: 14px; font-weight: 600;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .dim-meta {
+      font-size: 11px; font-weight: 400;
+      color: var(--text-dim);
+    }
+    .dim-right {
+      text-align: right; flex-shrink: 0;
+    }
+    .dim-score-big {
+      font-size: 20px; font-weight: 800;
+      color: #fff;
+    }
+    .dim-verbal {
+      font-size: 10px; font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 1px;
+    }
+
+    /* ─── Badge ─── */
+    .badge {
+      display: inline-block;
+      font-size: 9px; font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .badge-growth { background: var(--orange-dim); color: var(--orange); }
+    .badge-strength { background: var(--green-dim); color: var(--green); }
+    .badge-quickwin { background: var(--blue-dim); color: var(--blue); }
+
+    /* ─── Progress bar (thick) ─── */
+    .pbar {
+      height: 6px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .pbar-fill {
+      height: 100%; border-radius: 3px;
+      transition: width 600ms ease-out;
+    }
+
+    /* ─── Quarterly cards ─── */
+    .q-strip {
+      display: flex; gap: 6px;
+      margin-top: 12px;
+    }
+    .q-card {
+      flex: 1; text-align: center;
+      padding: 14px 6px;
+      border-radius: 10px;
+      position: relative;
+    }
+    .q-now {
+      background: var(--blue);
+      box-shadow: 0 4px 16px var(--blue-glow);
+    }
+    .q-future {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+    }
+    .q-label {
+      font-size: 9px; font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+    .q-score {
+      font-size: 20px; font-weight: 800;
+      line-height: 1;
+    }
+    .q-verbal {
+      font-size: 9px; font-weight: 500;
+      margin-top: 3px;
+    }
+    .q-delta {
+      position: absolute; top: 4px; right: 6px;
+      font-size: 9px; font-weight: 700;
+      color: var(--green);
+    }
+
+    /* ─── Insight box ─── */
+    .insight-box {
+      background: var(--bg-elevated);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 10px;
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .insight-icon {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--blue-dim);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 12px; color: var(--blue);
+    }
+    .insight-text {
+      font-size: 13px; font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .insight-text strong {
+      color: #fff; font-weight: 600;
+    }
+
+    /* ─── Heatmap bar ─── */
+    .heat-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 0;
+    }
+    .heat-name {
+      width: 140px; flex-shrink: 0;
+      font-size: 12px; font-weight: 400;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .heat-bar {
+      flex: 1; height: 22px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .heat-fill {
+      height: 100%; border-radius: 4px;
+      transition: width 500ms ease-out;
+    }
+    .heat-score {
+      width: 36px; flex-shrink: 0;
+      font-size: 13px; font-weight: 700;
+      color: #fff;
+      text-align: right;
+    }
+    .heat-verbal {
+      width: 70px; flex-shrink: 0;
+      font-size: 9px; font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      text-align: right;
+    }
+
+    /* ─── Nav dots ─── */
+    .nav-dots {
+      display: flex; justify-content: center; gap: 6px;
+      padding: 20px;
+    }
+    .nav-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+    }
+    .nav-dot.active { background: var(--blue); width: 18px; border-radius: 3px; }
+
+    /* ─── Bottom bar ─── */
+    .bottombar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      padding: 10px 20px 24px;
+      display: flex; justify-content: center;
+      z-index: 10;
+    }
+    .bottombar-brand {
+      font-size: 14px; font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+  </style>
+</head>
+<body>
+
+<div class="app" id="app"></div>
+<div class="bottombar"><span class="bottombar-brand">CEO Lab</span></div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────
+
+const T_CFG = {
+  leading_yourself: { name: 'Leading Yourself', arc: 'See → Feel → Ground → Direct → Sustain', color: '#0099FF' },
+  leading_teams: { name: 'Leading Teams', arc: 'Trust → Truth → Diagnosis → System → Identity', color: '#00D26A' },
+  leading_organizations: { name: 'Leading Organizations', arc: 'See → Shape → Build → Evolve → Change', color: '#FF8C42' },
+};
+
+const DIMS = [
+  { id: 'LY.1', name: 'Self-Awareness', t: 'leading_yourself' },
+  { id: 'LY.2', name: 'Emotional Mastery', t: 'leading_yourself' },
+  { id: 'LY.3', name: 'Grounded Presence', t: 'leading_yourself' },
+  { id: 'LY.4', name: 'Purpose & Mastery', t: 'leading_yourself' },
+  { id: 'LY.5', name: 'Peak Performance', t: 'leading_yourself' },
+  { id: 'LT.1', name: 'Building Trust', t: 'leading_teams' },
+  { id: 'LT.2', name: 'Hard Conversations', t: 'leading_teams' },
+  { id: 'LT.3', name: 'Diagnosing the Real Problem', t: 'leading_teams' },
+  { id: 'LT.4', name: 'Team Operating System', t: 'leading_teams' },
+  { id: 'LT.5', name: 'Leader Identity', t: 'leading_teams' },
+  { id: 'LO.1', name: 'Strategic Clarity', t: 'leading_organizations' },
+  { id: 'LO.2', name: 'Culture Design', t: 'leading_organizations' },
+  { id: 'LO.3', name: 'Organizational Architecture', t: 'leading_organizations' },
+  { id: 'LO.4', name: 'CEO Evolution', t: 'leading_organizations' },
+  { id: 'LO.5', name: 'Leading Change', t: 'leading_organizations' },
+];
+
+const BENCH = {
+  'LY.1':{p25:38,p75:68},'LY.2':{p25:35,p75:64},'LY.3':{p25:30,p75:60},
+  'LY.4':{p25:42,p75:72},'LY.5':{p25:32,p75:62},'LT.1':{p25:40,p75:70},
+  'LT.2':{p25:33,p75:63},'LT.3':{p25:36,p75:66},'LT.4':{p25:30,p75:60},
+  'LT.5':{p25:34,p75:64},'LO.1':{p25:44,p75:74},'LO.2':{p25:32,p75:62},
+  'LO.3':{p25:28,p75:58},'LO.4':{p25:30,p75:60},'LO.5':{p25:34,p75:64},
+};
+
+const NARR = {
+  leading_yourself: {
+    0: 'The inner foundation needs attention. Without this, everything else is built on shifting ground.',
+    40: "You're building self-knowledge, but it hasn't yet become consistent practice under pressure.",
+    60: 'Solid inner foundation. The opportunity is deepening it into presence your team can feel.',
+    80: 'Your inner work is genuinely strong. This is rare among CEOs.',
+  },
+  leading_teams: {
+    0: 'Your team likely feels the gap between your intentions and their daily experience.',
+    40: "You care about your team, but the systems that make teams great aren't yet in place.",
+    60: "Well-led team. Next level: a team that thrives without you.",
+    80: "You've built something rare: a genuine leadership collective.",
+  },
+  leading_organizations: {
+    0: "Your organization has outgrown its operating system.",
+    40: "You're beginning to think like an organizational architect, but blueprints are incomplete.",
+    60: "Real infrastructure. Opportunity: where strategy, culture, and structure don't yet align.",
+    80: "Building an organization that can outlast any individual. That's the ultimate test.",
+  },
+};
+
+const INS = {
+  'LY.1':{l:"Patterns are running you.",m:'You see patterns but they still drive you under pressure.',h:'Strong self-awareness. Help your team see their own.'},
+  'LY.2':{l:'Emotions hijacking decisions or suppressed entirely.',m:'Manage emotions in calm but lose precision under stress.',h:'Navigate emotions well. Team reads composure as safety.'},
+  'LY.3':{l:'Constant reactivity clouding judgment.',m:"Calm is fragile. Pressure pulls you off center.",h:'Grounded under fire. Foundation of everything else.'},
+  'LY.4':{l:"Zone of genius is unprotected.",m:"Know what matters but not fully committed.",h:"Purpose drives decisions. Building something only you can."},
+  'LY.5':{l:"Burning capacity you'll need later.",m:'Urgency overrides boundaries.',h:"Systems to sustain performance. Competitive advantage."},
+  'LT.1':{l:'People are editing what they tell you.',m:"Trust exists but not deep enough for candor.",h:"Team tells truth fast. Most valuable thing to build."},
+  'LT.2':{l:'Avoided conversations creating hidden debt.',m:'Hard conversations happen too late or too softly.',h:'Issues addressed directly and early.'},
+  'LT.3':{l:"Solving symptoms. Real problems deeper.",m:"Sense more beneath surface but don't dig enough.",h:'Consistently finding root cause.'},
+  'LT.4':{l:"Team lacks clear rhythms.",m:"Structures aren't consistent enough.",h:"Team runs on clear systems."},
+  'LT.5':{l:"Too involved or too absent.",m:'Struggle to let go of ownership.',h:"Found the line between leading and doing."},
+  'LO.1':{l:"Strategy isn't clear enough for others.",m:"Choices about what NOT to do aren't sharp.",h:'Team makes same decisions you would.'},
+  'LO.2':{l:"Culture is happening to you.",m:"Haven't codified culture into behaviors.",h:"Culture is a system, not a poster."},
+  'LO.3':{l:"Org structure reflects past, not future.",m:'Friction at seams between teams.',h:"Built for where you're going."},
+  'LO.4':{l:"Time to evolve as CEO.",m:"Old operating mode holding you back.",h:"Actively becoming who company needs next."},
+  'LO.5':{l:"Change too disruptive or not happening.",m:'Sometimes break what was working.',h:'Change lands without casualties.'},
+};
+
+const SCORES = {
+  'LY.1':62,'LY.2':48,'LY.3':35,'LY.4':71,'LY.5':44,
+  'LT.1':58,'LT.2':39,'LT.3':67,'LT.4':42,'LT.5':53,
+  'LO.1':73,'LO.2':38,'LO.3':29,'LO.4':55,'LO.5':46,
+};
+
+// ─── HELPERS ────────────────────────────────────────────────────────
+
+const verbal = p => p<=20?'Reactive':p<=40?'Awakening':p<=60?'Practicing':p<=80?'Consistent':'Mastered';
+const narr = (t,s) => { const n=NARR[t]; if(s<=40)return n[0]; if(s<=60)return n[40]; if(s<=80)return n[60]; return n[80]; };
+const ins = (id,s) => { const d=INS[id]; if(!d)return''; if(s<40)return d.l; if(s<65)return d.m; return d.h; };
+const dimColor = (s) => s>=65?'var(--green)':s>=40?'var(--blue)':s<30?'var(--red)':'var(--orange)';
+const verbalColor = (s) => s>=65?'var(--green)':s>=40?'var(--blue)':s<30?'var(--red)':'var(--orange)';
+
+function prios(dims) {
+  const s=[...dims].sort((a,b)=>a.score-b.score), r={};
+  s.slice(0,3).forEach(d=>{r[d.id]='growth'});
+  s.slice(-3).forEach(d=>{r[d.id]='strength'});
+  s.forEach(d=>{if(!r[d.id]&&d.score>=45&&d.score<=60)r[d.id]='quick-win'});
+  return r;
+}
+
+function qproj(score) {
+  const q=[{q:'Q1',score,now:true}]; let p=score;
+  for(let i=2;i<=4;i++){const g=Math.round((100-p)*0.2);const n=Math.min(100,p+Math.max(g,2));q.push({q:`Q${i}`,score:n,now:false});p=n;}
+  return q;
+}
+
+// ─── SVG: Ring ──────────────────────────────────────────────────────
+
+function ring(val, size, stroke, color, glow) {
+  const r=(size-stroke)/2, c=2*Math.PI*r, off=c-(val/100)*c, cx=size/2;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform:rotate(-90deg);${glow?`filter:drop-shadow(0 0 12px ${glow})`:''}">`
+    +`<circle cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="${stroke}"/>`
+    +`<circle class="ring-progress" cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}"/>`
+    +`</svg>`;
+}
+
+// ─── BUILD DATA ─────────────────────────────────────────────────────
+
+const dims = DIMS.map(d=>({...d,score:SCORES[d.id],lbl:verbal(SCORES[d.id])}));
+const terrs = ['leading_yourself','leading_teams','leading_organizations'];
+const tScores = terrs.map(t=>{
+  const td=dims.filter(d=>d.t===t);
+  const avg=td.reduce((s,d)=>s+d.score,0)/td.length;
+  return {t,score:Math.round(avg),lbl:verbal(avg)};
+});
+const clmi = Math.round(dims.reduce((s,d)=>s+d.score,0)/dims.length);
+const pr = prios(dims);
+
+// ─── RENDER ─────────────────────────────────────────────────────────
+
+function render() {
+  const app = document.getElementById('app');
+  let h = '';
+
+  // ── Top bar ──
+  h += `<div class="topbar">
+    <div>
+      <div class="topbar-title">Deep Dive</div>
+      <div class="topbar-sub">CEO Leadership Maturity Index</div>
+    </div>
+    <div style="font-size:11px;color:var(--text-dim)">Today ▾</div>
+  </div>`;
+
+  // ══════════════════════════════════════════════════════════════════
+  // HERO: CLMI big ring
+  // ══════════════════════════════════════════════════════════════════
+
+  h += `<div class="hero">
+    <div class="hero-ring">
+      ${ring(clmi, 240, 14, 'url(#blueGrad)', 'rgba(0,153,255,0.3)')}
+      <svg width="0" height="0"><defs><linearGradient id="blueGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0077CC"/><stop offset="100%" stop-color="#00BBFF"/></linearGradient></defs></svg>
+      <div class="hero-center">
+        <div class="hero-label-top">CLMI Score</div>
+        <div class="hero-score">${clmi}</div>
+        <div class="hero-label-bottom">${verbal(clmi)}</div>
+      </div>
+    </div>
+    <div class="hero-badge">15 Dimensions Assessed</div>
+  </div>`;
+
+  // ── Territory stat strip ──
+  h += `<div class="stat-strip">`;
+  tScores.forEach(ts => {
+    const cfg = T_CFG[ts.t];
+    const short = cfg.name.split(' ').pop();
+    h += `<div class="stat-cell">
+      <div class="stat-value" style="color:${cfg.color}">${ts.score}<span class="stat-pct">%</span></div>
+      <div class="stat-label">${short}</div>
+    </div>`;
+  });
+  h += `</div>`;
+
+  // ══════════════════════════════════════════════════════════════════
+  // TERRITORY CARDS
+  // ══════════════════════════════════════════════════════════════════
+
+  h += `<div class="section" style="margin-top:28px">`;
+
+  terrs.forEach(t => {
+    const cfg = T_CFG[t];
+    const ts = tScores.find(x => x.t === t);
+    const tDims = dims.filter(d => d.t === t);
+    const sorted = [...tDims].sort((a,b) => b.score - a.score);
+    const anchor = sorted[0], bottle = sorted[sorted.length - 1];
+    const range = anchor.score - bottle.score;
+    const shape = range < 15 ? 'Balanced' : range <= 30 ? 'Developing' : 'Spiky';
+
+    h += `<div class="terr-card">
+      <div class="terr-card-head">
+        <div>
+          <div class="terr-name">${cfg.name}</div>
+          <div class="terr-arc">${cfg.arc}</div>
+        </div>
+        <div class="terr-score-badge" style="color:${cfg.color}">${ts.score}<span>%</span></div>
+      </div>
+
+      <div class="terr-ring-row">
+        <div style="flex-shrink:0">
+          ${ring(ts.score, 110, 10, cfg.color, cfg.color.replace(')', ',0.25)'))}
+        </div>
+        <div class="terr-ring-info">
+          <div class="narrative">${narr(t, ts.score)}</div>
+          <div class="terr-stats">
+            <div class="terr-stat-item">
+              <div class="terr-stat-label anchor">Anchor</div>
+              <div class="terr-stat-value">${anchor.name} · ${anchor.score}%</div>
+            </div>
+            <div class="terr-stat-item">
+              <div class="terr-stat-label bottleneck">Bottleneck</div>
+              <div class="terr-stat-value">${bottle.name} · ${bottle.score}%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dimension list -->
+      <div class="dim-list">
+        ${tDims.map(d => {
+          const c = dimColor(d.score);
+          const b = BENCH[d.id];
+          return `<div class="dim-item">
+            <div class="dim-ring-small" style="width:44px;height:44px">
+              ${ring(d.score, 44, 4, c, '')}
+              <div class="dim-ring-center">${d.score}</div>
+            </div>
+            <div class="dim-info">
+              <div class="dim-name">${d.name}</div>
+              <div class="dim-meta">Typical ${b.p25}–${b.p75}%</div>
+            </div>
+            <div class="dim-right">
+              <div class="dim-verbal" style="color:${c}">${d.lbl}</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  });
+
+  h += `</div>`;
+
+  // ══════════════════════════════════════════════════════════════════
+  // 15 DIMENSIONS HEATMAP
+  // ══════════════════════════════════════════════════════════════════
+
+  h += `<div class="section">
+    <div class="section-header">
+      <div class="section-title">All 15 Dimensions</div>
+      <div class="section-action">Overview →</div>
+    </div>`;
+
+  terrs.forEach(t => {
+    const cfg = T_CFG[t];
+    const tDims = dims.filter(d => d.t === t);
+
+    h += `<div style="margin-bottom:20px">
+      <div style="font-size:12px;font-weight:600;color:${cfg.color};margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em">${cfg.name.split(' ').pop()}</div>
+      ${tDims.map(d => {
+        const opacity = 0.3 + (d.score / 100) * 0.7;
+        return `<div class="heat-item">
+          <div class="heat-name">${d.name}</div>
+          <div class="heat-bar">
+            <div class="heat-fill" style="width:${d.score}%;background:${cfg.color};opacity:${opacity}"></div>
+          </div>
+          <div class="heat-score">${d.score}</div>
+          <div class="heat-verbal" style="color:${verbalColor(d.score)}">${d.lbl}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  });
+
+  h += `</div>`;
+
+  // ══════════════════════════════════════════════════════════════════
+  // DIMENSION DETAILS with Quarterly + Insight
+  // ══════════════════════════════════════════════════════════════════
+
+  terrs.forEach(t => {
+    const cfg = T_CFG[t];
+    const ts = tScores.find(x => x.t === t);
+    const tDims = dims.filter(d => d.t === t);
+
+    h += `<div class="section">
+      <div class="section-header">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:8px;height:8px;border-radius:50%;background:${cfg.color}"></div>
+          <div class="section-title" style="margin-bottom:0">${cfg.name}</div>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:${cfg.color}">${ts.score}%</div>
+      </div>
+
+      ${tDims.map(d => {
+        const p = pr[d.id];
+        const insight = ins(d.id, d.score);
+        const qs = qproj(d.score);
+        const c = dimColor(d.score);
+        const isLow = d.score < 40;
+
+        let badge = '';
+        if(p==='growth') badge='<span class="badge badge-growth">Growth</span>';
+        else if(p==='strength') badge='<span class="badge badge-strength">Strength</span>';
+        else if(p==='quick-win') badge='<span class="badge badge-quickwin">Near Breakthrough</span>';
+
+        const qHTML = qs.map((q,i) => {
+          const vl = verbal(q.score);
+          const delta = i>0 ? q.score-qs[i-1].score : 0;
+          if(q.now) return `<div class="q-card q-now">
+            <div class="q-label" style="color:rgba(255,255,255,0.6)">Q1 Now</div>
+            <div class="q-score" style="color:#fff">${q.score}%</div>
+            <div class="q-verbal" style="color:rgba(255,255,255,0.5)">${vl}</div>
+          </div>`;
+          const fade = i===1?0.6:i===2?0.35:0.2;
+          return `<div class="q-card q-future">
+            <div class="q-label" style="opacity:${fade}">${q.q}</div>
+            <div class="q-score" style="opacity:${fade}">${q.score}%</div>
+            <div class="q-verbal" style="opacity:${fade*0.7}">${vl}</div>
+            ${delta>0?`<div class="q-delta">+${delta}</div>`:''}
+          </div>`;
+        }).join('');
+
+        return `<div class="terr-card" style="padding:20px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <span style="font-size:16px;font-weight:700;color:#fff">${d.name}</span>
+              ${badge}
+            </div>
+            <span style="font-size:28px;font-weight:800;color:${c}">${d.score}<span style="font-size:14px;font-weight:600;color:var(--text-secondary)">%</span></span>
+          </div>
+
+          <div class="pbar">
+            <div class="pbar-fill" style="width:${Math.max(2,d.score)}%;background:${c};${isLow?'box-shadow:0 0 8px var(--orange-glow)':''}"></div>
+          </div>
+
+          <div class="q-strip">${qHTML}</div>
+
+          ${insight ? `<div class="insight-box">
+            <div class="insight-icon">⚡</div>
+            <div class="insight-text">${insight}</div>
+          </div>` : ''}
+        </div>`;
+      }).join('')}
+    </div>`;
+  });
+
+  // ── Nav dots ──
+  h += `<div class="nav-dots">
+    <div class="nav-dot"></div>
+    <div class="nav-dot active"></div>
+    <div class="nav-dot"></div>
+    <div class="nav-dot"></div>
+  </div>`;
+
+  app.innerHTML = h;
+}
+
+render();
+</script>
+
+</body>
+</html>

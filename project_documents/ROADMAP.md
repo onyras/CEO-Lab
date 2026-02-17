@@ -59,7 +59,7 @@
 ## Next Steps
 
 ### Immediate (This Week)
-- [ ] Run `005_v4_schema.sql` migration on Supabase
+- [x] Run `005_v4_schema.sql` migration on Supabase
 - [ ] Verify TypeScript compiles (`npx tsc --noEmit`)
 - [ ] Test full flow: Hook → Baseline (3 stages) → Results → Mirror → Weekly
 - [ ] Fix any runtime issues

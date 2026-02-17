@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CEO Lab — Deep Dive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #E5E0DC;
+      --surface: rgba(255,255,255,0.35);
+      --text: #1a1a1a;
+      --text-secondary: rgba(26,26,26,0.45);
+      --text-tertiary: rgba(26,26,26,0.25);
+      --line: rgba(26,26,26,0.08);
+      --line-strong: rgba(26,26,26,0.15);
+      --accent: #D4614A;
+      --accent-glow: radial-gradient(circle, rgba(212,97,74,0.35) 0%, rgba(212,97,74,0) 70%);
+      --mono: 'Space Mono', monospace;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      padding: 48px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Layout spacing ─── */
+    .page > * + * { margin-top: 64px; }
+    .section-gap > * + * { margin-top: 40px; }
+    .item-gap > * + * { margin-top: 24px; }
+    .tight-gap > * + * { margin-top: 12px; }
+
+    /* ─── Section headers ─── */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-secondary);
+    }
+
+    h2 {
+      font-family: var(--sans);
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    h3 {
+      font-family: var(--sans);
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    /* ─── Thin separator ─── */
+    .divider {
+      height: 1px;
+      background: var(--line);
+      width: 100%;
+    }
+
+    /* ─── Territory grid (3-col) ─── */
+    .territory-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .territory-grid > div {
+      background: var(--bg);
+      padding: 32px 28px;
+    }
+    @media (max-width: 768px) {
+      .territory-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Score display (monospace) ─── */
+    .score-mono {
+      font-family: var(--mono);
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .score-mono-sm {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .score-mono-lg {
+      font-family: var(--mono);
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    /* ─── Data label (monospace) ─── */
+    .data-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+    }
+
+    /* ─── Narrative text ─── */
+    .narrative {
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--text);
+      max-width: 520px;
+    }
+
+    .narrative-sm {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+
+    /* ─── Arc path (monospace) ─── */
+    .arc-path {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-tertiary);
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── Thin bar chart ─── */
+    .bar-row { display: flex; align-items: center; gap: 16px; }
+    .bar-name {
+      width: 180px; flex-shrink: 0;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text);
+    }
+    .bar-track {
+      flex: 1; height: 1px; background: var(--line);
+      position: relative;
+    }
+    .bar-fill {
+      position: absolute; top: -1px; left: 0; height: 3px;
+      background: var(--text);
+      border-radius: 0;
+      transition: width 600ms ease-out;
+    }
+    .bar-fill.accent { background: var(--accent); }
+    .bar-value {
+      width: 52px; flex-shrink: 0; text-align: right;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .bar-meta {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--text-tertiary);
+    }
+
+    /* ─── Dot indicator ─── */
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--text);
+      flex-shrink: 0;
+    }
+    .dot.accent {
+      background: var(--accent);
+      box-shadow: 0 0 8px rgba(212,97,74,0.4);
+    }
+    .dot.ghost { background: var(--text-tertiary); }
+
+    /* ─── Badge ─── */
+    .badge {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 3px 8px;
+      border: 1px solid var(--line-strong);
+      color: var(--text-secondary);
+    }
+    .badge.accent-badge {
+      border-color: rgba(212,97,74,0.3);
+      color: var(--accent);
+    }
+    .badge.strength-badge {
+      border-color: rgba(26,26,26,0.2);
+      color: var(--text);
+    }
+
+    /* ─── Radar chart (pentagon) ─── */
+    .radar-wrap {
+      display: flex; gap: 48px; align-items: flex-start;
+    }
+    .radar-svg-col { flex: 0 0 240px; }
+    .radar-svg-col svg { width: 100%; height: auto; }
+    .radar-text-col { flex: 1; padding-top: 16px; }
+    @media (max-width: 768px) {
+      .radar-wrap { flex-direction: column; gap: 24px; }
+      .radar-svg-col { flex: none; width: 100%; max-width: 260px; margin: 0 auto; }
+    }
+
+    /* ─── Territory section ─── */
+    .territory-block {
+      padding: 48px 0;
+      border-top: 1px solid var(--line);
+    }
+    .territory-block:first-child { border-top: none; padding-top: 0; }
+
+    .territory-head {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 40px;
+    }
+
+    /* ─── Heatmap row ─── */
+    .heat-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .heat-row:last-child { border-bottom: none; }
+    .heat-name {
+      width: 180px; flex-shrink: 0;
+      font-size: 13px; font-weight: 400; color: var(--text);
+    }
+    .heat-bar-track {
+      flex: 1; height: 20px; position: relative;
+      background: transparent;
+    }
+    .heat-bar-fill {
+      height: 100%;
+      transition: width 500ms ease-out;
+    }
+    .heat-values {
+      width: 140px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+    }
+    .heat-pct {
+      font-family: var(--mono); font-size: 12px; font-weight: 700;
+    }
+    .heat-label {
+      font-family: var(--mono); font-size: 9px; font-weight: 400;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+    }
+
+    /* ─── Dimension detail row ─── */
+    .dim-detail {
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .dim-detail:last-child { border-bottom: none; }
+
+    .dim-detail-head {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .dim-detail-bar {
+      height: 1px; background: var(--line); position: relative; margin-bottom: 20px;
+    }
+    .dim-detail-bar-fill {
+      position: absolute; top: -1px; left: 0; height: 3px;
+      transition: width 600ms ease-out;
+    }
+
+    /* ─── Quarterly strip ─── */
+    .q-strip { display: flex; gap: 2px; }
+    .q-cell {
+      flex: 1; text-align: center; padding: 16px 8px;
+      position: relative;
+    }
+    .q-cell.q-now {
+      background: var(--text);
+      color: #fff;
+    }
+    .q-cell.q-future {
+      border: 1px dashed var(--line-strong);
+    }
+    .q-cell-label {
+      font-family: var(--mono); font-size: 9px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+    .q-cell-score {
+      font-family: var(--mono); font-size: 22px; font-weight: 700;
+      line-height: 1;
+    }
+    .q-cell-verbal {
+      font-family: var(--mono); font-size: 9px; font-weight: 400;
+      margin-top: 4px;
+    }
+    .q-delta {
+      position: absolute; top: 4px; right: 8px;
+      font-family: var(--mono); font-size: 9px; font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* ─── Score arc (thin ring) ─── */
+    .score-arc { display: inline-flex; flex-direction: column; align-items: center; }
+    .score-arc-wrap { position: relative; }
+    .score-arc svg { transform: rotate(-90deg); }
+    .score-arc .arc-center {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-weight: 700; color: var(--text);
+    }
+    .score-arc circle.track { stroke: var(--line); }
+    .score-arc circle.progress {
+      transition: stroke-dashoffset 700ms ease-out;
+    }
+
+    /* ─── Accent glow dot (used sparingly) ─── */
+    .glow-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px 4px rgba(212,97,74,0.3);
+    }
+
+    /* ─── 2-col stat grid ─── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px 48px;
+    }
+    .stat-item .stat-title {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .stat-item .stat-value {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-secondary);
+    }
+
+    /* ─── Decorative arc ─── */
+    .deco-arc {
+      position: fixed;
+      top: -120px; left: -120px;
+      width: 500px; height: 500px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .deco-arc-2 {
+      position: fixed;
+      top: -60px; left: -60px;
+      width: 380px; height: 380px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* ─── Legend ─── */
+    .legend-row {
+      display: flex; flex-wrap: wrap; gap: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+    .legend-item {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 400;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── Flex helpers ─── */
+    .flex-between { display: flex; align-items: center; justify-content: space-between; }
+    .flex-start { display: flex; align-items: center; gap: 8px; }
+    .flex-col { display: flex; flex-direction: column; }
+  </style>
+</head>
+<body>
+
+<!-- Decorative arcs -->
+<div class="deco-arc"></div>
+<div class="deco-arc-2"></div>
+
+<div class="page" id="deep-dive"></div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────
+
+const TERRITORY_COLORS = {
+  leading_yourself: '#1a1a1a',
+  leading_teams: '#1a1a1a',
+  leading_organizations: '#1a1a1a',
+};
+
+const TERRITORY_CONFIG = {
+  leading_yourself: { displayLabel: 'Leading Yourself', arcDescription: 'See → Feel → Ground → Direct → Sustain' },
+  leading_teams: { displayLabel: 'Leading Teams', arcDescription: 'Trust → Truth → Diagnosis → System → Identity' },
+  leading_organizations: { displayLabel: 'Leading Organizations', arcDescription: 'See → Shape → Build → Evolve → Change' },
+};
+
+const DIMENSIONS = [
+  { id: 'LY.1', name: 'Self-Awareness', territory: 'leading_yourself' },
+  { id: 'LY.2', name: 'Emotional Mastery', territory: 'leading_yourself' },
+  { id: 'LY.3', name: 'Grounded Presence', territory: 'leading_yourself' },
+  { id: 'LY.4', name: 'Purpose & Mastery', territory: 'leading_yourself' },
+  { id: 'LY.5', name: 'Peak Performance', territory: 'leading_yourself' },
+  { id: 'LT.1', name: 'Building Trust', territory: 'leading_teams' },
+  { id: 'LT.2', name: 'Hard Conversations', territory: 'leading_teams' },
+  { id: 'LT.3', name: 'Diagnosing the Real Problem', territory: 'leading_teams' },
+  { id: 'LT.4', name: 'Team Operating System', territory: 'leading_teams' },
+  { id: 'LT.5', name: 'Leader Identity', territory: 'leading_teams' },
+  { id: 'LO.1', name: 'Strategic Clarity', territory: 'leading_organizations' },
+  { id: 'LO.2', name: 'Culture Design', territory: 'leading_organizations' },
+  { id: 'LO.3', name: 'Organizational Architecture', territory: 'leading_organizations' },
+  { id: 'LO.4', name: 'CEO Evolution', territory: 'leading_organizations' },
+  { id: 'LO.5', name: 'Leading Change', territory: 'leading_organizations' },
+];
+
+const DIMENSION_BENCHMARKS = {
+  'LY.1': { p25: 38, p50: 52, p75: 68 },
+  'LY.2': { p25: 35, p50: 48, p75: 64 },
+  'LY.3': { p25: 30, p50: 44, p75: 60 },
+  'LY.4': { p25: 42, p50: 56, p75: 72 },
+  'LY.5': { p25: 32, p50: 46, p75: 62 },
+  'LT.1': { p25: 40, p50: 54, p75: 70 },
+  'LT.2': { p25: 33, p50: 47, p75: 63 },
+  'LT.3': { p25: 36, p50: 50, p75: 66 },
+  'LT.4': { p25: 30, p50: 44, p75: 60 },
+  'LT.5': { p25: 34, p50: 48, p75: 64 },
+  'LO.1': { p25: 44, p50: 58, p75: 74 },
+  'LO.2': { p25: 32, p50: 46, p75: 62 },
+  'LO.3': { p25: 28, p50: 42, p75: 58 },
+  'LO.4': { p25: 30, p50: 44, p75: 60 },
+  'LO.5': { p25: 34, p50: 48, p75: 64 },
+};
+
+const TERRITORY_ARC_NARRATIVES = {
+  leading_yourself: {
+    critical: 'The inner foundation needs attention. Without this, everything else is built on shifting ground.',
+    building: "You're building self-knowledge, but it hasn't yet become consistent practice under pressure.",
+    strong: 'You have a solid inner foundation. The opportunity is deepening it into the kind of presence your team can feel.',
+    mastery: 'Your inner work is genuinely strong. This is rare among CEOs and it shows in how people experience you.',
+  },
+  leading_teams: {
+    critical: 'Your team likely feels the gap between your intentions and their daily experience.',
+    building: "You care about your team and it shows, but the systems and conversations that make teams great aren't yet in place.",
+    strong: "Your team is well-led. The next level is the difference between a team that performs and a team that thrives without you.",
+    mastery: "You've built something rare: a team that functions as a genuine leadership collective.",
+  },
+  leading_organizations: {
+    critical: "Your organization has outgrown its operating system. The structure that got you here won't take you there.",
+    building: "You're beginning to think like an organizational architect, but the blueprints are still incomplete.",
+    strong: "Your organization has real infrastructure. The opportunity now is in the places where strategy, culture, and structure don't yet align.",
+    mastery: "You're building an organization that can outlast any individual, including you. That's the ultimate test of a CEO.",
+  },
+};
+
+const SCORE_INSIGHTS = {
+  'LY.1': { low: "Patterns are running you — you're reacting before you realize it.", mid: 'You see your patterns but they still drive you under pressure.', high: 'Strong self-awareness. Now model it — help your team see their own.' },
+  'LY.2': { low: 'Emotions are either hijacking your decisions or being suppressed entirely.', mid: 'You manage emotions in calm moments but lose precision under stress.', high: 'You navigate emotions well. Your team reads your composure as safety.' },
+  'LY.3': { low: 'Constant reactivity is clouding your judgment. Stillness is a skill to build.', mid: "You can find calm but it's fragile. Pressure still pulls you off center.", high: 'You stay grounded under fire. This is the foundation of everything else.' },
+  'LY.4': { low: "You're spending time on things anyone could do. Your zone of genius is unprotected.", mid: "You know what matters but aren't fully committed to it yet.", high: "Clear purpose drives your decisions. You're building something only you can build." },
+  'LY.5': { low: "You're burning capacity that you'll need later. This is a sustainability risk.", mid: 'You protect your energy sometimes but let urgency override your boundaries.', high: "You've built systems to sustain performance. This is a competitive advantage." },
+  'LT.1': { low: 'Truth is traveling slowly in your team. People are editing what they tell you.', mid: "Trust exists but isn't deep enough for real candor under pressure.", high: "Your team tells you the truth fast. That's the most valuable thing a leader can build." },
+  'LT.2': { low: 'Avoided conversations are creating hidden debt. Problems are compounding.', mid: 'You have hard conversations but sometimes too late or too softly.', high: 'You address issues directly and early. Relationships grow from it, not despite it.' },
+  'LT.3': { low: "You're solving symptoms. The real problems are one or two layers deeper.", mid: "You sense there's more beneath the surface but don't always dig deep enough.", high: 'You consistently find the root cause. Your team brings you the hard puzzles.' },
+  'LT.4': { low: "Your team lacks clear rhythms. People don't know what's expected or when.", mid: "Basic structures exist but aren't consistent enough to create momentum.", high: "Your team runs on clear systems. You've freed yourself to think, not manage." },
+  'LT.5': { low: "You're either too involved or too absent. Boundaries need definition.", mid: 'You know you should step back but struggle to let go of ownership.', high: "You've found the line between leading and doing. Your team feels autonomous." },
+  'LO.1': { low: "Your strategy isn't clear enough for others to make decisions without you.", mid: "The vision is there but the choices about what NOT to do aren't sharp.", high: 'Crisp strategy. Your team makes the same decisions you would in your absence.' },
+  'LO.2': { low: "Culture is happening to you, not being designed by you.", mid: "You care about culture but haven't codified it into observable behaviors.", high: "You've designed the invisible forces. Culture is a system, not a poster." },
+  'LO.3': { low: "Your org structure reflects your past, not your future.", mid: 'Structure mostly works but creates friction at the seams between teams.', high: "Your organization is built for where you're going. Structure enables, not constrains." },
+  'LO.4': { low: "The CEO your company needed last year isn't the one it needs next year.", mid: "You're growing but parts of your old operating mode are holding you back.", high: "You're actively becoming who your company needs next. That's rare and valuable." },
+  'LO.5': { low: "Change is either too disruptive or not happening.", mid: 'You can drive change but sometimes break what was working in the process.', high: 'You balance preservation and innovation. Change lands without casualties.' },
+};
+
+// ─── SAMPLE SCORES (edit these to play with different profiles) ─────
+
+const SAMPLE_SCORES = {
+  'LY.1': 62, 'LY.2': 48, 'LY.3': 35, 'LY.4': 71, 'LY.5': 44,
+  'LT.1': 58, 'LT.2': 39, 'LT.3': 67, 'LT.4': 42, 'LT.5': 53,
+  'LO.1': 73, 'LO.2': 38, 'LO.3': 29, 'LO.4': 55, 'LO.5': 46,
+};
+
+// ─── HELPERS ────────────────────────────────────────────────────────
+
+function getVerbalLabel(pct) {
+  if (pct <= 20) return 'Reactive';
+  if (pct <= 40) return 'Awakening';
+  if (pct <= 60) return 'Practicing';
+  if (pct <= 80) return 'Consistent';
+  return 'Mastered';
+}
+
+function getTerritoryArcNarrative(territory, score) {
+  const n = TERRITORY_ARC_NARRATIVES[territory];
+  if (score <= 40) return n.critical;
+  if (score <= 60) return n.building;
+  if (score <= 80) return n.strong;
+  return n.mastery;
+}
+
+function getBenchmarkContext(dimId, score) {
+  const b = DIMENSION_BENCHMARKS[dimId];
+  if (score >= b.p75) return { narrative: 'Above typical for Series A CEOs' };
+  if (score >= b.p50) return { narrative: 'Stronger than most at this stage' };
+  if (score >= b.p25) return { narrative: 'Common among Series A CEOs' };
+  return { narrative: 'A clear development opportunity' };
+}
+
+function analyzeTerritoryShape(dims, label) {
+  const sorted = [...dims].sort((a, b) => b.percentage - a.percentage);
+  const highest = sorted[0], lowest = sorted[sorted.length - 1];
+  const range = highest.percentage - lowest.percentage;
+  let shape = range < 15 ? 'balanced' : range <= 30 ? 'developing' : 'spiky';
+  let narrative;
+  if (shape === 'balanced') narrative = `Your ${label} profile is balanced — dimensions are developing at a similar pace. ${highest.name} leads slightly, with ${lowest.name} closest behind.`;
+  else if (shape === 'developing') narrative = `Your ${label} profile is developing unevenly. ${highest.name} is your anchor at ${highest.percentage}%, while ${lowest.name} at ${lowest.percentage}% is holding the territory back.`;
+  else narrative = `Your ${label} profile is spiky — a ${highest.percentage - lowest.percentage}-point gap between ${highest.name} and ${lowest.name}. The strength in ${highest.name} isn't translating to ${lowest.name} yet.`;
+  return { shape, range: Math.round(range), anchor: highest, bottleneck: lowest, narrative };
+}
+
+function getDimPriorities(scores) {
+  const sorted = [...scores].sort((a, b) => a.score - b.score);
+  const result = {};
+  sorted.slice(0, 3).forEach(d => { result[d.id] = 'growth'; });
+  sorted.slice(-3).forEach(d => { result[d.id] = 'strength'; });
+  sorted.forEach(d => {
+    if (!result[d.id] && d.score >= 45 && d.score <= 60) result[d.id] = 'quick-win';
+  });
+  return result;
+}
+
+function getQuarterlyProjection(score) {
+  const quarters = [{ q: 'Q1', score, isNow: true }];
+  let prev = score;
+  for (let i = 2; i <= 4; i++) {
+    const growth = Math.round((100 - prev) * 0.2);
+    const next = Math.min(100, prev + Math.max(growth, 2));
+    quarters.push({ q: `Q${i}`, score: next, isNow: false });
+    prev = next;
+  }
+  return quarters;
+}
+
+function getScoreInsight(dimId, score) {
+  const d = SCORE_INSIGHTS[dimId];
+  if (!d) return '';
+  if (score < 40) return d.low;
+  if (score < 65) return d.mid;
+  return d.high;
+}
+
+// ─── BUILD DATA ─────────────────────────────────────────────────────
+
+const enrichedDims = DIMENSIONS.map(d => ({
+  ...d,
+  score: SAMPLE_SCORES[d.id],
+  label: getVerbalLabel(SAMPLE_SCORES[d.id]),
+}));
+
+const territories = ['leading_yourself', 'leading_teams', 'leading_organizations'];
+
+const territoryScores = territories.map(t => {
+  const dims = enrichedDims.filter(d => d.territory === t);
+  const avg = dims.reduce((s, d) => s + d.score, 0) / dims.length;
+  return { territory: t, score: Math.round(avg), verbalLabel: getVerbalLabel(avg) };
+});
+
+const priorities = getDimPriorities(enrichedDims);
+
+// ─── SVG HELPERS ────────────────────────────────────────────────────
+
+function polarToCartesian(cx, cy, r, angleDeg) {
+  const rad = ((angleDeg - 90) * Math.PI) / 180;
+  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+function pentagonPoints(cx, cy, r) {
+  return Array.from({ length: 5 }, (_, i) => {
+    const p = polarToCartesian(cx, cy, r, i * 72);
+    return `${p.x},${p.y}`;
+  }).join(' ');
+}
+
+function scoreArcSVG(value, size, strokeW) {
+  const r = (size - strokeW) / 2;
+  const circ = 2 * Math.PI * r;
+  const offset = circ - (value / 100) * circ;
+  const c = size / 2;
+  const fs = size * 0.26;
+
+  return `
+    <div class="score-arc">
+      <div class="score-arc-wrap" style="width:${size}px;height:${size}px">
+        <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+          <circle class="track" cx="${c}" cy="${c}" r="${r}" fill="none" stroke-width="${strokeW}"/>
+          <circle class="progress" cx="${c}" cy="${c}" r="${r}" fill="none"
+            stroke="var(--text)" stroke-width="${strokeW}" stroke-linecap="round"
+            stroke-dasharray="${circ}" stroke-dashoffset="${offset}"/>
+        </svg>
+        <div class="arc-center" style="font-size:${fs}px">${Math.round(value)}</div>
+      </div>
+    </div>`;
+}
+
+function radarSVG(dims, isAccent) {
+  const VB = 300, cx = 150, cy = 150, maxR = 100;
+  const strokeColor = 'var(--text)';
+  const fillColor = isAccent ? 'rgba(212,97,74,0.08)' : 'rgba(26,26,26,0.06)';
+  const lineColor = isAccent ? 'var(--accent)' : 'var(--text)';
+
+  let svg = `<svg viewBox="0 0 ${VB} ${VB}" preserveAspectRatio="xMidYMid meet" style="overflow:visible">`;
+
+  // Dashed concentric pentagons
+  for (let i = 1; i <= 5; i++) {
+    const r = (i / 5) * maxR;
+    svg += `<polygon points="${pentagonPoints(cx, cy, r)}" fill="none"
+      stroke="rgba(26,26,26,0.08)" stroke-width="0.5" stroke-dasharray="${i < 5 ? '4 4' : '0'}"/>`;
+  }
+
+  // Dashed axis lines
+  for (let i = 0; i < 5; i++) {
+    const p = polarToCartesian(cx, cy, maxR, i * 72);
+    svg += `<line x1="${cx}" y1="${cy}" x2="${p.x}" y2="${p.y}"
+      stroke="rgba(26,26,26,0.06)" stroke-width="0.5" stroke-dasharray="4 4"/>`;
+  }
+
+  // Score polygon
+  const pts = dims.map((d, i) => {
+    const r = (d.percentage / 100) * maxR;
+    return polarToCartesian(cx, cy, r, i * 72);
+  });
+  svg += `<polygon points="${pts.map(p => `${p.x},${p.y}`).join(' ')}"
+    fill="${fillColor}" stroke="${lineColor}" stroke-width="1" stroke-linejoin="round"/>`;
+
+  // Data dots
+  pts.forEach((p, i) => {
+    const isLowest = dims[i].percentage === Math.min(...dims.map(d => d.percentage));
+    if (isLowest && isAccent) {
+      svg += `<circle cx="${p.x}" cy="${p.y}" r="5" fill="var(--accent)" opacity="0.6"/>`;
+      svg += `<circle cx="${p.x}" cy="${p.y}" r="2.5" fill="var(--accent)"/>`;
+    } else {
+      svg += `<circle cx="${p.x}" cy="${p.y}" r="2.5" fill="${lineColor}"/>`;
+    }
+  });
+
+  // Labels (monospace)
+  dims.forEach((d, i) => {
+    const angle = i * 72;
+    const lp = polarToCartesian(cx, cy, maxR + 18, angle);
+    const norm = ((angle - 90 + 360) % 360);
+    let anchor = 'middle';
+    if (norm > 15 && norm < 165) anchor = 'start';
+    else if (norm > 195 && norm < 345) anchor = 'end';
+    const short = d.name.length > 16 ? d.name.split(' ').slice(0, 2).join(' ') : d.name;
+    svg += `<text x="${lp.x}" y="${lp.y}" text-anchor="${anchor}" dominant-baseline="central"
+      fill="rgba(26,26,26,0.4)" font-size="9" font-weight="400"
+      font-family="'Space Mono', monospace">${short}</text>`;
+  });
+
+  svg += '</svg>';
+  return svg;
+}
+
+// ─── RENDER ─────────────────────────────────────────────────────────
+
+function render() {
+  const root = document.getElementById('deep-dive');
+  let html = '';
+
+  // ══════════════════════════════════════════════════════════════════
+  // SECTION 1: Territory Overview — 3-column grid
+  // ══════════════════════════════════════════════════════════════════
+
+  html += `<div>
+    <div class="section-label" style="margin-bottom:24px">Three Territories</div>
+    <div class="territory-grid">`;
+
+  territoryScores.forEach(ts => {
+    const cfg = TERRITORY_CONFIG[ts.territory];
+    const narrative = getTerritoryArcNarrative(ts.territory, ts.score);
+    html += `
+      <div>
+        <div class="arc-path" style="margin-bottom:20px">${cfg.arcDescription}</div>
+        <h3 style="margin-bottom:4px">${cfg.displayLabel}</h3>
+        <div style="display:flex;align-items:flex-end;gap:12px;margin:20px 0 24px">
+          <span class="score-mono">${ts.score}</span>
+          <span class="data-label" style="margin-bottom:4px">${ts.verbalLabel}</span>
+        </div>
+        <p class="narrative-sm">${narrative}</p>
+      </div>`;
+  });
+
+  html += '</div></div>';
+
+  // ══════════════════════════════════════════════════════════════════
+  // SECTION 2: Territory Deep Dives (radar + bars)
+  // ══════════════════════════════════════════════════════════════════
+
+  html += '<div class="section-gap">';
+
+  territories.forEach((t, ti) => {
+    const cfg = TERRITORY_CONFIG[t];
+    const ts = territoryScores.find(x => x.territory === t);
+    const dims = enrichedDims.filter(d => d.territory === t);
+    const radarDims = dims.map(d => ({ name: d.name, percentage: d.score }));
+    const shape = analyzeTerritoryShape(radarDims, cfg.displayLabel);
+    const shapeLabel = shape.shape === 'balanced' ? 'Balanced Profile'
+      : shape.shape === 'developing' ? 'Developing Profile' : 'Spiky Profile';
+
+    html += `
+      <div class="territory-block">
+        <div class="territory-head">
+          <div>
+            <div class="section-label" style="margin-bottom:8px">${cfg.arcDescription}</div>
+            <h2>${cfg.displayLabel}</h2>
+          </div>
+          <div style="text-align:right">
+            <span class="score-mono-lg">${ts.score}</span>
+            <div class="data-label" style="margin-top:4px">${ts.verbalLabel} capacity</div>
+          </div>
+        </div>
+
+        <div class="radar-wrap">
+          <div class="radar-svg-col">
+            ${radarSVG(radarDims, ti === 0)}
+          </div>
+          <div class="radar-text-col">
+            <div class="data-label" style="margin-bottom:12px">${shapeLabel}</div>
+            <p class="narrative" style="margin-bottom:20px">${shape.narrative}</p>
+            <div class="stat-grid">
+              <div class="stat-item">
+                <div class="stat-title">Anchor</div>
+                <div class="stat-value">${shape.anchor.name}, ${shape.anchor.percentage}%</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-title">Bottleneck</div>
+                <div class="stat-value">${shape.bottleneck.name}, ${shape.bottleneck.percentage}%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:40px" class="item-gap">
+          ${dims.map(dim => {
+            const bench = DIMENSION_BENCHMARKS[dim.id];
+            const benchCtx = getBenchmarkContext(dim.id, dim.score);
+            const isLow = dim.score < 40;
+            return `
+              <div>
+                <div class="flex-between" style="margin-bottom:8px">
+                  <div class="flex-start">
+                    <span class="bar-name" style="width:auto">${dim.name}</span>
+                    ${isLow ? '<span class="dot accent" style="width:5px;height:5px"></span>' : ''}
+                  </div>
+                  <span class="score-mono-sm">${dim.score}%</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill${isLow ? ' accent' : ''}" style="width:${Math.max(1, dim.score)}%"></div>
+                </div>
+                <div class="flex-between" style="margin-top:6px">
+                  <span class="bar-meta">Typical: ${bench.p25}–${bench.p75}%</span>
+                  <span class="bar-meta">${benchCtx.narrative}</span>
+                </div>
+              </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+  });
+
+  html += '</div>';
+
+  // ══════════════════════════════════════════════════════════════════
+  // SECTION 3: 15 Dimensions Heatmap
+  // ══════════════════════════════════════════════════════════════════
+
+  html += `
+    <div>
+      <div class="section-label" style="margin-bottom:8px">All Dimensions</div>
+      <h2 style="margin-bottom:32px">15 Dimensions</h2>
+      <div class="section-gap">`;
+
+  territories.forEach(t => {
+    const cfg = TERRITORY_CONFIG[t];
+    const dims = enrichedDims.filter(d => d.territory === t);
+
+    html += `
+      <div>
+        <div class="data-label" style="margin-bottom:12px">${cfg.displayLabel}</div>
+        <div>
+          ${dims.map(d => {
+            const opacity = 0.15 + (d.score / 100) * 0.85;
+            return `
+              <div class="heat-row">
+                <div class="heat-name">${d.name}</div>
+                <div class="heat-bar-track">
+                  <div class="heat-bar-fill" style="width:${d.score}%;background:rgba(26,26,26,${opacity})"></div>
+                </div>
+                <div class="heat-values">
+                  <span class="heat-pct">${d.score}%</span>
+                  <span class="heat-label">${d.label}</span>
+                </div>
+              </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+  });
+
+  html += `
+        <div class="legend-row">
+          <span class="legend-item">0–20% Reactive</span>
+          <span class="legend-item">21–40% Awakening</span>
+          <span class="legend-item">41–60% Practicing</span>
+          <span class="legend-item">61–80% Consistent</span>
+          <span class="legend-item">81–100% Mastered</span>
+        </div>
+      </div>
+    </div>`;
+
+  // ══════════════════════════════════════════════════════════════════
+  // SECTION 4: Dimension Details (priority + quarterly + insight)
+  // ══════════════════════════════════════════════════════════════════
+
+  territories.forEach(t => {
+    const cfg = TERRITORY_CONFIG[t];
+    const ts = territoryScores.find(x => x.territory === t);
+    const dims = enrichedDims.filter(d => d.territory === t);
+
+    html += `
+      <div>
+        <div class="flex-start" style="gap:16px;margin-bottom:32px">
+          ${scoreArcSVG(ts.score, 52, 2.5)}
+          <div>
+            <h3 style="font-size:18px">${cfg.displayLabel}</h3>
+            <div class="data-label">${ts.verbalLabel} · ${ts.score}% capacity</div>
+          </div>
+        </div>
+
+        <div>
+          ${dims.map(dim => {
+            const priority = priorities[dim.id];
+            const insight = getScoreInsight(dim.id, dim.score);
+            const quarters = getQuarterlyProjection(dim.score);
+            const isLow = dim.score < 40;
+
+            let badgeHTML = '';
+            if (priority === 'growth') badgeHTML = '<span class="badge accent-badge">Growth Area</span>';
+            else if (priority === 'strength') badgeHTML = '<span class="badge strength-badge">Strength</span>';
+            else if (priority === 'quick-win') badgeHTML = '<span class="badge">Near Breakthrough</span>';
+
+            const qHTML = quarters.map((qd, qi) => {
+              const vLabel = getVerbalLabel(qd.score);
+              const delta = qi > 0 ? qd.score - quarters[qi - 1].score : 0;
+
+              if (qd.isNow) {
+                return `<div class="q-cell q-now">
+                  <div class="q-cell-label" style="opacity:0.6">Q1 — Now</div>
+                  <div class="q-cell-score">${qd.score}%</div>
+                  <div class="q-cell-verbal" style="opacity:0.4">${vLabel}</div>
+                </div>`;
+              }
+
+              const fade = qi === 1 ? 0.3 : qi === 2 ? 0.2 : 0.12;
+              const deltaHTML = delta > 0 ? `<div class="q-delta">+${delta}</div>` : '';
+
+              return `<div class="q-cell q-future" style="border-color:rgba(26,26,26,${fade})">
+                <div class="q-cell-label" style="opacity:${fade}">${qd.q}</div>
+                <div class="q-cell-score" style="opacity:${fade}">${qd.score}%</div>
+                <div class="q-cell-verbal" style="opacity:${fade * 0.7}">${vLabel}</div>
+                ${deltaHTML}
+              </div>`;
+            }).join('');
+
+            return `
+              <div class="dim-detail">
+                <div class="dim-detail-head">
+                  <div class="flex-start" style="flex-wrap:wrap;gap:10px">
+                    <span style="font-size:15px;font-weight:500">${dim.name}</span>
+                    ${badgeHTML}
+                  </div>
+                  <span class="score-mono-sm" style="font-size:18px">${dim.score}%</span>
+                </div>
+
+                <div class="dim-detail-bar">
+                  <div class="dim-detail-bar-fill" style="width:${Math.max(1, dim.score)}%;background:${isLow ? 'var(--accent)' : 'var(--text)'}"></div>
+                </div>
+
+                <div class="q-strip" style="margin-bottom:16px">
+                  ${qHTML}
+                </div>
+
+                <p class="narrative-sm">${insight}</p>
+              </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+  });
+
+  root.innerHTML = html;
+}
+
+render();
+</script>
+
+</body>
+</html>
