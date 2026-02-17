@@ -69,8 +69,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-[#F7F3ED]">
       {/* Desktop top bar */}
       <nav className="hidden md:block fixed top-0 left-0 right-0 z-50 bg-white border-b border-black/5">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/ceolab" className="flex items-center gap-2">
+        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-center relative">
+          <Link href="/ceolab" className="absolute left-6 flex items-center gap-2">
             <span className="text-lg font-bold text-black">nk</span>
             <span className="text-lg font-light text-black">CEO Lab</span>
           </Link>

@@ -1598,7 +1598,17 @@ export default function ResultsPage() {
       const subStatus = profile?.subscription_status || 'inactive'
       const isSubscribed = subStatus === 'active' || subStatus === 'trialing'
 
-      if (!isSubscribed) {
+      // Check if user has a completed assessment before gating
+      const { data: completedSession } = await supabase
+        .from('assessment_sessions')
+        .select('id')
+        .eq('ceo_id', user.id)
+        .eq('version', '4.0')
+        .not('completed_at', 'is', null)
+        .limit(1)
+        .maybeSingle()
+
+      if (!isSubscribed && !completedSession) {
         setPageState('locked')
         return
       }
