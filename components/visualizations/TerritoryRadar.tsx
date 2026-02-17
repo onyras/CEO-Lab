@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import type { Territory } from '@/types/assessment'
 
 const TERRITORY_COLORS: Record<Territory, string> = {
@@ -35,7 +35,7 @@ function buildPentagonPoints(cx: number, cy: number, radius: number): string {
   }).join(' ')
 }
 
-export function TerritoryRadar({ dimensions, territory }: TerritoryRadarProps) {
+export const TerritoryRadar = memo(function TerritoryRadar({ dimensions, territory }: TerritoryRadarProps) {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -149,4 +149,4 @@ export function TerritoryRadar({ dimensions, territory }: TerritoryRadarProps) {
       })}
     </svg>
   )
-}
+})

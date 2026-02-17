@@ -17,7 +17,7 @@ const TERRITORY_COLORS: Record<Territory, string> = {
 
 // ─── Types ────────────────────────────────────────────────────────
 
-type Phase = 'loading' | 'checkin' | 'submitting' | 'confirmation'
+type Phase = 'loading' | 'locked' | 'checkin' | 'submitting' | 'confirmation'
 
 interface WeeklyResponse {
   dimensionId: DimensionId
@@ -108,6 +108,21 @@ export default function WeeklyPulsePage() {
 
       if (authError || !user) {
         router.push('/auth')
+        return
+      }
+
+      // Check subscription
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('subscription_status')
+        .eq('id', user.id)
+        .single()
+
+      const subStatus = profile?.subscription_status || 'inactive'
+      const isSubscribed = subStatus === 'active' || subStatus === 'trialing'
+
+      if (!isSubscribed) {
+        setPhase('locked')
         return
       }
 
@@ -207,6 +222,39 @@ export default function WeeklyPulsePage() {
         <div className="flex flex-col items-center gap-4">
           <div className="h-8 w-8 border-2 border-black/20 border-t-black rounded-full animate-spin" />
           <p className="text-black/50 text-sm font-medium">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // ─── Locked ────────────────────────────────────────────────────
+
+  if (phase === 'locked') {
+    return (
+      <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6">
+        <div className="max-w-md w-full">
+          <div className="bg-black/[0.02] border border-black/5 rounded-2xl flex flex-col items-center justify-center py-12 px-6 text-center">
+            <svg
+              className="w-8 h-8 text-black/20 mb-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.5}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+              />
+            </svg>
+            <p className="text-sm text-black/40 mb-6">Subscribe to access weekly check-ins</p>
+            <a
+              href="/api/checkout"
+              className="inline-block bg-black text-white px-8 py-3.5 rounded-lg text-sm font-semibold hover:bg-black/90 transition-colors"
+            >
+              Subscribe &mdash; &euro;100/mo
+            </a>
+          </div>
         </div>
       </div>
     )

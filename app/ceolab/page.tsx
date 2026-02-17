@@ -12,6 +12,7 @@ import {
 } from '@/lib/report-content'
 import { AppShell } from '@/components/layout/AppShell'
 import { ScoreRing } from '@/components/visualizations/ScoreRing'
+import { LockedSection } from '@/components/ui/LockedSection'
 import type {
   FullResults,
   DimensionId,
@@ -219,94 +220,91 @@ function HookResultsBanner({ userId }: { userId?: string }) {
 }
 
 // ---------------------------------------------------------------------------
-// Free User View
+// Locked Dashboard View (registered but not subscribed, no assessment)
 // ---------------------------------------------------------------------------
 
-function FreeUserView({ userName, userId }: { userName: string; userId?: string }) {
+function LockedDashboardView({ userName, userId }: { userName: string; userId?: string }) {
   return (
     <AppShell>
       <div className="px-6 py-12">
         <div className="max-w-3xl mx-auto">
+          <div className="mb-8">
+            <p className="text-sm font-semibold tracking-widest uppercase text-black/40 mb-2">CEO Lab</p>
+            <h1 className="text-3xl md:text-4xl font-bold text-black tracking-tight">
+              Welcome, {userName}
+            </h1>
+          </div>
+
           <HookResultsBanner userId={userId} />
 
-          <div className="text-center mb-12">
-            <p className="text-sm font-semibold tracking-widest uppercase text-black/40 mb-6">CEO Lab</p>
-
-            <div className="flex justify-center mb-6">
-              <ScoreRing
-                value={0}
-                size={160}
-                strokeWidth={10}
-                color="rgba(0,0,0,0.08)"
-                trackColor="rgba(0,0,0,0.03)"
-                showValue={false}
-              />
-            </div>
-
-            <p className="text-6xl font-bold text-black/10 -mt-[108px] mb-[52px]">?</p>
-
-            <div className="flex justify-center gap-8 mb-10">
-              {[
-                { label: 'Leading Yourself', color: '#7FABC8' },
-                { label: 'Leading Teams', color: '#A6BEA4' },
-                { label: 'Leading Organizations', color: '#E08F6A' },
-              ].map((t) => (
-                <div key={t.label} className="flex flex-col items-center">
-                  <ScoreRing
-                    value={0}
-                    size={64}
-                    strokeWidth={5}
-                    color={`${t.color}20`}
-                    trackColor="rgba(0,0,0,0.03)"
-                    showValue={false}
-                  />
-                  <span className="text-[10px] text-black/30 mt-1.5 max-w-[80px] text-center leading-tight">{t.label}</span>
+          {/* Summary Strip — placeholder */}
+          <div className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="flex items-center gap-6">
+                <ScoreRing
+                  value={0}
+                  size={80}
+                  strokeWidth={6}
+                  color="rgba(0,0,0,0.08)"
+                  trackColor="rgba(0,0,0,0.03)"
+                  showValue={false}
+                />
+                <div>
+                  <p className="text-xs text-black/40 uppercase tracking-wider mb-1">CLMI Score</p>
+                  <p className="text-2xl font-bold text-black/15">?</p>
                 </div>
-              ))}
+              </div>
+              <div className="flex items-center gap-6">
+                {[
+                  { label: 'Leading Yourself', color: '#7FABC8' },
+                  { label: 'Leading Teams', color: '#A6BEA4' },
+                  { label: 'Leading Organizations', color: '#E08F6A' },
+                ].map((t) => (
+                  <div key={t.label} className="flex flex-col items-center">
+                    <ScoreRing
+                      value={0}
+                      size={48}
+                      strokeWidth={4}
+                      color={`${t.color}20`}
+                      trackColor="rgba(0,0,0,0.03)"
+                      showValue={false}
+                    />
+                    <span className="text-[10px] text-black/30 mt-1 max-w-[64px] text-center leading-tight">{t.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          <div className="text-center mb-10">
-            <h1 className="text-3xl md:text-4xl font-bold text-black tracking-tight mb-3">
-              Unlock your leadership profile
-            </h1>
-            <p className="text-base text-black/50 max-w-lg mx-auto">
-              The Konstantin Method measures 15 dimensions of leadership maturity. See where you lead from, spot your blind spots, and know exactly what to work on.
-            </p>
-          </div>
+          {/* Weekly Check-in — locked */}
+          <LockedSection title="Subscribe to access weekly check-ins" className="mb-6" />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-            {[
-              {
-                title: 'See where you lead from',
-                desc: 'Your CLMI score across three territories reveals your leadership center of gravity.',
-              },
-              {
-                title: 'Spot blind spots',
-                desc: 'Mirror feedback from colleagues shows you what you can\'t see yourself.',
-              },
-              {
-                title: 'Know what to work on',
-                desc: 'Priority dimensions and framework prescriptions tell you exactly where to focus.',
-              },
-            ].map((card) => (
-              <div key={card.title} className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-                <h3 className="text-sm font-semibold text-black mb-1.5">{card.title}</h3>
-                <p className="text-sm text-black/50 leading-relaxed">{card.desc}</p>
-              </div>
-            ))}
-          </div>
+          {/* Focus Dimensions — locked */}
+          <LockedSection title="Subscribe to choose your focus dimensions" className="mb-6" />
 
-          <div className="bg-white rounded-lg p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
+          {/* Quick Links */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <a
-              href="/api/checkout"
-              className="inline-block bg-black text-white px-10 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors mb-3"
+              href="/ceolab/results"
+              className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_2px_6px_rgba(0,0,0,0.08)] transition-shadow"
             >
-              Subscribe — &euro;100/month
+              <p className="text-sm font-semibold text-black mb-1">Full Results</p>
+              <p className="text-xs text-black/40">All 15 dimensions, archetypes, and more</p>
             </a>
-            <p className="text-xs text-black/30">
-              Full assessment, weekly accountability, mirror feedback, and a personalized roadmap.
-            </p>
+            <a
+              href="/assessment/mirror"
+              className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_2px_6px_rgba(0,0,0,0.08)] transition-shadow"
+            >
+              <p className="text-sm font-semibold text-black mb-1">Mirror Check</p>
+              <p className="text-xs text-black/40">Invite a colleague to reveal blind spots</p>
+            </a>
+            <a
+              href="/ceolab/results#growth-plan"
+              className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_2px_6px_rgba(0,0,0,0.08)] transition-shadow"
+            >
+              <p className="text-sm font-semibold text-black mb-1">Frameworks</p>
+              <p className="text-xs text-black/40">Your personalized growth plan</p>
+            </a>
           </div>
         </div>
       </div>
@@ -656,7 +654,7 @@ function CompleteHomeView({ data }: { data: HomeData }) {
 // Main Page Component
 // ---------------------------------------------------------------------------
 
-type CeoLabState = 'loading' | 'error' | 'free' | 'baseline-pending' | 'baseline-in-progress' | 'complete'
+type CeoLabState = 'loading' | 'error' | 'dashboard-locked' | 'baseline-pending' | 'baseline-in-progress' | 'complete'
 
 export default function CeoLabPage() {
   const router = useRouter()
@@ -695,14 +693,10 @@ export default function CeoLabPage() {
         || 'CEO'
       setUserName(name)
 
-      const isSubscribed = profile?.subscription_status === 'active'
+      const subStatus = profile?.subscription_status || 'inactive'
+      const isSubscribed = subStatus === 'active' || subStatus === 'trialing'
 
-      if (!isSubscribed) {
-        setPageState('free')
-        return
-      }
-
-      // Check for completed session
+      // Check for completed session first — show results regardless of subscription
       const { data: completedSession } = await supabase
         .from('assessment_sessions')
         .select('id, completed_at, stage_reached, clmi, bsi')
@@ -714,6 +708,12 @@ export default function CeoLabPage() {
         .maybeSingle()
 
       if (!completedSession) {
+        // No completed assessment — check subscription for next steps
+        if (!isSubscribed) {
+          setPageState('dashboard-locked')
+          return
+        }
+
         // Check for in-progress session
         const { data: latestSession } = await supabase
           .from('assessment_sessions')
@@ -835,7 +835,7 @@ export default function CeoLabPage() {
 
   if (pageState === 'loading') return <LoadingSkeleton />
   if (pageState === 'error') return <ErrorState message={error || 'Something went wrong'} onRetry={loadPage} />
-  if (pageState === 'free') return <FreeUserView userName={userName} userId={userId} />
+  if (pageState === 'dashboard-locked') return <LockedDashboardView userName={userName} userId={userId} />
   if (pageState === 'baseline-pending') return <BaselinePendingView userName={userName} userId={userId} />
   if (pageState === 'baseline-in-progress') return <BaselineInProgressView userName={userName} stageReached={stageReached} />
   if (pageState === 'complete' && homeData) return <CompleteHomeView data={homeData} />

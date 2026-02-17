@@ -15,8 +15,10 @@ import {
   BLIND_SPOT_CLOSING,
   CLOSING_TEXT,
 } from '@/lib/report-content'
+import { createClient } from '@/lib/supabase-browser'
 import { AppShell } from '@/components/layout/AppShell'
 import { ScoreRing } from '@/components/visualizations/ScoreRing'
+import { LockedSection } from '@/components/ui/LockedSection'
 import { DimensionHeatmap } from '@/components/visualizations/DimensionHeatmap'
 import { ArchetypeBadge } from '@/components/visualizations/ArchetypeBadge'
 import { MirrorDotPlot } from '@/components/visualizations/MirrorDotPlot'
@@ -1570,7 +1572,7 @@ function ErrorState({ message, onRetry }: { message: string; onRetry?: () => voi
 // ---------------------------------------------------------------------------
 
 export default function ResultsPage() {
-  const [pageState, setPageState] = useState<'loading' | 'error' | 'ready'>('loading')
+  const [pageState, setPageState] = useState<'loading' | 'error' | 'locked' | 'ready'>('loading')
   const [error, setError] = useState<string | null>(null)
   const [results, setResults] = useState<FullResults | null>(null)
 
@@ -1578,6 +1580,28 @@ export default function ResultsPage() {
     try {
       setPageState('loading')
       setError(null)
+
+      const supabase = createClient()
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+      if (authError || !user) {
+        window.location.href = '/auth'
+        return
+      }
+
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('subscription_status')
+        .eq('id', user.id)
+        .single()
+
+      const subStatus = profile?.subscription_status || 'inactive'
+      const isSubscribed = subStatus === 'active' || subStatus === 'trialing'
+
+      if (!isSubscribed) {
+        setPageState('locked')
+        return
+      }
 
       const response = await fetch('/api/v4/results')
 
@@ -1605,6 +1629,19 @@ export default function ResultsPage() {
 
   if (pageState === 'loading') return <LoadingSkeleton />
   if (pageState === 'error') return <ErrorState message={error || 'Something went wrong'} onRetry={loadResults} />
+  if (pageState === 'locked') {
+    return (
+      <AppShell>
+        <div className="max-w-4xl mx-auto px-6 py-16">
+          <div className="text-center mb-8">
+            <p className="text-xs font-medium text-black/40 uppercase tracking-wider mb-2">CEO Lab Assessment</p>
+            <h1 className="text-3xl md:text-4xl font-bold text-black">Your Leadership Report</h1>
+          </div>
+          <LockedSection title="Subscribe to see your full leadership report" />
+        </div>
+      </AppShell>
+    )
+  }
   if (pageState === 'ready' && results) {
     return (
       <AppShell>

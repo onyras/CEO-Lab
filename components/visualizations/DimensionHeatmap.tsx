@@ -1,5 +1,7 @@
 'use client'
 
+import { memo } from 'react'
+
 const TERRITORY_CONFIG = {
   leading_yourself: { label: 'Leading Yourself', accent: '#7FABC8' },
   leading_teams: { label: 'Leading Teams', accent: '#A6BEA4' },
@@ -23,7 +25,7 @@ interface DimensionHeatmapProps {
   }[]
 }
 
-export function DimensionHeatmap({ dimensions }: DimensionHeatmapProps) {
+export const DimensionHeatmap = memo(function DimensionHeatmap({ dimensions }: DimensionHeatmapProps) {
   const territories: Territory[] = [
     'leading_yourself',
     'leading_teams',
@@ -112,4 +114,4 @@ export function DimensionHeatmap({ dimensions }: DimensionHeatmapProps) {
       </div>
     </div>
   )
-}
+})

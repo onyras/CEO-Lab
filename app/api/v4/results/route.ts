@@ -220,11 +220,15 @@ export async function GET(request: Request) {
       ...(blindSpotData?.directional_bsi != null && { directionalBsi: Number(blindSpotData.directional_bsi) }),
     }
 
-    // STEP 11: Return response
-    return NextResponse.json({
-      success: true,
-      results,
-    })
+    // STEP 11: Return response with caching
+    return NextResponse.json(
+      { success: true, results },
+      {
+        headers: {
+          'Cache-Control': 'private, s-maxage=300, stale-while-revalidate=600',
+        },
+      }
+    )
 
   } catch (error: any) {
     return NextResponse.json(

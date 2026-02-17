@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 
 interface ScoreRingProps {
   value: number
@@ -15,7 +15,7 @@ interface ScoreRingProps {
   className?: string
 }
 
-export function ScoreRing({
+export const ScoreRing = memo(function ScoreRing({
   value,
   size = 120,
   strokeWidth = 8,
@@ -105,4 +105,4 @@ export function ScoreRing({
       )}
     </div>
   )
-}
+})

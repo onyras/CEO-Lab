@@ -1,5 +1,7 @@
 'use client'
 
+import { memo } from 'react'
+
 const SEVERITY_COLORS = {
   aligned: '#D1D5DB',
   mild: '#FFB74D',
@@ -20,7 +22,7 @@ interface MirrorDotPlotProps {
   bsiLabel?: string
 }
 
-export function MirrorDotPlot({ gaps, bsi, bsiLabel }: MirrorDotPlotProps) {
+export const MirrorDotPlot = memo(function MirrorDotPlot({ gaps, bsi, bsiLabel }: MirrorDotPlotProps) {
   const plotWidth = 400
   const plotPadding = 16
 
@@ -161,4 +163,4 @@ export function MirrorDotPlot({ gaps, bsi, bsiLabel }: MirrorDotPlotProps) {
       </div>
     </div>
   )
-}
+})

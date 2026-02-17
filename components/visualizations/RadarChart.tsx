@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import type { Territory } from '@/types/assessment'
 
 interface RadarChartProps {
@@ -57,7 +57,7 @@ function buildPolygonPoints(cx: number, cy: number, radius: number, count: numbe
   }).join(' ')
 }
 
-export function RadarChart({ dimensions, className = '' }: RadarChartProps) {
+export const RadarChart = memo(function RadarChart({ dimensions, className = '' }: RadarChartProps) {
   const [mounted, setMounted] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -239,4 +239,4 @@ export function RadarChart({ dimensions, className = '' }: RadarChartProps) {
       </svg>
     </div>
   )
-}
+})

@@ -44,12 +44,19 @@ export async function GET() {
       data.sub_dimension_3 as DimensionId,
     ]
 
-    return NextResponse.json({
-      success: true,
-      dimensions,
-      quarter: data.quarter,
-      year: data.year,
-    })
+    return NextResponse.json(
+      {
+        success: true,
+        dimensions,
+        quarter: data.quarter,
+        year: data.year,
+      },
+      {
+        headers: {
+          'Cache-Control': 'private, s-maxage=300, stale-while-revalidate=600',
+        },
+      }
+    )
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 })
   }

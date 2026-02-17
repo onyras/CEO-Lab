@@ -1,7 +1,12 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import dynamic from 'next/dynamic';
 import './globals.css';
-import { FeedbackWidget } from '@/components/shared/FeedbackWidget';
+
+const FeedbackWidget = dynamic(
+  () => import('@/components/shared/FeedbackWidget').then(mod => mod.FeedbackWidget),
+  { ssr: false }
+);
 
 const inter = Inter({
   subsets: ['latin'],

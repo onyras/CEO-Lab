@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import type { Territory } from '@/types/assessment'
 
 interface LeadershipCircleProps {
@@ -79,7 +79,7 @@ function arcPath(
   ].join(' ')
 }
 
-export function LeadershipCircle({ dimensions, clmiScore, className = '' }: LeadershipCircleProps) {
+export const LeadershipCircle = memo(function LeadershipCircle({ dimensions, clmiScore, className = '' }: LeadershipCircleProps) {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -344,4 +344,4 @@ export function LeadershipCircle({ dimensions, clmiScore, className = '' }: Lead
       </svg>
     </div>
   )
-}
+})
