@@ -1,6 +1,6 @@
 # CEO Lab - Database Schema
 
-**Last Updated:** 2026-02-06
+**Last Updated:** 2026-02-17
 **Source:** Extracted from MVP_BUILD_PLAN.md and implementation files
 
 ---
@@ -30,6 +30,7 @@ stripe_subscription_id: string
 whatsapp_phone: text
 whatsapp_opted_in: boolean default false
 whatsapp_timezone: text default 'UTC'
+reveal_seen: boolean default false  -- Added in migration 007
 ```
 
 ### 3. `hook_assessments`

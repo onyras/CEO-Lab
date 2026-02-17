@@ -1,14 +1,14 @@
 # CEO Lab - Roadmap
 
-**Last Updated:** 2026-02-06
+**Last Updated:** 2026-02-17
 
 ---
 
 ## Current Status
 
-**Phase:** V4 code rebuild complete → Ready for testing
+**Phase:** V4 code rebuild + UX overhaul complete → Ready for testing
 **Launch Target:** After pilot validation (12-week protocol)
-**Next Milestone:** Run database migration, verify full flow end-to-end, begin pilot
+**Next Milestone:** Run migrations (005 + 007), verify full flow end-to-end, begin pilot
 
 ---
 
@@ -40,6 +40,14 @@
 - [x] Creative/reactive tension display (side-by-side high/low indicators)
 - [x] Shape analysis helper (`lib/shape-analysis.ts`)
 - [x] TerritoryRadar component (`components/visualizations/TerritoryRadar.tsx`)
+
+### UX/Flow Overhaul (2026-02-17)
+- [x] **Foundation** — Shared `lib/supabase-server.ts` (replaces 20-line boilerplate in 6 routes), migration `007_ux_overhaul.sql` (reveal_seen column + weekly_pulse index), focus dimensions API (`/api/v4/focus`), streak utility (`lib/streaks.ts`)
+- [x] **Weekly Check-In Loop** — Accountability setup writes focus dims to DB via `/api/v4/focus`. Weekly check-in filters to 3 focus dimensions (3 questions, not 15). Redirects to setup if no focus set.
+- [x] **Home Screen Redesign** — Full results view extracted to `/ceolab/results` (7 tabs). Home page (`/ceolab`) replaced with engagement view: CLMI summary strip, weekly CTA, focus dimension cards with trends, quick links. AppShell nav updated: Home + Results.
+- [x] **First-Time Results Reveal** — 5-step guided walkthrough at `/ceolab/reveal`: animated score ring, archetype intro, territory breakdown, priority dimensions, CTA to accountability setup. Reveal-seen API (`/api/v4/reveal-seen`). Auto-redirects first-time users.
+- [x] **Hook Results Before Auth** — New results page at `/assessment/hook/results` showing territory scores, archetype hint, framework teaser before requiring auth. Hook assessment now redirects here instead of directly to `/auth`.
+- [x] **Enhancements** — "If I Were Your Coach" coaching interventions in Growth Plan tab (`lib/coaching-interventions.ts`). Peer benchmarks on Deep Dive dimension bars (`lib/benchmarks.ts`). Auth page brand alignment (beige `#F7F3ED`, black, matching AppShell style).
 
 ### Pre-V4
 - [x] Coupon code system (Stripe promotion codes)
@@ -76,12 +84,12 @@
 - [ ] WhatsApp automation (Phase 2 delivery)
 - [ ] AI-generated monthly reports
 - [ ] Quarterly deep-dive reports
-- [ ] Archetype reveal experience
+- [x] Archetype reveal experience (built in UX overhaul, Batch D)
 - [ ] Archetype evolution tracking
 
 **Later:**
 - [ ] Decision Friction Index
-- [ ] Benchmark Distribution (peer comparison)
+- [x] Benchmark Distribution — hardcoded peer benchmarks implemented (lib/benchmarks.ts)
 - [ ] Leadership Wrapped (Spotify-style annual)
 - [ ] Leverage Matrix
 - [ ] Annual comprehensive report
@@ -104,7 +112,7 @@
 
 1. **Niko must review V4 questions** before code rebuild starts
 2. **Dimension names must be locked** (currently 3 naming systems — see REBUILD_PLAN in archive)
-3. **Peer benchmark decision** needed (hardcode vs. real data vs. coaching data)
+3. ~~**Peer benchmark decision** needed~~ → Resolved: hardcoded benchmarks based on coaching experience (lib/benchmarks.ts)
 
 ---
 

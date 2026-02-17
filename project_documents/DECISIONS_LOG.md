@@ -298,6 +298,25 @@
 **Rationale:** Inspired by Leadership Circle Profile. Raw percentages meaningless to CEOs. Capacity framing implies potential exists. Shape analysis adds diagnostic value per territory. Creative/reactive duality helps CEOs see themselves in descriptions.
 **Impact:** New verbal labels (Reactive/Awakening/Practicing/Consistent/Mastered), new TerritoryRadar component, new shape-analysis helper, creative/reactive section replaces single-sided MEANING. No scoring math changes.
 
+### 2026-02-17: UX/Flow Overhaul
+**Decision:** Restructure frontend around three moments: the reveal (first-time results), the nudge (weekly check-in), and the progress (ongoing dashboard). Desktop only.
+**Rationale:**
+- Product dumped 7 tabs of data after a 40-minute assessment — no narrative, no guidance
+- Weekly check-in (core retention mechanic) was buried and asked 15 questions instead of focused 3
+- No first-time experience — users went straight from assessment completion to raw data
+- Hook assessment sent users to auth with no preview of value
+**Key decisions:**
+- First-time reveal: 5-step guided walkthrough (score → archetype → territories → focus → next steps)
+- Weekly check-in filtered to 3 focus dimensions only (from 15), stored in DB via `/api/v4/focus`
+- Home page became engagement hub (CLMI strip, weekly CTA, focus cards, quick links)
+- Full results moved to `/ceolab/results` (all 7 tabs preserved, Archetypes promoted to #2)
+- Hook results shown pre-auth at `/assessment/hook/results` with archetype hint + framework teaser
+- Peer benchmarks hardcoded from coaching experience (resolved blocking item #3)
+- "If I Were Your Coach" section added to Growth Plan tab (3 interventions for lowest-scoring dims)
+- Shared `lib/supabase-server.ts` extracted (DRY: 6 API routes shared 20-line boilerplate)
+**Files:** 10 new, 8 modified, 23 files total. Migration 007 adds `reveal_seen` to `user_profiles`.
+**Impact:** Transforms product from data dump to guided experience. Establishes weekly retention loop. Creates pre-auth conversion moment for hook users.
+
 ---
 
 **How to use this file:**

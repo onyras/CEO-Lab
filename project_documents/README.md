@@ -1,6 +1,6 @@
 # CEO Lab - Project Documents Index
 
-**Last Updated:** 2026-02-06
+**Last Updated:** 2026-02-17
 
 Where everything lives. Update this file when the structure changes.
 

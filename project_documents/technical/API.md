@@ -1,6 +1,6 @@
 # CEO Lab - API Endpoints
 
-**Last Updated:** 2026-02-06
+**Last Updated:** 2026-02-17
 **Source:** Extracted from MVP_BUILD_PLAN.md and implementation files
 
 ---
@@ -127,10 +127,44 @@ Handle Stripe webhook events:
 
 ## Focus & Check-In Endpoints
 
-### POST `/api/focus/save`
+### GET `/api/v4/focus`
+Load current quarter's focus dimensions for authenticated user.
+
+**Response:**
+```json
+{
+  "success": true,
+  "dimensions": ["LY.1", "LT.2", "LO.3"],
+  "quarter": 1,
+  "year": 2026
+}
+```
+
+### POST `/api/v4/focus`
+Upsert focus dimensions for current quarter.
+
+**Request:**
+```json
+{
+  "dimensions": ["LY.1", "LT.2", "LO.3"]
+}
+```
+
+### GET `/api/v4/reveal-seen`
+Check if user has seen the first-time results reveal.
+
+**Response:**
+```json
+{ "success": true, "revealSeen": false }
+```
+
+### POST `/api/v4/reveal-seen`
+Mark the results reveal as seen for authenticated user.
+
+### POST `/api/focus/save` *(legacy)*
 Save user's quarterly focus area selections.
 
-### POST `/api/checkin/save`
+### POST `/api/checkin/save` *(legacy)*
 Save weekly check-in responses + update streaks.
 
 ---
