@@ -680,11 +680,37 @@ export default function CeoLabPage() {
 
       setUserId(user.id)
 
-      const { data: profile } = await supabase
+      // Check for completed session FIRST — before profile query
+      // This ensures results show even if profile query fails
+      const { data: completedSession } = await supabase
+        .from('assessment_sessions')
+        .select('id, completed_at, stage_reached, clmi, bsi')
+        .eq('ceo_id', user.id)
+        .eq('version', '4.0')
+        .not('completed_at', 'is', null)
+        .order('completed_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+
+      // Load profile (gracefully handle missing reveal_seen column)
+      let profile: { subscription_status?: string; full_name?: string; reveal_seen?: boolean } | null = null
+      const { data: profileData, error: profileError } = await supabase
         .from('user_profiles')
         .select('subscription_status, full_name, reveal_seen')
         .eq('id', user.id)
         .single()
+
+      if (!profileError) {
+        profile = profileData
+      } else {
+        // Fallback: query without reveal_seen in case migration 007 hasn't run
+        const { data: fallbackProfile } = await supabase
+          .from('user_profiles')
+          .select('subscription_status, full_name')
+          .eq('id', user.id)
+          .single()
+        profile = fallbackProfile ? { ...fallbackProfile, reveal_seen: undefined } : null
+      }
 
       const name = profile?.full_name
         || user.user_metadata?.full_name
@@ -695,17 +721,6 @@ export default function CeoLabPage() {
 
       const subStatus = profile?.subscription_status || 'inactive'
       const isSubscribed = subStatus === 'active' || subStatus === 'trialing'
-
-      // Check for completed session first — show results regardless of subscription
-      const { data: completedSession } = await supabase
-        .from('assessment_sessions')
-        .select('id, completed_at, stage_reached, clmi, bsi')
-        .eq('ceo_id', user.id)
-        .eq('version', '4.0')
-        .not('completed_at', 'is', null)
-        .order('completed_at', { ascending: false })
-        .limit(1)
-        .maybeSingle()
 
       if (!completedSession) {
         // No completed assessment — check subscription for next steps
@@ -734,7 +749,8 @@ export default function CeoLabPage() {
         return
       }
 
-      // Check reveal_seen — if false, redirect to reveal
+      // Check reveal_seen — if explicitly false, redirect to reveal
+      // (skip if reveal_seen is undefined, meaning migration 007 hasn't run)
       if (profile && profile.reveal_seen === false) {
         router.push('/ceolab/reveal')
         return
