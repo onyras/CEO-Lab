@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			mono: ['var(--font-mono)', 'Space Mono', 'monospace'],
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
