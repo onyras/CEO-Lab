@@ -4,14 +4,8 @@ import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { AppShell } from '@/components/layout/AppShell'
 import { createClient } from '@/lib/supabase-browser'
-import { DIMENSIONS, TERRITORY_CONFIG } from '@/lib/constants'
+import { DIMENSIONS, TERRITORY_CONFIG, TERRITORY_COLORS } from '@/lib/constants'
 import type { DimensionId, Territory } from '@/types/assessment'
-
-const TERRITORY_COLORS: Record<Territory, string> = {
-  leading_yourself: '#7FABC8',
-  leading_teams: '#A6BEA4',
-  leading_organizations: '#E08F6A',
-}
 
 type Profile = {
   full_name: string

@@ -3,17 +3,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
-import { DIMENSIONS, getDimension, getDimensionsByTerritory, TERRITORY_CONFIG } from '@/lib/constants'
+import { DIMENSIONS, getDimension, getDimensionsByTerritory, TERRITORY_CONFIG, TERRITORY_COLORS } from '@/lib/constants'
 import { selectPriorityDimensions } from '@/lib/scoring'
+import { AppShell } from '@/components/layout/AppShell'
 import type { DimensionId, DimensionScore, Territory, VerbalLabel } from '@/types/assessment'
-
-// ─── Territory accent colors ──────────────────────────────────────
-
-const TERRITORY_COLORS: Record<Territory, string> = {
-  leading_yourself: '#7FABC8',
-  leading_teams: '#A6BEA4',
-  leading_organizations: '#E08F6A',
-}
 
 const TERRITORY_ORDER: Territory[] = [
   'leading_yourself',
@@ -92,28 +85,30 @@ function ProgressSteps({ currentStep }: { currentStep: number }) {
 
 function SetupSkeleton() {
   return (
-    <div className="min-h-screen bg-[#F7F3ED] px-6 py-12 font-[Inter]">
-      <div className="max-w-2xl mx-auto">
-        <div className="flex items-center justify-center gap-3 mb-10">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-black/5 animate-pulse" />
-              <div className="w-10 h-3 bg-black/5 rounded animate-pulse" />
-              {i < 3 && <div className="w-10 h-px bg-black/5" />}
-            </div>
-          ))}
-        </div>
-        <div className="bg-white rounded-2xl p-10 border border-black/5">
-          <div className="h-8 w-64 bg-black/5 rounded animate-pulse mx-auto mb-4" />
-          <div className="h-4 w-96 bg-black/5 rounded animate-pulse mx-auto mb-8" />
-          <div className="space-y-4">
+    <AppShell>
+      <div className="px-6 py-12">
+        <div className="max-w-2xl mx-auto">
+          <div className="flex items-center justify-center gap-3 mb-10">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-16 bg-black/[0.02] rounded-xl animate-pulse" />
+              <div key={i} className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-black/5 animate-pulse" />
+                <div className="w-10 h-3 bg-black/5 rounded animate-pulse" />
+                {i < 3 && <div className="w-10 h-px bg-black/5" />}
+              </div>
             ))}
+          </div>
+          <div className="bg-white rounded-lg p-10 border border-black/10">
+            <div className="h-8 w-64 bg-black/5 rounded animate-pulse mx-auto mb-4" />
+            <div className="h-4 w-96 bg-black/5 rounded animate-pulse mx-auto mb-8" />
+            <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-16 bg-black/[0.02] rounded-lg animate-pulse" />
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </AppShell>
   )
 }
 
@@ -289,26 +284,40 @@ export default function AccountabilitySetupPage() {
 
   if (error && allDimensions.length === 0) {
     return (
-      <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6 font-[Inter]">
-        <div className="max-w-md w-full">
-          <div className="bg-white rounded-2xl p-8 border border-black/5">
-            <h2 className="text-xl font-semibold text-black mb-3">Something went wrong</h2>
-            <p className="text-black/60 text-sm mb-6">{error}</p>
-            <button
-              onClick={() => router.push('/ceolab')}
-              className="px-6 py-2.5 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
-            >
-              Back to Dashboard
-            </button>
+      <AppShell>
+        <div className="flex items-center justify-center px-6 min-h-[80vh]">
+          <div className="max-w-md w-full">
+            <div className="bg-white rounded-lg p-8 border border-black/10">
+              <h2 className="text-xl font-semibold text-black mb-3">Something went wrong</h2>
+              <p className="text-black/60 text-sm mb-6">{error}</p>
+              <button
+                onClick={() => router.push('/ceolab')}
+                className="bg-black text-white px-10 py-4 rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
+              >
+                Back to Dashboard
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </AppShell>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F3ED] px-6 py-12 font-[Inter]">
+    <AppShell>
+      <div className="px-6 py-12">
       <div className="max-w-2xl mx-auto">
+
+        {/* Back to Dashboard */}
+        <a
+          href="/ceolab"
+          className="inline-flex items-center gap-1 text-sm text-black/40 hover:text-black/70 transition-colors mb-6"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          </svg>
+          Dashboard
+        </a>
 
         {/* Progress Steps */}
         <ProgressSteps
@@ -321,7 +330,7 @@ export default function AccountabilitySetupPage() {
 
         {/* ═══ PHASE 1: Intro ═══ */}
         {phase === 'intro' && (
-          <div className="bg-white rounded-2xl p-8 md:p-10 border border-black/5 text-center">
+          <div className="bg-white rounded-lg p-8 md:p-10 border border-black/10 text-center">
             {/* Decorative territory dots */}
             <div className="flex items-center justify-center gap-3 mb-8">
               <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#7FABC8' }} />
@@ -383,7 +392,7 @@ export default function AccountabilitySetupPage() {
         {phase === 'select' && (
           <div>
             {/* Header card */}
-            <div className="bg-white rounded-2xl p-8 border border-black/5 mb-6 text-center">
+            <div className="bg-white rounded-lg p-8 border border-black/10 mb-6 text-center">
               <h1 className="text-2xl font-bold text-black tracking-tight mb-2">
                 Choose Your 3 Focus Dimensions
               </h1>
@@ -478,6 +487,9 @@ export default function AccountabilitySetupPage() {
                                 </span>
                               )}
                             </div>
+                            <p className="text-xs text-black/40 mt-0.5 leading-relaxed">
+                              {getDimension(dim.dimensionId).coreQuestion}
+                            </p>
                           </div>
 
                           {/* Score */}
@@ -529,7 +541,7 @@ export default function AccountabilitySetupPage() {
 
         {/* ═══ PHASE 3: Ice-breaker ═══ */}
         {phase === 'icebreaker' && !showConfirmation && (
-          <div className="bg-white rounded-2xl p-8 md:p-10 border border-black/5 text-center">
+          <div className="bg-white rounded-lg p-8 md:p-10 border border-black/10 text-center">
             <p className="text-sm font-medium text-black/40 uppercase tracking-wider mb-6">
               One more thing
             </p>
@@ -542,27 +554,31 @@ export default function AccountabilitySetupPage() {
             </p>
 
             {/* 1-5 Scale */}
-            <div className="flex items-center justify-center gap-4 md:gap-6 mb-10">
+            <div className="flex items-center justify-center gap-3 md:gap-4 mb-10">
               {[
-                { value: 1, emoji: '\ud83d\ude10', label: 'Meh' },
-                { value: 2, emoji: '\ud83e\udd14', label: 'Curious' },
-                { value: 3, emoji: '\ud83d\ude42', label: 'Ready' },
-                { value: 4, emoji: '\ud83d\ude04', label: 'Excited' },
-                { value: 5, emoji: '\ud83d\udd25', label: "Let's go" },
+                { value: 1, label: 'Not really' },
+                { value: 2, label: 'Curious' },
+                { value: 3, label: 'Ready' },
+                { value: 4, label: 'Excited' },
+                { value: 5, label: "Let's go" },
               ].map((option) => {
                 const isActive = excitement === option.value
                 return (
                   <button
                     key={option.value}
                     onClick={() => setExcitement(option.value)}
-                    className={`flex flex-col items-center gap-2 px-3 py-3 rounded-xl transition-all duration-200 ${
-                      isActive
-                        ? 'bg-[#F7F3ED] scale-110'
-                        : 'hover:bg-[#F7F3ED]/50'
+                    className={`flex flex-col items-center gap-2 transition-all duration-200 ${
+                      isActive ? 'scale-105' : ''
                     }`}
                   >
-                    <span className={`text-3xl transition-transform duration-200 ${isActive ? 'scale-110' : ''}`}>
-                      {option.emoji}
+                    <span
+                      className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold transition-all duration-200 ${
+                        isActive
+                          ? 'bg-black text-white'
+                          : 'border-2 border-black/10 text-black/40 hover:border-black/20'
+                      }`}
+                    >
+                      {option.value}
                     </span>
                     <span className={`text-xs font-medium transition-colors ${
                       isActive ? 'text-black' : 'text-black/30'
@@ -616,7 +632,7 @@ export default function AccountabilitySetupPage() {
 
         {/* ═══ Confirmation animation ═══ */}
         {showConfirmation && (
-          <div className="bg-white rounded-2xl p-10 md:p-14 border border-black/5 text-center">
+          <div className="bg-white rounded-lg p-10 md:p-14 border border-black/10 text-center">
             {/* Animated check circle */}
             <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center mx-auto mb-6 animate-scaleIn">
               <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -631,39 +647,7 @@ export default function AccountabilitySetupPage() {
           </div>
         )}
       </div>
-
-      {/* CSS animations */}
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(8px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fadeIn {
-          animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        @keyframes scaleIn {
-          from {
-            opacity: 0;
-            transform: scale(0.5);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        .animate-scaleIn {
-          animation: scaleIn 0.4s ease-out forwards;
-        }
-      `}</style>
-    </div>
+      </div>
+    </AppShell>
   )
 }

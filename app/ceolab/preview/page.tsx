@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
-import { getDimension, TERRITORY_CONFIG } from '@/lib/constants'
+import { getDimension, TERRITORY_CONFIG, TERRITORY_COLORS } from '@/lib/constants'
 import { getTerritoryArcNarrative, DIMENSION_CONTENT, ARCHETYPE_DESCRIPTIONS, STAGE1_CTA } from '@/lib/report-content'
 import { TerritoryBars } from '@/components/visualizations/TerritoryBars'
 import type {
@@ -18,12 +18,6 @@ import type {
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-const TERRITORY_COLORS: Record<Territory, string> = {
-  leading_yourself: '#7FABC8',
-  leading_teams: '#A6BEA4',
-  leading_organizations: '#E08F6A',
-}
 
 function getSectionNumber(n: number): string {
   return n.toString().padStart(2, '0')

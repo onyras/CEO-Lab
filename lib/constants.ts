@@ -176,6 +176,14 @@ export const FRAMEWORK_PRESCRIPTIONS: Record<DimensionId, { critical: string[]; 
   'LO.5': { critical: ['Onion Theory', 'Board Excellence basics'], developing: ['Ambidextrous Org', 'Board advanced'], strong: ['Transformation Readiness', 'Campaigning'] },
 }
 
+// ─── Territory Accent Colors ─────────────────────────────────────
+
+export const TERRITORY_COLORS: Record<Territory, string> = {
+  leading_yourself: '#7FABC8',
+  leading_teams: '#A6BEA4',
+  leading_organizations: '#E08F6A',
+}
+
 // ─── Territory Config ────────────────────────────────────────────
 
 export const TERRITORY_CONFIG: Record<Territory, { name: string; displayLabel: string; arcDescription: string }> = {

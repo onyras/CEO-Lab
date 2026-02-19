@@ -4,16 +4,10 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
 import { getFrameworkBySlug } from '@/lib/framework-content'
-import { getDimension, TERRITORY_CONFIG } from '@/lib/constants'
+import { getDimension, TERRITORY_CONFIG, TERRITORY_COLORS } from '@/lib/constants'
 import { getVerbalLabel } from '@/lib/scoring'
 import { AppShell } from '@/components/layout/AppShell'
 import type { DimensionId, Territory } from '@/types/assessment'
-
-const TERRITORY_COLORS: Record<Territory, string> = {
-  leading_yourself: '#7FABC8',
-  leading_teams: '#A6BEA4',
-  leading_organizations: '#E08F6A',
-}
 
 export default function FrameworkDetailPage() {
   const params = useParams()

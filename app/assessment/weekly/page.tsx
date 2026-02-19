@@ -4,16 +4,9 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
 import { weeklyItems } from '@/lib/weekly-questions'
-import { DIMENSIONS, getDimension } from '@/lib/constants'
+import { DIMENSIONS, getDimension, TERRITORY_COLORS } from '@/lib/constants'
+import { AppShell } from '@/components/layout/AppShell'
 import type { WeeklyItem, DimensionId, Territory } from '@/types/assessment'
-
-// ─── Territory accent colors ──────────────────────────────────────
-
-const TERRITORY_COLORS: Record<Territory, string> = {
-  leading_yourself: '#7FABC8',
-  leading_teams: '#A6BEA4',
-  leading_organizations: '#E08F6A',
-}
 
 // ─── Types ────────────────────────────────────────────────────────
 
@@ -141,8 +134,8 @@ export default function WeeklyPulsePage() {
           router.push('/accountability/setup')
           return
         }
-      } catch {
-        // Fallback: show all items if API fails
+      } catch (e) {
+        console.warn('Failed to load focus dimensions, showing all items:', e)
         setFocusItems(weeklyItems)
       }
 
@@ -212,18 +205,20 @@ export default function WeeklyPulsePage() {
       setError(err.message || 'Something went wrong. Please try again.')
       setPhase('checkin')
     }
-  }, [responses])
+  }, [responses, focusItems])
 
   // ─── Loading ────────────────────────────────────────────────────
 
   if (phase === 'loading') {
     return (
-      <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="h-8 w-8 border-2 border-black/20 border-t-black rounded-full animate-spin" />
-          <p className="text-black/50 text-sm font-medium">Loading...</p>
+      <AppShell>
+        <div className="flex items-center justify-center min-h-[80vh]">
+          <div className="flex flex-col items-center gap-4">
+            <div className="h-8 w-8 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+            <p className="text-black/50 text-sm font-medium">Loading...</p>
+          </div>
         </div>
-      </div>
+      </AppShell>
     )
   }
 
@@ -231,9 +226,10 @@ export default function WeeklyPulsePage() {
 
   if (phase === 'locked') {
     return (
-      <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6">
+      <AppShell>
+        <div className="flex items-center justify-center px-6 min-h-[80vh]">
         <div className="max-w-md w-full">
-          <div className="bg-black/[0.02] border border-black/5 rounded-2xl flex flex-col items-center justify-center py-12 px-6 text-center">
+          <div className="bg-black/[0.02] border border-black/10 rounded-lg flex flex-col items-center justify-center py-12 px-6 text-center">
             <svg
               className="w-8 h-8 text-black/20 mb-4"
               fill="none"
@@ -256,7 +252,8 @@ export default function WeeklyPulsePage() {
             </a>
           </div>
         </div>
-      </div>
+        </div>
+      </AppShell>
     )
   }
 
@@ -264,12 +261,14 @@ export default function WeeklyPulsePage() {
 
   if (phase === 'submitting') {
     return (
-      <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="h-8 w-8 border-2 border-black/20 border-t-black rounded-full animate-spin" />
-          <p className="text-black/50 text-sm font-medium">Saving your responses...</p>
+      <AppShell>
+        <div className="flex items-center justify-center min-h-[80vh]">
+          <div className="flex flex-col items-center gap-4">
+            <div className="h-8 w-8 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+            <p className="text-black/50 text-sm font-medium">Saving your responses...</p>
+          </div>
         </div>
-      </div>
+      </AppShell>
     )
   }
 
@@ -291,9 +290,10 @@ export default function WeeklyPulsePage() {
     }
 
     return (
-      <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6">
+      <AppShell>
+        <div className="flex items-center justify-center px-6 min-h-[80vh]">
         <div className="max-w-xl w-full">
-          <div className="bg-white rounded-2xl p-10 border border-black/5 text-center">
+          <div className="bg-white rounded-lg p-10 border border-black/10 text-center">
             <div className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center mx-auto mb-6">
               <svg className="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
@@ -352,7 +352,7 @@ export default function WeeklyPulsePage() {
                 Back to CEO Lab
               </a>
               <a
-                href="/ceolab"
+                href="/ceolab/results"
                 className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-white text-black border border-black/15 rounded-lg text-sm font-medium hover:border-black/30 transition-colors"
               >
                 View Full Report
@@ -360,7 +360,8 @@ export default function WeeklyPulsePage() {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+      </AppShell>
     )
   }
 
@@ -390,7 +391,8 @@ export default function WeeklyPulsePage() {
   const itemsByTerritory = allGroups.filter(g => g.items.length > 0)
 
   return (
-    <div className="min-h-screen bg-[#F7F3ED] px-6 py-12">
+    <AppShell>
+      <div className="px-6 py-12">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="mb-10">
@@ -479,13 +481,14 @@ export default function WeeklyPulsePage() {
           )}
         </div>
       </div>
-    </div>
+      </div>
+    </AppShell>
   )
 }
 
 // ─── Weekly Question Card Component ────────────────────────────────
 
-function WeeklyQuestionCard({
+const WeeklyQuestionCard = React.memo(function WeeklyQuestionCard({
   item,
   value,
   onChange,
@@ -536,24 +539,35 @@ function WeeklyQuestionCard({
 
       {format.type === 'percentage' && (
         <div className="space-y-3">
-          <div className="flex items-center gap-3">
-            <input
-              type="range"
-              min="0"
-              max="100"
-              step="5"
-              value={typeof value === 'number' ? value : 50}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(parseInt(e.target.value))}
-              className="flex-1 h-2 bg-black/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:cursor-pointer"
-            />
-            <span className="text-sm font-bold text-black w-12 text-right">
-              {typeof value === 'number' ? value : 50}%
-            </span>
-          </div>
-          <div className="flex justify-between text-xs text-black/30">
-            <span>0%</span>
-            <span>100%</span>
-          </div>
+          {value === undefined ? (
+            <button
+              onClick={() => onChange(50)}
+              className="w-full px-4 py-3 rounded-lg border border-black/10 bg-black/[0.02] text-black/30 text-sm text-left hover:border-black/20 transition-colors"
+            >
+              Tap to set percentage
+            </button>
+          ) : (
+            <>
+              <div className="flex items-center gap-3">
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="5"
+                  value={typeof value === 'number' ? value : 50}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(parseInt(e.target.value))}
+                  className="flex-1 h-2 bg-black/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:cursor-pointer"
+                />
+                <span className="text-sm font-bold text-black w-12 text-right">
+                  {typeof value === 'number' ? value : 50}%
+                </span>
+              </div>
+              <div className="flex justify-between text-xs text-black/30">
+                <span>0%</span>
+                <span>100%</span>
+              </div>
+            </>
+          )}
         </div>
       )}
 
@@ -580,4 +594,4 @@ function WeeklyQuestionCard({
       )}
     </div>
   )
-}
+})

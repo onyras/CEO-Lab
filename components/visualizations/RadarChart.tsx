@@ -1,6 +1,7 @@
 'use client'
 
 import { memo, useEffect, useRef, useState } from 'react'
+import { TERRITORY_COLORS } from '@/lib/constants'
 import type { Territory } from '@/types/assessment'
 
 interface RadarChartProps {
@@ -11,12 +12,6 @@ interface RadarChartProps {
     percentage: number
   }[]
   className?: string
-}
-
-const TERRITORY_COLORS: Record<Territory, string> = {
-  leading_yourself: '#7FABC8',
-  leading_teams: '#A6BEA4',
-  leading_organizations: '#E08F6A',
 }
 
 const TERRITORY_LABELS: Record<Territory, string> = {

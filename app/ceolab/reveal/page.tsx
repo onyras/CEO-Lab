@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
-import { DIMENSIONS } from '@/lib/constants'
+import { DIMENSIONS, TERRITORY_COLORS } from '@/lib/constants'
 import { getVerbalLabel } from '@/lib/scoring'
 import {
   getTerritoryArcNarrative,
@@ -24,12 +24,6 @@ const TERRITORY_LABELS: Record<Territory, string> = {
   leading_yourself: 'Leading Yourself',
   leading_teams: 'Leading Teams',
   leading_organizations: 'Leading Organizations',
-}
-
-const TERRITORY_COLORS: Record<Territory, string> = {
-  leading_yourself: '#7FABC8',
-  leading_teams: '#A6BEA4',
-  leading_organizations: '#E08F6A',
 }
 
 const TERRITORIES_ORDER: Territory[] = ['leading_yourself', 'leading_teams', 'leading_organizations']

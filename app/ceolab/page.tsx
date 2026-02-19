@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
-import { TERRITORY_CONFIG, getDimension } from '@/lib/constants'
+import { TERRITORY_CONFIG, TERRITORY_COLORS, getDimension } from '@/lib/constants'
 import { getVerbalLabel } from '@/lib/scoring'
 import {
   buildHeadlineText,
@@ -13,6 +13,10 @@ import {
 import { AppShell } from '@/components/layout/AppShell'
 import { ScoreRing } from '@/components/visualizations/ScoreRing'
 import { LockedSection } from '@/components/ui/LockedSection'
+import { DashboardSummaryStrip } from '@/components/blocks/DashboardSummaryStrip'
+import { QuarterlyAssessmentGrid } from '@/components/blocks/QuarterlyAssessmentGrid'
+import { WeeklyCheckinGrid } from '@/components/blocks/WeeklyCheckinGrid'
+import { FocusDimensionCards } from '@/components/blocks/FocusDimensionCards'
 import type {
   FullResults,
   DimensionId,
@@ -22,12 +26,6 @@ import type {
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-const TERRITORY_COLORS: Record<Territory, string> = {
-  leading_yourself: '#7FABC8',
-  leading_teams: '#A6BEA4',
-  leading_organizations: '#E08F6A',
-}
 
 function getQuarterFromDate(date: Date): { quarter: number; year: number } {
   return {
@@ -51,7 +49,9 @@ function getISOWeek(date: Date): number {
   d.setHours(0, 0, 0, 0)
   d.setDate(d.getDate() + 3 - ((d.getDay() + 6) % 7))
   const jan4 = new Date(d.getFullYear(), 0, 4)
-  return Math.ceil(((d.getTime() - jan4.getTime()) / 86400000 + jan4.getDay() + 1) / 7)
+  const week = Math.ceil(((d.getTime() - jan4.getTime()) / 86400000 + jan4.getDay() + 1) / 7)
+  // Guard for year boundary: week 0 → 1, week > 53 → 1
+  return Math.max(1, Math.min(53, week))
 }
 
 // ---------------------------------------------------------------------------
@@ -142,7 +142,9 @@ function HookResultsBanner({ userId }: { userId?: string }) {
           localStorage.removeItem('ceolab_hook_results')
           return
         }
-      } catch {}
+      } catch (e) {
+        console.warn('Failed to parse hook results from localStorage:', e)
+      }
 
       if (userId) {
         try {
@@ -163,7 +165,9 @@ function HookResultsBanner({ userId }: { userId?: string }) {
               sharpestDimension: data.sharpest_dimension as DimensionId,
             })
           }
-        } catch {}
+        } catch (e) {
+          console.warn('Failed to load hook results from Supabase:', e)
+        }
       }
     }
 
@@ -572,7 +576,7 @@ interface HomeData {
 
 function ChecklistHomeView({ data }: { data: HomeData }) {
   const {
-    results, focusDimensions, streak,
+    results, focusDimensions, streak, latestWeeklyScores,
     quarterlyAssessments, completedWeeksThisQuarter,
     currentWeekOfQuarter, currentQuarter, currentYear,
   } = data
@@ -580,177 +584,73 @@ function ChecklistHomeView({ data }: { data: HomeData }) {
   const clmi = results.session.clmi ?? 0
   const label = getVerbalLabel(clmi)
   const primaryArchetype = results.archetypes[0]
-  const archetypeDesc = primaryArchetype ? ARCHETYPE_DESCRIPTIONS[primaryArchetype.name] : null
 
-  const completedWeeksCount = completedWeeksThisQuarter.length
-  const completedWeeksSet = new Set(completedWeeksThisQuarter)
+  // Build territory scores for mini-bars
+  const territoryScores = results.territoryScores?.map(ts => ({
+    territory: ts.territory,
+    score: ts.score,
+  }))
 
   return (
     <AppShell>
       <div className="px-8 py-16">
         <div className="max-w-5xl mx-auto">
 
-          {/* ── Summary Strip ─────────────────────────────────────── */}
-          <div className="bg-white border border-black/10 rounded-lg p-8 mb-10">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-              <div className="flex items-center gap-8">
-                <ScoreRing value={clmi} size={96} strokeWidth={6} color="#000" label={label} />
-                <div>
-                  <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">CLMI Score</p>
-                  <p className="text-3xl font-bold font-mono tracking-tight text-black">{Math.round(clmi)}%</p>
-                  <p className="text-sm text-black/40 mt-1">{label}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-10">
-                <div className="text-center">
-                  <p className="text-2xl font-bold font-mono text-black">{streak.currentStreak}</p>
-                  <p className="text-xs text-black/40 mt-0.5">Week streak</p>
-                </div>
-                {streak.lastCheckIn && (
-                  <div className="text-center">
-                    <p className="text-base font-medium text-black">
-                      {new Date(streak.lastCheckIn).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    </p>
-                    <p className="text-xs text-black/40 mt-0.5">Last check-in</p>
+          {/* ── "Due this week" banner ──────────────────────────── */}
+          {streak.isDueThisWeek && focusDimensions.length > 0 && (
+            <a
+              href="/assessment/weekly"
+              className="block bg-white border border-black/10 rounded-lg p-6 mb-6 hover:border-black/20 transition-colors"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full border-2 border-black flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                   </div>
-                )}
-              </div>
-            </div>
-
-            {primaryArchetype && archetypeDesc && (
-              <div className="mt-6 pt-6 border-t border-black/5 flex items-center gap-4">
-                <span className="font-mono text-xs text-black/40 uppercase tracking-[0.12em]">Primary Archetype</span>
-                <span className="inline-flex items-center px-4 py-1.5 bg-[#F7F3ED] rounded-full text-sm font-semibold text-black">
-                  {primaryArchetype.name}
+                  <div>
+                    <p className="text-base font-semibold text-black">Weekly check-in due</p>
+                    <p className="text-sm text-black/40">{focusDimensions.length} questions on your focus areas</p>
+                  </div>
+                </div>
+                <span className="bg-black text-white px-6 py-2.5 rounded-lg text-sm font-semibold flex-shrink-0">
+                  Check in
                 </span>
               </div>
-            )}
-          </div>
+            </a>
+          )}
 
-          {/* ── Section 1: Quarterly Baseline Assessments ─────────── */}
-          <div className="mb-16">
-            <div className="flex items-end justify-between pb-5 border-b border-black/10 mb-8">
-              <div>
-                <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Quarterly Assessments</p>
-                <h2 className="text-2xl font-semibold tracking-tight">Baseline Assessments</h2>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {quarterlyAssessments.map((qi) => {
-                const qLabel = `Q${qi.quarter} ${qi.year}`
-                const key = `${qi.year}-${qi.quarter}`
+          {/* ── Summary Strip ─────────────────────────────────────── */}
+          <DashboardSummaryStrip
+            clmi={clmi}
+            label={label}
+            streak={streak}
+            primaryArchetype={primaryArchetype}
+            territoryScores={territoryScores}
+          />
 
-                // Completed quarter
-                if (qi.clmi != null && qi.completedAt) {
-                  const verbal = getVerbalLabel(qi.clmi)
-                  const dateStr = new Date(qi.completedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-                  return (
-                    <div key={key} className="bg-white border border-black/10 rounded-lg p-8">
-                      <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-5">{qLabel}</p>
-                      <div className="flex items-center gap-5">
-                        <ScoreRing value={qi.clmi} size={64} strokeWidth={5} color="#000" />
-                        <div>
-                          <p className="text-2xl font-bold font-mono tracking-tight">{Math.round(qi.clmi)}%</p>
-                          <p className="text-sm text-black/40">{verbal}</p>
-                        </div>
-                      </div>
-                      <p className="text-xs text-black/25 mt-5 font-mono uppercase tracking-[0.08em]">Completed {dateStr}</p>
-                    </div>
-                  )
-                }
+          {/* ── Focus Dimension Cards ─────────────────────────────── */}
+          {focusDimensions.length > 0 && (
+            <FocusDimensionCards
+              focusDimensions={focusDimensions}
+              latestWeeklyScores={latestWeeklyScores}
+            />
+          )}
 
-                // Current quarter — CTA
-                if (qi.isCurrent) {
-                  return (
-                    <a key={key} href="/assessment/baseline" className="block bg-black text-white rounded-lg p-8 hover:bg-black/90 transition-colors">
-                      <p className="font-mono text-xs uppercase tracking-[0.12em] text-white/40 mb-5">{qLabel}</p>
-                      <p className="text-xl font-semibold mb-2">Take Assessment</p>
-                      <p className="text-sm text-white/50">96 questions · ~25 min</p>
-                    </a>
-                  )
-                }
+          {/* ── Quarterly Baseline Assessments ────────────────────── */}
+          <QuarterlyAssessmentGrid quarterlyAssessments={quarterlyAssessments} />
 
-                // Past quarter — skipped
-                return (
-                  <div key={key} className="bg-black/[0.02] border border-black/5 rounded-lg p-8">
-                    <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/20 mb-5">{qLabel}</p>
-                    <p className="text-sm text-black/20">Skipped</p>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* ── Section 2: Weekly Check-In Checklist ──────────────── */}
+          {/* ── Weekly Check-In Grid or Setup CTA ─────────────────── */}
           {focusDimensions.length > 0 ? (
-            <div className="mb-16">
-              <div className="flex items-end justify-between pb-5 border-b border-black/10 mb-8">
-                <div>
-                  <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Weekly Check-Ins</p>
-                  <h2 className="text-2xl font-semibold tracking-tight">Q{currentQuarter} {currentYear} Progress</h2>
-                </div>
-                <div className="text-right">
-                  <p className="text-3xl font-bold font-mono">{completedWeeksCount}<span className="text-lg font-normal text-black/25">/12</span></p>
-                  <p className="font-mono text-xs text-black/40 uppercase tracking-[0.08em]">weeks completed</p>
-                </div>
-              </div>
-
-              <div className="bg-white border border-black/10 rounded-lg p-8">
-                <div className="grid grid-cols-6 gap-4">
-                  {Array.from({ length: 12 }, (_, i) => {
-                    const weekNum = i + 1
-                    const isCompleted = completedWeeksSet.has(weekNum)
-                    const isCurrent = weekNum === currentWeekOfQuarter && !isCompleted
-                    const isFuture = weekNum > currentWeekOfQuarter
-
-                    if (isCompleted) {
-                      return (
-                        <div key={weekNum} className="flex flex-col items-center gap-2">
-                          <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center">
-                            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                            </svg>
-                          </div>
-                          <span className="font-mono text-xs text-black/40">W{weekNum}</span>
-                        </div>
-                      )
-                    }
-
-                    if (isCurrent) {
-                      return (
-                        <a key={weekNum} href="/assessment/weekly" className="flex flex-col items-center gap-2 group">
-                          <div className="w-14 h-14 rounded-full border-2 border-black flex items-center justify-center group-hover:bg-black group-hover:text-white transition-colors">
-                            <span className="font-mono text-base font-bold group-hover:text-white">{weekNum}</span>
-                          </div>
-                          <span className="font-mono text-xs text-black font-bold">Now</span>
-                        </a>
-                      )
-                    }
-
-                    return (
-                      <div key={weekNum} className="flex flex-col items-center gap-2">
-                        <div className={`w-14 h-14 rounded-full flex items-center justify-center ${
-                          isFuture ? 'bg-black/[0.03]' : 'bg-black/[0.06]'
-                        }`}>
-                          <span className={`font-mono text-base ${isFuture ? 'text-black/15' : 'text-black/25'}`}>{weekNum}</span>
-                        </div>
-                        <span className="font-mono text-xs text-black/20">W{weekNum}</span>
-                      </div>
-                    )
-                  })}
-                </div>
-
-                {streak.currentStreak > 0 && (
-                  <div className="mt-6 pt-6 border-t border-black/5">
-                    <p className="text-sm text-black/40">
-                      <span className="font-mono font-bold text-black">{streak.currentStreak}</span> week streak
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
+            <WeeklyCheckinGrid
+              completedWeeksThisQuarter={completedWeeksThisQuarter}
+              currentWeekOfQuarter={currentWeekOfQuarter}
+              currentQuarter={currentQuarter}
+              currentYear={currentYear}
+              currentStreak={streak.currentStreak}
+            />
           ) : (
-            /* ── Section 3: Accountability Setup CTA ──────────────── */
             <div className="mb-16">
               <div className="flex items-end justify-between pb-5 border-b border-black/10 mb-8">
                 <div>

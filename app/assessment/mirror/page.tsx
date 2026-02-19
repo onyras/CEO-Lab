@@ -4,16 +4,8 @@ import React, { useState, useEffect, useCallback, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase-browser'
 import { mirrorItems } from '@/lib/mirror-questions'
-import { DIMENSIONS, getDimension } from '@/lib/constants'
+import { DIMENSIONS, getDimension, TERRITORY_COLORS } from '@/lib/constants'
 import type { MirrorItem, DimensionId, Territory, ScaleType } from '@/types/assessment'
-
-// ─── Territory accent colors ──────────────────────────────────────
-
-const TERRITORY_COLORS: Record<Territory, string> = {
-  leading_yourself: '#7FABC8',
-  leading_teams: '#A6BEA4',
-  leading_organizations: '#E08F6A',
-}
 
 // ─── Likert Scale Labels ──────────────────────────────────────────
 
