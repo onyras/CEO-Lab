@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { createClient } from '@/lib/supabase-browser'
 import { AppShell } from '@/components/layout/AppShell'
@@ -54,6 +53,21 @@ type ResultsTab = 'overview' | 'leading-yourself' | 'leading-teams' | 'leading-o
 // Complete Results View
 // ---------------------------------------------------------------------------
 
+// Territory colors for bento nav
+const BENTO_TERRITORY_COLORS: Record<string, string> = {
+  leading_yourself: '#7FABC8',
+  leading_teams: '#A6BEA4',
+  leading_organizations: '#E08F6A',
+}
+
+const BENTO_NAV_CONFIG: { key: ResultsTab; label: string; description: string; territory?: string }[] = [
+  { key: 'overview', label: 'Overview', description: 'CLMI score, archetypes, and leadership snapshot' },
+  { key: 'leading-yourself', label: 'Leading Yourself', description: 'Self-awareness, emotional mastery, and inner growth', territory: 'leading_yourself' },
+  { key: 'leading-teams', label: 'Leading Teams', description: 'Trust, conversations, and team systems', territory: 'leading_teams' },
+  { key: 'leading-organizations', label: 'Leading Orgs', description: 'Strategy, culture, and organizational design', territory: 'leading_organizations' },
+  { key: 'growth-plan', label: 'Your Growth Plan', description: 'Frameworks and workshops for your priority areas' },
+]
+
 function CompleteResultsView({ results }: { results: FullResults }) {
   const [activeTab, setActiveTab] = useState<ResultsTab>('overview')
 
@@ -62,13 +76,13 @@ function CompleteResultsView({ results }: { results: FullResults }) {
   const bsi = results.bsi
   const imFlagged = results.session.imFlagged
 
-  const tabs: { key: ResultsTab; label: string }[] = [
-    { key: 'overview', label: 'Overview' },
-    { key: 'leading-yourself', label: 'Leading Yourself' },
-    { key: 'leading-teams', label: 'Leading Teams' },
-    { key: 'leading-organizations', label: 'Leading Orgs' },
-    { key: 'growth-plan', label: 'Your Growth Plan' },
-  ]
+  // Build territory score lookup for bento nav
+  const territoryScoreLookup: Record<string, number> = {}
+  if (results.territoryScores) {
+    for (const ts of results.territoryScores) {
+      territoryScoreLookup[ts.territory] = ts.score
+    }
+  }
 
   const handleNavigateToTab = (tab: string) => {
     setActiveTab(tab as ResultsTab)
@@ -78,16 +92,7 @@ function CompleteResultsView({ results }: { results: FullResults }) {
   return (
     <div className="print:bg-white">
       <header className="pt-12 pb-4 px-6">
-        <div className="max-w-6xl mx-auto">
-          <Link
-            href="/ceolab"
-            className="inline-flex items-center gap-1.5 text-sm text-black/40 hover:text-black/60 transition-colors mb-6"
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to CEO Lab
-          </Link>
+        <div className="max-w-7xl mx-auto">
           <div className="text-center">
             <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">CEO Lab Assessment</p>
             <h1 className="text-3xl md:text-4xl font-bold text-black">Your Leadership Report</h1>
@@ -95,23 +100,70 @@ function CompleteResultsView({ results }: { results: FullResults }) {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 pb-20">
-        {/* Tab bar — horizontally scrollable on mobile */}
-        <div className="overflow-x-auto -mx-6 px-6 mb-10">
-          <div className="flex gap-1 p-1.5 bg-black/[0.04] rounded-lg min-w-max">
-            {tabs.map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => handleNavigateToTab(tab.key)}
-                className={`py-3 px-5 rounded-lg text-sm font-semibold whitespace-nowrap transition-all ${
-                  activeTab === tab.key
-                    ? 'bg-white text-black shadow-sm'
-                    : 'text-black/40 hover:text-black/60'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+      <main className="max-w-7xl mx-auto px-6 pb-20 print:max-w-full">
+        {/* Bento-style navigation grid */}
+        <div className="mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            {BENTO_NAV_CONFIG.map((nav) => {
+              const isActive = activeTab === nav.key
+              const territoryColor = nav.territory ? BENTO_TERRITORY_COLORS[nav.territory] : undefined
+              const territoryScore = nav.territory ? territoryScoreLookup[nav.territory] : undefined
+
+              return (
+                <button
+                  key={nav.key}
+                  onClick={() => handleNavigateToTab(nav.key)}
+                  className={`relative text-left rounded-lg p-5 transition-all ${
+                    isActive
+                      ? 'bg-white border-2 border-black'
+                      : 'bg-white border border-black/10 hover:border-black/25'
+                  }`}
+                >
+                  {/* Territory color accent bar */}
+                  {territoryColor && (
+                    <div
+                      className="absolute top-0 left-0 right-0 h-1 rounded-t-lg"
+                      style={{ backgroundColor: isActive ? territoryColor : `${territoryColor}60` }}
+                    />
+                  )}
+
+                  {/* Score badge for territory tabs */}
+                  {territoryScore !== undefined && (
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <span
+                        className="w-2 h-2 rounded-full"
+                        style={{ backgroundColor: territoryColor }}
+                      />
+                      <span className="font-mono text-sm font-bold text-black">{Math.round(territoryScore)}%</span>
+                    </div>
+                  )}
+
+                  {/* CLMI badge for overview */}
+                  {nav.key === 'overview' && (
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <span className="w-2 h-2 rounded-full bg-black" />
+                      <span className="font-mono text-sm font-bold text-black">{Math.round(clmi)}%</span>
+                    </div>
+                  )}
+
+                  {/* Growth plan icon */}
+                  {nav.key === 'growth-plan' && (
+                    <div className="mb-2">
+                      <svg className="w-5 h-5 text-black/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5" />
+                      </svg>
+                    </div>
+                  )}
+
+                  <p className={`text-sm font-semibold mb-1 ${isActive ? 'text-black' : 'text-black/70'}`}>
+                    {nav.label}
+                  </p>
+                  <p className={`text-xs leading-relaxed ${isActive ? 'text-black/50' : 'text-black/30'}`}>
+                    {nav.description}
+                  </p>
+                </button>
+              )
+            })}
           </div>
         </div>
 
@@ -181,16 +233,20 @@ function CompleteResultsView({ results }: { results: FullResults }) {
 function LoadingSkeleton() {
   return (
     <AppShell>
-      <div className="max-w-6xl mx-auto px-6 py-16">
+      <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="space-y-6">
           <div className="text-center mb-12">
             <div className="h-8 w-48 bg-black/5 rounded mx-auto mb-3 animate-pulse" />
             <div className="h-4 w-72 bg-black/5 rounded mx-auto animate-pulse" />
           </div>
-          {/* Tab bar skeleton */}
-          <div className="flex gap-1 p-1.5 bg-black/[0.04] rounded-lg mb-10">
+          {/* Bento nav skeleton */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-12">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="h-10 flex-1 bg-black/5 rounded-lg animate-pulse" />
+              <div key={i} className="bg-white border border-black/10 rounded-lg p-5 animate-pulse">
+                <div className="h-4 w-12 bg-black/5 rounded mb-3" />
+                <div className="h-4 w-20 bg-black/5 rounded mb-2" />
+                <div className="h-3 w-full bg-black/5 rounded" />
+              </div>
             ))}
           </div>
           {Array.from({ length: 3 }).map((_, i) => (
@@ -316,7 +372,7 @@ export default function ResultsPage() {
   if (pageState === 'locked') {
     return (
       <AppShell>
-        <div className="max-w-6xl mx-auto px-6 py-16">
+        <div className="max-w-7xl mx-auto px-6 py-16">
           <div className="text-center mb-8">
             <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">CEO Lab Assessment</p>
             <h1 className="text-3xl md:text-4xl font-bold text-black">Your Leadership Report</h1>

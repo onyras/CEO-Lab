@@ -969,8 +969,10 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
 
           {/* ── 3. Dynamic To-Do List ──────────────────────────────── */}
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Your Next Steps</p>
-            <h2 className="text-2xl font-semibold tracking-tight mb-6">What to do next</h2>
+            <div className="border-b border-black/10 pb-4 mb-8">
+              <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Your Next Steps</p>
+              <h2 className="text-3xl font-bold tracking-tight">What to do next</h2>
+            </div>
 
             <div className="space-y-3">
               {/* Do Now items */}
@@ -1048,9 +1050,11 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
 
           {/* ── 4. Accountability Agent Section ─────────────────────── */}
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Accountability Agent</p>
-            <h2 className="text-2xl font-semibold tracking-tight mb-1">Weekly Tracking</h2>
-            <p className="text-sm text-black/40 mb-6">Your weekly check-in system. Consistent measurement drives growth.</p>
+            <div className="border-b border-black/10 pb-4 mb-8">
+              <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Accountability Agent</p>
+              <h2 className="text-3xl font-bold tracking-tight mb-1">Weekly Tracking</h2>
+              <p className="text-base text-black/40">Your weekly check-in system. Consistent measurement drives growth.</p>
+            </div>
 
             {focusDimensions.length > 0 ? (
               <div className="space-y-5">
@@ -1201,9 +1205,33 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
 
           {/* ── 5. Baseline Assessment Section ──────────────────────── */}
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Quarterly Assessments</p>
-            <h2 className="text-2xl font-semibold tracking-tight mb-1">Baseline Assessments</h2>
-            <p className="text-sm text-black/40 mb-6">Full leadership measurement across 15 dimensions. Take quarterly to track growth.</p>
+            <div className="border-b border-black/10 pb-4 mb-8">
+              <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Quarterly Assessments</p>
+              <h2 className="text-3xl font-bold tracking-tight mb-1">Baseline Assessments</h2>
+              <p className="text-base text-black/40">Full leadership measurement across 15 dimensions. Take quarterly to track growth.</p>
+            </div>
+
+            {/* Next assessment activation notice */}
+            {nextQuarterlyDate && (
+              <div className="bg-[#F7F3ED]/60 border border-black/5 rounded-lg p-6 mb-6 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-black/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-base font-semibold text-black">Next assessment activates {nextQuarterlyDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                    <p className="text-sm text-black/40">Quarterly re-assessments measure your growth over time</p>
+                  </div>
+                </div>
+                {new Date() >= nextQuarterlyDate && (
+                  <a href="/assessment/baseline" className="bg-black text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-black/90 transition-colors flex-shrink-0">
+                    Retake Now
+                  </a>
+                )}
+              </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {quarterlyAssessments.map((qi) => {
@@ -1246,12 +1274,6 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
                 )
               })}
             </div>
-
-            {nextQuarterlyDate && (
-              <p className="text-sm text-black/30 mt-4">
-                Next quarterly assessment: {nextQuarterlyDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-              </p>
-            )}
           </div>
 
           {/* ── 6. Feedback Section ─────────────────────────────────── */}
