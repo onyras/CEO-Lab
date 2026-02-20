@@ -360,7 +360,7 @@ export default function AccountabilitySetupPage() {
                   return (
                     <div
                       key={dimId}
-                      className="flex items-center gap-3 px-5 py-3.5 bg-[#F7F3ED] rounded-xl text-left"
+                      className="flex items-center gap-3 px-5 py-3.5 bg-[#F7F3ED] rounded-lg text-left"
                     >
                       <span
                         className="w-2.5 h-2.5 rounded-full flex-shrink-0"
@@ -456,7 +456,7 @@ export default function AccountabilitySetupPage() {
                         <button
                           key={dim.dimensionId}
                           onClick={() => toggleDimension(dim.dimensionId)}
-                          className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl border text-left transition-all duration-200 ${
+                          className={`w-full flex items-center gap-4 px-5 py-4 rounded-lg border text-left transition-all duration-200 ${
                             isSelected
                               ? 'bg-white border-black/20 scale-[1.01] shadow-sm'
                               : 'bg-white border-black/5 hover:border-black/10'

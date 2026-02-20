@@ -207,7 +207,7 @@ function CeoMode() {
     return (
       <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6">
         <div className="max-w-xl w-full">
-          <div className="bg-white rounded-2xl p-10 border border-black/5">
+          <div className="bg-white rounded-lg p-10 border border-black/5">
             <div className="text-center mb-8">
               <div className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center mx-auto mb-4">
                 <svg className="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -288,7 +288,7 @@ function CeoMode() {
           Dashboard
         </a>
 
-        <div className="bg-white rounded-2xl p-10 border border-black/5">
+        <div className="bg-white rounded-lg p-10 border border-black/5">
           <h1 className="text-2xl font-bold text-black mb-2">Invite a Mirror Rater</h1>
           <p className="text-black/50 text-sm mb-8">
             Choose someone who knows your leadership well. They will answer 15 questions about how they experience your leadership.
@@ -493,7 +493,7 @@ function RaterMode({ token }: { token: string }) {
     return (
       <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6">
         <div className="max-w-md w-full">
-          <div className="bg-white rounded-2xl p-10 border border-black/5 text-center">
+          <div className="bg-white rounded-lg p-10 border border-black/5 text-center">
             <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-6">
               <svg className="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
@@ -526,7 +526,7 @@ function RaterMode({ token }: { token: string }) {
     return (
       <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6">
         <div className="max-w-md w-full">
-          <div className="bg-white rounded-2xl p-10 border border-black/5 text-center">
+          <div className="bg-white rounded-lg p-10 border border-black/5 text-center">
             <div className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center mx-auto mb-6">
               <svg className="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
@@ -624,7 +624,7 @@ function RaterMode({ token }: { token: string }) {
                 <button
                   key={`${item.id}-${value}`}
                   onClick={() => handleSelectValue(value)}
-                  className={`flex flex-col items-center justify-center px-2 py-5 rounded-xl text-center transition-all duration-150 ${
+                  className={`flex flex-col items-center justify-center px-2 py-5 rounded-lg text-center transition-all duration-150 ${
                     isSelected
                       ? 'bg-black text-white shadow-sm'
                       : 'bg-white text-black/70 border border-black/10 hover:border-black/20 hover:text-black'

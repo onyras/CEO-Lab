@@ -12,6 +12,10 @@ module.exports = {
   				from: { opacity: '0', transform: 'translateY(8px)' },
   				to: { opacity: '1', transform: 'translateY(0)' },
   			},
+  			fadeUp: {
+  				from: { opacity: '0', transform: 'translateY(30px)' },
+  				to: { opacity: '1', transform: 'translateY(0)' },
+  			},
   			scaleIn: {
   				from: { opacity: '0', transform: 'scale(0.5)' },
   				to: { opacity: '1', transform: 'scale(1)' },
@@ -19,6 +23,7 @@ module.exports = {
   		},
   		animation: {
   			fadeIn: 'fadeIn 0.5s ease-out forwards',
+  			fadeUp: 'fadeUp 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards',
   			scaleIn: 'scaleIn 0.4s ease-out forwards',
   		},
   		fontFamily: {

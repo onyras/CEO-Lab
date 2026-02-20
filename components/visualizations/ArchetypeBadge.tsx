@@ -124,7 +124,7 @@ function ArchetypeIcon({ name }: { name: string }) {
   }
 
   return (
-    <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-[#F7F3ED] text-black/70 shrink-0">
+    <div className="flex items-center justify-center w-16 h-16 rounded-lg bg-[#F7F3ED] text-black/70 shrink-0">
       {icons[name] || (
         <svg width={size} height={size} viewBox="0 0 64 64" fill="none">
           <circle cx="32" cy="32" r="16" stroke="currentColor" strokeWidth="2" />
@@ -159,7 +159,7 @@ export function ArchetypeBadge({
 
   return (
     <div
-      className="w-full rounded-xl border border-black/10 bg-white p-6 font-[Inter]"
+      className="w-full rounded-lg border border-black/10 bg-white p-6 font-[Inter]"
       style={territoryAccent ? { borderLeftWidth: 3, borderLeftColor: territoryAccent } : undefined}
     >
       <div className="flex gap-5">

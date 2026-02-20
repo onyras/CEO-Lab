@@ -514,7 +514,7 @@ function UserDetailView({
 function FeedbackTab({ feedback }: { feedback: FeedbackItem[] }) {
   if (feedback.length === 0) {
     return (
-      <div className="bg-white rounded-2xl p-12 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
+      <div className="bg-white rounded-lg p-12 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
         <div className="w-12 h-12 rounded-full bg-black/[0.03] flex items-center justify-center mx-auto mb-4">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-black/20">
             <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
@@ -555,22 +555,22 @@ function FeedbackTab({ feedback }: { feedback: FeedbackItem[] }) {
     <div className="space-y-4">
       {/* Bento grid — stats row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <div className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-2">Total</p>
           <p className="text-3xl font-bold text-black tracking-tight">{feedback.length}</p>
           <p className="text-xs text-black/30 mt-1">submissions</p>
         </div>
-        <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <div className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-2">This Week</p>
           <p className="text-3xl font-bold text-black tracking-tight">{thisWeek}</p>
           <p className="text-xs text-black/30 mt-1">new entries</p>
         </div>
-        <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <div className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-2">Users</p>
           <p className="text-3xl font-bold text-black tracking-tight">{uniqueUsers}</p>
           <p className="text-xs text-black/30 mt-1">gave feedback</p>
         </div>
-        <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <div className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-2">Top Page</p>
           <p className="text-lg font-bold text-black tracking-tight truncate">{topPages[0]?.[0] || '—'}</p>
           <p className="text-xs text-black/30 mt-1">{topPages[0]?.[1] || 0} mentions</p>
@@ -581,7 +581,7 @@ function FeedbackTab({ feedback }: { feedback: FeedbackItem[] }) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {/* Latest highlight — spans 2 cols */}
         {latest && (
-          <div className="md:col-span-2 bg-white rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col">
+          <div className="md:col-span-2 bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col">
             <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-3">Latest Feedback</p>
             <div className="flex-1">
               <p className="text-base text-black/80 leading-relaxed">&ldquo;{latest.text}&rdquo;</p>
@@ -602,7 +602,7 @@ function FeedbackTab({ feedback }: { feedback: FeedbackItem[] }) {
         )}
 
         {/* Pages breakdown */}
-        <div className="bg-white rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <div className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-3">By Page</p>
           <div className="space-y-2.5">
             {topPages.map(([page, count]) => {
@@ -631,7 +631,7 @@ function FeedbackTab({ feedback }: { feedback: FeedbackItem[] }) {
         <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-3">All Feedback</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {feedback.map(f => (
-            <div key={f.id} className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col">
+            <div key={f.id} className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col">
               <p className="text-sm text-black/70 leading-relaxed flex-1">{f.text}</p>
               <div className="flex items-center justify-between mt-3 pt-3 border-t border-black/5">
                 <div className="flex items-center gap-2 min-w-0">
@@ -655,7 +655,7 @@ function FeedbackTab({ feedback }: { feedback: FeedbackItem[] }) {
 function ActivityTab({ events }: { events: ActivityEvent[] }) {
   if (events.length === 0) {
     return (
-      <div className="bg-white rounded-2xl p-12 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
+      <div className="bg-white rounded-lg p-12 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
         <p className="text-sm text-black/40">No activity yet</p>
       </div>
     )
@@ -664,7 +664,7 @@ function ActivityTab({ events }: { events: ActivityEvent[] }) {
   return (
     <div className="space-y-2">
       {events.map((event, i) => (
-        <div key={i} className="bg-white rounded-2xl px-5 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <div key={i} className="bg-white rounded-lg px-5 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           <div className="flex items-start gap-3">
             {/* Avatar */}
             <div className="w-9 h-9 rounded-full bg-black/[0.06] flex items-center justify-center text-xs font-bold text-black/40 shrink-0 mt-0.5">
@@ -696,7 +696,7 @@ function ActivityTab({ events }: { events: ActivityEvent[] }) {
 function ReportTab({ report }: { report: ReportData | null }) {
   if (!report) {
     return (
-      <div className="bg-white rounded-2xl p-12 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
+      <div className="bg-white rounded-lg p-12 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-center">
         <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin mx-auto mb-3" />
         <p className="text-sm text-black/40">Loading report data...</p>
       </div>
@@ -718,7 +718,7 @@ function ReportTab({ report }: { report: ReportData | null }) {
   // Stat card helper
   function StatCard({ label, value, sub, wide }: { label: string; value: string | number; sub?: string; wide?: boolean }) {
     return (
-      <div className={`bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] ${wide ? 'md:col-span-2' : ''}`}>
+      <div className={`bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] ${wide ? 'md:col-span-2' : ''}`}>
         <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-2">{label}</p>
         <p className="text-2xl font-bold text-black tracking-tight">{value}</p>
         {sub && <p className="text-xs text-black/30 mt-1">{sub}</p>}
@@ -730,7 +730,7 @@ function ReportTab({ report }: { report: ReportData | null }) {
   function RateCard({ label, rate, numerator, denominator }: { label: string; rate: number | null; numerator?: number; denominator?: number }) {
     const pct = rate ?? 0
     return (
-      <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+      <div className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
         <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-3">{label}</p>
         <div className="flex items-end gap-3">
           <p className="text-3xl font-bold text-black tracking-tight">{rate !== null ? `${pct}%` : '—'}</p>
@@ -782,7 +782,7 @@ function ReportTab({ report }: { report: ReportData | null }) {
           value={baseline.avgResponseTimeSeconds !== null ? `${baseline.avgResponseTimeSeconds}s` : '—'}
           sub="avg response time"
         />
-        <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <div className="bg-white rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-3">Per Stage</p>
           <div className="space-y-2">
             {[1, 2, 3].map(stage => (
@@ -819,7 +819,7 @@ function ReportTab({ report }: { report: ReportData | null }) {
       {/* ── Section 5: Scores + Trends ── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
         {/* CLMI Distribution */}
-        <div className="bg-white rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <div className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           <div className="flex items-center justify-between mb-4">
             <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider">CLMI Distribution</p>
             <p className="text-sm font-bold text-black">{scores.avgClmi !== null ? `Avg ${scores.avgClmi}%` : '—'}</p>
@@ -849,7 +849,7 @@ function ReportTab({ report }: { report: ReportData | null }) {
         </div>
 
         {/* Signup trend */}
-        <div className="bg-white rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <div className="bg-white rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           <p className="text-[11px] font-medium text-black/35 uppercase tracking-wider mb-4">Signups (Last 8 Weeks)</p>
           <div className="flex items-end gap-2 h-32">
             {signupWeekEntries.map(([week, count]) => (

@@ -348,7 +348,7 @@ export default function BaselineAssessment() {
         <div className="text-center">
           {error ? (
             <div className="max-w-md mx-auto">
-              <div className="bg-white rounded-2xl p-8 shadow-sm border border-black/5">
+              <div className="bg-white rounded-lg p-8 shadow-sm border border-black/5">
                 <h2 className="text-xl font-semibold text-black mb-3">Something went wrong</h2>
                 <p className="text-black/60 text-sm mb-6">{error}</p>
                 <button
@@ -380,7 +380,7 @@ export default function BaselineAssessment() {
     return (
       <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6">
         <div className="max-w-md w-full">
-          <div className="bg-black/[0.02] border border-black/5 rounded-2xl flex flex-col items-center justify-center py-12 px-6 text-center">
+          <div className="bg-black/[0.02] border border-black/5 rounded-lg flex flex-col items-center justify-center py-12 px-6 text-center">
             <svg
               className="w-8 h-8 text-black/20 mb-4"
               fill="none"
@@ -426,7 +426,7 @@ export default function BaselineAssessment() {
     return (
       <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6">
         <div className="max-w-lg w-full">
-          <div className="bg-white rounded-2xl p-10 border border-black/5">
+          <div className="bg-white rounded-lg p-10 border border-black/5">
             <p className="text-sm font-semibold tracking-widest uppercase text-black/40 mb-6">Before You Begin</p>
 
             <div className="space-y-6 mb-10">
@@ -495,7 +495,7 @@ export default function BaselineAssessment() {
     return (
       <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center">
         <div className="text-center max-w-md mx-auto">
-          <div className="bg-white rounded-2xl p-8 shadow-sm border border-black/5">
+          <div className="bg-white rounded-lg p-8 shadow-sm border border-black/5">
             <h2 className="text-xl font-semibold text-black mb-3">Item not found</h2>
             <p className="text-black/60 text-sm mb-6">
               Could not load question {currentItemId}. Please try refreshing.
@@ -570,7 +570,7 @@ export default function BaselineAssessment() {
 
       {/* ─── Question Card ──────────────────────────────────── */}
       <main className="max-w-2xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-2xl p-8 shadow-sm border border-black/5">
+        <div className="bg-white rounded-lg p-8 shadow-sm border border-black/5">
           {/* Render based on item type */}
           {currentItemData.type === 'sji' ? (
             <SjiQuestion
@@ -682,7 +682,7 @@ function LikertQuestion({
             <button
               key={`${itemId}-${value}`}
               onClick={() => onSelect(value)}
-              className={`flex flex-col items-center justify-center px-2 py-4 rounded-xl text-center transition-all duration-150 ${
+              className={`flex flex-col items-center justify-center px-2 py-4 rounded-lg text-center transition-all duration-150 ${
                 isSelected
                   ? 'bg-black text-white shadow-sm'
                   : 'bg-black/[0.03] text-black/70 hover:bg-black/[0.06] hover:text-black'
@@ -759,7 +759,7 @@ function SjiOptionCard({
   return (
     <button
       onClick={onClick}
-      className={`w-full text-left flex items-start gap-4 px-5 py-4 rounded-xl transition-all duration-150 ${
+      className={`w-full text-left flex items-start gap-4 px-5 py-4 rounded-lg transition-all duration-150 ${
         isSelected
           ? 'bg-black text-white shadow-sm'
           : 'bg-black/[0.03] text-black hover:bg-black/[0.06]'

@@ -8,6 +8,7 @@ The lean launch playbook: €100K in 30 days, zero ads.
 
 | File | Purpose |
 |---|---|
+| `PHASE0_BETA.md` | Beta outreach: who to contact, messages, feedback system, testimonial capture |
 | `STRATEGY.md` | Master launch plan: 5 phases, 30-day timeline, principles, revenue projections |
 | `CONTENT.md` | 30-day content calendar + post drafts (hooks, angles, copy) |
 | `EMAIL_SEQUENCES.md` | All email sequences: waitlist warmup, launch week, newsletter essays |

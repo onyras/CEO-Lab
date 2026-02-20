@@ -57,7 +57,7 @@ export default function FrameworkDetailPage() {
     return (
       <AppShell>
         <div className="flex items-center justify-center min-h-[80vh] px-6">
-          <div className="bg-white rounded-2xl p-10 border border-black/5 max-w-md w-full text-center">
+          <div className="bg-white rounded-lg p-10 border border-black/5 max-w-md w-full text-center">
             <h2 className="text-xl font-bold text-black mb-3">Framework Not Found</h2>
             <p className="text-sm text-black/50 mb-6">This framework doesn&apos;t have detailed content yet.</p>
             <a
@@ -92,7 +92,7 @@ export default function FrameworkDetailPage() {
           </a>
 
           {/* Framework header */}
-          <div className="bg-white rounded-2xl p-8 md:p-10 border border-black/5 mb-6">
+          <div className="bg-white rounded-lg p-8 md:p-10 border border-black/5 mb-6">
             <div className="flex items-center gap-2 mb-4">
               <span
                 className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium text-white"
@@ -112,7 +112,7 @@ export default function FrameworkDetailPage() {
 
             {/* User score for this dimension */}
             {userScore !== null && (
-              <div className="mt-6 flex items-center gap-4 p-4 bg-[#F7F3ED]/60 rounded-xl">
+              <div className="mt-6 flex items-center gap-4 p-4 bg-[#F7F3ED]/60 rounded-lg">
                 <div>
                   <p className="text-xs text-black/40 mb-0.5">Your {dimension.name} score</p>
                   <p className="text-2xl font-bold text-black">{Math.round(userScore)}%</p>
@@ -131,7 +131,7 @@ export default function FrameworkDetailPage() {
           </div>
 
           {/* Summary */}
-          <div className="bg-white rounded-2xl p-8 border border-black/5 mb-6">
+          <div className="bg-white rounded-lg p-8 border border-black/5 mb-6">
             <h2 className="text-sm font-semibold text-black/40 uppercase tracking-wider mb-3">Overview</h2>
             <p className="text-sm text-black/70 leading-relaxed">
               {framework.summary}
@@ -139,7 +139,7 @@ export default function FrameworkDetailPage() {
           </div>
 
           {/* When to use */}
-          <div className="bg-white rounded-2xl p-8 border border-black/5 mb-6">
+          <div className="bg-white rounded-lg p-8 border border-black/5 mb-6">
             <h2 className="text-sm font-semibold text-black/40 uppercase tracking-wider mb-3">When to Use This</h2>
             <p className="text-sm text-black/70 leading-relaxed">
               {framework.whenToUse}
@@ -148,7 +148,7 @@ export default function FrameworkDetailPage() {
 
           {/* External resource */}
           {framework.externalUrl && (
-            <div className="bg-white rounded-2xl p-8 border border-black/5 mb-6">
+            <div className="bg-white rounded-lg p-8 border border-black/5 mb-6">
               <h2 className="text-sm font-semibold text-black/40 uppercase tracking-wider mb-3">Resource</h2>
               <a
                 href={framework.externalUrl}
@@ -166,7 +166,7 @@ export default function FrameworkDetailPage() {
 
           {/* Coaching CTA */}
           {framework.coachingCta && (
-            <div className="bg-white rounded-2xl p-8 border border-black/5 text-center">
+            <div className="bg-white rounded-lg p-8 border border-black/5 text-center">
               <h2 className="text-lg font-semibold text-black mb-2">Work Through This With Niko</h2>
               <p className="text-sm text-black/50 mb-6 max-w-sm mx-auto">
                 Get personalized guidance on applying {framework.name} to your specific leadership context.

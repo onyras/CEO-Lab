@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 
 interface AnimatedScoreProps {
   value: number
@@ -48,13 +47,10 @@ export function AnimatedScore({
   }, [value, duration])
 
   return (
-    <motion.span
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className={className}
+    <span
+      className={`animate-fadeIn opacity-0 ${className}`}
     >
       {displayValue}{suffix}
-    </motion.span>
+    </span>
   )
 }

@@ -9,7 +9,7 @@ export function LockedSection({
 }: LockedSectionProps) {
   return (
     <div
-      className={`bg-black/[0.02] border border-black/5 rounded-2xl flex flex-col items-center justify-center py-12 px-6 text-center ${className}`}
+      className={`bg-black/[0.02] border border-black/5 rounded-lg flex flex-col items-center justify-center py-12 px-6 text-center ${className}`}
     >
       <svg
         className="w-8 h-8 text-black/20 mb-4"

@@ -34,22 +34,7 @@ const OverviewTab = dynamic(() => import('./tabs/OverviewTab').then(m => ({ defa
   ssr: false,
 })
 
-const ArchetypesTab = dynamic(() => import('./tabs/ArchetypesTab').then(m => ({ default: m.ArchetypesTab })), {
-  loading: () => <TabSkeleton />,
-  ssr: false,
-})
-
-const DeepDiveTab = dynamic(() => import('./tabs/DeepDiveTab').then(m => ({ default: m.DeepDiveTab })), {
-  loading: () => <TabSkeleton />,
-  ssr: false,
-})
-
-const DimensionsTab = dynamic(() => import('./tabs/DimensionsTab').then(m => ({ default: m.DimensionsTab })), {
-  loading: () => <TabSkeleton />,
-  ssr: false,
-})
-
-const BlindSpotsTab = dynamic(() => import('./tabs/BlindSpotsTab').then(m => ({ default: m.BlindSpotsTab })), {
+const TerritoryTab = dynamic(() => import('./tabs/TerritoryTab').then(m => ({ default: m.TerritoryTab })), {
   loading: () => <TabSkeleton />,
   ssr: false,
 })
@@ -59,16 +44,11 @@ const GrowthPlanTab = dynamic(() => import('./tabs/GrowthPlanTab').then(m => ({ 
   ssr: false,
 })
 
-const RoadmapTab = dynamic(() => import('./tabs/RoadmapTab').then(m => ({ default: m.RoadmapTab })), {
-  loading: () => <TabSkeleton />,
-  ssr: false,
-})
-
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
-type ResultsTab = 'overview' | 'deep-dive' | 'dimensions' | 'archetypes' | 'blind-spots' | 'growth-plan' | 'roadmap'
+type ResultsTab = 'overview' | 'leading-yourself' | 'leading-teams' | 'leading-organizations' | 'growth-plan'
 
 // ---------------------------------------------------------------------------
 // Complete Results View
@@ -84,18 +64,21 @@ function CompleteResultsView({ results }: { results: FullResults }) {
 
   const tabs: { key: ResultsTab; label: string }[] = [
     { key: 'overview', label: 'Overview' },
-    { key: 'archetypes', label: 'Archetypes' },
-    { key: 'deep-dive', label: 'Deep Dive' },
-    { key: 'dimensions', label: 'Impact Areas' },
-    { key: 'blind-spots', label: 'Blind Spots' },
-    { key: 'growth-plan', label: 'Growth Plan' },
-    { key: 'roadmap', label: 'Growth Path' },
+    { key: 'leading-yourself', label: 'Leading Yourself' },
+    { key: 'leading-teams', label: 'Leading Teams' },
+    { key: 'leading-organizations', label: 'Leading Orgs' },
+    { key: 'growth-plan', label: 'Your Growth Plan' },
   ]
+
+  const handleNavigateToTab = (tab: string) => {
+    setActiveTab(tab as ResultsTab)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   return (
     <div className="print:bg-white">
       <header className="pt-12 pb-4 px-6">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <Link
             href="/ceolab"
             className="inline-flex items-center gap-1.5 text-sm text-black/40 hover:text-black/60 transition-colors mb-6"
@@ -112,15 +95,15 @@ function CompleteResultsView({ results }: { results: FullResults }) {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-6 pb-20">
+      <main className="max-w-6xl mx-auto px-6 pb-20">
         {/* Tab bar — horizontally scrollable on mobile */}
-        <div className="overflow-x-auto -mx-6 px-6 mb-8">
+        <div className="overflow-x-auto -mx-6 px-6 mb-10">
           <div className="flex gap-1 p-1.5 bg-black/[0.04] rounded-lg min-w-max">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={`py-3 px-4 rounded-lg text-sm font-semibold whitespace-nowrap transition-all ${
+                onClick={() => handleNavigateToTab(tab.key)}
+                className={`py-3 px-5 rounded-lg text-sm font-semibold whitespace-nowrap transition-all ${
                   activeTab === tab.key
                     ? 'bg-white text-black shadow-sm'
                     : 'text-black/40 hover:text-black/60'
@@ -139,33 +122,44 @@ function CompleteResultsView({ results }: { results: FullResults }) {
             hasMirrorData={hasMirrorData}
             territoryScores={results.territoryScores}
             dimensionScores={results.dimensionScores}
+            archetypes={results.archetypes}
+            mirrorGaps={results.mirrorGaps}
             imFlagged={imFlagged}
+            onNavigateToTab={handleNavigateToTab}
           />
         )}
-        {activeTab === 'archetypes' && (
-          <ArchetypesTab archetypes={results.archetypes} imFlagged={imFlagged} />
-        )}
-        {activeTab === 'deep-dive' && (
-          <DeepDiveTab
-            dimensionScores={results.dimensionScores}
+        {activeTab === 'leading-yourself' && (
+          <TerritoryTab
+            territory="leading_yourself"
             territoryScores={results.territoryScores}
-          />
-        )}
-        {activeTab === 'dimensions' && (
-          <DimensionsTab
             dimensionScores={results.dimensionScores}
-            priorityDimensions={results.priorityDimensions}
+            mirrorGaps={results.mirrorGaps}
+            hasMirrorData={hasMirrorData}
             imFlagged={imFlagged}
           />
         )}
-        {activeTab === 'blind-spots' && (
-          <BlindSpotsTab mirrorGaps={results.mirrorGaps} hasMirrorData={hasMirrorData} imFlagged={imFlagged} />
+        {activeTab === 'leading-teams' && (
+          <TerritoryTab
+            territory="leading_teams"
+            territoryScores={results.territoryScores}
+            dimensionScores={results.dimensionScores}
+            mirrorGaps={results.mirrorGaps}
+            hasMirrorData={hasMirrorData}
+            imFlagged={imFlagged}
+          />
+        )}
+        {activeTab === 'leading-organizations' && (
+          <TerritoryTab
+            territory="leading_organizations"
+            territoryScores={results.territoryScores}
+            dimensionScores={results.dimensionScores}
+            mirrorGaps={results.mirrorGaps}
+            hasMirrorData={hasMirrorData}
+            imFlagged={imFlagged}
+          />
         )}
         {activeTab === 'growth-plan' && (
           <GrowthPlanTab dimensionScores={results.dimensionScores} priorityDimensions={results.priorityDimensions} />
-        )}
-        {activeTab === 'roadmap' && (
-          <RoadmapTab priorityDimensions={results.priorityDimensions} dimensionScores={results.dimensionScores} />
         )}
       </main>
 
@@ -187,15 +181,15 @@ function CompleteResultsView({ results }: { results: FullResults }) {
 function LoadingSkeleton() {
   return (
     <AppShell>
-      <div className="max-w-4xl mx-auto px-6 py-16">
+      <div className="max-w-6xl mx-auto px-6 py-16">
         <div className="space-y-6">
           <div className="text-center mb-12">
             <div className="h-8 w-48 bg-black/5 rounded mx-auto mb-3 animate-pulse" />
             <div className="h-4 w-72 bg-black/5 rounded mx-auto animate-pulse" />
           </div>
           {/* Tab bar skeleton */}
-          <div className="flex gap-1 p-1.5 bg-black/[0.04] rounded-lg mb-8">
-            {Array.from({ length: 7 }).map((_, i) => (
+          <div className="flex gap-1 p-1.5 bg-black/[0.04] rounded-lg mb-10">
+            {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="h-10 flex-1 bg-black/5 rounded-lg animate-pulse" />
             ))}
           </div>
@@ -322,7 +316,7 @@ export default function ResultsPage() {
   if (pageState === 'locked') {
     return (
       <AppShell>
-        <div className="max-w-4xl mx-auto px-6 py-16">
+        <div className="max-w-6xl mx-auto px-6 py-16">
           <div className="text-center mb-8">
             <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">CEO Lab Assessment</p>
             <h1 className="text-3xl md:text-4xl font-bold text-black">Your Leadership Report</h1>

@@ -21,7 +21,20 @@ interface TrendResult {
   [dimensionId: string]: string
 }
 
+interface PreviousResponses {
+  [dimensionId: string]: number // score 1-5
+}
+
 // ─── Helpers ──────────────────────────────────────────────────────
+
+function getISOWeek(date: Date): number {
+  const d = new Date(date)
+  d.setHours(0, 0, 0, 0)
+  d.setDate(d.getDate() + 3 - ((d.getDay() + 6) % 7))
+  const week1 = new Date(d.getFullYear(), 0, 4)
+  const weekNum = 1 + Math.round(((d.getTime() - week1.getTime()) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7)
+  return Math.max(1, Math.min(53, weekNum))
+}
 
 function getCurrentQuarter(): string {
   const now = new Date()
@@ -92,6 +105,8 @@ export default function WeeklyPulsePage() {
   const [trends, setTrends] = useState<TrendResult | null>(null)
   const [savedCount, setSavedCount] = useState(0)
   const [focusItems, setFocusItems] = useState<WeeklyItem[]>([])
+  const [previousResponses, setPreviousResponses] = useState<PreviousResponses>({})
+  const [streakWeek, setStreakWeek] = useState<number>(0)
 
   // Auth check + load focus dimensions on mount
   useEffect(() => {
@@ -137,6 +152,47 @@ export default function WeeklyPulsePage() {
       } catch (e) {
         console.warn('Failed to load focus dimensions, showing all items:', e)
         setFocusItems(weeklyItems)
+      }
+
+      // Load previous week's responses + streak count
+      try {
+        const { data: pulseRows } = await supabase
+          .from('weekly_pulse')
+          .select('responded_at, dimension, score')
+          .eq('ceo_id', user.id)
+          .order('responded_at', { ascending: true })
+
+        if (pulseRows && pulseRows.length > 0) {
+          // Count unique weeks for streak
+          const weekSet = new Set<string>()
+          for (const row of pulseRows) {
+            const d = new Date(row.responded_at)
+            const weekNum = getISOWeek(d)
+            weekSet.add(`${d.getFullYear()}-W${String(weekNum).padStart(2, '0')}`)
+          }
+          setStreakWeek(weekSet.size + 1) // This submission will be the next week
+
+          // Get the most recent week's responses (excluding current week)
+          const now = new Date()
+          const currentWeekKey = `${now.getFullYear()}-W${String(getISOWeek(now)).padStart(2, '0')}`
+          const previousRows = pulseRows.filter(row => {
+            const d = new Date(row.responded_at)
+            const weekKey = `${d.getFullYear()}-W${String(getISOWeek(d)).padStart(2, '0')}`
+            return weekKey !== currentWeekKey
+          })
+
+          // Get latest score per dimension from previous weeks
+          const prev: PreviousResponses = {}
+          for (const row of previousRows) {
+            prev[row.dimension] = row.score
+          }
+          setPreviousResponses(prev)
+        } else {
+          setStreakWeek(1) // First ever check-in
+        }
+      } catch (e) {
+        console.warn('Failed to load previous responses:', e)
+        setStreakWeek(1)
       }
 
       setPhase('checkin')
@@ -406,6 +462,11 @@ export default function WeeklyPulsePage() {
             Dashboard
           </a>
           <h1 className="text-3xl font-bold text-black tracking-tight mb-2">Weekly Check-In</h1>
+          {streakWeek > 0 && (
+            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-1">
+              Week {streakWeek} of your journey
+            </p>
+          )}
           <p className="text-black/50">
             {focusItems.length} questions on your focus areas
           </p>
@@ -453,6 +514,7 @@ export default function WeeklyPulsePage() {
                     key={item.id}
                     item={item}
                     value={responses.get(item.id)}
+                    previousScore={previousResponses[item.dimensionId]}
                     onChange={(val) => handleResponseChange(item.id, val)}
                   />
                 ))}
@@ -488,13 +550,23 @@ export default function WeeklyPulsePage() {
 
 // ─── Weekly Question Card Component ────────────────────────────────
 
+const SCORE_LABELS: Record<number, string> = {
+  1: 'Very Low',
+  2: 'Low',
+  3: 'Moderate',
+  4: 'High',
+  5: 'Very High',
+}
+
 const WeeklyQuestionCard = React.memo(function WeeklyQuestionCard({
   item,
   value,
+  previousScore,
   onChange,
 }: {
   item: WeeklyItem
   value: string | number | undefined
+  previousScore?: number
   onChange: (value: string | number) => void
 }) {
   const dimension = getDimension(item.dimensionId)
@@ -504,20 +576,27 @@ const WeeklyQuestionCard = React.memo(function WeeklyQuestionCard({
 
   return (
     <div
-      className={`bg-white rounded-xl p-6 border transition-colors ${
+      className={`bg-white rounded-lg p-6 border transition-colors ${
         isAnswered ? 'border-black/15' : 'border-black/5'
       }`}
     >
-      {/* Dimension label */}
-      <span
-        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium mb-3"
-        style={{
-          backgroundColor: `${territoryColor}15`,
-          color: territoryColor,
-        }}
-      >
-        {dimension.name}
-      </span>
+      {/* Dimension label + previous response */}
+      <div className="flex items-center justify-between mb-3">
+        <span
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium"
+          style={{
+            backgroundColor: `${territoryColor}15`,
+            color: territoryColor,
+          }}
+        >
+          {dimension.name}
+        </span>
+        {previousScore != null && (
+          <span className="text-xs text-black/30">
+            Last week: {SCORE_LABELS[previousScore] || `${previousScore}/5`}
+          </span>
+        )}
+      </div>
 
       {/* Question text */}
       <p className="text-sm font-medium text-black leading-relaxed mb-4">
