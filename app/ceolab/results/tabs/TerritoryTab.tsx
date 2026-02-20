@@ -161,71 +161,68 @@ export function TerritoryTab({
                 style={{ borderLeftWidth: 3, borderLeftColor: color }}
               >
                 {/* Header */}
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <p className="text-xs text-black/40 mb-0.5">{def.id}</p>
-                    <h3 className="text-lg font-semibold text-black">{def.name}</h3>
-                  </div>
-                  <div className="text-right shrink-0 ml-4">
-                    <span className="text-2xl font-bold text-black">{percentage}%</span>
-                    <p className="text-xs text-black/40 mt-0.5">{verbalLabel}</p>
-                  </div>
+                <div className="mb-1">
+                  <p className="text-xs text-black/40 mb-0.5">{def.id}</p>
+                  <h3 className="text-lg font-semibold text-black">{def.name}</h3>
                 </div>
 
-                {/* Timeline score axis */}
-                <div className="mb-2">
-                  <div className="relative h-2.5 w-full rounded-full bg-black/[0.04]">
-                    {/* Filled bar */}
-                    <div
-                      className="absolute top-0 left-0 h-full rounded-full transition-all duration-500 ease-out"
-                      style={{
-                        width: `${Math.max(2, percentage)}%`,
-                        backgroundColor: color,
-                      }}
+                {/* Radial score + quarterly growth timeline */}
+                <div className="flex items-center gap-8 mb-2">
+                  {/* Radial ring */}
+                  <svg width="110" height="110" viewBox="0 0 110 110" className="flex-shrink-0">
+                    <circle cx="55" cy="55" r="42" fill="none" stroke="rgba(0,0,0,0.04)" strokeWidth="8" />
+                    {/* Quarter segment lines */}
+                    {[0, 1, 2, 3].map(i => {
+                      const a = (-90 + i * 90) * Math.PI / 180
+                      return <line key={i} x1={55 + Math.cos(a) * 37} y1={55 + Math.sin(a) * 37} x2={55 + Math.cos(a) * 47} y2={55 + Math.sin(a) * 47} stroke="rgba(0,0,0,0.06)" strokeWidth="1" />
+                    })}
+                    {/* Progress arc */}
+                    <circle
+                      cx="55" cy="55" r="42" fill="none"
+                      stroke={color} strokeWidth="8"
+                      strokeDasharray={`${(percentage / 100) * 2 * Math.PI * 42} ${(1 - percentage / 100) * 2 * Math.PI * 42}`}
+                      strokeDashoffset={2 * Math.PI * 42 * 0.25}
+                      strokeLinecap="round"
+                      transform="rotate(-90 55 55)"
                     />
-                    {/* Current position marker */}
-                    <div
-                      className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
-                      style={{ left: `${Math.max(2, percentage)}%` }}
-                    >
-                      <div
-                        className="w-4 h-4 rounded-full border-2 border-white"
-                        style={{ backgroundColor: color, boxShadow: '0 0 0 1px rgba(0,0,0,0.1)' }}
-                      />
-                    </div>
-                    {/* Next quarter placeholder marker */}
-                    <div
-                      className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
-                      style={{ left: `${Math.min(98, Math.max(2, percentage) + 15)}%` }}
-                    >
-                      <div className="w-4 h-4 rounded-full border-2 border-dashed border-black/15 bg-white" />
-                    </div>
-                  </div>
+                    <text x="55" y="51" textAnchor="middle" fontSize="20" fontWeight="bold" fill="rgba(0,0,0,0.7)" className="font-mono">{percentage}%</text>
+                    <text x="55" y="67" textAnchor="middle" fontSize="9" fill="rgba(0,0,0,0.25)" className="font-mono">{verbalLabel}</text>
+                  </svg>
 
-                  {/* Timeline labels */}
-                  <div className="relative mt-3">
-                    {/* Current quarter label */}
-                    <div
-                      className="absolute -translate-x-1/2 text-center"
-                      style={{ left: `${Math.max(4, percentage)}%` }}
-                    >
-                      <p className="font-mono text-[10px] font-bold text-black/60">{getQuarterLabel(0)}</p>
-                      <p className="text-[10px] text-black/30">{benchCtx.narrative}</p>
+                  {/* Quarterly growth list */}
+                  <div className="flex-1 space-y-3">
+                    {/* Current quarter */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
+                      <span className="font-mono text-[11px] w-16 font-bold text-black/60">{getQuarterLabel(0)}</span>
+                      <div className="flex-1 h-1.5 rounded-full bg-black/[0.04]">
+                        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${percentage}%`, backgroundColor: color }} />
+                      </div>
+                      <span className="font-mono text-[11px] w-10 text-right font-bold" style={{ color }}>{percentage}%</span>
                     </div>
-                    {/* Next quarter label */}
-                    <div
-                      className="absolute -translate-x-1/2 text-center"
-                      style={{ left: `${Math.min(98, Math.max(2, percentage) + 15)}%` }}
-                    >
-                      <p className="font-mono text-[10px] text-black/20">{getQuarterLabel(1)}</p>
+                    {/* Next quarter */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-2.5 h-2.5 rounded-full border-[1.5px] border-dashed flex-shrink-0" style={{ borderColor: 'rgba(0,0,0,0.15)' }} />
+                      <span className="font-mono text-[11px] w-16 text-black/20">{getQuarterLabel(1)}</span>
+                      <div className="flex-1 h-1.5 rounded-full bg-black/[0.02]" />
+                      <span className="font-mono text-[11px] w-10 text-right text-black/15">&mdash;</span>
                     </div>
-                  </div>
-
-                  {/* Benchmark context below */}
-                  <div className="mt-8">
-                    <span className="text-[10px] text-black/30">
-                      Typical: {bench.p25}–{bench.p75}%
-                    </span>
+                    {/* Q+2 */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-2.5 h-2.5 rounded-full border border-dashed flex-shrink-0" style={{ borderColor: 'rgba(0,0,0,0.08)' }} />
+                      <span className="font-mono text-[11px] w-16 text-black/12">{getQuarterLabel(2)}</span>
+                      <div className="flex-1 h-1.5 rounded-full bg-black/[0.01]" />
+                      <span className="font-mono text-[11px] w-10 text-right text-black/8">&mdash;</span>
+                    </div>
+                    {/* Q+3 */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-2.5 h-2.5 rounded-full border border-dashed flex-shrink-0" style={{ borderColor: 'rgba(0,0,0,0.04)' }} />
+                      <span className="font-mono text-[11px] w-16 text-black/8">{getQuarterLabel(3)}</span>
+                      <div className="flex-1 h-1.5 rounded-full bg-black/[0.005]" />
+                      <span className="font-mono text-[11px] w-10 text-right text-black/5">&mdash;</span>
+                    </div>
+                    {/* Benchmark note */}
+                    <p className="text-[10px] text-black/25 pt-1">Typical: {bench.p25}–{bench.p75}% &middot; {benchCtx.narrative}</p>
                   </div>
                 </div>
 
