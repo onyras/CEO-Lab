@@ -27,7 +27,7 @@ const RELATIONSHIP_OPTIONS = [
 // ─── Types ────────────────────────────────────────────────────────
 
 type CeoPhase = 'loading' | 'invite' | 'creating' | 'link-ready'
-type RaterPhase = 'loading' | 'assessment' | 'submitting' | 'thank-you' | 'error'
+type RaterPhase = 'loading' | 'intro' | 'assessment' | 'submitting' | 'thank-you' | 'error'
 
 interface MirrorResponseData {
   dimensionId: DimensionId
@@ -535,6 +535,7 @@ function RaterMode({ token }: { token: string }) {
   const [phase, setPhase] = useState<RaterPhase>('loading')
   const [error, setError] = useState<string | null>(null)
   const [mirrorSessionId, setMirrorSessionId] = useState<string>('')
+  const [ceoFirstName, setCeoFirstName] = useState<string>('')
   const [currentIndex, setCurrentIndex] = useState(0)
   const [responses, setResponses] = useState<Map<string, number>>(new Map())
 
@@ -544,10 +545,10 @@ function RaterMode({ token }: { token: string }) {
       try {
         const supabase = createClient()
 
-        // Load mirror session by token (which is the mirror_session ID)
+        // Load mirror session + session_id for CEO lookup
         const { data: session, error: sessionError } = await supabase
           .from('mirror_sessions')
-          .select('id, completed_at')
+          .select('id, completed_at, session_id')
           .eq('id', token)
           .single()
 
@@ -564,7 +565,31 @@ function RaterMode({ token }: { token: string }) {
         }
 
         setMirrorSessionId(session.id)
-        setPhase('assessment')
+
+        // Try to get CEO's first name — fail silently if RLS blocks it
+        try {
+          const { data: assessmentSession } = await supabase
+            .from('assessment_sessions')
+            .select('ceo_id')
+            .eq('id', session.session_id)
+            .single()
+
+          if (assessmentSession?.ceo_id) {
+            const { data: profile } = await supabase
+              .from('user_profiles')
+              .select('full_name')
+              .eq('id', assessmentSession.ceo_id)
+              .single()
+
+            if (profile?.full_name) {
+              setCeoFirstName(profile.full_name.split(' ')[0])
+            }
+          }
+        } catch {
+          // Name is cosmetic — swallow silently
+        }
+
+        setPhase('intro')
       } catch (err: any) {
         console.error('Mirror load error:', err)
         setError('Failed to load the mirror assessment. Please try again.')
@@ -656,6 +681,68 @@ function RaterMode({ token }: { token: string }) {
         <div className="flex flex-col items-center gap-4">
           <div className="h-8 w-8 border-2 border-black/20 border-t-black rounded-full animate-spin" />
           <p className="text-black/50 text-sm font-medium">Loading mirror assessment...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // ─── Intro ──────────────────────────────────────────────────────
+
+  if (phase === 'intro') {
+    const inviterLabel = ceoFirstName ? `${ceoFirstName} has invited you` : 'You've been invited'
+
+    return (
+      <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6 py-12">
+        <div className="max-w-lg w-full">
+          <div className="bg-white rounded-lg p-10 border border-black/5">
+            {/* Header */}
+            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-4">Mirror Check</p>
+            <h1 className="text-3xl font-bold text-black mb-3 leading-tight">
+              {inviterLabel} to share your perspective
+            </h1>
+            <p className="text-base text-black/50 leading-relaxed mb-8">
+              {ceoFirstName ? `${ceoFirstName} is` : 'This person is'} working on their leadership development and wants to understand how their leadership actually lands — not just how they think it does.
+            </p>
+
+            {/* What you'll do */}
+            <div className="space-y-4 mb-8">
+              <div className="flex items-start gap-4">
+                <span className="w-7 h-7 rounded-full bg-black/5 flex items-center justify-center flex-shrink-0 mt-0.5 font-mono text-xs font-bold text-black/50">1</span>
+                <div>
+                  <p className="text-sm font-semibold text-black">15 short questions</p>
+                  <p className="text-sm text-black/50 mt-0.5">Each one asks what you actually observe in how they lead — not what you think they intend or aspire to.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <span className="w-7 h-7 rounded-full bg-black/5 flex items-center justify-center flex-shrink-0 mt-0.5 font-mono text-xs font-bold text-black/50">2</span>
+                <div>
+                  <p className="text-sm font-semibold text-black">Takes about 5 minutes</p>
+                  <p className="text-sm text-black/50 mt-0.5">Rate each statement on a 5-point scale. No long answers, no trick questions.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <span className="w-7 h-7 rounded-full bg-black/5 flex items-center justify-center flex-shrink-0 mt-0.5 font-mono text-xs font-bold text-black/50">3</span>
+                <div>
+                  <p className="text-sm font-semibold text-black">Your responses are anonymous</p>
+                  <p className="text-sm text-black/50 mt-0.5">Results are shown as aggregate data. No account, no login, nothing stored about you.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Note */}
+            <div className="bg-[#F7F3ED] rounded-lg p-4 mb-8">
+              <p className="text-sm text-black/50 leading-relaxed">
+                The most useful feedback is honest feedback. Don&apos;t rate based on how you think they want to be seen — rate based on what you&apos;ve observed.
+              </p>
+            </div>
+
+            <button
+              onClick={() => setPhase('assessment')}
+              className="w-full py-4 bg-black text-white rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
+            >
+              Begin
+            </button>
+          </div>
         </div>
       </div>
     )
