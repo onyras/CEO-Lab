@@ -19,11 +19,11 @@ function CoachingSection({ dimensionScores }: { dimensionScores: DimensionScore[
 
   return (
     <section className="bg-white rounded-lg p-8 md:p-12 border border-black/10">
-      <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">
+      <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">
         Personalized Guidance
       </p>
-      <h3 className="text-2xl font-bold text-black mb-2">If I Were Your Coach</h3>
-      <p className="text-sm text-black/50 mb-8 max-w-lg">
+      <h3 className="text-3xl font-bold text-black mb-2">If I Were Your Coach</h3>
+      <p className="text-base text-black/60 mb-8 max-w-lg">
         Three interventions I would prioritize based on your assessment. These are the moves that would create the most leverage.
       </p>
       <div className="space-y-6">
@@ -48,12 +48,12 @@ function CoachingSection({ dimensionScores }: { dimensionScores: DimensionScore[
               </div>
               <div className="grid md:grid-cols-2 gap-4 mb-3">
                 <div>
-                  <p className="font-mono text-[10px] text-black/40 uppercase tracking-wider mb-1">Current State</p>
-                  <p className="text-sm text-black/60 leading-relaxed">{intervention.currentState}</p>
+                  <p className="font-mono text-base text-black/60 uppercase tracking-wider mb-1">Current State</p>
+                  <p className="text-base text-black/70 leading-relaxed">{intervention.currentState}</p>
                 </div>
                 <div>
-                  <p className="font-mono text-[10px] text-black/40 uppercase tracking-wider mb-1">Target State</p>
-                  <p className="text-sm text-black/60 leading-relaxed">{intervention.targetState}</p>
+                  <p className="font-mono text-base text-black/60 uppercase tracking-wider mb-1">Target State</p>
+                  <p className="text-base text-black/70 leading-relaxed">{intervention.targetState}</p>
                 </div>
               </div>
               <div className="flex items-center gap-6 text-xs">
@@ -152,11 +152,11 @@ export function GrowthPlanTab({ dimensionScores, priorityDimensions }: GrowthPla
     <div className="space-y-8">
       {/* Hero */}
       <section className="bg-white rounded-lg p-8 md:p-12 border border-black/10">
-        <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">
+        <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">
           Your Path Forward
         </p>
-        <h2 className="text-2xl font-bold text-black mb-2">Your Growth Plan</h2>
-        <p className="text-sm text-black/50 leading-relaxed max-w-xl">
+        <h2 className="text-3xl font-bold text-black mb-2">Your Growth Plan</h2>
+        <p className="text-base text-black/60 leading-relaxed max-w-xl">
           {isQuarterlyFocus
             ? 'Based on the dimensions you chose to prioritize this quarter. Each area includes your current score, your target, and the specific frameworks to get there.'
             : 'Based on your assessment priorities — the areas with the most room for growth. Each area includes your current score, your target, and the specific frameworks to get there.'}
@@ -168,7 +168,7 @@ export function GrowthPlanTab({ dimensionScores, priorityDimensions }: GrowthPla
 
       {/* Priority Dimension Cards */}
       <section>
-        <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-4 px-1">
+        <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-4 px-1">
           Priority Dimensions
         </p>
 
@@ -185,7 +185,7 @@ export function GrowthPlanTab({ dimensionScores, priorityDimensions }: GrowthPla
                 {/* Badge + territory */}
                 <div className="flex items-center justify-between mb-4">
                   <span
-                    className="text-[10px] font-medium px-3 py-1 rounded-full"
+                    className="text-xs font-medium px-3 py-1 rounded-full"
                     style={{
                       backgroundColor: `${color}15`,
                       color,
@@ -193,7 +193,7 @@ export function GrowthPlanTab({ dimensionScores, priorityDimensions }: GrowthPla
                   >
                     {isQuarterlyFocus ? 'Quarterly Focus' : 'Priority Area'}
                   </span>
-                  <span className="text-xs text-black/40">
+                  <span className="text-base text-black/60">
                     {TERRITORY_CONFIG[card.territory].displayLabel}
                   </span>
                 </div>
@@ -205,12 +205,12 @@ export function GrowthPlanTab({ dimensionScores, priorityDimensions }: GrowthPla
                 {/* Current vs Target */}
                 <div className="grid grid-cols-2 gap-6 mb-6">
                   <div className="bg-[#F7F3ED]/50 rounded-lg p-5 text-center">
-                    <p className="font-mono text-[10px] text-black/40 uppercase tracking-wider mb-2">Current</p>
+                    <p className="font-mono text-base text-black/60 uppercase tracking-wider mb-2">Current</p>
                     <p className="text-3xl font-bold text-black">{card.percentage}%</p>
-                    <p className="text-xs text-black/40 mt-1">{card.verbalLabel}</p>
+                    <p className="text-base text-black/60 mt-1">{card.verbalLabel}</p>
                   </div>
                   <div className="rounded-lg p-5 text-center" style={{ backgroundColor: `${color}08` }}>
-                    <p className="font-mono text-[10px] uppercase tracking-wider mb-2" style={{ color }}>Target</p>
+                    <p className="font-mono text-xs uppercase tracking-wider mb-2" style={{ color }}>Target</p>
                     <p className="text-3xl font-bold" style={{ color }}>{card.target}%</p>
                     <p className="text-xs mt-1" style={{ color, opacity: 0.7 }}>{card.targetLabel}</p>
                   </div>
@@ -218,21 +218,21 @@ export function GrowthPlanTab({ dimensionScores, priorityDimensions }: GrowthPla
 
                 {/* Why This Matters */}
                 <div className="mb-6">
-                  <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Why This Matters</p>
-                  <p className="text-sm text-black/60 leading-relaxed">{card.costOfIgnoring}</p>
+                  <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">Why This Matters</p>
+                  <p className="text-base text-black/70 leading-relaxed">{card.costOfIgnoring}</p>
                 </div>
 
                 {/* Prescribed Frameworks */}
                 {card.frameworks.length > 0 && (
                   <div className="mb-4">
-                    <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-3">Prescribed Frameworks</p>
+                    <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-3">Prescribed Frameworks</p>
                     <div className="space-y-3">
                       {card.frameworks.map(fw => (
                         <div key={fw.name} className="flex items-center justify-between p-4 bg-[#F7F3ED]/50 rounded-lg">
                           <div className="min-w-0 flex-1">
                             <p className="text-sm font-medium text-black">{fw.name}</p>
                             {fw.content && (
-                              <p className="text-xs text-black/40 mt-0.5">{fw.content.tagline}</p>
+                              <p className="text-base text-black/60 mt-0.5">{fw.content.tagline}</p>
                             )}
                           </div>
                           {fw.content ? (
@@ -246,7 +246,7 @@ export function GrowthPlanTab({ dimensionScores, priorityDimensions }: GrowthPla
                               </svg>
                             </a>
                           ) : (
-                            <span className="flex-shrink-0 ml-4 inline-flex items-center gap-1.5 text-[10px] text-black/30 bg-black/[0.04] px-3 py-1.5 rounded-full">
+                            <span className="flex-shrink-0 ml-4 inline-flex items-center gap-1.5 text-base text-black/50 bg-black/[0.04] px-3 py-1.5 rounded-full">
                               <span className="w-1.5 h-1.5 rounded-full bg-[#E08F6A]/50" />
                               Workshop: Coming Soon
                             </span>
@@ -260,7 +260,7 @@ export function GrowthPlanTab({ dimensionScores, priorityDimensions }: GrowthPla
                 {/* Full framework library */}
                 {card.allFrameworks.length > 0 && (
                   <div>
-                    <p className="text-xs text-black/40 mb-2">Full framework library for {card.dimensionName}:</p>
+                    <p className="text-base text-black/60 mb-2">Full framework library for {card.dimensionName}:</p>
                     <div className="flex flex-wrap gap-2">
                       {card.allFrameworks.map(fw => (
                         <span key={fw} className="inline-block px-3 py-1.5 text-xs text-black/60 border border-black/10 rounded-full">{fw}</span>
@@ -277,11 +277,11 @@ export function GrowthPlanTab({ dimensionScores, priorityDimensions }: GrowthPla
       {/* Other Growth Areas */}
       {otherByTerritory.length > 0 && (
         <section className="bg-white rounded-lg p-8 md:p-12 border border-black/10">
-          <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">
+          <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">
             Continue Growing
           </p>
           <h3 className="text-xl font-bold text-black mb-2">Other Growth Areas</h3>
-          <p className="text-sm text-black/50 mb-8 max-w-lg">
+          <p className="text-base text-black/60 mb-8 max-w-lg">
             These dimensions are not your immediate priority, but understanding them helps you see the full picture.
           </p>
 
@@ -303,7 +303,7 @@ export function GrowthPlanTab({ dimensionScores, priorityDimensions }: GrowthPla
                       <div key={dim.dimensionId} className="pl-5 border-l-2" style={{ borderColor: `${group.color}30` }}>
                         <div className="flex items-center justify-between mb-1.5">
                           <p className="text-sm font-medium text-black">{dimDef.name}</p>
-                          <span className="text-xs text-black/40">{dim.verbalLabel} · {percentage}% capacity</span>
+                          <span className="text-base text-black/60">{dim.verbalLabel} · {percentage}% capacity</span>
                         </div>
                         <div className="flex flex-wrap gap-1.5">
                           {frameworks.map(fw => {
@@ -319,7 +319,7 @@ export function GrowthPlanTab({ dimensionScores, priorityDimensions }: GrowthPla
                             ) : (
                               <span
                                 key={fw}
-                                className="inline-block px-2.5 py-1 text-xs text-black/50 border border-black/10 rounded-full"
+                                className="inline-block px-2.5 py-1 text-base text-black/70 border border-black/10 rounded-full"
                               >
                                 {fw}
                               </span>
@@ -338,8 +338,8 @@ export function GrowthPlanTab({ dimensionScores, priorityDimensions }: GrowthPla
 
       {/* Reassessment */}
       <section className="bg-[#F7F3ED] rounded-lg p-8 md:p-10 text-center">
-        <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Quarterly Reassessment</p>
-        <p className="text-sm text-black/60 leading-relaxed max-w-lg mx-auto">
+        <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">Quarterly Reassessment</p>
+        <p className="text-base text-black/70 leading-relaxed max-w-lg mx-auto">
           Retake the full assessment in 90 days to measure your progress. Meaningful shift in leadership behavior takes 8-12 weeks of deliberate practice.
         </p>
       </section>

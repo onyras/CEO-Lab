@@ -299,7 +299,7 @@ export default function WeeklyPulsePage() {
                 d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
               />
             </svg>
-            <p className="text-sm text-black/40 mb-6">Subscribe to access weekly check-ins</p>
+            <p className="text-base text-black/50 mb-6">Subscribe to access weekly check-ins</p>
             <a
               href="/api/checkout"
               className="inline-block bg-black text-white px-8 py-3.5 rounded-lg text-sm font-semibold hover:bg-black/90 transition-colors"
@@ -356,7 +356,7 @@ export default function WeeklyPulsePage() {
               </svg>
             </div>
 
-            <h1 className="text-2xl font-bold text-black mb-2">Check-in Logged</h1>
+            <h1 className="text-3xl font-bold text-black mb-2">Check-in Logged</h1>
             <p className="text-black/50 text-sm mb-8">
               {savedCount} response{savedCount !== 1 ? 's' : ''} saved for {getCurrentQuarter()}
             </p>
@@ -396,7 +396,7 @@ export default function WeeklyPulsePage() {
             )}
 
             {/* Trend explanation */}
-            <p className="text-xs text-black/40 leading-relaxed mb-8">
+            <p className="text-base text-black/60 leading-relaxed mb-8">
               Trends appear after 8 weekly check-ins. Keep going — each week sharpens the picture.
             </p>
 
@@ -454,7 +454,7 @@ export default function WeeklyPulsePage() {
         <div className="mb-10">
           <a
             href="/ceolab"
-            className="inline-flex items-center gap-1 text-sm text-black/40 hover:text-black/70 transition-colors mb-4"
+            className="inline-flex items-center gap-1 text-base text-black/50 hover:text-black/70 transition-colors mb-4"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -463,7 +463,7 @@ export default function WeeklyPulsePage() {
           </a>
           <h1 className="text-3xl font-bold text-black tracking-tight mb-2">Weekly Check-In</h1>
           {streakWeek > 0 && (
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-1">
+            <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-1">
               Week {streakWeek} of your journey
             </p>
           )}
@@ -481,7 +481,7 @@ export default function WeeklyPulsePage() {
 
         {/* Progress indicator */}
         <div className="flex items-center justify-between mb-6">
-          <p className="text-sm text-black/40">
+          <p className="text-base text-black/50">
             {answeredCount} of {focusItems.length} answered
           </p>
           <div className="w-32 bg-black/5 rounded-full h-1.5">
@@ -537,7 +537,7 @@ export default function WeeklyPulsePage() {
             Submit ({answeredCount} response{answeredCount !== 1 ? 's' : ''})
           </button>
           {!canSubmit && (
-            <p className="text-center text-xs text-black/30 mt-3">
+            <p className="text-center text-base text-black/50 mt-3">
               Answer all {focusItems.length} questions to submit
             </p>
           )}
@@ -592,7 +592,7 @@ const WeeklyQuestionCard = React.memo(function WeeklyQuestionCard({
           {dimension.name}
         </span>
         {previousScore != null && (
-          <span className="text-xs text-black/30">
+          <span className="text-base text-black/50">
             Last week: {SCORE_LABELS[previousScore] || `${previousScore}/5`}
           </span>
         )}
@@ -641,7 +641,7 @@ const WeeklyQuestionCard = React.memo(function WeeklyQuestionCard({
                   {typeof value === 'number' ? value : 50}%
                 </span>
               </div>
-              <div className="flex justify-between text-xs text-black/30">
+              <div className="flex justify-between text-base text-black/50">
                 <span>0%</span>
                 <span>100%</span>
               </div>

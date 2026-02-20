@@ -85,20 +85,20 @@ export function OverviewTab({
     <div className="space-y-8">
       {/* CLMI Score + Territory Breakdown */}
       <section className="bg-white rounded-lg p-8 md:p-12 border border-black/10">
-        <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2 text-center">
+        <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2 text-center">
           Your Overall Score
         </p>
-        <h2 className="text-2xl font-bold text-black mb-2 text-center">
+        <h2 className="text-3xl font-bold text-black mb-2 text-center">
           CEO Leadership Maturity Index
         </h2>
-        <p className="text-sm text-black/50 text-center mb-10 max-w-lg mx-auto">
+        <p className="text-base text-black/60 text-center mb-10 max-w-lg mx-auto">
           Your CLMI reflects how consistently your leadership shows up across all three territories. It is not a grade — it is a starting point.
         </p>
 
         <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-center">
           <div className="flex flex-col items-center text-center flex-shrink-0">
             <ScoreRing value={clmi} size={220} strokeWidth={16} color="#000" label={label} />
-            <p className="text-sm text-black/50 mt-5 max-w-[260px]">{getClmiInterpretation(clmi)}</p>
+            <p className="text-base text-black/60 mt-5 max-w-[260px]">{getClmiInterpretation(clmi)}</p>
           </div>
 
           <div className="flex-1 w-full space-y-4">
@@ -111,7 +111,7 @@ export function OverviewTab({
                 <ScoreRing value={ts.score} size={56} strokeWidth={4} color={TERRITORY_COLORS[ts.territory]} />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-black">{TERRITORY_CONFIG[ts.territory].displayLabel}</p>
-                  <p className="text-xs text-black/40">{ts.verbalLabel}</p>
+                  <p className="text-base text-black/60">{ts.verbalLabel}</p>
                 </div>
                 <span className="text-lg font-bold text-black">
                   {Math.round(ts.score)}%
@@ -128,30 +128,30 @@ export function OverviewTab({
         <p className="text-base text-black/60 max-w-2xl mx-auto leading-relaxed text-center mt-8">{headlineText}</p>
 
         {hasMirrorData && bsi != null && (
-          <p className="text-sm text-black/50 mt-3 max-w-2xl mx-auto text-center">{buildBsiHeadlineText(bsi)}</p>
+          <p className="text-base text-black/60 mt-3 max-w-2xl mx-auto text-center">{buildBsiHeadlineText(bsi)}</p>
         )}
 
         {imFlagged && (
           <div className="mt-6 bg-[#F7F3ED] rounded-lg p-5 max-w-2xl mx-auto text-left">
             <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-1">A Note on Your Responses</p>
-            <p className="text-sm text-black/70 leading-relaxed">{IM_HANDLING.headlineAdvisory}</p>
+            <p className="text-base text-black/70 leading-relaxed">{IM_HANDLING.headlineAdvisory}</p>
           </div>
         )}
       </section>
 
       {/* Leadership Archetypes */}
       <section className="bg-white rounded-lg p-8 md:p-12 border border-black/10">
-        <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">
+        <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">
           Your Leadership Pattern
         </p>
-        <h2 className="text-2xl font-bold text-black mb-2">Archetypes</h2>
-        <p className="text-sm text-black/50 mb-8 max-w-lg">
+        <h2 className="text-3xl font-bold text-black mb-2">Archetypes</h2>
+        <p className="text-base text-black/60 mb-8 max-w-lg">
           Archetypes are not labels. They are patterns — recurring combinations of strengths and blind spots that shape how you lead.
         </p>
 
         {imFlagged && (
           <div className="bg-[#F7F3ED] rounded-lg p-5 mb-8">
-            <p className="text-sm text-black/70 leading-relaxed">{IM_HANDLING.archetypeNote}</p>
+            <p className="text-base text-black/70 leading-relaxed">{IM_HANDLING.archetypeNote}</p>
           </div>
         )}
 
@@ -191,23 +191,23 @@ export function OverviewTab({
 
                     <div className="grid md:grid-cols-2 gap-6 mb-5">
                       <div>
-                        <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">What This Looks Like</p>
-                        <p className="text-sm text-black/70 leading-relaxed">{desc.whatThisLooksLike}</p>
+                        <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">What This Looks Like</p>
+                        <p className="text-base text-black/70 leading-relaxed">{desc.whatThisLooksLike}</p>
                       </div>
                       <div>
-                        <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">What This Is Costing You</p>
-                        <p className="text-sm text-black/70 leading-relaxed">{desc.whatThisIsCostingYou}</p>
+                        <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">What This Is Costing You</p>
+                        <p className="text-base text-black/70 leading-relaxed">{desc.whatThisIsCostingYou}</p>
                       </div>
                     </div>
 
                     <div className="mb-5">
-                      <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">The Shift</p>
-                      <p className="text-sm text-black/70 leading-relaxed">{desc.theShift}</p>
+                      <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">The Shift</p>
+                      <p className="text-base text-black/70 leading-relaxed">{desc.theShift}</p>
                     </div>
 
                     {desc.frameworkReferences.length > 0 && (
                       <div>
-                        <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Key Frameworks</p>
+                        <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">Key Frameworks</p>
                         <div className="flex flex-wrap gap-2">
                           {desc.frameworkReferences.map((fw) => (
                             <span key={fw} className="inline-block px-3 py-1.5 text-xs font-medium text-black bg-[#F7F3ED] rounded-full">{fw}</span>
@@ -231,11 +231,11 @@ export function OverviewTab({
 
       {/* Leadership Profile Radar */}
       <section className="bg-white rounded-lg p-8 md:p-12 border border-black/10">
-        <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">
+        <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">
           Your Shape
         </p>
-        <h2 className="text-2xl font-bold text-black mb-2">Leadership Profile</h2>
-        <p className="text-sm text-black/50 mb-8 max-w-lg">
+        <h2 className="text-3xl font-bold text-black mb-2">Leadership Profile</h2>
+        <p className="text-base text-black/60 mb-8 max-w-lg">
           This radar shows your shape across all 15 dimensions. Spikes are strengths. Dips are where your growth lives.
         </p>
         <RadarChart dimensions={radarData} className="max-w-full" />
@@ -243,11 +243,11 @@ export function OverviewTab({
 
       {/* Blind Spots Summary */}
       <section className="bg-white rounded-lg p-8 md:p-12 border border-black/10">
-        <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">
+        <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">
           Self-Perception Gaps
         </p>
-        <h2 className="text-2xl font-bold text-black mb-2">Blind Spots</h2>
-        <p className="text-sm text-black/50 mb-8 max-w-lg">
+        <h2 className="text-3xl font-bold text-black mb-2">Blind Spots</h2>
+        <p className="text-base text-black/60 mb-8 max-w-lg">
           Where others see your leadership differently from how you see it. These are not flaws — they are information gaps worth exploring.
         </p>
 
@@ -269,7 +269,7 @@ export function OverviewTab({
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-black mb-1">{def.name}</p>
-                    <p className="text-xs text-black/50">
+                    <p className="text-base text-black/70">
                       {gapSize}-point gap &middot; {gap.gapLabel} &middot; {TERRITORY_CONFIG[territory].displayLabel}
                     </p>
                   </div>
@@ -296,7 +296,7 @@ export function OverviewTab({
             </a>
           </div>
         ) : (
-          <p className="text-sm text-black/50 text-center py-6">
+          <p className="text-base text-black/60 text-center py-6">
             No significant blind spots detected. Your self-perception aligns well with how others see you.
           </p>
         )}
@@ -304,11 +304,11 @@ export function OverviewTab({
 
       {/* Territory CTAs */}
       <section className="bg-white rounded-lg p-8 md:p-12 border border-black/10">
-        <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2 text-center">
+        <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2 text-center">
           Dive Deeper
         </p>
-        <h2 className="text-2xl font-bold text-black mb-2 text-center">Explore Each Territory</h2>
-        <p className="text-sm text-black/50 text-center mb-10 max-w-lg mx-auto">
+        <h2 className="text-3xl font-bold text-black mb-2 text-center">Explore Each Territory</h2>
+        <p className="text-base text-black/60 text-center mb-10 max-w-lg mx-auto">
           Each territory tab shows your dimension scores, impact areas, blind spots, and recommended frameworks.
         </p>
 
@@ -336,11 +336,11 @@ export function OverviewTab({
 
                 <div className="mb-4">
                   <span className="text-3xl font-bold text-black">{Math.round(ts.score)}%</span>
-                  <span className="text-sm text-black/40 ml-2">{ts.verbalLabel}</span>
+                  <span className="text-base text-black/50 ml-2">{ts.verbalLabel}</span>
                 </div>
 
                 {lowestDef && (
-                  <p className="text-xs text-black/40 mb-6">
+                  <p className="text-base text-black/60 mb-6">
                     Biggest opportunity: <span className="font-medium text-black/60">{lowestDef.name}</span>
                   </p>
                 )}

@@ -311,7 +311,7 @@ export default function AccountabilitySetupPage() {
         {/* Back to Dashboard */}
         <a
           href="/ceolab"
-          className="inline-flex items-center gap-1 text-sm text-black/40 hover:text-black/70 transition-colors mb-6"
+          className="inline-flex items-center gap-1 text-base text-black/50 hover:text-black/70 transition-colors mb-6"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -371,7 +371,7 @@ export default function AccountabilitySetupPage() {
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0">
                         <span className="text-sm font-bold text-black">{Math.round(dim.percentage)}%</span>
-                        <span className="text-xs text-black/40">{dim.verbalLabel}</span>
+                        <span className="text-base text-black/60">{dim.verbalLabel}</span>
                       </div>
                     </div>
                   )
@@ -393,10 +393,10 @@ export default function AccountabilitySetupPage() {
           <div>
             {/* Header card */}
             <div className="bg-white rounded-lg p-8 border border-black/10 mb-6 text-center">
-              <h1 className="text-2xl font-bold text-black tracking-tight mb-2">
+              <h1 className="text-3xl font-bold text-black tracking-tight mb-2">
                 Choose Your 3 Focus Dimensions
               </h1>
-              <p className="text-sm text-black/50 mb-4">
+              <p className="text-base text-black/60 mb-4">
                 These will shape your weekly accountability check-ins. You can always change them later.
               </p>
 
@@ -487,7 +487,7 @@ export default function AccountabilitySetupPage() {
                                 </span>
                               )}
                             </div>
-                            <p className="text-xs text-black/40 mt-0.5 leading-relaxed">
+                            <p className="text-base text-black/60 mt-0.5 leading-relaxed">
                               {getDimension(dim.dimensionId).coreQuestion}
                             </p>
                           </div>
@@ -507,7 +507,7 @@ export default function AccountabilitySetupPage() {
                             <span className="text-sm font-bold text-black w-10 text-right">
                               {Math.round(dim.percentage)}%
                             </span>
-                            <span className="text-xs text-black/40 w-24 text-right hidden sm:block">
+                            <span className="text-base text-black/60 w-24 text-right hidden sm:block">
                               {dim.verbalLabel}
                             </span>
                           </div>
@@ -532,7 +532,7 @@ export default function AccountabilitySetupPage() {
               >
                 Confirm Selection
               </button>
-              <p className="text-xs text-black/30 mt-3">
+              <p className="text-base text-black/50 mt-3">
                 You can change your focus dimensions at any time from the dashboard.
               </p>
             </div>
@@ -546,10 +546,10 @@ export default function AccountabilitySetupPage() {
               One more thing
             </p>
 
-            <h2 className="text-2xl font-bold text-black tracking-tight mb-2">
+            <h2 className="text-3xl font-bold text-black tracking-tight mb-2">
               On a scale of 1-5, how excited are you to start this journey?
             </h2>
-            <p className="text-sm text-black/50 mb-10">
+            <p className="text-base text-black/60 mb-10">
               No wrong answers here.
             </p>
 
@@ -593,7 +593,7 @@ export default function AccountabilitySetupPage() {
             {/* Summary of selected dimensions */}
             {excitement !== null && (
               <div className="mb-8 opacity-0 animate-fadeIn">
-                <p className="text-sm text-black/40 mb-3">Your focus dimensions this quarter:</p>
+                <p className="text-base text-black/50 mb-3">Your focus dimensions this quarter:</p>
                 <div className="flex items-center justify-center gap-2 flex-wrap">
                   {selectedIds.map((dimId) => {
                     const dim = allDimensions.find(d => d.dimensionId === dimId)
@@ -640,8 +640,8 @@ export default function AccountabilitySetupPage() {
               </svg>
             </div>
 
-            <h2 className="text-2xl font-bold text-black mb-2">You're all set.</h2>
-            <p className="text-sm text-black/50">
+            <h2 className="text-3xl font-bold text-black mb-2">You're all set.</h2>
+            <p className="text-base text-black/60">
               Your Accountability Agent is ready. First check-in arrives next Monday.
             </p>
           </div>

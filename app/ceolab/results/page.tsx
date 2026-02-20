@@ -86,7 +86,7 @@ function CompleteResultsView({ results }: { results: FullResults }) {
       <header className="pt-12 pb-4 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">CEO Lab Assessment</p>
+            <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">CEO Lab Assessment</p>
             <h1 className="text-3xl md:text-4xl font-bold text-black">Your Leadership Report</h1>
           </div>
         </div>
@@ -269,7 +269,7 @@ function ErrorState({ message, onRetry }: { message: string; onRetry?: () => voi
           <h2 className="text-xl font-bold text-black mb-3">
             Something went wrong
           </h2>
-          <p className="text-sm text-black/60 mb-6 leading-relaxed">{message}</p>
+          <p className="text-base text-black/70 mb-6 leading-relaxed">{message}</p>
           {onRetry && (
             <button
               onClick={onRetry}
@@ -366,7 +366,7 @@ export default function ResultsPage() {
       <AppShell>
         <div className="max-w-7xl mx-auto px-6 py-16">
           <div className="text-center mb-8">
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">CEO Lab Assessment</p>
+            <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">CEO Lab Assessment</p>
             <h1 className="text-3xl md:text-4xl font-bold text-black">Your Leadership Report</h1>
           </div>
           <LockedSection title="Subscribe to see your full leadership report" />

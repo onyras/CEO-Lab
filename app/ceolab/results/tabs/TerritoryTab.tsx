@@ -88,11 +88,11 @@ export function TerritoryTab({
     <div className="space-y-8">
       {/* Territory Header */}
       <section className="bg-white rounded-lg p-8 md:p-12 border border-black/10">
-        <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">
+        <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">
           Territory
         </p>
-        <h2 className="text-2xl font-bold text-black mb-2">{config.displayLabel}</h2>
-        <p className="text-xs text-black/40 mb-6">{config.arcDescription}</p>
+        <h2 className="text-3xl font-bold text-black mb-2">{config.displayLabel}</h2>
+        <p className="text-base text-black/60 mb-6">{config.arcDescription}</p>
 
         <div className="flex flex-col md:flex-row gap-10 items-center">
           {/* Score ring */}
@@ -105,7 +105,7 @@ export function TerritoryTab({
               valueSuffix="%"
               showValue={true}
             />
-            <p className="text-sm text-black/40 mt-4">{terrScore?.verbalLabel ?? ''} capacity</p>
+            <p className="text-base text-black/50 mt-4">{terrScore?.verbalLabel ?? ''} capacity</p>
           </div>
 
           {/* Narrative + shape */}
@@ -117,16 +117,16 @@ export function TerritoryTab({
                 <TerritoryRadar dimensions={radarDims} territory={territory} />
               </div>
               <div className="md:w-1/2 flex flex-col justify-center space-y-3">
-                <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40">{shapeLabel}</p>
-                <p className="text-sm text-black/60 leading-relaxed">{shape.narrative}</p>
+                <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50">{shapeLabel}</p>
+                <p className="text-base text-black/70 leading-relaxed">{shape.narrative}</p>
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: color }} />
-                    <span className="text-xs text-black/50">Anchor: <span className="font-medium text-black/70">{shape.anchor.name} ({shape.anchor.percentage}%)</span></span>
+                    <span className="text-base text-black/70">Anchor: <span className="font-medium text-black/70">{shape.anchor.name} ({shape.anchor.percentage}%)</span></span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-black/20" />
-                    <span className="text-xs text-black/50">Bottleneck: <span className="font-medium text-black/70">{shape.bottleneck.name} ({shape.bottleneck.percentage}%)</span></span>
+                    <span className="text-base text-black/70">Bottleneck: <span className="font-medium text-black/70">{shape.bottleneck.name} ({shape.bottleneck.percentage}%)</span></span>
                   </div>
                 </div>
               </div>
@@ -138,10 +138,10 @@ export function TerritoryTab({
       {/* Dimension Detail Cards */}
       <section>
         <div className="mb-6">
-          <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2 px-1">
+          <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2 px-1">
             Your 5 Dimensions
           </p>
-          <p className="text-sm text-black/50 px-1 max-w-xl">
+          <p className="text-base text-black/60 px-1 max-w-xl">
             Each dimension represents a specific leadership capability. Below you will find your score, what it looks like when working and when not, and why it matters.
           </p>
         </div>
@@ -162,7 +162,7 @@ export function TerritoryTab({
               >
                 {/* Header */}
                 <div className="mb-1">
-                  <p className="text-xs text-black/40 mb-0.5">{def.id}</p>
+                  <p className="text-base text-black/60 mb-0.5">{def.id}</p>
                   <h3 className="text-lg font-semibold text-black">{def.name}</h3>
                 </div>
 
@@ -194,70 +194,70 @@ export function TerritoryTab({
                     {/* Current quarter */}
                     <div className="flex items-center gap-3">
                       <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
-                      <span className="font-mono text-[11px] w-16 font-bold text-black/60">{getQuarterLabel(0)}</span>
+                      <span className="font-mono text-xs w-16 font-bold text-black/60">{getQuarterLabel(0)}</span>
                       <div className="flex-1 h-1.5 rounded-full bg-black/[0.04]">
                         <div className="h-full rounded-full transition-all duration-500" style={{ width: `${percentage}%`, backgroundColor: color }} />
                       </div>
-                      <span className="font-mono text-[11px] w-10 text-right font-bold" style={{ color }}>{percentage}%</span>
+                      <span className="font-mono text-xs w-10 text-right font-bold" style={{ color }}>{percentage}%</span>
                     </div>
                     {/* Next quarter */}
                     <div className="flex items-center gap-3">
                       <div className="w-2.5 h-2.5 rounded-full border-[1.5px] border-dashed flex-shrink-0" style={{ borderColor: 'rgba(0,0,0,0.15)' }} />
-                      <span className="font-mono text-[11px] w-16 text-black/20">{getQuarterLabel(1)}</span>
+                      <span className="font-mono text-xs w-16 text-black/20">{getQuarterLabel(1)}</span>
                       <div className="flex-1 h-1.5 rounded-full bg-black/[0.02]" />
-                      <span className="font-mono text-[11px] w-10 text-right text-black/15">&mdash;</span>
+                      <span className="font-mono text-xs w-10 text-right text-black/15">&mdash;</span>
                     </div>
                     {/* Q+2 */}
                     <div className="flex items-center gap-3">
                       <div className="w-2.5 h-2.5 rounded-full border border-dashed flex-shrink-0" style={{ borderColor: 'rgba(0,0,0,0.08)' }} />
-                      <span className="font-mono text-[11px] w-16 text-black/12">{getQuarterLabel(2)}</span>
+                      <span className="font-mono text-xs w-16 text-black/12">{getQuarterLabel(2)}</span>
                       <div className="flex-1 h-1.5 rounded-full bg-black/[0.01]" />
-                      <span className="font-mono text-[11px] w-10 text-right text-black/8">&mdash;</span>
+                      <span className="font-mono text-xs w-10 text-right text-black/8">&mdash;</span>
                     </div>
                     {/* Q+3 */}
                     <div className="flex items-center gap-3">
                       <div className="w-2.5 h-2.5 rounded-full border border-dashed flex-shrink-0" style={{ borderColor: 'rgba(0,0,0,0.04)' }} />
-                      <span className="font-mono text-[11px] w-16 text-black/8">{getQuarterLabel(3)}</span>
+                      <span className="font-mono text-xs w-16 text-black/8">{getQuarterLabel(3)}</span>
                       <div className="flex-1 h-1.5 rounded-full bg-black/[0.005]" />
-                      <span className="font-mono text-[11px] w-10 text-right text-black/5">&mdash;</span>
+                      <span className="font-mono text-xs w-10 text-right text-black/5">&mdash;</span>
                     </div>
                     {/* Benchmark note */}
-                    <p className="text-[10px] text-black/25 pt-1">Typical: {bench.p25}–{bench.p75}% &middot; {benchCtx.narrative}</p>
+                    <p className="text-sm text-black/35 pt-1">Typical: {bench.p25}–{bench.p75}% &middot; {benchCtx.narrative}</p>
                   </div>
                 </div>
 
                 {/* Insight */}
                 {insight && (
-                  <p className="text-sm text-black/60 leading-relaxed mt-4 mb-6">{insight}</p>
+                  <p className="text-base text-black/70 leading-relaxed mt-4 mb-6">{insight}</p>
                 )}
 
                 {/* Behavioral definition */}
                 <div className="mb-6">
-                  <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">What This Means</p>
-                  <p className="text-sm text-black/70 leading-relaxed">{content.behavioralDefinition}</p>
+                  <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">What This Means</p>
+                  <p className="text-base text-black/70 leading-relaxed">{content.behavioralDefinition}</p>
                 </div>
 
                 {/* Impact Areas — When Working / When Not */}
                 <div className="mb-6">
-                  <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-3">Impact Areas</p>
+                  <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-3">Impact Areas</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="rounded-lg p-5" style={{ backgroundColor: 'rgba(166, 190, 164, 0.08)' }}>
                       <p className="text-xs font-semibold text-[#6B8E6B] uppercase tracking-wider mb-2">When this is working</p>
-                      <p className="text-sm text-black/70 leading-relaxed">{content.highIndicator}</p>
+                      <p className="text-base text-black/70 leading-relaxed">{content.highIndicator}</p>
                     </div>
                     <div className="rounded-lg p-5" style={{ backgroundColor: 'rgba(224, 143, 106, 0.08)' }}>
                       <p className="text-xs font-semibold text-[#C0714E] uppercase tracking-wider mb-2">When this isn&apos;t</p>
-                      <p className="text-sm text-black/70 leading-relaxed">{content.lowIndicator}</p>
+                      <p className="text-base text-black/70 leading-relaxed">{content.lowIndicator}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Cost of Ignoring */}
                 <div className="mb-6">
-                  <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Why This Matters</p>
-                  <p className="text-sm text-black/70 leading-relaxed mb-3">{content.costOfIgnoring}</p>
+                  <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">Why This Matters</p>
+                  <p className="text-base text-black/70 leading-relaxed mb-3">{content.costOfIgnoring}</p>
                   <div className="bg-[#F7F3ED] rounded-lg p-4">
-                    <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-1">The Question to Sit With</p>
+                    <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-1">The Question to Sit With</p>
                     <p className="text-sm font-medium text-black/80 italic leading-relaxed">{def.coreQuestion}</p>
                   </div>
                 </div>
@@ -265,7 +265,7 @@ export function TerritoryTab({
                 {/* Frameworks */}
                 {frameworks.length > 0 && (
                   <div>
-                    <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Recommended Frameworks</p>
+                    <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">Recommended Frameworks</p>
                     <div className="flex flex-wrap gap-2">
                       {frameworks.map((fw) => (
                         <span key={fw} className="inline-block px-3 py-1.5 text-xs font-medium text-black bg-[#F7F3ED] rounded-full">{fw}</span>
@@ -281,13 +281,13 @@ export function TerritoryTab({
 
       {/* Territory Blind Spots */}
       <section className="bg-white rounded-lg p-8 md:p-12 border border-black/10">
-        <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">
+        <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">
           Self-Perception Gaps
         </p>
-        <h2 className="text-2xl font-bold text-black mb-2">
+        <h2 className="text-3xl font-bold text-black mb-2">
           Blind Spots in {config.displayLabel}
         </h2>
-        <p className="text-sm text-black/50 mb-8 max-w-lg">
+        <p className="text-base text-black/60 mb-8 max-w-lg">
           How others experience your {config.displayLabel.toLowerCase()} capabilities compared to how you see them.
         </p>
 
@@ -295,7 +295,7 @@ export function TerritoryTab({
           <>
             {imFlagged && (
               <div className="bg-[#F7F3ED] rounded-lg p-5 mb-6">
-                <p className="text-sm text-black/70 leading-relaxed">{IM_HANDLING.mirrorElevation}</p>
+                <p className="text-base text-black/70 leading-relaxed">{IM_HANDLING.mirrorElevation}</p>
               </div>
             )}
 
@@ -326,7 +326,7 @@ export function TerritoryTab({
                       <p className="text-xs font-semibold text-black/40 uppercase tracking-wider mb-1">
                         {gapDef.name} <span className="normal-case font-normal">&mdash; {gap.gapLabel}</span>
                       </p>
-                      <p className="text-sm text-black/70 leading-relaxed">
+                      <p className="text-base text-black/70 leading-relaxed">
                         You rated yourself {gapSize} points {gapDirection} on {gapDef.name}. This gap suggests that your experience of your own leadership differs meaningfully from how it lands with others.
                       </p>
                     </div>
@@ -336,7 +336,7 @@ export function TerritoryTab({
             )}
 
             <div className="mt-8 pt-6 border-t border-black/10">
-              <p className="text-sm text-black/60 leading-relaxed">{BLIND_SPOT_CLOSING}</p>
+              <p className="text-base text-black/70 leading-relaxed">{BLIND_SPOT_CLOSING}</p>
             </div>
           </>
         ) : (

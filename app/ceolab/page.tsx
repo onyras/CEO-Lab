@@ -102,7 +102,7 @@ function ErrorState({ message, onRetry }: { message: string; onRetry?: () => voi
     <AppShell>
       <div className="flex items-center justify-center px-8 min-h-[80vh]">
         <div className="bg-white border border-black/10 rounded-lg p-12 max-w-lg w-full text-center">
-          <h2 className="text-2xl font-bold text-black mb-4">
+          <h2 className="text-3xl font-bold text-black mb-4">
             Something went wrong
           </h2>
           <p className="text-base text-black/60 mb-8 leading-relaxed">{message}</p>
@@ -202,10 +202,10 @@ function HookResultsBanner({ userId }: { userId?: string }) {
 
   return (
     <div className="bg-white border border-black/10 rounded-lg p-8 mb-8">
-      <p className="font-mono text-xs font-bold uppercase tracking-[0.12em] text-black/40 mb-1">
+      <p className="font-mono text-sm font-bold uppercase tracking-[0.12em] text-black/50 mb-1">
         Your Leadership Snapshot
       </p>
-      <p className="text-sm text-black/30 mb-8">From the 10-question hook assessment</p>
+      <p className="text-base text-black/40 mb-8">From the 10-question hook assessment</p>
 
       <div className="space-y-5 mb-8">
         {territories.map(t => (
@@ -236,7 +236,7 @@ function HookResultsBanner({ userId }: { userId?: string }) {
       <div className="bg-[#F7F3ED]/60 rounded-lg p-6 mb-8">
         <div className="flex items-center gap-2 mb-3">
           <span
-            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-white"
+            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold text-white"
             style={{ backgroundColor: sharpestTerritoryColor }}
           >
             {sharpestTerritoryLabel}
@@ -265,7 +265,7 @@ function LockedDashboardView({ userName, userId }: { userName: string; userId?: 
       <div className="px-8 py-16">
         <div className="max-w-6xl mx-auto">
           <div className="mb-10">
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-3">CEO Lab</p>
+            <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-3">CEO Lab</p>
             <h1 className="text-4xl md:text-5xl font-bold text-black tracking-tight">
               Welcome, {userName}
             </h1>
@@ -286,7 +286,7 @@ function LockedDashboardView({ userName, userId }: { userName: string; userId?: 
                   showValue={false}
                 />
                 <div>
-                  <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">CLMI Score</p>
+                  <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">CLMI Score</p>
                   <p className="text-3xl font-bold text-black/15">?</p>
                 </div>
               </div>
@@ -305,7 +305,7 @@ function LockedDashboardView({ userName, userId }: { userName: string; userId?: 
                       trackColor="rgba(0,0,0,0.03)"
                       showValue={false}
                     />
-                    <span className="text-xs text-black/30 mt-1.5 max-w-[72px] text-center leading-tight">{t.label}</span>
+                    <span className="text-base text-black/50 mt-1.5 max-w-[72px] text-center leading-tight">{t.label}</span>
                   </div>
                 ))}
               </div>
@@ -325,21 +325,21 @@ function LockedDashboardView({ userName, userId }: { userName: string; userId?: 
               className="bg-white border border-black/10 rounded-lg p-6 hover:border-black/20 transition-colors"
             >
               <p className="text-base font-semibold text-black mb-1">Full Results</p>
-              <p className="text-sm text-black/40">All 15 dimensions, archetypes, and more</p>
+              <p className="text-base text-black/50">All 15 dimensions, archetypes, and more</p>
             </a>
             <a
               href="/assessment/mirror"
               className="bg-white border border-black/10 rounded-lg p-6 hover:border-black/20 transition-colors"
             >
               <p className="text-base font-semibold text-black mb-1">Mirror Check</p>
-              <p className="text-sm text-black/40">Invite a colleague to reveal blind spots</p>
+              <p className="text-base text-black/50">How others experience your leadership</p>
             </a>
             <a
               href="/ceolab/results#growth-plan"
               className="bg-white border border-black/10 rounded-lg p-6 hover:border-black/20 transition-colors"
             >
               <p className="text-base font-semibold text-black mb-1">Frameworks</p>
-              <p className="text-sm text-black/40">Your personalized growth plan</p>
+              <p className="text-base text-black/50">Your personalized growth plan</p>
             </a>
           </div>
         </div>
@@ -358,7 +358,7 @@ function BaselinePendingView({ userName, userId }: { userName: string; userId?: 
       <div className="px-8 py-16">
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-3">CEO Lab</p>
+            <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-3">CEO Lab</p>
             <h1 className="text-4xl md:text-5xl font-bold text-black tracking-tight">
               Welcome, {userName}
             </h1>
@@ -373,17 +373,17 @@ function BaselinePendingView({ userName, userId }: { userName: string; userId?: 
               <div className="bg-white border border-black/10 rounded-lg p-8">
                 <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#7FABC8]/15 text-base font-bold text-[#7FABC8] mb-4">1</span>
                 <h3 className="text-base font-semibold text-black mb-2">Measure</h3>
-                <p className="text-sm text-black/50 leading-relaxed">96 questions map your leadership across 15 dimensions in three territories.</p>
+                <p className="text-base text-black/60 leading-relaxed">96 questions map your leadership across 15 dimensions in three territories.</p>
               </div>
               <div className="bg-white border border-black/10 rounded-lg p-8">
                 <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#A6BEA4]/15 text-base font-bold text-[#A6BEA4] mb-4">2</span>
                 <h3 className="text-base font-semibold text-black mb-2">Understand</h3>
-                <p className="text-sm text-black/50 leading-relaxed">Your scores reveal which frameworks will have the most impact on your growth.</p>
+                <p className="text-base text-black/60 leading-relaxed">Your scores reveal which frameworks will have the most impact on your growth.</p>
               </div>
               <div className="bg-white border border-black/10 rounded-lg p-8">
                 <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#E08F6A]/15 text-base font-bold text-[#E08F6A] mb-4">3</span>
                 <h3 className="text-base font-semibold text-black mb-2">Grow</h3>
-                <p className="text-sm text-black/50 leading-relaxed">Weekly check-ins track whether the frameworks are working. Real data, real progress.</p>
+                <p className="text-base text-black/60 leading-relaxed">Weekly check-ins track whether the frameworks are working. Real data, real progress.</p>
               </div>
             </div>
           </div>
@@ -420,9 +420,9 @@ function BaselinePendingView({ userName, userId }: { userName: string; userId?: 
                     trackColor="rgba(0,0,0,0.03)"
                     showValue={false}
                   />
-                  <p className="text-xs text-black/30 mt-1">{i + 1}</p>
+                  <p className="text-base text-black/50 mt-1">{i + 1}</p>
                   <p className="text-sm font-medium text-black/40 mt-1.5">{stage.label}</p>
-                  <p className="text-xs text-black/25">{stage.time}</p>
+                  <p className="text-sm text-black/35">{stage.time}</p>
                 </div>
               ))}
             </div>
@@ -450,14 +450,14 @@ function BaselineInProgressView({ userName, stageReached }: { userName: string; 
       <div className="px-8 py-16">
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-3">CEO Lab</p>
+            <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-3">CEO Lab</p>
             <h1 className="text-4xl md:text-5xl font-bold text-black tracking-tight">
               Welcome back, {userName}
             </h1>
           </div>
 
           <div className="bg-white border border-black/10 rounded-lg p-12 md:p-16 max-w-3xl mx-auto text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-8">Assessment in progress</p>
+            <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-8">Assessment in progress</p>
 
             <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">
               Stage {stageReached} of 3 complete
@@ -482,10 +482,10 @@ function BaselineInProgressView({ userName, stageReached }: { userName: string; 
                             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                           </svg>
                         ) : (
-                          <span className={`text-base font-semibold font-mono ${isCurrent ? 'text-black' : 'text-black/25'}`}>{stage}</span>
+                          <span className={`text-base font-semibold font-mono ${isCurrent ? 'text-black' : 'text-black/35'}`}>{stage}</span>
                         )}
                       </div>
-                      <p className={`text-sm font-medium mt-2 ${isComplete ? 'text-black' : isCurrent ? 'text-black/70' : 'text-black/25'}`}>
+                      <p className={`text-sm font-medium mt-2 ${isComplete ? 'text-black' : isCurrent ? 'text-black/70' : 'text-black/35'}`}>
                         Stage {stage}
                       </p>
                     </div>
@@ -521,7 +521,7 @@ function V3UpgradeView({ userName }: { userName: string }) {
       <div className="px-8 py-16">
         <div className="max-w-4xl mx-auto">
           <div className="mb-10">
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-3">CEO Lab</p>
+            <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-3">CEO Lab</p>
             <h1 className="text-4xl md:text-5xl font-bold text-black tracking-tight">
               Welcome back, {userName}
             </h1>
@@ -575,6 +575,13 @@ interface SessionInfo {
   clmi: number
 }
 
+interface MirrorInvite {
+  id: string
+  email: string
+  relationship: string
+  isCompleted: boolean
+}
+
 interface HomeData {
   results: FullResults
   focusDimensions: DimensionId[]
@@ -586,8 +593,13 @@ interface HomeData {
   currentQuarter: number
   currentYear: number
   hasMirrorData: boolean
+  mirrorInvites: MirrorInvite[]
+  mirrorCompletedCount: number
   allSessions: SessionInfo[]
 }
+
+const MIRROR_UNLOCK_THRESHOLD = 5
+const MIRROR_GOAL_THRESHOLD = 15
 
 // ── To-Do Item Types ─────────────────────────────────────────────
 
@@ -682,29 +694,45 @@ function buildTodoItems(data: HomeData): TodoItem[] {
     })
   }
 
-  // No mirror data
-  if (!data.hasMirrorData && hasCompletedAssessment) {
-    items.push({
-      id: 'mirror',
-      priority: 'coming-up',
-      title: 'Activate Blind Spot Detection',
-      description: 'Invite someone who knows your leadership to rate you. Reveals gaps between self-perception and reality.',
-      href: '/assessment/mirror',
-      ctaLabel: 'Invite Rater',
-      completed: false,
-      icon: 'mirror',
-    })
-  } else if (data.hasMirrorData) {
-    items.push({
-      id: 'mirror',
-      priority: 'coming-up',
-      title: 'Mirror Check',
-      description: 'Blind spot data received',
-      href: '/ceolab/results',
-      ctaLabel: 'View Results',
-      completed: true,
-      icon: 'mirror',
-    })
+  // Mirror Check
+  if (hasCompletedAssessment) {
+    const { mirrorCompletedCount, mirrorInvites } = data
+    const isUnlocked = mirrorCompletedCount >= MIRROR_UNLOCK_THRESHOLD
+
+    if (isUnlocked) {
+      items.push({
+        id: 'mirror',
+        priority: 'coming-up',
+        title: 'Mirror Check',
+        description: `${mirrorCompletedCount} raters completed`,
+        href: '/ceolab/results',
+        ctaLabel: 'View Results',
+        completed: true,
+        icon: 'mirror',
+      })
+    } else if (mirrorInvites.length === 0) {
+      items.push({
+        id: 'mirror',
+        priority: 'coming-up',
+        title: 'Set Up Mirror Check',
+        description: `Invite colleagues to rate your leadership. Need ${MIRROR_UNLOCK_THRESHOLD} responses to unlock.`,
+        href: '/assessment/mirror',
+        ctaLabel: 'Invite Raters',
+        completed: false,
+        icon: 'mirror',
+      })
+    } else {
+      items.push({
+        id: 'mirror',
+        priority: 'coming-up',
+        title: 'Mirror Check',
+        description: `${mirrorCompletedCount} of ${MIRROR_UNLOCK_THRESHOLD} responses to unlock`,
+        href: '/assessment/mirror',
+        ctaLabel: 'Invite More',
+        completed: false,
+        icon: 'mirror',
+      })
+    }
   }
 
   // Next quarterly assessment
@@ -825,22 +853,22 @@ function FeedbackSection() {
 
   return (
     <div className="bg-white border border-black/10 rounded-lg p-8">
-      <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Feedback</p>
+      <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">Feedback</p>
       <h2 className="text-xl font-semibold text-black mb-1">Help us improve CEO Lab</h2>
-      <p className="text-sm text-black/40 mb-6">Have feedback? Want to suggest a feature? Let us know.</p>
+      <p className="text-base text-black/50 mb-6">Have feedback? Want to suggest a feature? Let us know.</p>
 
       <form onSubmit={handleSubmit}>
         <textarea
           value={feedback}
           onChange={(e) => setFeedback(e.target.value)}
           placeholder="What would make CEO Lab more useful for you?"
-          className="w-full border border-black/10 rounded-lg p-4 text-sm text-black placeholder:text-black/25 resize-none focus:outline-none focus:border-black/20 bg-[#F7F3ED]/30"
+          className="w-full border border-black/10 rounded-lg p-4 text-sm text-black placeholder:text-black/35 resize-none focus:outline-none focus:border-black/20 bg-[#F7F3ED]/30"
           rows={3}
         />
         <div className="flex items-center justify-between mt-4">
           <div>
             {status === 'sent' && (
-              <p className="text-sm text-black/40">Thank you for your feedback.</p>
+              <p className="text-base text-black/50">Thank you for your feedback.</p>
             )}
             {status === 'error' && (
               <p className="text-sm text-red-500/70">Failed to send. Please try again.</p>
@@ -866,8 +894,10 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
     results, focusDimensions, streak, latestWeeklyScores,
     quarterlyAssessments, completedWeeksThisQuarter,
     currentWeekOfQuarter, currentQuarter, currentYear,
-    hasMirrorData, allSessions,
+    mirrorInvites, mirrorCompletedCount, allSessions,
   } = data
+
+  const mirrorIsUnlocked = mirrorCompletedCount >= MIRROR_UNLOCK_THRESHOLD
 
   const clmi = results.session.clmi ?? 0
   const label = getVerbalLabel(clmi)
@@ -899,7 +929,7 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
 
           {/* ── 1. Big Personalized Greeting ───────────────────────── */}
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-3">CEO Lab</p>
+            <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-3">CEO Lab</p>
             <h1 className="text-4xl md:text-5xl font-bold text-black tracking-tight mb-3">
               {getTimeOfDayGreeting()}, {getFirstName(userName)}
             </h1>
@@ -910,7 +940,7 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
 
           {/* ── 2. High-Level Overview Card ─────────────────────────── */}
           <div className="bg-white border border-black/10 rounded-lg p-8 md:p-10">
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-6">Leadership Overview</p>
+            <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-6">Leadership Overview</p>
 
             <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
               {/* CLMI Score Ring */}
@@ -919,7 +949,7 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
                 <div>
                   <p className="text-4xl font-bold font-mono tracking-tight text-black">{Math.round(clmi)}%</p>
                   <p className="text-base text-black/40 mt-1">{label}</p>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-black/25 mt-2">CLMI Score</p>
+                  <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/35 mt-2">CLMI Score</p>
                 </div>
               </div>
 
@@ -970,7 +1000,7 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
           {/* ── 3. Dynamic To-Do List ──────────────────────────────── */}
           <div>
             <div className="border-b border-black/10 pb-4 mb-8">
-              <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Your Next Steps</p>
+              <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">Your Next Steps</p>
               <h2 className="text-3xl font-bold tracking-tight">What to do next</h2>
             </div>
 
@@ -989,12 +1019,12 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-black text-white">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-black text-white">
                             Do now
                           </span>
                         </div>
                         <p className="text-base font-semibold text-black">{item.title}</p>
-                        <p className="text-sm text-black/40 mt-0.5">{item.description}</p>
+                        <p className="text-base text-black/50 mt-0.5">{item.description}</p>
                       </div>
                     </div>
                     <span className="bg-black text-white px-6 py-2.5 rounded-lg text-sm font-semibold flex-shrink-0 whitespace-nowrap">
@@ -1051,7 +1081,7 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
           {/* ── 4. Accountability Agent Section ─────────────────────── */}
           <div>
             <div className="border-b border-black/10 pb-4 mb-8">
-              <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Accountability Agent</p>
+              <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">Accountability Agent</p>
               <h2 className="text-3xl font-bold tracking-tight mb-1">Weekly Tracking</h2>
               <p className="text-base text-black/40">Your weekly check-in system. Consistent measurement drives growth.</p>
             </div>
@@ -1064,20 +1094,20 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
                     <div className="flex items-center gap-6">
                       <div>
                         <p className="text-3xl font-bold font-mono text-black">{streak.currentStreak}</p>
-                        <p className="text-xs text-black/40 mt-0.5">Week streak</p>
+                        <p className="text-base text-black/60 mt-0.5">Week streak</p>
                       </div>
                       {streak.lastCheckIn && (
                         <div className="pl-6 border-l border-black/5">
                           <p className="text-base font-medium text-black">
                             {new Date(streak.lastCheckIn).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                           </p>
-                          <p className="text-xs text-black/40 mt-0.5">Last check-in</p>
+                          <p className="text-base text-black/60 mt-0.5">Last check-in</p>
                         </div>
                       )}
                     </div>
                     <div className="text-right">
-                      <p className="text-xl font-bold font-mono text-black">{completedWeeksCount}<span className="text-base font-normal text-black/25">/12</span></p>
-                      <p className="font-mono text-[10px] text-black/40 uppercase tracking-[0.08em]">Q{currentQuarter} {currentYear}</p>
+                      <p className="text-xl font-bold font-mono text-black">{completedWeeksCount}<span className="text-base font-normal text-black/35">/12</span></p>
+                      <p className="font-mono text-base text-black/60 uppercase tracking-[0.08em]">Q{currentQuarter} {currentYear}</p>
                     </div>
                   </div>
 
@@ -1097,7 +1127,7 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                               </svg>
                             </div>
-                            <span className="font-mono text-[10px] text-black/40">W{weekNum}</span>
+                            <span className="font-mono text-base text-black/60">W{weekNum}</span>
                           </div>
                         )
                       }
@@ -1108,7 +1138,7 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
                             <div className="w-10 h-10 rounded-full border-2 border-black flex items-center justify-center group-hover:bg-black transition-colors">
                               <span className="font-mono text-xs font-bold text-black group-hover:text-white transition-colors">{weekNum}</span>
                             </div>
-                            <span className="font-mono text-[10px] text-black font-bold">Now</span>
+                            <span className="font-mono text-xs text-black font-bold">Now</span>
                           </a>
                         )
                       }
@@ -1118,9 +1148,9 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
                           <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                             isFuture ? 'bg-black/[0.03]' : 'bg-black/[0.06]'
                           }`}>
-                            <span className={`font-mono text-xs ${isFuture ? 'text-black/15' : 'text-black/25'}`}>{weekNum}</span>
+                            <span className={`font-mono text-xs ${isFuture ? 'text-black/15' : 'text-black/35'}`}>{weekNum}</span>
                           </div>
-                          <span className="font-mono text-[10px] text-black/20">W{weekNum}</span>
+                          <span className="font-mono text-base text-black/40">W{weekNum}</span>
                         </div>
                       )
                     })}
@@ -1145,7 +1175,7 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
                             className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                             style={{ backgroundColor: color }}
                           />
-                          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-black/40">
+                          <span className="font-mono text-sm uppercase tracking-[0.12em] text-black/50">
                             {TERRITORY_CONFIG[dim.territory].displayLabel.replace('Leading ', '')}
                           </span>
                         </div>
@@ -1166,7 +1196,7 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
                             <span className="text-sm font-mono font-bold text-black">{Math.round(latestScore)}%</span>
                           </div>
                         ) : (
-                          <p className="text-xs text-black/30">No check-in data yet</p>
+                          <p className="text-base text-black/50">No check-in data yet</p>
                         )}
                       </div>
                     )
@@ -1203,10 +1233,131 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
             )}
           </div>
 
-          {/* ── 5. Baseline Assessment Section ──────────────────────── */}
+          {/* ── 5. Mirror Check Section ──────────────────────────── */}
           <div>
             <div className="border-b border-black/10 pb-4 mb-8">
-              <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Quarterly Assessments</p>
+              <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">Mirror Check</p>
+              <h2 className="text-3xl font-bold tracking-tight mb-1">Outside Perspective</h2>
+              <p className="text-base text-black/40">
+                Invite colleagues to rate your leadership. {MIRROR_UNLOCK_THRESHOLD} responses unlock your results. {MIRROR_GOAL_THRESHOLD} gives you reliable data.
+              </p>
+            </div>
+
+            {mirrorInvites.length === 0 ? (
+              <a
+                href="/assessment/mirror"
+                className="block bg-white border border-black/10 rounded-lg p-8 hover:border-black/20 transition-colors"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xl font-semibold text-black mb-2">Invite your first rater</p>
+                    <p className="text-base text-black/40">
+                      Direct reports, peers, board members — anyone who sees your leadership in action.
+                    </p>
+                  </div>
+                  <svg className="w-7 h-7 text-black/30 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </a>
+            ) : (
+              <div className="space-y-5">
+                {/* Progress card */}
+                <div className="bg-white border border-black/10 rounded-lg p-8">
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <p className="text-3xl font-bold font-mono text-black">
+                        {mirrorCompletedCount}
+                        <span className="text-base font-normal text-black/35">/{MIRROR_UNLOCK_THRESHOLD} to unlock</span>
+                      </p>
+                      <p className="text-base text-black/50 mt-0.5">responses received</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xl font-bold font-mono text-black">
+                        {mirrorInvites.length}
+                        <span className="text-sm font-normal text-black/35"> invited</span>
+                      </p>
+                      <p className="text-base text-black/50">goal: {MIRROR_GOAL_THRESHOLD}</p>
+                    </div>
+                  </div>
+
+                  {/* Progress bar toward GOAL_THRESHOLD */}
+                  <div className="mb-6">
+                    <div className="w-full bg-black/5 rounded-full h-2.5 relative">
+                      <div
+                        className="absolute top-0 h-2.5 border-l-2 border-black/20"
+                        style={{ left: `${(MIRROR_UNLOCK_THRESHOLD / MIRROR_GOAL_THRESHOLD) * 100}%` }}
+                      />
+                      <div
+                        className="h-2.5 rounded-full bg-black transition-all duration-700 ease-out"
+                        style={{ width: `${Math.min(100, (mirrorCompletedCount / MIRROR_GOAL_THRESHOLD) * 100)}%` }}
+                      />
+                    </div>
+                    <div className="flex justify-between text-xs text-black/30 mt-1.5">
+                      <span>0</span>
+                      <span>{MIRROR_UNLOCK_THRESHOLD} unlock</span>
+                      <span>{MIRROR_GOAL_THRESHOLD}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-5 border-t border-black/5">
+                    {mirrorIsUnlocked ? (
+                      <a
+                        href="/ceolab/results"
+                        className="inline-flex items-center gap-2 text-base font-semibold text-black hover:text-black/70 transition-colors"
+                      >
+                        View Mirror Check results
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                      </a>
+                    ) : (
+                      <p className="text-base text-black/40">
+                        {MIRROR_UNLOCK_THRESHOLD - mirrorCompletedCount} more{' '}
+                        {MIRROR_UNLOCK_THRESHOLD - mirrorCompletedCount === 1 ? 'response' : 'responses'} needed to unlock.
+                      </p>
+                    )}
+                    <a
+                      href="/assessment/mirror"
+                      className="text-sm font-medium text-black/50 hover:text-black transition-colors flex-shrink-0"
+                    >
+                      + Invite more
+                    </a>
+                  </div>
+                </div>
+
+                {/* Invite list */}
+                <div className="bg-white border border-black/10 rounded-lg overflow-hidden">
+                  <div className="px-8 py-5 border-b border-black/5">
+                    <p className="text-sm font-semibold text-black">Invited Raters</p>
+                  </div>
+                  <div className="divide-y divide-black/5">
+                    {mirrorInvites.map((invite) => (
+                      <div key={invite.id} className="px-8 py-4 flex items-center justify-between">
+                        <div>
+                          <p className="text-sm font-medium text-black">{invite.email}</p>
+                          <p className="text-xs text-black/40 mt-0.5">{invite.relationship}</p>
+                        </div>
+                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
+                          invite.isCompleted
+                            ? 'bg-black/5 text-black/60'
+                            : 'bg-black/[0.03] text-black/35'
+                        }`}>
+                          <span className={`w-1.5 h-1.5 rounded-full ${invite.isCompleted ? 'bg-black/40' : 'bg-black/20'}`} />
+                          {invite.isCompleted ? 'Completed' : 'Pending'}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* ── 6. Baseline Assessment Section ────────────────────── */}
+          <div>
+            <div className="border-b border-black/10 pb-4 mb-8">
+              <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">Quarterly Assessments</p>
               <h2 className="text-3xl font-bold tracking-tight mb-1">Baseline Assessments</h2>
               <p className="text-base text-black/40">Full leadership measurement across 15 dimensions. Take quarterly to track growth.</p>
             </div>
@@ -1222,7 +1373,7 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
                   </div>
                   <div>
                     <p className="text-base font-semibold text-black">Next assessment activates {nextQuarterlyDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
-                    <p className="text-sm text-black/40">Quarterly re-assessments measure your growth over time</p>
+                    <p className="text-base text-black/50">Quarterly re-assessments measure your growth over time</p>
                   </div>
                 </div>
                 {new Date() >= nextQuarterlyDate && (
@@ -1243,15 +1394,15 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
                   const dateStr = new Date(qi.completedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
                   return (
                     <div key={key} className="bg-white border border-black/10 rounded-lg p-8">
-                      <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-5">{qLabel}</p>
+                      <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-5">{qLabel}</p>
                       <div className="flex items-center gap-5">
                         <ScoreRing value={qi.clmi} size={64} strokeWidth={5} color="#000" />
                         <div>
-                          <p className="text-2xl font-bold font-mono tracking-tight">{Math.round(qi.clmi)}%</p>
-                          <p className="text-sm text-black/40">{verbal}</p>
+                          <p className="text-3xl font-bold font-mono tracking-tight">{Math.round(qi.clmi)}%</p>
+                          <p className="text-base text-black/50">{verbal}</p>
                         </div>
                       </div>
-                      <p className="text-xs text-black/25 mt-5 font-mono uppercase tracking-[0.08em]">Completed {dateStr}</p>
+                      <p className="text-sm text-black/35 mt-5 font-mono uppercase tracking-[0.08em]">Completed {dateStr}</p>
                     </div>
                   )
                 }
@@ -1259,24 +1410,24 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
                 if (qi.isCurrent) {
                   return (
                     <a key={key} href="/assessment/baseline" className="block bg-black text-white rounded-lg p-8 hover:bg-black/90 transition-colors">
-                      <p className="font-mono text-xs uppercase tracking-[0.12em] text-white/40 mb-5">{qLabel}</p>
+                      <p className="font-mono text-sm uppercase tracking-[0.12em] text-white/50 mb-5">{qLabel}</p>
                       <p className="text-xl font-semibold mb-2">Take Assessment</p>
-                      <p className="text-sm text-white/50">96 questions &middot; ~25 min</p>
+                      <p className="text-base text-white/60">96 questions &middot; ~25 min</p>
                     </a>
                   )
                 }
 
                 return (
                   <div key={key} className="bg-black/[0.02] border border-black/5 rounded-lg p-8">
-                    <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/20 mb-5">{qLabel}</p>
-                    <p className="text-sm text-black/20">Skipped</p>
+                    <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/30 mb-5">{qLabel}</p>
+                    <p className="text-base text-black/30">Skipped</p>
                   </div>
                 )
               })}
             </div>
           </div>
 
-          {/* ── 6. Feedback Section ─────────────────────────────────── */}
+          {/* ── 7. Feedback Section ─────────────────────────────────── */}
           <FeedbackSection />
 
         </div>
@@ -1555,9 +1706,27 @@ export default function CeoLabPage() {
       const daysSinceQuarterStart = Math.floor((now.getTime() - quarterStart.getTime()) / (1000 * 60 * 60 * 24))
       const currentWeekOfQuarter = Math.max(1, Math.min(13, Math.floor(daysSinceQuarterStart / 7) + 1))
 
+      // ── Load mirror invites ───────────────────────────────────
+      const { data: mirrorSessions } = await supabase
+        .from('mirror_sessions')
+        .select('id, rater_email, rater_relationship, completed_at')
+        .eq('session_id', completedSession.id)
+        .order('created_at', { ascending: false })
+
+      const mirrorInvites: MirrorInvite[] = (mirrorSessions || []).map((s: {
+        id: string; rater_email: string; rater_relationship: string; completed_at: string | null
+      }) => ({
+        id: s.id,
+        email: s.rater_email,
+        relationship: s.rater_relationship,
+        isCompleted: !!s.completed_at,
+      }))
+
+      const mirrorCompletedCount = mirrorInvites.filter(i => i.isCompleted).length
+
       // ── Determine mirror data status ──────────────────────────
       const fullResults: FullResults = resultsJson.results
-      const hasMirrorData = fullResults.mirrorGaps != null && fullResults.mirrorGaps.length > 0
+      const hasMirrorData = mirrorCompletedCount >= MIRROR_UNLOCK_THRESHOLD
 
       // ── Build session info array ──────────────────────────────
       const sessionInfos: SessionInfo[] = allSessions.map((s: { id: string; completed_at: string; clmi: number }) => ({
@@ -1577,6 +1746,8 @@ export default function CeoLabPage() {
         currentQuarter: currentQ,
         currentYear: currentY,
         hasMirrorData,
+        mirrorInvites,
+        mirrorCompletedCount,
         allSessions: sessionInfos,
       })
       setPageState('complete')

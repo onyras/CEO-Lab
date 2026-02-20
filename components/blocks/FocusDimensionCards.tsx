@@ -14,7 +14,7 @@ export function FocusDimensionCards({ focusDimensions, latestWeeklyScores }: Foc
   return (
     <div className="mb-16">
       <div className="pb-5 border-b border-black/10 mb-8">
-        <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Focus Areas</p>
+        <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">Focus Areas</p>
         <h2 className="text-2xl font-semibold tracking-tight">Your 3 Dimensions</h2>
       </div>
 
@@ -36,7 +36,7 @@ export function FocusDimensionCards({ focusDimensions, latestWeeklyScores }: Foc
                   className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                   style={{ backgroundColor: color }}
                 />
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-black/40">
+                <span className="font-mono text-xs uppercase tracking-[0.12em] text-black/40">
                   {TERRITORY_CONFIG[dim.territory].displayLabel.replace('Leading ', '')}
                 </span>
               </div>
@@ -57,10 +57,10 @@ export function FocusDimensionCards({ focusDimensions, latestWeeklyScores }: Foc
                   <span className="text-sm font-mono font-bold text-black">{Math.round(latestScore)}%</span>
                 </div>
               ) : (
-                <p className="text-xs text-black/30">No check-in data yet</p>
+                <p className="text-base text-black/50">No check-in data yet</p>
               )}
 
-              <p className="text-xs text-black/30 mt-3 group-hover:text-black/50 transition-colors">
+              <p className="text-base text-black/50 mt-3 group-hover:text-black/50 transition-colors">
                 Check in →
               </p>
             </a>

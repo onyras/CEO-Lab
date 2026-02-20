@@ -23,9 +23,9 @@ export function DashboardSummaryStrip({ clmi, label, streak, primaryArchetype, t
         <div className="flex items-center gap-8">
           <ScoreRing value={clmi} size={96} strokeWidth={6} color="#000" label={label} />
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">CLMI Score</p>
+            <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">CLMI Score</p>
             <p className="text-3xl font-bold font-mono tracking-tight text-black">{Math.round(clmi)}%</p>
-            <p className="text-sm text-black/40 mt-1">{label}</p>
+            <p className="text-base text-black/50 mt-1">{label}</p>
           </div>
         </div>
 
@@ -34,7 +34,7 @@ export function DashboardSummaryStrip({ clmi, label, streak, primaryArchetype, t
           <div className="flex flex-col gap-2 min-w-[180px]">
             {territoryScores.map((ts) => (
               <div key={ts.territory} className="flex items-center gap-2">
-                <span className="text-[10px] text-black/40 w-[60px] truncate">
+                <span className="text-base text-black/60 w-[60px] truncate">
                   {TERRITORY_CONFIG[ts.territory].displayLabel.replace('Leading ', '')}
                 </span>
                 <div className="flex-1 bg-black/5 rounded-full h-2">
@@ -46,7 +46,7 @@ export function DashboardSummaryStrip({ clmi, label, streak, primaryArchetype, t
                     }}
                   />
                 </div>
-                <span className="text-[10px] font-mono font-bold text-black w-8 text-right">{Math.round(ts.score)}%</span>
+                <span className="text-xs font-mono font-bold text-black w-8 text-right">{Math.round(ts.score)}%</span>
               </div>
             ))}
           </div>
@@ -54,15 +54,15 @@ export function DashboardSummaryStrip({ clmi, label, streak, primaryArchetype, t
 
         <div className="flex items-center gap-10">
           <div className="text-center">
-            <p className="text-2xl font-bold font-mono text-black">{streak.currentStreak}</p>
-            <p className="text-xs text-black/40 mt-0.5">Week streak</p>
+            <p className="text-3xl font-bold font-mono text-black">{streak.currentStreak}</p>
+            <p className="text-base text-black/60 mt-0.5">Week streak</p>
           </div>
           {streak.lastCheckIn && (
             <div className="text-center">
               <p className="text-base font-medium text-black">
                 {new Date(streak.lastCheckIn).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </p>
-              <p className="text-xs text-black/40 mt-0.5">Last check-in</p>
+              <p className="text-base text-black/60 mt-0.5">Last check-in</p>
             </div>
           )}
         </div>
@@ -70,7 +70,7 @@ export function DashboardSummaryStrip({ clmi, label, streak, primaryArchetype, t
 
       {primaryArchetype && archetypeDesc && (
         <div className="mt-6 pt-6 border-t border-black/5 flex items-center gap-4">
-          <span className="font-mono text-xs text-black/40 uppercase tracking-[0.12em]">Primary Archetype</span>
+          <span className="font-mono text-base text-black/60 uppercase tracking-[0.12em]">Primary Archetype</span>
           <span className="inline-flex items-center px-4 py-1.5 bg-[#F7F3ED] rounded-full text-sm font-semibold text-black">
             {primaryArchetype.name}
           </span>

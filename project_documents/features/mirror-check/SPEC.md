@@ -53,9 +53,23 @@ Gap = CEO self-score - Rater score.
 
 ---
 
+## Unlock & Encouragement Thresholds
+
+- **Unlock threshold:** 5 completed responses → Mirror Check results become visible
+- **Recommended goal:** 15 raters minimum for statistically reliable data
+- Before 5 completions: home page shows invite progress, results tab is locked
+- After unlock: gap analysis and self-vs-rater comparison are shown in results
+
+## Naming Convention
+
+- Single name throughout the product: **Mirror Check**
+- "Blind spots" = the output/insight surfaced by Mirror Check (not a separate feature)
+- Never use "Blind Spot Detection" as a feature name
+
 ## Implementation
 
 - Phase 2+ feature (not MVP)
 - Rater receives unique link via email
 - Anonymous responses aggregated
 - Dashboard shows self-vs-rater comparison per dimension
+- Home page shows: invited rater list with status, progress toward 5 (unlock) and 15 (goal)

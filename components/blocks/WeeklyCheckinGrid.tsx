@@ -22,12 +22,12 @@ export function WeeklyCheckinGrid({
     <div className="mb-16">
       <div className="flex items-end justify-between pb-5 border-b border-black/10 mb-8">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Weekly Check-Ins</p>
+          <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">Weekly Check-Ins</p>
           <h2 className="text-2xl font-semibold tracking-tight">Q{currentQuarter} {currentYear} Progress</h2>
         </div>
         <div className="text-right">
-          <p className="text-3xl font-bold font-mono">{completedWeeksCount}<span className="text-lg font-normal text-black/25">/12</span></p>
-          <p className="font-mono text-xs text-black/40 uppercase tracking-[0.08em]">weeks completed</p>
+          <p className="text-3xl font-bold font-mono">{completedWeeksCount}<span className="text-lg font-normal text-black/35">/12</span></p>
+          <p className="font-mono text-base text-black/60 uppercase tracking-[0.08em]">weeks completed</p>
         </div>
       </div>
 
@@ -47,7 +47,7 @@ export function WeeklyCheckinGrid({
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>
                   </div>
-                  <span className="font-mono text-xs text-black/40">W{weekNum}</span>
+                  <span className="font-mono text-base text-black/60">W{weekNum}</span>
                 </div>
               )
             }
@@ -68,7 +68,7 @@ export function WeeklyCheckinGrid({
                 <div className={`w-14 h-14 rounded-full flex items-center justify-center ${
                   isFuture ? 'bg-black/[0.03]' : 'bg-black/[0.06]'
                 }`}>
-                  <span className={`font-mono text-base ${isFuture ? 'text-black/15' : 'text-black/25'}`}>{weekNum}</span>
+                  <span className={`font-mono text-base ${isFuture ? 'text-black/15' : 'text-black/35'}`}>{weekNum}</span>
                 </div>
                 <span className="font-mono text-xs text-black/20">W{weekNum}</span>
               </div>
@@ -78,7 +78,7 @@ export function WeeklyCheckinGrid({
 
         {currentStreak > 0 && (
           <div className="mt-6 pt-6 border-t border-black/5">
-            <p className="text-sm text-black/40">
+            <p className="text-base text-black/50">
               <span className="font-mono font-bold text-black">{currentStreak}</span> week streak
             </p>
           </div>

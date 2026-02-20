@@ -110,7 +110,7 @@ export default function SettingsPage() {
   return (
     <AppShell>
       <div className="max-w-2xl mx-auto px-6 py-10 space-y-8">
-        <h1 className="text-2xl font-bold text-black">Settings</h1>
+        <h1 className="text-3xl font-bold text-black">Settings</h1>
 
         {/* Profile Section */}
         <section className="bg-white rounded-lg p-6 border border-black/5">
@@ -142,7 +142,7 @@ export default function SettingsPage() {
                   <button
                     onClick={saveName}
                     disabled={savingName}
-                    className="text-sm text-black/50 hover:text-black"
+                    className="text-base text-black/60 hover:text-black"
                   >
                     {savingName ? 'Saving...' : 'Save'}
                   </button>
@@ -159,10 +159,10 @@ export default function SettingsPage() {
                   className="group flex items-center gap-2"
                 >
                   <span className="text-lg font-semibold text-black">{profile.full_name || 'Add your name'}</span>
-                  <span className="text-xs text-black/30 group-hover:text-black/50">Edit</span>
+                  <span className="text-base text-black/50 group-hover:text-black/50">Edit</span>
                 </button>
               )}
-              <p className="text-sm text-black/40 mt-0.5">{profile.email}</p>
+              <p className="text-base text-black/50 mt-0.5">{profile.email}</p>
             </div>
           </div>
         </section>
@@ -175,7 +175,7 @@ export default function SettingsPage() {
               <p className="text-sm font-medium text-black">
                 {profile.subscription_status === 'active' || profile.subscription_status === 'trialing' ? 'Active' : 'Inactive'}
               </p>
-              <p className="text-xs text-black/40 mt-0.5">
+              <p className="text-base text-black/60 mt-0.5">
                 {profile.subscription_status === 'active' || profile.subscription_status === 'trialing'
                   ? 'CEO Lab Premium'
                   : 'No active subscription'}

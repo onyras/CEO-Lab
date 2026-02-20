@@ -57,9 +57,22 @@ export default function MirrorPage() {
   )
 }
 
+// ─── Invite record type ───────────────────────────────────────────
+
+interface InviteRecord {
+  id: string
+  email: string
+  relationship: string
+  isCompleted: boolean
+  createdAt: string
+}
+
 // ═══════════════════════════════════════════════════════════════════
 // CEO Mode: Invite a mirror rater
 // ═══════════════════════════════════════════════════════════════════
+
+const UNLOCK_THRESHOLD = 5
+const GOAL_THRESHOLD = 15
 
 function CeoMode() {
   const router = useRouter()
@@ -69,8 +82,14 @@ function CeoMode() {
   const [raterRelationship, setRaterRelationship] = useState('')
   const [mirrorLink, setMirrorLink] = useState('')
   const [copied, setCopied] = useState(false)
+  const [copiedMessage, setCopiedMessage] = useState(false)
+  const [existingInvites, setExistingInvites] = useState<InviteRecord[]>([])
+  const [sessionId, setSessionId] = useState<string>('')
 
-  // Auth check on mount
+  const completedCount = existingInvites.filter(i => i.isCompleted).length
+  const isUnlocked = completedCount >= UNLOCK_THRESHOLD
+
+  // Auth check + load existing invites on mount
   useEffect(() => {
     async function checkAuth() {
       const supabase = createClient()
@@ -79,6 +98,37 @@ function CeoMode() {
       if (authError || !user) {
         router.push('/auth')
         return
+      }
+
+      // Load latest completed session
+      const { data: sessions } = await supabase
+        .from('assessment_sessions')
+        .select('id')
+        .eq('ceo_id', user.id)
+        .not('completed_at', 'is', null)
+        .order('completed_at', { ascending: false })
+        .limit(1)
+
+      if (sessions && sessions.length > 0) {
+        const sid = sessions[0].id
+        setSessionId(sid)
+
+        // Load existing mirror invites
+        const { data: invites } = await supabase
+          .from('mirror_sessions')
+          .select('id, rater_email, rater_relationship, completed_at, created_at')
+          .eq('session_id', sid)
+          .order('created_at', { ascending: false })
+
+        if (invites) {
+          setExistingInvites(invites.map(i => ({
+            id: i.id,
+            email: i.rater_email,
+            relationship: i.rater_relationship,
+            isCompleted: !!i.completed_at,
+            createdAt: i.created_at,
+          })))
+        }
       }
 
       setPhase('invite')
@@ -120,39 +170,47 @@ function CeoMode() {
         return
       }
 
-      // Find the user's latest completed assessment session
-      const { data: sessions, error: sessionError } = await supabase
-        .from('assessment_sessions')
-        .select('id')
-        .eq('ceo_id', user.id)
-        .not('completed_at', 'is', null)
-        .order('completed_at', { ascending: false })
-        .limit(1)
+      // Use already-loaded sessionId if available, otherwise look it up
+      let sid = sessionId
+      if (!sid) {
+        const { data: sessions, error: sessionError } = await supabase
+          .from('assessment_sessions')
+          .select('id')
+          .eq('ceo_id', user.id)
+          .not('completed_at', 'is', null)
+          .order('completed_at', { ascending: false })
+          .limit(1)
 
-      if (sessionError) {
-        throw new Error(`Failed to find assessment: ${sessionError.message}`)
+        if (sessionError || !sessions || sessions.length === 0) {
+          throw new Error('You need to complete the baseline assessment before inviting a mirror rater.')
+        }
+        sid = sessions[0].id
+        setSessionId(sid)
       }
-
-      if (!sessions || sessions.length === 0) {
-        throw new Error('You need to complete the baseline assessment before inviting a mirror rater.')
-      }
-
-      const sessionId = sessions[0].id
 
       // Create the mirror session
       const { data: mirrorSession, error: createError } = await supabase
         .from('mirror_sessions')
         .insert({
-          session_id: sessionId,
+          session_id: sid,
           rater_email: raterEmail.trim().toLowerCase(),
           rater_relationship: raterRelationship,
         })
-        .select('id')
+        .select('id, created_at')
         .single()
 
       if (createError) {
         throw new Error(`Failed to create mirror session: ${createError.message}`)
       }
+
+      // Add to existing invites list
+      setExistingInvites(prev => [{
+        id: mirrorSession.id,
+        email: raterEmail.trim().toLowerCase(),
+        relationship: raterRelationship,
+        isCompleted: false,
+        createdAt: mirrorSession.created_at,
+      }, ...prev])
 
       // Build the shareable link
       const baseUrl = window.location.origin
@@ -164,27 +222,34 @@ function CeoMode() {
       setError(err.message || 'Something went wrong. Please try again.')
       setPhase('invite')
     }
-  }, [raterEmail, raterRelationship, router])
+  }, [raterEmail, raterRelationship, router, sessionId])
 
-  // ─── Copy to clipboard ─────────────────────────────────────────
+  // ─── Copy helpers ───────────────────────────────────────────────
+
+  const copyToClipboard = useCallback(async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+    } catch {
+      const el = document.createElement('textarea')
+      el.value = text
+      document.body.appendChild(el)
+      el.select()
+      document.execCommand('copy')
+      document.body.removeChild(el)
+    }
+  }, [])
 
   const handleCopy = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(mirrorLink)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch {
-      // Fallback
-      const textArea = document.createElement('textarea')
-      textArea.value = mirrorLink
-      document.body.appendChild(textArea)
-      textArea.select()
-      document.execCommand('copy')
-      document.body.removeChild(textArea)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    }
-  }, [mirrorLink])
+    await copyToClipboard(mirrorLink)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }, [mirrorLink, copyToClipboard])
+
+  const handleCopyMessage = useCallback(async (message: string) => {
+    await copyToClipboard(`${message}\n\n${mirrorLink}`)
+    setCopiedMessage(true)
+    setTimeout(() => setCopiedMessage(false), 2000)
+  }, [mirrorLink, copyToClipboard])
 
   // ─── Loading ────────────────────────────────────────────────────
 
@@ -204,68 +269,91 @@ function CeoMode() {
   // ─── Link Ready ─────────────────────────────────────────────────
 
   if (phase === 'link-ready') {
+    const inviteMessage = `Hey — I'm going through a leadership development program and as part of it I'm collecting feedback from people who work closely with me.\n\nIt's 15 short questions about what you actually observe in how I lead — takes about 5 minutes, completely anonymous, no account needed. Your honest take is more useful than a positive one.\n\nWould mean a lot if you'd fill it out:`
+
     return (
-      <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6">
-        <div className="max-w-xl w-full">
-          <div className="bg-white rounded-lg p-10 border border-black/5">
-            <div className="text-center mb-8">
-              <div className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <div className="min-h-screen bg-[#F7F3ED] px-6 py-12">
+        <div className="max-w-xl mx-auto">
+          <a
+            href="/ceolab"
+            className="inline-flex items-center gap-1 text-sm text-black/40 hover:text-black/70 transition-colors mb-6"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+            Dashboard
+          </a>
+
+          <div className="bg-white rounded-lg p-8 border border-black/5 mb-4">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center flex-shrink-0">
+                <svg className="w-4 h-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                 </svg>
               </div>
-              <h1 className="text-2xl font-bold text-black mb-2">Mirror Session Created</h1>
-              <p className="text-black/50 text-sm">
-                Share this link with <strong className="text-black">{raterEmail}</strong> to collect their feedback.
-              </p>
-            </div>
-
-            {/* Link display */}
-            <div className="mb-6">
-              <label className="block text-xs font-medium text-black/50 mb-2">Shareable Link</label>
-              <div className="flex items-center gap-2">
-                <div className="flex-1 px-4 py-3 rounded-lg bg-black/[0.03] border border-black/10 text-sm text-black/70 truncate select-all">
-                  {mirrorLink}
-                </div>
-                <button
-                  onClick={handleCopy}
-                  className={`px-5 py-3 rounded-lg text-sm font-medium transition-all duration-150 flex-shrink-0 ${
-                    copied
-                      ? 'bg-black/5 text-black/50'
-                      : 'bg-black text-white hover:bg-black/90'
-                  }`}
-                >
-                  {copied ? 'Copied' : 'Copy'}
-                </button>
+              <div>
+                <p className="text-base font-semibold text-black">Link created for {raterEmail}</p>
+                <p className="text-sm text-black/40">Copy the message below and send it directly</p>
               </div>
             </div>
 
-            <div className="bg-black/[0.02] rounded-lg p-4 mb-8">
-              <p className="text-xs text-black/50 leading-relaxed">
-                The rater will answer 15 questions about your leadership. They do not need an account.
-                Their responses are anonymous and will be compared against your self-assessment to identify blind spots.
+            {/* Message block */}
+            <div className="bg-[#F7F3ED] rounded-lg p-5 mb-4">
+              <p className="text-sm text-black/60 leading-relaxed whitespace-pre-line">
+                {inviteMessage}
               </p>
+              <p className="text-sm text-black/40 mt-3 break-all font-mono">{mirrorLink}</p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3">
-              <a
-                href="/ceolab"
-                className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
-              >
-                Back to CEO Lab
-              </a>
+            {/* One-click copy */}
+            <button
+              onClick={() => handleCopyMessage(inviteMessage)}
+              className={`w-full py-3.5 rounded-lg text-sm font-semibold transition-all duration-150 ${
+                copiedMessage
+                  ? 'bg-black/5 text-black/40'
+                  : 'bg-black text-white hover:bg-black/90'
+              }`}
+            >
+              {copiedMessage ? 'Copied to clipboard' : 'Copy message + link'}
+            </button>
+          </div>
+
+          {/* Link-only fallback */}
+          <div className="bg-white rounded-lg p-5 border border-black/5 mb-6">
+            <p className="text-xs font-medium text-black/40 mb-2">Or copy link only</p>
+            <div className="flex items-center gap-2">
+              <div className="flex-1 px-3 py-2.5 rounded-lg bg-black/[0.03] border border-black/8 text-xs text-black/50 truncate font-mono select-all">
+                {mirrorLink}
+              </div>
               <button
-                onClick={() => {
-                  setPhase('invite')
-                  setRaterEmail('')
-                  setRaterRelationship('')
-                  setMirrorLink('')
-                }}
-                className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-white text-black border border-black/15 rounded-lg text-sm font-medium hover:border-black/30 transition-colors"
+                onClick={handleCopy}
+                className={`px-4 py-2.5 rounded-lg text-xs font-medium transition-all duration-150 flex-shrink-0 ${
+                  copied ? 'bg-black/5 text-black/40' : 'bg-black/8 text-black hover:bg-black/12'
+                }`}
               >
-                Invite Another Rater
+                {copied ? 'Copied' : 'Copy'}
               </button>
             </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              onClick={() => {
+                setPhase('invite')
+                setRaterEmail('')
+                setRaterRelationship('')
+                setMirrorLink('')
+              }}
+              className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
+            >
+              Invite another rater
+            </button>
+            <a
+              href="/ceolab"
+              className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-white text-black border border-black/15 rounded-lg text-sm font-medium hover:border-black/30 transition-colors"
+            >
+              Back to dashboard
+            </a>
           </div>
         </div>
       </div>
@@ -275,8 +363,8 @@ function CeoMode() {
   // ─── Invite Form ────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-[#F7F3ED] flex items-center justify-center px-6">
-      <div className="max-w-xl w-full">
+    <div className="min-h-screen bg-[#F7F3ED] px-6 py-12">
+      <div className="max-w-xl mx-auto">
         {/* Back link */}
         <a
           href="/ceolab"
@@ -288,21 +376,81 @@ function CeoMode() {
           Dashboard
         </a>
 
-        <div className="bg-white rounded-lg p-10 border border-black/5">
-          <h1 className="text-2xl font-bold text-black mb-2">Invite a Mirror Rater</h1>
-          <p className="text-black/50 text-sm mb-8">
-            Choose someone who knows your leadership well. They will answer 15 questions about how they experience your leadership.
+        <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/40 mb-2">Mirror Check</p>
+        <h1 className="text-3xl font-bold text-black mb-8">Invite Raters</h1>
+
+        {/* Progress card — only shown when there are invites */}
+        {existingInvites.length > 0 && (
+          <div className="bg-white rounded-lg p-8 border border-black/5 mb-6">
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <p className="text-2xl font-bold font-mono text-black">
+                  {completedCount}<span className="text-sm font-normal text-black/35"> / {UNLOCK_THRESHOLD} to unlock</span>
+                </p>
+                <p className="text-sm text-black/50 mt-0.5">responses received</p>
+              </div>
+              <div className="text-right">
+                <p className="text-lg font-bold font-mono text-black">
+                  {existingInvites.length}<span className="text-sm font-normal text-black/35"> invited</span>
+                </p>
+                <p className="text-sm text-black/40">goal: {GOAL_THRESHOLD}</p>
+              </div>
+            </div>
+
+            {/* Progress bar */}
+            <div className="mb-4">
+              <div className="w-full bg-black/5 rounded-full h-2 relative">
+                <div
+                  className="absolute top-0 h-2 border-l-2 border-black/20 rounded-none"
+                  style={{ left: `${(UNLOCK_THRESHOLD / GOAL_THRESHOLD) * 100}%` }}
+                />
+                <div
+                  className="h-2 rounded-full bg-black transition-all duration-700 ease-out"
+                  style={{ width: `${Math.min(100, (completedCount / GOAL_THRESHOLD) * 100)}%` }}
+                />
+              </div>
+              <div className="flex justify-between text-xs text-black/30 mt-1.5">
+                <span>0</span>
+                <span style={{ marginLeft: `calc(${(UNLOCK_THRESHOLD / GOAL_THRESHOLD) * 100}% - 20px)` }}>
+                  {UNLOCK_THRESHOLD} unlock
+                </span>
+                <span>{GOAL_THRESHOLD}</span>
+              </div>
+            </div>
+
+            {isUnlocked ? (
+              <a href="/ceolab/results" className="inline-flex items-center gap-2 text-sm font-semibold text-black hover:text-black/70 transition-colors">
+                View Mirror Check results
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </a>
+            ) : (
+              <p className="text-sm text-black/40">
+                {UNLOCK_THRESHOLD - completedCount} more {UNLOCK_THRESHOLD - completedCount === 1 ? 'response' : 'responses'} needed to unlock your results.
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Invite form */}
+        <div className="bg-white rounded-lg p-8 border border-black/5 mb-6">
+          <h2 className="text-lg font-semibold text-black mb-1">
+            {existingInvites.length === 0 ? 'Invite your first rater' : 'Invite another rater'}
+          </h2>
+          <p className="text-black/50 text-sm mb-6">
+            Choose someone who sees your leadership directly. They answer 15 questions — no account needed.
           </p>
 
           {/* Error Banner */}
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800 text-sm">
+            <div className="mb-5 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800 text-sm">
               {error}
             </div>
           )}
 
           {/* Email Input */}
-          <div className="mb-6">
+          <div className="mb-5">
             <label htmlFor="rater-email" className="block text-sm font-medium text-black mb-2">
               Rater&apos;s email
             </label>
@@ -317,7 +465,7 @@ function CeoMode() {
           </div>
 
           {/* Relationship Dropdown */}
-          <div className="mb-8">
+          <div className="mb-6">
             <label htmlFor="rater-relationship" className="block text-sm font-medium text-black mb-2">
               Their relationship to you
             </label>
@@ -340,7 +488,6 @@ function CeoMode() {
             </select>
           </div>
 
-          {/* Submit */}
           <button
             onClick={handleCreateInvite}
             className="w-full px-8 py-4 bg-black text-white rounded-lg text-base font-semibold hover:bg-black/90 transition-colors"
@@ -348,6 +495,33 @@ function CeoMode() {
             Generate Mirror Link
           </button>
         </div>
+
+        {/* Existing invites list */}
+        {existingInvites.length > 0 && (
+          <div className="bg-white rounded-lg border border-black/5 overflow-hidden">
+            <div className="px-8 py-5 border-b border-black/5">
+              <p className="text-sm font-semibold text-black">Invited Raters</p>
+            </div>
+            <div className="divide-y divide-black/5">
+              {existingInvites.map((invite) => (
+                <div key={invite.id} className="px-8 py-4 flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-black">{invite.email}</p>
+                    <p className="text-xs text-black/40 mt-0.5">{invite.relationship}</p>
+                  </div>
+                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
+                    invite.isCompleted
+                      ? 'bg-black/5 text-black/60'
+                      : 'bg-black/[0.03] text-black/35'
+                  }`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${invite.isCompleted ? 'bg-black/40' : 'bg-black/20'}`} />
+                    {invite.isCompleted ? 'Completed' : 'Pending'}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -534,8 +708,8 @@ function RaterMode({ token }: { token: string }) {
             </div>
             <h1 className="text-2xl font-bold text-black mb-3">Thank You</h1>
             <p className="text-black/60 text-sm leading-relaxed mb-6">
-              Your feedback has been submitted. It will be used to help this leader identify blind spots
-              and strengthen their leadership across 15 dimensions.
+              Your feedback has been submitted. It will be used in this leader&apos;s Mirror Check
+              to compare their self-perception with how others experience their leadership.
             </p>
             <p className="text-black/40 text-xs">
               Your responses are confidential and will be shown as aggregate data only.

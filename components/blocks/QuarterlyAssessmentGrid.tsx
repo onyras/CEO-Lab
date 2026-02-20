@@ -20,7 +20,7 @@ export function QuarterlyAssessmentGrid({ quarterlyAssessments }: QuarterlyAsses
     <div className="mb-16">
       <div className="flex items-end justify-between pb-5 border-b border-black/10 mb-8">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-2">Quarterly Assessments</p>
+          <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-2">Quarterly Assessments</p>
           <h2 className="text-2xl font-semibold tracking-tight">Baseline Assessments</h2>
         </div>
       </div>
@@ -34,15 +34,15 @@ export function QuarterlyAssessmentGrid({ quarterlyAssessments }: QuarterlyAsses
             const dateStr = new Date(qi.completedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
             return (
               <div key={key} className="bg-white border border-black/10 rounded-lg p-8">
-                <p className="font-mono text-xs uppercase tracking-[0.12em] text-black/40 mb-5">{qLabel}</p>
+                <p className="font-mono text-sm uppercase tracking-[0.12em] text-black/50 mb-5">{qLabel}</p>
                 <div className="flex items-center gap-5">
                   <ScoreRing value={qi.clmi} size={64} strokeWidth={5} color="#000" />
                   <div>
-                    <p className="text-2xl font-bold font-mono tracking-tight">{Math.round(qi.clmi)}%</p>
-                    <p className="text-sm text-black/40">{verbal}</p>
+                    <p className="text-3xl font-bold font-mono tracking-tight">{Math.round(qi.clmi)}%</p>
+                    <p className="text-base text-black/50">{verbal}</p>
                   </div>
                 </div>
-                <p className="text-xs text-black/25 mt-5 font-mono uppercase tracking-[0.08em]">Completed {dateStr}</p>
+                <p className="text-xs text-black/35 mt-5 font-mono uppercase tracking-[0.08em]">Completed {dateStr}</p>
               </div>
             )
           }
