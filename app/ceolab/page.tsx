@@ -578,7 +578,7 @@ interface SessionInfo {
 interface MirrorInvite {
   id: string
   email: string
-  relationship: string
+  name: string
   isCompleted: boolean
 }
 
@@ -1335,8 +1335,8 @@ function ChecklistHomeView({ data, userName }: { data: HomeData; userName: strin
                     {mirrorInvites.map((invite) => (
                       <div key={invite.id} className="px-8 py-4 flex items-center justify-between">
                         <div>
-                          <p className="text-sm font-medium text-black">{invite.email}</p>
-                          <p className="text-xs text-black/40 mt-0.5">{invite.relationship}</p>
+                          <p className="text-sm font-medium text-black">{invite.name || invite.email}</p>
+                          {invite.name && <p className="text-xs text-black/40 mt-0.5">{invite.email}</p>}
                         </div>
                         <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
                           invite.isCompleted
@@ -1711,14 +1711,13 @@ export default function CeoLabPage() {
         .from('mirror_sessions')
         .select('id, rater_email, rater_relationship, completed_at')
         .eq('session_id', completedSession.id)
-        .order('created_at', { ascending: false })
 
       const mirrorInvites: MirrorInvite[] = (mirrorSessions || []).map((s: {
         id: string; rater_email: string; rater_relationship: string; completed_at: string | null
       }) => ({
         id: s.id,
         email: s.rater_email,
-        relationship: s.rater_relationship,
+        name: s.rater_relationship || '',
         isCompleted: !!s.completed_at,
       }))
 

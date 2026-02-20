@@ -62,9 +62,8 @@ export default function MirrorPage() {
 interface InviteRecord {
   id: string
   email: string
-  relationship: string
+  name: string
   isCompleted: boolean
-  createdAt: string
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -79,7 +78,7 @@ function CeoMode() {
   const [phase, setPhase] = useState<CeoPhase>('loading')
   const [error, setError] = useState<string | null>(null)
   const [raterEmail, setRaterEmail] = useState('')
-  const [raterRelationship, setRaterRelationship] = useState('')
+  const [raterName, setRaterName] = useState('')
   const [mirrorLink, setMirrorLink] = useState('')
   const [copied, setCopied] = useState(false)
   const [copiedMessage, setCopiedMessage] = useState(false)
@@ -116,17 +115,15 @@ function CeoMode() {
         // Load existing mirror invites
         const { data: invites } = await supabase
           .from('mirror_sessions')
-          .select('id, rater_email, rater_relationship, completed_at, created_at')
+          .select('id, rater_email, rater_relationship, completed_at')
           .eq('session_id', sid)
-          .order('created_at', { ascending: false })
 
         if (invites) {
           setExistingInvites(invites.map(i => ({
             id: i.id,
             email: i.rater_email,
-            relationship: i.rater_relationship,
+            name: i.rater_relationship || '',
             isCompleted: !!i.completed_at,
-            createdAt: i.created_at,
           })))
         }
       }
@@ -144,11 +141,6 @@ function CeoMode() {
 
     if (!raterEmail.trim()) {
       setError('Please enter the rater\'s email address.')
-      return
-    }
-
-    if (!raterRelationship) {
-      setError('Please select the rater\'s relationship to you.')
       return
     }
 
@@ -194,9 +186,9 @@ function CeoMode() {
         .insert({
           session_id: sid,
           rater_email: raterEmail.trim().toLowerCase(),
-          rater_relationship: raterRelationship,
+          rater_relationship: raterName.trim(),
         })
-        .select('id, created_at')
+        .select('id')
         .single()
 
       if (createError) {
@@ -207,9 +199,8 @@ function CeoMode() {
       setExistingInvites(prev => [{
         id: mirrorSession.id,
         email: raterEmail.trim().toLowerCase(),
-        relationship: raterRelationship,
+        name: raterName.trim(),
         isCompleted: false,
-        createdAt: mirrorSession.created_at,
       }, ...prev])
 
       // Build the shareable link
@@ -222,7 +213,7 @@ function CeoMode() {
       setError(err.message || 'Something went wrong. Please try again.')
       setPhase('invite')
     }
-  }, [raterEmail, raterRelationship, router, sessionId])
+  }, [raterEmail, raterName, router, sessionId])
 
   // ─── Copy helpers ───────────────────────────────────────────────
 
@@ -269,7 +260,8 @@ function CeoMode() {
   // ─── Link Ready ─────────────────────────────────────────────────
 
   if (phase === 'link-ready') {
-    const inviteMessage = `Hey — I'm going through a leadership development program and as part of it I'm collecting feedback from people who work closely with me.\n\nIt's 15 short questions about what you actually observe in how I lead — takes about 5 minutes, completely anonymous, no account needed. Your honest take is more useful than a positive one.\n\nWould mean a lot if you'd fill it out:`
+    const greeting = raterName.trim() ? `Hey ${raterName.trim()} —` : 'Hey —'
+    const inviteMessage = `${greeting} I'm going through a leadership development program and as part of it I'm collecting feedback from people who work closely with me.\n\nIt's 15 short questions about what you actually observe in how I lead — takes about 5 minutes, completely anonymous, no account needed. Your honest take is more useful than a positive one.\n\nWould mean a lot if you'd fill it out:`
 
     return (
       <div className="min-h-screen bg-[#F7F3ED] px-6 py-12">
@@ -292,7 +284,7 @@ function CeoMode() {
                 </svg>
               </div>
               <div>
-                <p className="text-base font-semibold text-black">Link created for {raterEmail}</p>
+                <p className="text-base font-semibold text-black">Link created{raterName.trim() ? ` for ${raterName.trim()}` : ''}</p>
                 <p className="text-sm text-black/40">Copy the message below and send it directly</p>
               </div>
             </div>
@@ -341,7 +333,7 @@ function CeoMode() {
               onClick={() => {
                 setPhase('invite')
                 setRaterEmail('')
-                setRaterRelationship('')
+                setRaterName('')
                 setMirrorLink('')
               }}
               className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90 transition-colors"
@@ -449,10 +441,25 @@ function CeoMode() {
             </div>
           )}
 
-          {/* Email Input */}
+          {/* Name Input */}
           <div className="mb-5">
+            <label htmlFor="rater-name" className="block text-sm font-medium text-black mb-2">
+              Their name
+            </label>
+            <input
+              id="rater-name"
+              type="text"
+              value={raterName}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRaterName(e.target.value)}
+              placeholder="Alex"
+              className="w-full px-4 py-3 rounded-lg border border-black/10 bg-black/[0.02] text-black text-sm placeholder:text-black/30 focus:outline-none focus:border-black/30 focus:ring-1 focus:ring-black/10 transition-colors"
+            />
+          </div>
+
+          {/* Email Input */}
+          <div className="mb-6">
             <label htmlFor="rater-email" className="block text-sm font-medium text-black mb-2">
-              Rater&apos;s email
+              Their email
             </label>
             <input
               id="rater-email"
@@ -462,30 +469,6 @@ function CeoMode() {
               placeholder="colleague@company.com"
               className="w-full px-4 py-3 rounded-lg border border-black/10 bg-black/[0.02] text-black text-sm placeholder:text-black/30 focus:outline-none focus:border-black/30 focus:ring-1 focus:ring-black/10 transition-colors"
             />
-          </div>
-
-          {/* Relationship Dropdown */}
-          <div className="mb-6">
-            <label htmlFor="rater-relationship" className="block text-sm font-medium text-black mb-2">
-              Their relationship to you
-            </label>
-            <select
-              id="rater-relationship"
-              value={raterRelationship}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setRaterRelationship(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-black/10 bg-black/[0.02] text-black text-sm focus:outline-none focus:border-black/30 focus:ring-1 focus:ring-black/10 transition-colors appearance-none"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23999' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E")`,
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'right 12px center',
-                backgroundSize: '20px',
-              }}
-            >
-              <option value="">Select relationship...</option>
-              {RELATIONSHIP_OPTIONS.map(opt => (
-                <option key={opt} value={opt}>{opt}</option>
-              ))}
-            </select>
           </div>
 
           <button
@@ -506,8 +489,8 @@ function CeoMode() {
               {existingInvites.map((invite) => (
                 <div key={invite.id} className="px-8 py-4 flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-black">{invite.email}</p>
-                    <p className="text-xs text-black/40 mt-0.5">{invite.relationship}</p>
+                    <p className="text-sm font-medium text-black">{invite.name || invite.email}</p>
+                    {invite.name && <p className="text-xs text-black/40 mt-0.5">{invite.email}</p>}
                   </div>
                   <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
                     invite.isCompleted
