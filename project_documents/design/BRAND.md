@@ -1,6 +1,6 @@
 # CEO Lab - Brand Guidelines
 
-**Last Updated:** 2026-02-04
+**Last Updated:** 2026-02-20
 
 This document defines the official CEO Lab branding extracted from the live landing page.
 
@@ -105,9 +105,23 @@ font-semibold
 ```css
 text-sm (14px)
 font-normal
-opacity-40-60
+opacity-50-70
 ```
 Example: "Also available for Teams & Organizations"
+
+**Section Labels (Dashboard):**
+```css
+font-mono text-sm (14px)
+uppercase
+tracking-[0.12em]
+text-black/50
+```
+Example: "YOUR OVERALL SCORE"
+
+**Micro Labels (Charts Only):**
+```css
+text-xs (12px) — only inside SVGs and data visualizations
+```
 
 ---
 
@@ -160,7 +174,9 @@ Example: "Also available for Teams & Organizations"
 - **Headlines:** `text-black` (full opacity)
 - **Body text:** `text-black/70` (readable, slightly softer)
 - **Descriptions:** `text-black/60` (supporting information)
+- **Section labels:** `text-black/50` (monospace uppercase labels)
 - **Small print:** `text-black/50` (de-emphasized)
+- **Minimum contrast:** `text-black/35` (absolute floor — nothing below this)
 
 ### Accent Color Usage
 - **Blue (#7FABC8):** "Leading Yourself" territory indicators
@@ -258,7 +274,9 @@ transition-all       /* For multi-property changes */
 - Sections: `text-3xl md:text-4xl` bold
 - Body: `text-base` normal
 - Buttons: `text-base` semibold
-- Small: `text-sm` normal, 40-60% opacity
+- Small: `text-sm` normal, 50-70% opacity
+- Section labels: `font-mono text-sm` uppercase, `tracking-[0.12em]`, 50% opacity
+- Micro (charts only): `text-xs`, never below `text-black/35`
 
 **Spacing:**
 - Sections: `py-20`

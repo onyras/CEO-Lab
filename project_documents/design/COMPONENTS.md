@@ -1,6 +1,6 @@
 # CEO Lab - Component Design System
 
-**Last Updated:** 2026-02-06
+**Last Updated:** 2026-02-20
 **Aligned to:** `design/BRAND.md` (canonical source for colors/fonts)
 **Replaces:** DESIGN_SYSTEM.md (archived at `archive/DESIGN_SYSTEM_v1_navy_gold.md`)
 
@@ -22,9 +22,10 @@
 ### Text
 ```css
 --text-primary: black        /* Primary text color */
---text-secondary: black/70   /* Secondary text */
---text-muted: black/60       /* Supporting text */
---text-supporting: black/50  /* Small print */
+--text-secondary: black/70   /* Secondary text, body descriptions */
+--text-muted: black/60       /* Supporting text, section labels */
+--text-supporting: black/50  /* Small print, metadata */
+--text-faded: black/35       /* Minimum contrast for any visible text */
 ```
 
 ### Territory Accents
@@ -57,7 +58,9 @@ Inter for ALL text. No serif fonts, no secondary font families.
 - **Card titles:** `text-lg md:text-xl` semibold
 - **Body text:** `text-base (16px)` normal, leading-relaxed
 - **Button text:** `text-base` semibold
-- **Small/supporting:** `text-sm (14px)` normal, opacity 40-60%
+- **Small/supporting:** `text-sm (14px)` normal, opacity 50-70%
+- **Section labels (dashboard):** `font-mono text-sm uppercase tracking-[0.12em] text-black/50`
+- **Micro labels (charts/visualizations):** `text-xs (12px)` — only inside SVGs and data visualizations
 
 ---
 
@@ -132,6 +135,28 @@ Inter for ALL text. No serif fonts, no secondary font families.
   </div>
 </div>
 ```
+
+### Bento Navigation (Results Page)
+5-column grid with territory accent colors, SVG icons, and descriptions.
+```html
+<div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+  <button className="bg-white rounded-lg p-5 border border-black/10 hover:border-black/25 text-left">
+    <div className="h-1 rounded-full mb-4" style="backgroundColor: #7FABC8" />
+    <SVGIcon className="w-7 h-7 text-black/30 mb-3" />
+    <p className="text-base font-semibold text-black">Tab Label</p>
+    <p className="text-sm text-black/50">Short description</p>
+  </button>
+</div>
+```
+Active state: `border-2 border-black`. Inactive: `border border-black/10`.
+
+### Radial Score + Quarterly Growth (Territory Dimension Cards)
+Design 16: Circular progress ring (110x110 SVG) paired with quarterly growth list.
+- Ring shows score percentage and verbal label in center
+- Quarter segment lines at 0/90/180/270 degrees
+- Progress arc uses territory color with `strokeLinecap="round"`
+- Quarterly list: current quarter = filled dot + progress bar + score; next 3 = dashed dots + empty bars + "—"
+- Benchmark note at bottom: `text-xs text-black/35`
 
 ---
 

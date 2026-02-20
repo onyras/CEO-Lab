@@ -317,6 +317,28 @@
 **Files:** 10 new, 8 modified, 23 files total. Migration 007 adds `reveal_seen` to `user_profiles`.
 **Impact:** Transforms product from data dump to guided experience. Establishes weekly retention loop. Creates pre-auth conversion moment for hook users.
 
+### 2026-02-19: Dashboard & Results UX Polish
+**Decision:** Major visual and UX improvements to dashboard home, results page, and territory tabs
+**Changes:**
+- Dashboard home: Section headers elevated to `text-3xl font-bold` with `border-b border-black/10` dividers. Added next quarterly assessment activation banner with date + "Retake Now" CTA
+- Results page: Replaced horizontal tab bar with 5-column bento grid navigation. Each card has territory accent color bar, SVG icon, description. Active state uses `border-2 border-black`. Layout widened to `max-w-7xl`
+- Territory tabs: Replaced simple score bars with Design 16 (Radial + Quarter List) — circular progress ring with quarterly growth breakdown showing current quarter score and placeholder slots for next 3 quarters
+- Mirror check rater flow: Added intro phase with CEO first name display for warmer experience
+**Rationale:** Dashboard felt flat; tab bar cramped 5 sections into tiny horizontal space; dimension scores showed no growth trajectory; mirror rater experience was impersonal
+**Impact:** Better visual hierarchy, clearer navigation, growth timeline ready for quarterly data
+
+### 2026-02-20: Typography Upgrade
+**Decision:** Systematic font size and contrast upgrade across all CEO Lab pages (14 files)
+**Changes:**
+- Body text: `text-sm` (14px) → `text-base` (16px)
+- Section labels: `font-mono text-xs uppercase tracking-[0.12em] text-black/40` → `font-mono text-sm uppercase tracking-[0.12em] text-black/50`
+- Micro labels: `text-[10px]`/`text-[11px]` → `text-xs` (12px)
+- Section headings: `text-2xl` → `text-3xl`
+- Contrast bumps: `text-black/40` → `/50`, `text-black/25` → `/35`, etc.
+**Rationale:** Pilot testing preparation — fonts were too small and lacked visual clarity. CEOs need larger, more readable text. Professional premium product should have generous, confident typography.
+**Files affected:** `page.tsx`, `results/page.tsx`, `TerritoryTab`, `OverviewTab`, `GrowthPlanTab`, `settings`, `weekly`, `setup`, `AppShell`, `DashboardSummaryStrip`, `FocusDimensionCards`, `QuarterlyAssessmentGrid`, `WeeklyCheckinGrid`
+**Impact:** Updated BRAND.md and COMPONENTS.md to reflect new typography scale. Visualization components (charts, radials) intentionally kept at smaller sizes.
+
 ---
 
 **How to use this file:**

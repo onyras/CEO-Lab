@@ -1,6 +1,6 @@
 # CEO Lab - Roadmap
 
-**Last Updated:** 2026-02-17
+**Last Updated:** 2026-02-20
 
 ---
 
@@ -48,6 +48,16 @@
 - [x] **First-Time Results Reveal** — 5-step guided walkthrough at `/ceolab/reveal`: animated score ring, archetype intro, territory breakdown, priority dimensions, CTA to accountability setup. Reveal-seen API (`/api/v4/reveal-seen`). Auto-redirects first-time users.
 - [x] **Hook Results Before Auth** — New results page at `/assessment/hook/results` showing territory scores, archetype hint, framework teaser before requiring auth. Hook assessment now redirects here instead of directly to `/auth`.
 - [x] **Enhancements** — "If I Were Your Coach" coaching interventions in Growth Plan tab (`lib/coaching-interventions.ts`). Peer benchmarks on Deep Dive dimension bars (`lib/benchmarks.ts`). Auth page brand alignment (beige `#F7F3ED`, black, matching AppShell style).
+
+### Dashboard & Results Polish (2026-02-19–20)
+- [x] **Dashboard home** — Section header dividers (`border-b`), elevated headings (`text-3xl`), next quarterly assessment banner with activation date + "Retake Now" CTA
+- [x] **Bento navigation** — Results page: 5-column bento grid replaces horizontal tab bar. Territory accent colors, SVG icons, descriptions per tab
+- [x] **Dimension timeline** — Design 16 (Radial + Quarter List): circular progress ring + quarterly growth breakdown in territory dimension cards
+- [x] **Typography upgrade** — Systematic bump across 14 files: body `sm→base`, labels `xs→sm`, headings `2xl→3xl`, contrast `black/40→/50`
+- [x] **Mirror check** — Rater intro phase with CEO first name, unlock/goal thresholds documented in spec
+- [x] **Sub-component extraction** — Dashboard split into `DashboardSummaryStrip`, `QuarterlyAssessmentGrid`, `WeeklyCheckinGrid`, `FocusDimensionCards`
+- [x] **Results tab extraction** — `OverviewTab`, `TerritoryTab`, `GrowthPlanTab` as separate files under `results/tabs/`
+- [x] **Design consistency** — `TERRITORY_COLORS` deduplicated to `lib/constants.ts`, `rounded-2xl→rounded-lg`, Framer Motion replaced with CSS transitions
 
 ### Pre-V4
 - [x] Coupon code system (Stripe promotion codes)
