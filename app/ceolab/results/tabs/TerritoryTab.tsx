@@ -34,6 +34,14 @@ interface TerritoryTabProps {
   imFlagged: boolean
 }
 
+function getQuarterLabel(offset: number = 0): string {
+  const now = new Date()
+  const month = now.getMonth() + offset * 3
+  const date = new Date(now.getFullYear(), month, 1)
+  const q = Math.ceil((date.getMonth() + 1) / 3)
+  return `Q${q} ${date.getFullYear()}`
+}
+
 export function TerritoryTab({
   territory,
   territoryScores,
@@ -164,23 +172,59 @@ export function TerritoryTab({
                   </div>
                 </div>
 
-                {/* Score bar */}
+                {/* Timeline score axis */}
                 <div className="mb-2">
-                  <div className="h-2.5 w-full rounded-full bg-black/[0.04] overflow-hidden">
+                  <div className="relative h-2.5 w-full rounded-full bg-black/[0.04]">
+                    {/* Filled bar */}
                     <div
-                      className="h-full rounded-full transition-all duration-500 ease-out"
+                      className="absolute top-0 left-0 h-full rounded-full transition-all duration-500 ease-out"
                       style={{
                         width: `${Math.max(2, percentage)}%`,
                         backgroundColor: color,
                       }}
                     />
+                    {/* Current position marker */}
+                    <div
+                      className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
+                      style={{ left: `${Math.max(2, percentage)}%` }}
+                    >
+                      <div
+                        className="w-4 h-4 rounded-full border-2 border-white"
+                        style={{ backgroundColor: color, boxShadow: '0 0 0 1px rgba(0,0,0,0.1)' }}
+                      />
+                    </div>
+                    {/* Next quarter placeholder marker */}
+                    <div
+                      className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
+                      style={{ left: `${Math.min(98, Math.max(2, percentage) + 15)}%` }}
+                    >
+                      <div className="w-4 h-4 rounded-full border-2 border-dashed border-black/15 bg-white" />
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between mt-1">
+
+                  {/* Timeline labels */}
+                  <div className="relative mt-3">
+                    {/* Current quarter label */}
+                    <div
+                      className="absolute -translate-x-1/2 text-center"
+                      style={{ left: `${Math.max(4, percentage)}%` }}
+                    >
+                      <p className="font-mono text-[10px] font-bold text-black/60">{getQuarterLabel(0)}</p>
+                      <p className="text-[10px] text-black/30">{benchCtx.narrative}</p>
+                    </div>
+                    {/* Next quarter label */}
+                    <div
+                      className="absolute -translate-x-1/2 text-center"
+                      style={{ left: `${Math.min(98, Math.max(2, percentage) + 15)}%` }}
+                    >
+                      <p className="font-mono text-[10px] text-black/20">{getQuarterLabel(1)}</p>
+                    </div>
+                  </div>
+
+                  {/* Benchmark context below */}
+                  <div className="mt-8">
                     <span className="text-[10px] text-black/30">
                       Typical: {bench.p25}–{bench.p75}%
-                    </span>
-                    <span className="text-[10px] text-black/30">
-                      {benchCtx.narrative}
                     </span>
                   </div>
                 </div>
